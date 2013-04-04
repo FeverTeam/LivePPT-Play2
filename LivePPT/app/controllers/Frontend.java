@@ -16,5 +16,9 @@ public class Frontend extends Controller {
 		session("name", "lbw");
 		return ok(login.render("login"));
 	}
+	
+	public static Result signup(){
+		return ok("signup");
+	}
 
 }
