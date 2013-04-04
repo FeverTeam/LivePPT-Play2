@@ -1,13 +1,12 @@
-@(title: String = "Login")
+@(title: String = "Signup")
 
-@main(name="login", title) {
+@main(name="signup", title) {
   @** Extra CSS **@
-
   body {
     padding-bottom: 40px;
   }
 
-  .form-signin {
+  .form-signup {
     max-width: 300px;
     padding: 19px 29px 29px;
     margin: 0 auto 20px;
@@ -20,12 +19,12 @@
        -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
             box-shadow: 0 1px 2px rgba(0,0,0,.05);
   }
-  .form-signin .form-signin-heading,
-  .form-signin .checkbox {
+  .form-signup .form-signup-heading,
+  .form-signup .checkbox {
     margin-bottom: 10px;
   }
-  .form-signin input[type="text"],
-  .form-signin input[type="password"] {
+  .form-signup input[type="text"],
+  .form-signup input[type="password"] {
     font-size: 16px;
     height: auto;
     margin-bottom: 15px;
@@ -34,15 +33,12 @@
 
 }{ 
 
-  <form class="form-signin">
-    <h2 class="form-signin-heading">登入LivePPT</h2>
+  <form class="form-signup">
+    <h2 class="form-signup-heading">注册LivePPT</h2>
     <input type="text" class="input-block-level" placeholder="Email address">
     <input type="password" class="input-block-level" placeholder="Password">
-    <label class="checkbox">
-      <input type="checkbox" value="remember-me" disabled> Remember me
-    </label>
-    <button class="btn btn-large btn-success btn-login-submit" type="submit">登录</button>
+    <button class="btn btn-large btn-primary btn-signup-submit" type="submit">注册</button>
     <br><br>
-    <a href='/signup'>还没有LivePPT账号？马上注册吧！</a>
+    <a href='/login'>已有LivePPT账号？马上登录吧！</a>
   </form>
 }
