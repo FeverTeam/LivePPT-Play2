@@ -1,50 +1,43 @@
-@(message: String)
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Bootstrap 101 Template</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
 
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
+@main{ 
 
-    
-  </head>
-  <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">Project name</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-        </div>
-      </div>
+  <hr>
+
+  <div class="jumbotron">
+    <h1>Welcome to LivePPT!</h1>
+    <p class="lead">没有投影仪，一样可以开PPT会议。<br><br>免费、实时、跨平台的在线PPT会议应用，就在你的眼前。</p>
+    <a class="btn btn-large btn-success" href="#">Sign up today</a>
+    <br>
+    <br>
+    <a href="#">已经有账号了? 快来登录吧。</a>
+  </div>
+
+  <hr>
+
+  <div class="row-fluid marketing">
+    <div class="span6">
+      <h4>在线PPT会议</h4>
+      <p>没有投影仪，一样可以开PPT会议。</p>
+
+      <h4>免费</h4>
+      <p>免费且高质量的服务。</p>
     </div>
 
-    <div class="container">
+    <div class="span6">
+      <h4>跨平台</h4>
+      <p>通过浏览器和LivePPT应用，即可享受我们的服务。</p>
 
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+      <h4>易用</h4>
+      <p>几乎无需学习，LivePPT一切皆如你所愿。</p>
 
-    </div> <!-- /container -->
+    </div>
+  </div>
 
-    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
-  </body>
-</html>
+  <hr>
+
+  <div class="footer">
+    <p>&copy; Fever Team 2013 <a target="_blank" href="http://weibo.com/feverteam"></a></p>
+  </div>
+
+}
