@@ -7,5 +7,8 @@ GET     /                           controllers.Frontend.index()
 GET		/login						controllers.Frontend.login()
 GET		/signup						controllers.Frontend.signup()
 
+# Data
+POST 	/signup						controllers.User.signup()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

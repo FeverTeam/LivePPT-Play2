@@ -35,10 +35,31 @@
 
   <form class="form-signup">
     <h2 class="form-signup-heading">注册LivePPT</h2>
-    <input type="text" class="input-block-level" placeholder="Email address">
-    <input type="password" class="input-block-level" placeholder="Password">
-    <button class="btn btn-large btn-primary btn-signup-submit" type="submit">注册</button>
+    <div class="control-group">
+      <label class="control-label" for="inputEmail">Email</label>
+      <div class="controls">
+        <input type="text" id="inputEmail" placeholder="输入你的Email地址">
+      </div>
+
+      <label class="control-label" for="inputDisplayName">Display Name</label>
+      <div class="controls">
+        <input type="text" id="inputDisplayName" placeholder="希望我们如何称呼你？">
+      </div>
+
+      <label class="control-label" for="inputPassword">Password</label>
+      <div class="controls">
+        <input type="text" id="inputPassword" placeholder="输入你的密码">
+      </div>
+
+      <label class="control-label" for="inputPasswordAgain">Confirm Password</label>
+      <div class="controls">
+        <input type="text" id="inputPasswordAgain" placeholder="再次输入相同的密码">
+      </div>
+
+    </div>
+
+    <a class="btn btn-primary btn-large btn-signup-submit">注册</a>
     <br><br>
-    <a href='/login'>已有LivePPT账号？马上登录吧！</a>
+    <a href="/login">已有LivePPT账号？马上登录吧！</a>
   </form>
 }
