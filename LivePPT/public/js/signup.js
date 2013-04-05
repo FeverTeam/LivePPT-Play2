@@ -2,11 +2,13 @@ define(function(require, exports, module) {
 
 	console.log("signup.js");
 
+	var alertBox = $("#alertBox");
+
 	$('.btn-signup-submit').on('click', function(e){
 		e.preventDefault();
 
 		$.ajax({
-			url: '/signdown',
+			url: '/signup',
 			type: 'post',			
 			data: {
 				email: $('#inputEmail').val(),
@@ -15,6 +17,9 @@ define(function(require, exports, module) {
 			},
 			success: function(res){
 				console.log(res);
+				$("#alertBox span").html(res);
+				alertBox.alert();
+
 			},
 			error: function(res){
 				console.log(res);
