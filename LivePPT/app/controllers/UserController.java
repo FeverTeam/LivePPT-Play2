@@ -15,6 +15,34 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 public class UserController extends Controller {
+	public static Result login(){
+		ObjectNode result = Json.newObject();
+		
+		// 获取POST参数
+		Map<String, String[]> postData = request().body().asFormUrlEncoded();
+		String email = postData.get("email")[0];
+		String password = postData.get("password")[0];
+		
+		User user = User.isPasswordCorrect(email, password);
+		if (user!=null){
+			//用户验证成功
+			result.put("isSuccess", true);
+			
+			Logger.info(user.email);
+			Logger.info(user.displayname);
+			
+			// 更新session信息
+			session("email", user.email);
+			session("displayname", user.displayname);
+		}else{
+			//用户验证失败
+			result.put("isSuccess", false);
+			result.put("message", "用户名/密码不正确，或未注册。");
+		}
+		
+		return ok(result);
+	}
+	
 	public static Result signup() {
 		ObjectNode result = Json.newObject();
 		Map<String, String[]> postData = request().body().asFormUrlEncoded();
@@ -50,7 +78,6 @@ public class UserController extends Controller {
 			result.put("isSuccess", true);
 
 			// 更新session信息
-			session().clear();
 			session("email", email);
 			session("displayname", displayname);
 

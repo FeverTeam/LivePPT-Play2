@@ -7,6 +7,7 @@ import javax.persistence.*;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
 
+import play.Logger;
 import play.db.ebean.*;
 import play.data.validation.*;
 
@@ -40,12 +41,20 @@ public class User extends Model {
 	}
 
 	public static boolean isExistedByEmail(String email) {
-//		Query<User> q = Ebean.createQuery(User.class);
 		List<User> existedUsers = User.find.where().eq("email", email).findList();
 		if (existedUsers.size() > 0) {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public static User isPasswordCorrect(String email, String password){
+		List<User> targetUser = User.find.where().eq("email", email).eq("password", password).findList();
+		if (targetUser.size() == 1) {
+			return targetUser.get(0);
+		} else {
+			return null;
 		}
 	}
 

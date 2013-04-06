@@ -22,7 +22,8 @@ public class Frontend extends Controller {
 	}
 	
 	public static Result myppt(){
-		return ok(myppt.render(null));
+		String displayname = session("displayname");
+		return ok(myppt.render(null, displayname));
 	}
 
 }

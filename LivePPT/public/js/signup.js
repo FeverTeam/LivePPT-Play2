@@ -30,7 +30,8 @@ define(function(require, exports, module) {
 				}
 			},
 			error: function(res){
-				console.log(res);
+				$("#alertBox span").html("网络错误？");
+				alertBox.show();
 			}
 		});
 	});
