@@ -6,6 +6,7 @@
 GET     /                           controllers.Frontend.index()
 GET		/login						controllers.Frontend.login()
 GET		/signup						controllers.Frontend.signup()
+GET		/myppt						controllers.Frontend.myppt()
 
 # Data
 POST 	/signup						controllers.UserController.signup()

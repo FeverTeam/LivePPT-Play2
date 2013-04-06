@@ -20,5 +20,9 @@ public class Frontend extends Controller {
 	public static Result signup(){
 		return ok(signup.render(null));
 	}
+	
+	public static Result myppt(){
+		return ok(myppt.render(null));
+	}
 
 }
