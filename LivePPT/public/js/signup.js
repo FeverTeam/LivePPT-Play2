@@ -4,8 +4,6 @@ define(function(require, exports, module) {
 
 	var alertBox = $("#alertBox");
 
-	alertBox.hide();
-
 	$('.btn-signup-submit').on('click', function(e){
 		e.preventDefault();
 

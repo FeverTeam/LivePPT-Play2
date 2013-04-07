@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="/assets/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link href="/assets/css/fineuploader-3.4.1.css" rel="stylesheet">
     
     <style type="text/css">
       body {
@@ -57,9 +58,8 @@
     <div class="container-narrow">
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="/">首页</a></li>
+        <li><a href="/myppt">我的PPT</a></li>
         </ul>
         <h3 class="muted">LivePPT</h3>
       </div>
@@ -68,7 +68,7 @@
     	@content
     </div> <!-- /container -->
 
-
+    <script src="/assets/js/jquery-1.9.1.min.js"></script>
     <script src="/assets/js/sea-2.0.0.js" data-config="/assets/js/main-config"></script>
     <script>
       seajs.use('@name');

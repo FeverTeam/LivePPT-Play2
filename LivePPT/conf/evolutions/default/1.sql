@@ -3,6 +3,15 @@
 
 # --- !Ups
 
+create table ownership (
+  id                        bigint auto_increment not null,
+  userid                    bigint,
+  title                     varchar(255),
+  time                      datetime,
+  store_key                 varchar(255),
+  constraint pk_ownership primary key (id))
+;
+
 create table user (
   id                        bigint auto_increment not null,
   email                     varchar(255),
@@ -17,6 +26,8 @@ create table user (
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
+
+drop table ownership;
 
 drop table user;
 

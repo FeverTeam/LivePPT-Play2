@@ -10,6 +10,7 @@ import com.avaje.ebean.Query;
 import play.Logger;
 import play.db.ebean.*;
 import play.data.validation.*;
+import play.mvc.Http.Session;
 
 /**
  * 用户类
@@ -56,6 +57,15 @@ public class User extends Model {
 		} else {
 			return null;
 		}
+	}
+	
+	public static Long genUserIdFromSession(Session sess){
+		String email = sess.get("email");
+		List<User> users = User.find.where().eq("email", email).findList();
+		if (users.size()>0){
+			return users.get(0).id;
+		}
+		return null;
 	}
 
 }
