@@ -9,6 +9,7 @@ create table ownership (
   title                     varchar(255),
   time                      datetime,
   store_key                 varchar(255),
+  file_size                 bigint,
   constraint pk_ownership primary key (id))
 ;
 

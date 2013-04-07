@@ -18,7 +18,7 @@ define(function(require, exports, module) {
         $('#restricted-fine-uploader').append('<div class="alert alert-error">' + message + '</div>');
       }
     }).on('complete', function(event, id, fileName, responseJSON) {
-      
+      window.location.reload();
     });
   });
 

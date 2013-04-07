@@ -56,9 +56,10 @@ public class PptController extends Controller {
 		//取出文件部分
 		FilePart filePart = multipartData.getFile(FILE_PARAM);
 		if (filePart!=null){
-			//提取文件及文件名
+			//提取文件、文件名、文件大小
 			String title = filePart.getFilename();
 			File file = filePart.getFile();
+			Long filesize = file.length();
 			Logger.info("not null" + title+file.length());
 			
 			//存入AmazonS3
@@ -67,7 +68,7 @@ public class PptController extends Controller {
 			s3.putObject("pptstore", storeKey, file);
 			
 			//存入文件与用户的所有权关系
-			Ownership ownership = new Ownership(userId, title, new Date(), storeKey);
+			Ownership ownership = new Ownership(userId, title, new Date(), storeKey, filesize);
 			ownership.save();
 			
 			return ok(resultJson(true, null));

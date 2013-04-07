@@ -30,7 +30,6 @@
   <div>你有@ownerships.size个PPT！</div>
   <br><br>
   @for(o <- ownerships){
-  <div>@o.title - @o.time -  @o.id
-    <div>
+  <div>innerId:@o.id / Title: @o.title /UploadTime: @o.time /FileSize:  @o.fileSize B<div>
   }
 }

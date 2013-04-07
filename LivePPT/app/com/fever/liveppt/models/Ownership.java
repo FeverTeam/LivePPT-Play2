@@ -35,14 +35,18 @@ public class Ownership extends Model {
 	
 	@Constraints.Required
 	public String storeKey;
+	
+	@Constraints.Required
+	public Long fileSize;
 
 	public static Finder<Long, Ownership> find = new Finder<Long, Ownership>(Long.class,
 			Ownership.class);
 	
-	public Ownership(Long userid, String title, Date time, String storeKey){
+	public Ownership(Long userid, String title, Date time, String storeKey, Long fileSize){
 		this.userid = userid;
 		this.title = title;
 		this.time = time;
 		this.storeKey = storeKey;
+		this.fileSize = fileSize;
 	}
 }
