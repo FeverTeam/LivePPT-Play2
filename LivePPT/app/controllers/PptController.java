@@ -85,20 +85,22 @@ public class PptController extends Controller {
 	}
 	
 	public static Result convertstatus(){
-		JsonNode json = request().body().asJson();
-		String topicArn = json.findPath("TopicArn").getTextValue();
-		String messageId = json.findPath("MessageId").getTextValue();
-		String token = json.findPath("Token").getTextValue();
-		String subscribeUrl = json.findPath("SubscribeURL").getTextValue();
+		String content = request().body().asText();
+		Logger.debug(content);
+//		JsonNode json = request().body().asJson();
+//		String topicArn = json.findPath("TopicArn").getTextValue();
+//		String messageId = json.findPath("MessageId").getTextValue();
+//		String token = json.findPath("Token").getTextValue();
+//		String subscribeUrl = json.findPath("SubscribeURL").getTextValue();
 		
-		Logger.info("TopicARN:"+topicArn);
-		Logger.info("MessageId"+messageId);
-		Logger.info("Token"+token);
-		Logger.info("S-URL"+subscribeUrl);
-		
-		AmazonSNS sns = AWSUtils.genTokyoSNS();
-		ConfirmSubscriptionResult confirmResult = sns.confirmSubscription(new ConfirmSubscriptionRequest(topicArn,token));
-		Logger.info("Result:"+confirmResult);
+//		Logger.info("TopicARN:"+topicArn);
+//		Logger.info("MessageId"+messageId);
+//		Logger.info("Token"+token);
+//		Logger.info("S-URL"+subscribeUrl);
+//		
+//		AmazonSNS sns = AWSUtils.genTokyoSNS();
+//		ConfirmSubscriptionResult confirmResult = sns.confirmSubscription(new ConfirmSubscriptionRequest(topicArn,token));
+//		Logger.info("Result:"+confirmResult);
 		return null;		
 	}
 	
