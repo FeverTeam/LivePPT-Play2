@@ -86,9 +86,9 @@ public class PptController extends Controller {
 	
 	public static Result convertstatus(){
 		JsonNode json = request().body().asJson();
-		String topicArn = json.findPath("TopicArn").asText();
-		String messageId = json.findPath("MessageId").asText();
-		String token = json.findPath("Token").asText();
+		String topicArn = json.findPath("TopicArn").getTextValue();
+		String messageId = json.findPath("MessageId").getTextValue();
+		String token = json.findPath("Token").getTextValue();
 		
 		Logger.info("TopicARN:"+topicArn);
 		Logger.info("MessageId"+messageId);
