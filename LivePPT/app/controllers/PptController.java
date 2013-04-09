@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,9 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.sns.AmazonSNS;
+import com.amazonaws.services.sns.model.ConfirmSubscriptionRequest;
+import com.amazonaws.services.sns.model.ConfirmSubscriptionResult;
 import com.fever.liveppt.models.Ownership;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.AWSUtils;
@@ -35,8 +39,9 @@ public class PptController extends Controller {
 	/**
 	 * 用于处理ppt上传的请求
 	 * @return
+	 * @throws UnsupportedEncodingException 
 	 */
-	public static Result pptUpload(){
+	public static Result pptUpload() throws UnsupportedEncodingException{
 		//取出请求体
 		RequestBody body = request().body();
 		Session sess = ctx().session();
@@ -60,7 +65,8 @@ public class PptController extends Controller {
 			String title = filePart.getFilename();
 			File file = filePart.getFile();
 			Long filesize = file.length();
-			Logger.info("not null" + title+file.length());
+			String title2 = new String(title.getBytes("gbk"), "utf-8");
+			Logger.info("not null" + title2+file.length()+"-"+title);
 			
 			//存入AmazonS3
 			AmazonS3 s3 = AWSUtils.genTokyoS3();
@@ -76,6 +82,22 @@ public class PptController extends Controller {
 			//filePart为空
 			return ok(resultJson(false, "无法获取文件。"));
 		}
+	}
+	
+	public static Result convertstatus(){
+		JsonNode json = request().body().asJson();
+		String topicArn = json.findPath("TopicArn").asText();
+		String messageId = json.findPath("MessageId").asText();
+		String token = json.findPath("Token").asText();
+		
+		Logger.info("TopicARN:"+topicArn);
+		Logger.info("MessageId"+messageId);
+		Logger.info("Token"+token);
+		
+		AmazonSNS sns = AWSUtils.genTokyoSNS();
+		ConfirmSubscriptionResult confirmResult = sns.confirmSubscription(new ConfirmSubscriptionRequest(topicArn,token));
+		Logger.info("Result:"+confirmResult);
+		return null;		
 	}
 	
 	/**

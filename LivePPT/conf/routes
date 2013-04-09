@@ -13,6 +13,8 @@ GET		/myppt						controllers.Frontend.myppt()
 POST 	/signup						controllers.UserController.signup()
 POST	/login						controllers.UserController.login()
 
+POST	/convertstatus				controllers.PptController.convertstatus()
+
 POST	/pptupload					controllers.PptController.pptUpload()
 
 # Map static resources from the /public folder to the /assets URL path
