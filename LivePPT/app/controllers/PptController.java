@@ -40,6 +40,8 @@ public class PptController extends Controller {
 	private final static String FILE_PARAM = "qqfile";
 	private final static String FILENAME_PARAM = "qqfilename";
 	private final static String UUID_PARAM = "qquuid";
+	
+	private final static String QUEUE_NAME = "LivePPT-pptId-Bus";
 
 	private final static String TOPIC_ARN = "arn:aws:sns:ap-northeast-1:206956461838:liveppt-sns";
 	/**
@@ -76,19 +78,19 @@ public class PptController extends Controller {
 			
 			//存入AmazonS3
 			AmazonS3 s3 = AWSUtils.genTokyoS3();
-			String storeKey = UUID.randomUUID().toString();
+			String storeKey = UUID.randomUUID().toString().replaceAll("-", "");
 			s3.putObject("pptstore", storeKey, file);
+			
 			
 			//存入文件与用户的所有权关系
 			Ownership ownership = new Ownership(userId, title, new Date(), storeKey, filesize);
 			ownership.save();
 			
-			String defaultCharsetName=Charset.defaultCharset().displayName();   
-	        System.out.println("defaultCharsetName:"+defaultCharsetName); 
+	        Logger.debug("StoreKey:"+storeKey);
 			
 			//向SNS写入PPT的id，并告知win端进行转换
 			AmazonSQS sqs = AWSUtils.genTokyoSQS();
-			CreateQueueRequest createQueueRequest = new CreateQueueRequest("LivePPT-pptId-Bus");
+			CreateQueueRequest createQueueRequest = new CreateQueueRequest(QUEUE_NAME);
             String myQueueUrl = sqs.createQueue(createQueueRequest).getQueueUrl();
 			sqs.sendMessage(new SendMessageRequest(myQueueUrl,storeKey));
 			
