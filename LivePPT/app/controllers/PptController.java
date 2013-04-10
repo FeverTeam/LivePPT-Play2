@@ -18,6 +18,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.model.ConfirmSubscriptionRequest;
 import com.amazonaws.services.sns.model.ConfirmSubscriptionResult;
+import com.amazonaws.services.sns.model.PublishRequest;
 import com.fever.liveppt.models.Ownership;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.AWSUtils;
@@ -32,10 +33,11 @@ import play.mvc.Http.Session;
 import play.mvc.Result;
 
 public class PptController extends Controller {
-	private static String FILE_PARAM = "qqfile";
-	private static String FILENAME_PARAM = "qqfilename";
-	private static String UUID_PARAM = "qquuid";
+	private final static String FILE_PARAM = "qqfile";
+	private final static String FILENAME_PARAM = "qqfilename";
+	private final static String UUID_PARAM = "qquuid";
 
+	private final static String TOPIC_ARN = "arn:aws:sns:ap-northeast-1:206956461838:liveppt-sns";
 	/**
 	 * 用于处理ppt上传的请求
 	 * @return
@@ -76,6 +78,11 @@ public class PptController extends Controller {
 			//存入文件与用户的所有权关系
 			Ownership ownership = new Ownership(userId, title, new Date(), storeKey, filesize);
 			ownership.save();
+			
+			//向SNS写入PPT的id，并告知win端进行转换
+			AmazonSNS sns = AWSUtils.genTokyoSNS();
+			PublishRequest publishRequest = new PublishRequest(TOPIC_ARN, storeKey);
+			sns.publish(publishRequest);
 			
 			return ok(resultJson(true, null));
 		} else {
