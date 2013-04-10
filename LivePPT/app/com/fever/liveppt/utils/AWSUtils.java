@@ -5,7 +5,10 @@ import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.AmazonSNSClient;
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSClient;
 
 /**
  * 用于存放有关AWS服务的常用工具
@@ -29,8 +32,19 @@ public class AWSUtils {
 	 * 组装东京SNSclient
 	 * @return
 	 */
-	public static AmazonSNSClient genTokyoSNS(){
+	public static AmazonSNS genTokyoSNS(){
 		AmazonSNSClient S3Client = new AmazonSNSClient(new ClasspathPropertiesFileCredentialsProvider());
+		Region tokyoRegion = Region.getRegion(Regions.AP_NORTHEAST_1);
+		S3Client.setRegion(tokyoRegion);
+		return S3Client;
+	};
+	
+	/**
+	 * 组装东京SQSclient
+	 * @return
+	 */
+	public static AmazonSQS genTokyoSQS(){
+		AmazonSQSClient S3Client = new AmazonSQSClient(new ClasspathPropertiesFileCredentialsProvider());
 		Region tokyoRegion = Region.getRegion(Regions.AP_NORTHEAST_1);
 		S3Client.setRegion(tokyoRegion);
 		return S3Client;

@@ -19,6 +19,9 @@ import com.amazonaws.services.sns.AmazonSNS;
 import com.amazonaws.services.sns.model.ConfirmSubscriptionRequest;
 import com.amazonaws.services.sns.model.ConfirmSubscriptionResult;
 import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.model.CreateQueueRequest;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fever.liveppt.models.Ownership;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.AWSUtils;
@@ -80,9 +83,8 @@ public class PptController extends Controller {
 			ownership.save();
 			
 			//向SNS写入PPT的id，并告知win端进行转换
-			AmazonSNS sns = AWSUtils.genTokyoSNS();
-			PublishRequest publishRequest = new PublishRequest(TOPIC_ARN, storeKey);
-			sns.publish(publishRequest);
+			AmazonSQS sqs = AWSUtils.genTokyoSQS();
+			sqs.sendMessage(new SendMessageRequest("https://sqs.ap-northeast-1.amazonaws.com/206956461838/LivePPT-pptId-Bus",storeKey));
 			
 			return ok(resultJson(true, null));
 		} else {
@@ -108,7 +110,7 @@ public class PptController extends Controller {
 //		AmazonSNS sns = AWSUtils.genTokyoSNS();
 //		ConfirmSubscriptionResult confirmResult = sns.confirmSubscription(new ConfirmSubscriptionRequest(topicArn,token));
 //		Logger.info("Result:"+confirmResult);
-		return null;		
+		return ok();		
 	}
 	
 	/**
