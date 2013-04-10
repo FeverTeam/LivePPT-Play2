@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,9 @@ public class PptController extends Controller {
 			//存入文件与用户的所有权关系
 			Ownership ownership = new Ownership(userId, title, new Date(), storeKey, filesize);
 			ownership.save();
+			
+			String defaultCharsetName=Charset.defaultCharset().displayName();   
+	        System.out.println("defaultCharsetName:"+defaultCharsetName); 
 			
 			//向SNS写入PPT的id，并告知win端进行转换
 			AmazonSQS sqs = AWSUtils.genTokyoSQS();
