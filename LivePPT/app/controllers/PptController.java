@@ -84,7 +84,9 @@ public class PptController extends Controller {
 			
 			//向SNS写入PPT的id，并告知win端进行转换
 			AmazonSQS sqs = AWSUtils.genTokyoSQS();
-			sqs.sendMessage(new SendMessageRequest("https://sqs.ap-northeast-1.amazonaws.com/206956461838/LivePPT-pptId-Bus",storeKey));
+			CreateQueueRequest createQueueRequest = new CreateQueueRequest("LivePPT-pptId-Bus");
+            String myQueueUrl = sqs.createQueue(createQueueRequest).getQueueUrl();
+			sqs.sendMessage(new SendMessageRequest(myQueueUrl,storeKey));
 			
 			return ok(resultJson(true, null));
 		} else {
