@@ -3,30 +3,10 @@
 
 
 @main(name="myppt", title) {
-  @** Extra CSS **@
-
-   /* Fine Uploader
-      -------------------------------------------------- */
-      .qq-upload-list {
-        text-align: left;
-      }
- 
-      /* For the bootstrapped demos */
-      li.alert-success {
-        background-color: #DFF0D8;
-      }
- 
-      li.alert-error {
-        background-color: #F2DEDE;
-      }
- 
-      .alert-error .qq-upload-failed-text {
-        display: inline;
-      }
 
 }{ 
 	<h2>@displayname 的PPT</h2>
-	<div id="restricted-fine-uploader"></div>
+  <input type="file" name="file_upload" id="file_upload" />
   <div>你有@ownerships.size个PPT！</div>
   <br><br>
   @for(o <- ownerships){

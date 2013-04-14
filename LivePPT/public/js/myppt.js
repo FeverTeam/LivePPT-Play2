@@ -2,23 +2,19 @@ define(function(require, exports, module) {
 
 	console.log("myppt");
 
-	require('fineuploader');
+	require('uploadify');
 
-    $(document).ready(function() {
-    $('#restricted-fine-uploader').fineUploader({
-      request: {
-        endpoint: '/pptupload'
-      },
-      multiple: false,
-      text: {
-        uploadButton: '快速上传新的PPT/PPTX文件'
-      },
-      showMessage: function(message) {
-        // Using Bootstrap's classes
-        $('#restricted-fine-uploader').append('<div class="alert alert-error">' + message + '</div>');
-      }
-    }).on('complete', function(event, id, fileName, responseJSON) {
-      window.location.reload();
+  $(function() {
+    $('#file_upload').uploadify({
+        'successTimeout' : 9999,
+        'swf'      : '/assets/swf/uploadify.swf',
+        'uploader' : '/pptupload',
+        // Put your options here
+        'fileTypeDesc' : 'PPT/PPTX文件',
+        'fileTypeExts' : '*.ppt; *.pptx',
+        'onUploadSuccess' : function(file, data, response) {
+            alert('The file ' + file.name + ' was successfully uploaded with a response of ' + response + ':' + data);
+        }
     });
   });
 

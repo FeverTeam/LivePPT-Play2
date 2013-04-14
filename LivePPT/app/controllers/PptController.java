@@ -37,13 +37,12 @@ import play.mvc.Http.Session;
 import play.mvc.Result;
 
 public class PptController extends Controller {
-	private final static String FILE_PARAM = "qqfile";
-	private final static String FILENAME_PARAM = "qqfilename";
-	private final static String UUID_PARAM = "qquuid";
+	private final static String FILE_PARAM = "Filedata";
 	
 	private final static String QUEUE_NAME = "LivePPT-pptId-Bus";
 
 	private final static String TOPIC_ARN = "arn:aws:sns:ap-northeast-1:206956461838:liveppt-sns";
+	
 	/**
 	 * 用于处理ppt上传的请求
 	 * @return
