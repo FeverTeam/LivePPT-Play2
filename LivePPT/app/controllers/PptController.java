@@ -104,7 +104,15 @@ public class PptController extends Controller {
 		JsonNode json = Json.parse(request().body().asText());
 		JsonNode messageJson = Json.parse(json.findPath("Message").getTextValue());
 		pptService.updatePptConvertedStatus(messageJson);
-		return ok();		
+		return ok();
+	}
+	
+	public Result getPptPage(){
+		String params = request().body().asText();
+		Logger.info(params+"");
+		Long pptId = Long.parseLong(request().getQueryString("pptid"));
+		Long pageId = Long.parseLong(request().getQueryString("pageid"));
+		return ok(pptService.getPptPage(pptId, pageId));
 	}
 	
 	/**

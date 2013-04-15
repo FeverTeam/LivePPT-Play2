@@ -1,0 +1,6 @@
+@(pptid:Long, pageCount:Int)
+<h2>
+	@for(i <- 1 to pageCount){
+		<img src="/getpptpage?pptid=@pptid&pageid=@i"/>
+	}
+</h2>

@@ -8,6 +8,10 @@ GET		/login						controllers.Frontend.login()
 GET		/signup						controllers.Frontend.signup()
 GET		/myppt						controllers.Frontend.myppt()
 
+GET		/getpptpage					@controllers.PptController.getPptPage()
+
+GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
+
 
 # Data
 POST 	/signup						controllers.UserController.signup()

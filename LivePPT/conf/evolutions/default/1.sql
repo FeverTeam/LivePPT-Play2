@@ -11,6 +11,7 @@ create table ppt (
   store_key                 varchar(255),
   file_size                 bigint,
   is_converted              tinyint(1) default 0,
+  pagecount                 integer,
   constraint pk_ppt primary key (id))
 ;
 

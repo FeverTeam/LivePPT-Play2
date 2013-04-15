@@ -35,7 +35,13 @@ public class Frontend extends Controller {
 	public static Result myppt(){
 		String displayname = session("displayname");
 		Long userId = User.genUserIdFromSession(ctx().session());
-		List<Ppt> ownerships = Ppt.find.where().where().eq("userId", userId).findList();
-		return ok(myppt.render(null, displayname, ownerships));
+		List<Ppt> ppts = Ppt.find.where().where().eq("userId", userId).findList();
+		return ok(myppt.render(null, displayname, ppts));
 	}
+	
+	public static Result pptplainshow(Long pptid){
+		int pageCount = Ppt.find.where().eq("id", pptid).findUnique().pagecount;
+		return ok(views.html.Frontend.pptplainshow.render(pptid, 2));
+	}
+	
 }

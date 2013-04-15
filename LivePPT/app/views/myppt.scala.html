@@ -1,4 +1,4 @@
-@(title: String = "myppt", displayname: String = "", ownerships: List[com.fever.liveppt.models.Ppt])
+@(title: String = "myppt", displayname: String = "", ppts: List[com.fever.liveppt.models.Ppt])
 
 
 
@@ -7,9 +7,24 @@
 }{ 
 	<h2>@displayname 的PPT</h2>
   <input type="file" name="file_upload" id="file_upload" />
-  <div>你有@ownerships.size个PPT！</div>
+  <div>你有@ppts.size个PPT！</div>
   <br><br>
-  @for(o <- ownerships){
-  <div>innerId:@o.id / Title: @o.title /UploadTime: @o.time /FileSize:  @o.fileSize B<div>
-  }
+  <table class="table">
+    <tbody>
+      @for(o <- ppts){
+      <tr>
+        <td>@o.id</td>
+        <td>@o.title</td>
+        <td>@o.time</td>
+        <td>@o.fileSize B</td>
+        @if(o.isConverted){
+          <td><a href="/pptplainshow/@o.id">已转换</a></td>
+          <td>@o.pagecount</td>
+        } else {
+          <td>未转换</td>
+        }
+      </tr>
+      }
+    </tbody>
+  </table>
 }
