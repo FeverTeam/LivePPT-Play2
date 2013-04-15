@@ -14,6 +14,7 @@ define(function(require, exports, module) {
         'fileTypeExts' : '*.ppt; *.pptx',
         'onUploadSuccess' : function(file, data, response) {
             location=location
+        }
     });
   });
 
