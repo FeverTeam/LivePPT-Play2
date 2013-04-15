@@ -13,8 +13,7 @@ define(function(require, exports, module) {
         'fileTypeDesc' : 'PPT/PPTX文件',
         'fileTypeExts' : '*.ppt; *.pptx',
         'onUploadSuccess' : function(file, data, response) {
-            alert('The file ' + file.name + ' was successfully uploaded with a response of ' + response + ':' + data);
-        }
+            location=location
     });
   });
 
