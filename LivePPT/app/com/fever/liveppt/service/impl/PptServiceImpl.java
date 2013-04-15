@@ -6,6 +6,7 @@ import java.util.List;
 import org.codehaus.jackson.JsonNode;
 
 import play.Logger;
+import play.api.Application;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
@@ -24,7 +25,8 @@ public class PptServiceImpl implements PptService {
 		String storeKey = ppt.storeKey;
 		String pageKey = storeKey + "p" + pageId;
 		GetObjectRequest getObjectRequest = new GetObjectRequest("pptstore", pageKey);
-		File destFile = new File("c:\\temp\\"+ppt.title+"-"+pageId+".jpg");
+//		File destFile = new File("c:\\temp\\"+ppt.title+"-"+pageId+".jpg");
+		File destFile = new File("/lbw/temp/"+ppt.title+"-"+pageId+".jpg");
 		s3.getObject(getObjectRequest, destFile);
 		Logger.info("destName:"+destFile.getName());
 		return destFile;
