@@ -3,14 +3,15 @@
 
 # --- !Ups
 
-create table ownership (
+create table ppt (
   id                        bigint auto_increment not null,
-  userid                    bigint,
+  user_id                   bigint,
   title                     varchar(255),
   time                      datetime,
   store_key                 varchar(255),
   file_size                 bigint,
-  constraint pk_ownership primary key (id))
+  is_converted              tinyint(1) default 0,
+  constraint pk_ppt primary key (id))
 ;
 
 create table user (
@@ -28,7 +29,7 @@ create table user (
 
 SET FOREIGN_KEY_CHECKS=0;
 
-drop table ownership;
+drop table ppt;
 
 drop table user;
 

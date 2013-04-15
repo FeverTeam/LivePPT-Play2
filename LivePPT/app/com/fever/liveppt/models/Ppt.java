@@ -13,19 +13,19 @@ import play.db.ebean.*;
 import play.data.validation.*;
 
 /**
- * 用户类
+ * PPT
  * 
  * @author Bowen Liang
  * 
  */
 @Entity
-public class Ownership extends Model {
+public class Ppt extends Model {
 
 	@Id
 	public Long id;
 
 	@Constraints.Required
-	public Long userid;
+	public Long userId;
 
 	@Constraints.Required
 	public String title;
@@ -38,15 +38,18 @@ public class Ownership extends Model {
 	
 	@Constraints.Required
 	public Long fileSize;
-
-	public static Finder<Long, Ownership> find = new Finder<Long, Ownership>(Long.class,
-			Ownership.class);
 	
-	public Ownership(Long userid, String title, Date time, String storeKey, Long fileSize){
-		this.userid = userid;
+	public boolean isConverted;
+
+	public static Finder<Long, Ppt> find = new Finder<Long, Ppt>(Long.class,
+			Ppt.class);
+	
+	public Ppt(Long userid, String title, Date time, String storeKey, Long fileSize){
+		this.userId = userid;
 		this.title = title;
 		this.time = time;
 		this.storeKey = storeKey;
 		this.fileSize = fileSize;
+		this.isConverted = false;
 	}
 }

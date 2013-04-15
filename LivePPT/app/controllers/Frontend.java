@@ -2,13 +2,16 @@ package controllers;
 
 import java.util.List;
 
-import com.fever.liveppt.models.Ownership;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.With;
+import views.html.index;
+import views.html.login;
+import views.html.myppt;
+import views.html.signup;
+
+import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
-
-import play.*;
-import play.mvc.*;
-
-import views.html.*;
 
 public class Frontend extends Controller {
 
@@ -32,7 +35,7 @@ public class Frontend extends Controller {
 	public static Result myppt(){
 		String displayname = session("displayname");
 		Long userId = User.genUserIdFromSession(ctx().session());
-		List<Ownership> ownerships = Ownership.find.where().where().eq("userid", userId).findList();
+		List<Ppt> ownerships = Ppt.find.where().where().eq("userid", userId).findList();
 		return ok(myppt.render(null, displayname, ownerships));
 	}
 }

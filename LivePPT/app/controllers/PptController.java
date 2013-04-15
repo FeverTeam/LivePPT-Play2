@@ -23,7 +23,7 @@ import com.amazonaws.services.sns.model.PublishRequest;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
-import com.fever.liveppt.models.Ownership;
+import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.AWSUtils;
 
@@ -82,7 +82,7 @@ public class PptController extends Controller {
 			
 			
 			//存入文件与用户的所有权关系
-			Ownership ownership = new Ownership(userId, title, new Date(), storeKey, filesize);
+			Ppt ownership = new Ppt(userId, title, new Date(), storeKey, filesize);
 			ownership.save();
 			
 	        Logger.debug("StoreKey:"+storeKey);
