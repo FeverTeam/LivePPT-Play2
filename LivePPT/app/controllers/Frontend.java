@@ -35,7 +35,7 @@ public class Frontend extends Controller {
 	public static Result myppt(){
 		String displayname = session("displayname");
 		Long userId = User.genUserIdFromSession(ctx().session());
-		List<Ppt> ownerships = Ppt.find.where().where().eq("userid", userId).findList();
+		List<Ppt> ownerships = Ppt.find.where().where().eq("userId", userId).findList();
 		return ok(myppt.render(null, displayname, ownerships));
 	}
 }

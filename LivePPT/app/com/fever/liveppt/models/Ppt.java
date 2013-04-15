@@ -39,6 +39,7 @@ public class Ppt extends Model {
 	@Constraints.Required
 	public Long fileSize;
 	
+	@Constraints.Required
 	public boolean isConverted;
 
 	public static Finder<Long, Ppt> find = new Finder<Long, Ppt>(Long.class,
