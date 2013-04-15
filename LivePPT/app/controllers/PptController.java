@@ -103,12 +103,17 @@ public class PptController extends Controller {
 	public static Result convertstatus(){
 		String content = request().body().asText();
 		Logger.debug(content);
-		JsonNode json = request().body().asJson();
-		JsonNode typenode = json.findPath("Type");
-		if (typenode==null){
-			Logger.debug("null!!!");
-		}else {
-			Logger.debug("type...."+typenode.getTextValue());
+		
+		JsonNode json = Json.parse(content);
+		if (json==null){
+			Logger.debug("json null!!!");
+		} else{
+			JsonNode typenode = json.findPath("Type");
+			if (typenode==null){
+				Logger.debug("null!!!");
+			}else {
+				Logger.debug("type...."+typenode.getTextValue());
+			}
 		}
 		
 //		String topicArn = json.findPath("TopicArn").getTextValue();
