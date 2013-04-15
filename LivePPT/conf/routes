@@ -13,7 +13,7 @@ GET		/myppt						controllers.Frontend.myppt()
 POST 	/signup						controllers.UserController.signup()
 POST	/login						controllers.UserController.login()
 
-POST	/convertstatus				controllers.PptController.convertstatus()
+POST	/convertstatus				@controllers.PptController.convertstatus()
 
 POST	/pptupload					controllers.PptController.pptUpload()
 

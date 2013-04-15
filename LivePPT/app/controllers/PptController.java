@@ -2,30 +2,12 @@ package controllers;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
-
-import com.amazonaws.auth.ClasspathPropertiesFileCredentialsProvider;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.sns.AmazonSNS;
-import com.amazonaws.services.sns.model.ConfirmSubscriptionRequest;
-import com.amazonaws.services.sns.model.ConfirmSubscriptionResult;
-import com.amazonaws.services.sns.model.PublishRequest;
-import com.amazonaws.services.sqs.AmazonSQS;
-import com.amazonaws.services.sqs.model.CreateQueueRequest;
-import com.amazonaws.services.sqs.model.SendMessageRequest;
-import com.fever.liveppt.models.Ppt;
-import com.fever.liveppt.models.User;
-import com.fever.liveppt.utils.AWSUtils;
 
 import play.Logger;
 import play.libs.Json;
@@ -36,12 +18,26 @@ import play.mvc.Http.RequestBody;
 import play.mvc.Http.Session;
 import play.mvc.Result;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.model.CreateQueueRequest;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.fever.liveppt.models.Ppt;
+import com.fever.liveppt.models.User;
+import com.fever.liveppt.service.PptService;
+import com.fever.liveppt.utils.AWSUtils;
+import com.google.inject.Inject;
+
 public class PptController extends Controller {
 	private final static String FILE_PARAM = "Filedata";
 	
 	private final static String QUEUE_NAME = "LivePPT-pptId-Bus";
 
 	private final static String TOPIC_ARN = "arn:aws:sns:ap-northeast-1:206956461838:liveppt-sns";
+	
+	
+	@Inject
+	PptService pptService;
 	
 	/**
 	 * 用于处理ppt上传的请求
@@ -100,35 +96,14 @@ public class PptController extends Controller {
 		}
 	}
 	
-	public static Result convertstatus(){
-		String content = request().body().asText();
-		Logger.debug(content);
-		
-		JsonNode json = Json.parse(content);
-		if (json==null){
-			Logger.debug("json null!!!");
-		} else{
-			JsonNode typenode = json.findPath("Type");
-			if (typenode==null){
-				Logger.debug("null!!!");
-			}else {
-				Logger.debug("type...."+typenode.getTextValue());
-			}
-		}
-		
-//		String topicArn = json.findPath("TopicArn").getTextValue();
-//		String messageId = json.findPath("MessageId").getTextValue();
-//		String token = json.findPath("Token").getTextValue();
-//		String subscribeUrl = json.findPath("SubscribeURL").getTextValue();
-		
-//		Logger.info("TopicARN:"+topicArn);
-//		Logger.info("MessageId"+messageId);
-//		Logger.info("Token"+token);
-//		Logger.info("S-URL"+subscribeUrl);
-//		
-//		AmazonSNS sns = AWSUtils.genTokyoSNS();
-//		ConfirmSubscriptionResult confirmResult = sns.confirmSubscription(new ConfirmSubscriptionRequest(topicArn,token));
-//		Logger.info("Result:"+confirmResult);
+	/**
+	 * 更新PPT转换的状态
+	 * @return
+	 */
+	public Result convertstatus(){
+		JsonNode json = Json.parse(request().body().asText());
+		JsonNode messageJson = Json.parse(json.findPath("Message").getTextValue());
+		pptService.updatePptConvertedStatus(messageJson);
 		return ok();		
 	}
 	

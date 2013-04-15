@@ -41,6 +41,9 @@ public class Ppt extends Model {
 	
 	@Constraints.Required
 	public boolean isConverted;
+	
+	@Constraints.Required
+	public Long pageCount;
 
 	public static Finder<Long, Ppt> find = new Finder<Long, Ppt>(Long.class,
 			Ppt.class);
@@ -52,5 +55,6 @@ public class Ppt extends Model {
 		this.storeKey = storeKey;
 		this.fileSize = fileSize;
 		this.isConverted = false;
+		this.pageCount = (long) 0;
 	}
 }
