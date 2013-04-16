@@ -1,5 +1,4 @@
 import play.GlobalSettings;
-import play.Logger;
 
 import com.fever.liveppt.config.ConfigModule;
 import com.google.inject.Guice;
@@ -11,7 +10,6 @@ public class Global extends GlobalSettings {
 
     @Override
     public <A> A getControllerInstance(Class<A> controllerClass) throws Exception {
-    	Logger.info(controllerClass.toString());
       return INJECTOR.getInstance(controllerClass);
     }
 
@@ -19,4 +17,4 @@ public class Global extends GlobalSettings {
       return Guice.createInjector(new ConfigModule());
     }
 
-  }
+}

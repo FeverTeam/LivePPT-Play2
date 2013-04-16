@@ -107,6 +107,10 @@ public class PptController extends Controller {
 		return ok();
 	}
 	
+	/**
+	 * 获取某个PPT某页的JPG图像
+	 * @return
+	 */
 	public Result getPptPage(){
 		String params = request().body().asText();
 		Logger.info(params+"");

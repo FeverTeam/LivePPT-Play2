@@ -10,7 +10,6 @@ public class ConfigModule extends AbstractModule {
 	protected void configure() {
 		// TODO Auto-generated method stub
 		bind(PptService.class).to(PptServiceImpl.class);
-
 	}
-
+	
 }
