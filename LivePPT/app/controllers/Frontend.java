@@ -41,7 +41,7 @@ public class Frontend extends Controller {
 	
 	public static Result pptplainshow(Long pptid){
 		int pageCount = Ppt.find.where().eq("id", pptid).findUnique().pagecount;
-		return ok(views.html.Frontend.pptplainshow.render(pptid, pageCount));
+		return ok(views.html.Frontend.pptplainshow.render(null, pptid, pageCount));
 	}
 	
 }
