@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
+import com.avaje.ebean.validation.NotNull;
 
 import play.Logger;
 import play.db.ebean.*;
@@ -24,26 +25,36 @@ public class Ppt extends Model {
 	@Id
 	public Long id;
 
+	@NotNull
 	@Constraints.Required
 	public Long userId;
 
+	@NotNull
 	@Constraints.Required
 	public String title;
 
+	@NotNull
 	@Constraints.Required
 	public Date time;
 	
+	@NotNull
 	@Constraints.Required
 	public String storeKey;
 	
+	@NotNull
 	@Constraints.Required
 	public Long fileSize;
 	
+	@NotNull
 	@Constraints.Required
 	public boolean isConverted;
 	
+	@NotNull
 	@Constraints.Required
-	public int pagecount;
+	public int pagecount = 0;
+	
+	@OneToMany
+	List<Meeting> meetings;
 
 	public static Finder<Long, Ppt> find = new Finder<Long, Ppt>(Long.class,
 			Ppt.class);

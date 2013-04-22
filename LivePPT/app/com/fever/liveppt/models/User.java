@@ -2,14 +2,13 @@ package com.fever.liveppt.models;
 
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
-
-import play.Logger;
-import play.db.ebean.*;
-import play.data.validation.*;
+import play.data.validation.Constraints;
+import play.db.ebean.Model;
 import play.mvc.Http.Session;
 
 /**
@@ -32,6 +31,15 @@ public class User extends Model {
 
 	public String displayname;
 
+	@OneToMany(cascade=CascadeType.ALL)
+	public List<Ppt> ppts;
+
+	@OneToMany(cascade=CascadeType.ALL)
+	public List<Meeting> myFoundedMeeting;
+	
+	@OneToMany(cascade=CascadeType.ALL)
+	public List<Attender> attendents;
+
 	public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
 			User.class);
 
@@ -42,27 +50,29 @@ public class User extends Model {
 	}
 
 	public static boolean isExistedByEmail(String email) {
-		List<User> existedUsers = User.find.where().eq("email", email).findList();
+		List<User> existedUsers = User.find.where().eq("email", email)
+				.findList();
 		if (existedUsers.size() > 0) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
-	public static User isPasswordCorrect(String email, String password){
-		List<User> targetUser = User.find.where().eq("email", email).eq("password", password).findList();
+
+	public static User isPasswordCorrect(String email, String password) {
+		List<User> targetUser = User.find.where().eq("email", email)
+				.eq("password", password).findList();
 		if (targetUser.size() == 1) {
 			return targetUser.get(0);
 		} else {
 			return null;
 		}
 	}
-	
-	public static Long genUserIdFromSession(Session sess){
+
+	public static Long genUserIdFromSession(Session sess) {
 		String email = sess.get("email");
 		List<User> users = User.find.where().eq("email", email).findList();
-		if (users.size()>0){
+		if (users.size() > 0) {
 			return users.get(0).id;
 		}
 		return null;

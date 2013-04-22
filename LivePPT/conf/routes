@@ -7,6 +7,9 @@ GET     /                           controllers.Frontend.index()
 GET		/login						controllers.Frontend.login()
 GET		/signup						controllers.Frontend.signup()
 GET		/myppt						controllers.Frontend.myppt()
+GET		/mymeeting					controllers.Frontend.mymeeting()
+GET 	/pptListForMeeting			controllers.Frontend.pptListForMeeting()
+GET 	/foundNewMeeting/:pptid		controllers.Frontend.foundNewMeeting(pptid:Long)
 
 GET		/getpptpage					@controllers.PptController.getPptPage()
 

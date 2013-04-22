@@ -1,0 +1,23 @@
+@(ppts: List[com.fever.liveppt.models.Ppt])
+
+<p>以下@ppts.size()个PPT已转码。</p>
+
+<div id="div-choose-ppt">
+<ul class="thumbnails">
+	@for(ppt <- ppts) {
+		<li class="span5">
+			<div class="thumbnail">
+			  <img data-src="holder.js/300x200" alt="">
+			  <h3>@ppt.title</h3>
+			  <p>页数: @ppt.pagecount</p>
+			  <p>上传时间: @ppt.time</p>
+			  <button class='btn btn-primary offset3 btn-choose-ppt-new-meeting' pptid='@ppt.id'>发起会议</button>
+			</div>
+		</li>
+	}
+</ul>
+</div>
+
+<div id="div-setup-meeting" class="hide">
+	<h3>haha</h3>
+</div>

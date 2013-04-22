@@ -16,6 +16,7 @@ public class CheckLoginAction extends Action.Simple {
 	private static String URL_MYPPT = controllers.routes.Frontend.myppt().url();
 	private static String URL_LOGIN = controllers.routes.Frontend.login().url();
 	private static String URL_SIGNUP = controllers.routes.Frontend.signup().url();
+	private static String URL_MYMEETING = controllers.routes.Frontend.mymeeting().url();
 
 	public Result call(Http.Context ctx) throws Throwable {
 
@@ -27,6 +28,11 @@ public class CheckLoginAction extends Action.Simple {
 			if (requestUrl.equals(URL_MYPPT)) {
 				return delegate.call(ctx);
 			}
+			// 判断是否请求myppt页面，避免多层重定向
+			if (requestUrl.equals(URL_MYMEETING)) {
+				return delegate.call(ctx);
+			}
+			
 			return redirect(URL_MYPPT);
 		} else {
 			// 未登录，则继续页面请求
