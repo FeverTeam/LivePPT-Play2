@@ -30,7 +30,10 @@ define(function(require, exports, module) {
 	});
 
 	function setCurrentImg(index){
-		currentImg.attr('src', '/getpptpage?pptid='+pptId+'&pageid='+index);
+		// currentImg.attr('src', '/getpptpage?pptid='+pptId+'&pageid='+index);
+		$('.page#'+index).removeClass('hide');
+		index--;
+		$('.page#'+index).addClass('hide');
 	}
 
 	function setPreImg(){
@@ -60,8 +63,6 @@ define(function(require, exports, module) {
 				currentPageIndex: currentPageIndex
 			},
 			success: function(data, textSuccess, jqH){
-				console.log(data);
-				console.log(textSuccess);
 			}
 		})
 	}
