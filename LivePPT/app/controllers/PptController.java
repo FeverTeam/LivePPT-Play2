@@ -116,6 +116,7 @@ public class PptController extends Controller {
 		Logger.info(params+"");
 		Long pptId = Long.parseLong(request().getQueryString("pptid"));
 		Long pageId = Long.parseLong(request().getQueryString("pageid"));
+		response().setContentType("image/jpeg");
 		return ok(pptService.getPptPage(pptId, pageId));
 	}
 	

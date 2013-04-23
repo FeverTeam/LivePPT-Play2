@@ -1,3 +1,13 @@
 @(ppt: com.fever.liveppt.models.Ppt)
 <p>foundNewMeeting</p>
 @ppt.id
+
+<form class="form-horizontal">
+	<div class="control-group">
+		<label class="control-label" for="inputTopic">Topic</label>
+		<div class="controls">
+		  <input type="text" id="inputTopic" placeholder="Topic">
+		</div>
+	</div>
+	<button class="btn" id="launchMeeting" pptid="@ppt.id">发起会议</button>
+</form>

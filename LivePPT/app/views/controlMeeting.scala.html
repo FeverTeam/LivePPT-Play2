@@ -1,0 +1,28 @@
+@(title: String = "controlMeeting", meeting: com.fever.liveppt.models.Meeting, ppt: com.fever.liveppt.models.Ppt)
+
+@main(name="controlMeeting", title) {
+} {
+	<h3>controlMeeting</h3>
+
+	<p>Meeting ID:@meeting.id</p>
+	<p>Ppt ID:@ppt.id</p>
+
+	<button class="btn" id="prePage">上一页</button>
+	<button class="btn" id="nextPage">下一页</button>
+	
+	
+	<!-- 显示ppt当前页 -->
+	<img id="img-current-page"/>
+
+
+	@for(i <- 1 to ppt.pagecount){
+		<img src="/getpptpage?pptid=@ppt.id&pageid=@i" class="page hide" id="@i"/>
+	}
+
+	<div class="hide" id="datadiv" 
+	meetingid="@meeting.id"
+	pptid="@ppt.id"
+	pagecount="@ppt.pagecount"	
+	></div>
+
+}

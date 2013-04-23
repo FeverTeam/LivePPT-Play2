@@ -39,7 +39,7 @@ public class Frontend extends Controller {
 	public static Result myppt(){
 		String displayname = session("displayname");
 		Long userId = User.genUserIdFromSession(ctx().session());
-		List<Ppt> ppts = Ppt.find.where().where().eq("userId", userId).findList();
+		List<Ppt> ppts = User.find.byId(userId).ppts;
 		return ok(myppt.render(null, displayname, ppts));
 	}
 	
@@ -59,7 +59,13 @@ public class Frontend extends Controller {
 	
 	public static Result pptListForMeeting(){
 		Long userId = User.genUserIdFromSession(ctx().session());
-		List<Ppt> convertedPpts = Ppt.find.where().where().eq("userId", userId).eq("isConverted", true).orderBy().desc("time").findList();
+		List<Ppt> ppts = User.find.byId(userId).ppts;
+		List<Ppt> convertedPpts = new LinkedList<Ppt>();
+		for (Ppt ppt : ppts){
+			if (ppt.isConverted){
+			convertedPpts.add(ppt);
+			}
+		}
 		return ok(views.html.pptListForMeeting.render(convertedPpts));
 	}
 	
@@ -72,6 +78,13 @@ public class Frontend extends Controller {
 	public static Result pptplainshow(Long pptid){
 		int pageCount = Ppt.find.where().eq("id", pptid).findUnique().pagecount;
 		return ok(views.html.pptplainshow.render(null, pptid, pageCount));
+	}
+	
+	
+	public static Result controlMeeting(Long meetingId){
+		Meeting meeting = Meeting.find.byId(meetingId);
+		Ppt ppt = meeting.ppt;
+		return ok(views.html.controlMeeting.render(null, meeting, ppt));
 	}
 	
 }

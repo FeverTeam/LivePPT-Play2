@@ -6,7 +6,7 @@ import org.codehaus.jackson.JsonNode;
 
 public interface PptService {
 
-	public InputStream getPptPage(Long pptId, Long pageId);
+	public byte[] getPptPage(Long pptId, Long pageId);
 
 	public void updatePptConvertedStatus(JsonNode messageJson);
 

@@ -25,9 +25,9 @@ public class Ppt extends Model {
 	@Id
 	public Long id;
 
-	@NotNull
-	@Constraints.Required
-	public Long userId;
+	@ManyToOne
+	@JoinColumn(name = "user_id")
+	public User owner;
 
 	@NotNull
 	@Constraints.Required
@@ -60,7 +60,8 @@ public class Ppt extends Model {
 			Ppt.class);
 	
 	public Ppt(Long userid, String title, Date time, String storeKey, Long fileSize){
-		this.userId = userid;
+		User user = User.find.byId(userid);
+		this.owner = user;
 		this.title = title;
 		this.time = time;
 		this.storeKey = storeKey;

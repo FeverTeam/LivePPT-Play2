@@ -32,6 +32,9 @@ public class Meeting extends Model {
 	@Constraints.Required
 	public String topic = "";
 	
+	@NotNull
+	public Long currentPageIndex = (long) 1;
+	
 	@OneToMany
 	public List<Attender> attenders;
 	

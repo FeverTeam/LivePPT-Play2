@@ -1,9 +1,13 @@
 package com.fever.liveppt.service.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
+
+import play.cache.Cache;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
@@ -15,16 +19,31 @@ import com.fever.liveppt.utils.AWSUtils;
 public class PptServiceImpl implements PptService {
 
 	@Override
-	public InputStream getPptPage(Long pptId, Long pageId) {
+	public byte[] getPptPage(Long pptId, Long pageId) {
 		// TODO Auto-generated method stub
-		AmazonS3 s3 = AWSUtils.genTokyoS3();
+		byte[] imgBytes = null;
 		Ppt ppt = Ppt.find.where().eq("id", pptId).findUnique();
 		String storeKey = ppt.storeKey;
 		String pageKey = storeKey + "p" + pageId;
-		GetObjectRequest getObjectRequest = new GetObjectRequest("pptstore",
-				pageKey);
-		S3Object obj = s3.getObject(getObjectRequest);
-		return (InputStream) obj.getObjectContent();
+		imgBytes = (byte[]) Cache.get(pageKey);
+		if (imgBytes!=null){
+			return imgBytes;			
+		} else {
+			AmazonS3 s3 = AWSUtils.genTokyoS3();
+			
+			GetObjectRequest getObjectRequest = new GetObjectRequest("pptstore",
+					pageKey);
+			S3Object obj = s3.getObject(getObjectRequest);
+			
+			try {
+				 imgBytes = IOUtils.toByteArray((InputStream) obj.getObjectContent());
+				Cache.set(pageKey, imgBytes);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return imgBytes;
+		}
 	}
 
 	@Override
