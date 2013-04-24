@@ -11,6 +11,10 @@ GET		/mymeeting					controllers.Frontend.mymeeting()
 GET 	/pptListForMeeting			controllers.Frontend.pptListForMeeting()
 GET 	/foundNewMeeting/:pptid		controllers.Frontend.foundNewMeeting(pptid:Long)
 GET 	/controlMeeting/:meetingId	controllers.Frontend.controlMeeting(meetingId:Long)
+GET 	/joinMeeting				controllers.Frontend.joinMeeting()
+GET 	/viewMeeting/:meetingId		controllers.Frontend.viewMeeting(meetingId:Long)
+
+GET 	/viewWebsocket				controllers.MeetingController.viewWebsocket()
 
 GET		/getpptpage					@controllers.PptController.getPptPage()
 
@@ -29,6 +33,8 @@ POST 	/foundNewMeeting			@controllers.MeetingController.foundNewMeeting()
 POST	/deleteMeeting				@controllers.MeetingController.deleteMeeting()
 
 POST 	/setMeetingPage				@controllers.MeetingController.setMeetingPage()
+
+POST 	/joinMeeting				controllers.MeetingController.joinMeeting()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

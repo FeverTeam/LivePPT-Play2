@@ -31,9 +31,11 @@ define(function(require, exports, module) {
 
 	function setCurrentImg(index){
 		// currentImg.attr('src', '/getpptpage?pptid='+pptId+'&pageid='+index);
+		var pre = index-1, next = index+1;
 		$('.page#'+index).removeClass('hide');
-		index--;
-		$('.page#'+index).addClass('hide');
+
+		$('.page#'+pre).addClass('hide');
+		$('.page#'+next).addClass('hide');
 	}
 
 	function setPreImg(){

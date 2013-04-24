@@ -8,6 +8,8 @@ define(function(require, exports, module) {
 	divChoosePpt = $('#div-choose-ppt'),
 	divSetupMeeting = $('#div-setup-meeting');
 
+	// 发起会议
+
 	//按钮事件 - 删除会议
 	$('.delete-meeting').on('click', function(e){
 		var meetingId = $(this).attr('meetingid');
@@ -66,4 +68,46 @@ define(function(require, exports, module) {
 		});
 	});
 
+
+	// 加入会议
+	var modalJoinMeeting = $('#modal-ppt-list');
+	var btnQuitMeeting = $('.quit-meeting');
+	var btnViewMeeting = $('.view-meeting');
+
+	//按钮事件 - 加入会议
+	$('#btn-showpage-join-meeting').on('click', function(e){
+		modalJoinMeeting
+		.removeData('modal')
+		.modal({
+			remote: '/joinMeeting'
+		});
+	});
+
+	modalJoinMeeting.on('click', '#btn-join-meeting', function(e){
+		e.preventDefault();
+		$.ajax({
+			type: "POST",
+			url: "/joinMeeting",
+			data: {
+				inputMeetingId: $('#inputMeetingId').val()
+			},
+			success: function(dataJson, textStatus, jqXHR){
+				if (dataJson.success){
+					window.location = window.location;
+				} else {
+					alert(dataJson.message);
+				}
+			}
+		})
+	});
+
+
+	btnViewMeeting.on('click', function(e){
+		var meetingId = $(this).attr('meetingid');
+		window.location = '/viewMeeting/'+meetingId;
+	});
+
+	btnQuitMeeting.on('click', function(e){		
+		alert("btnQuitMeeting");
+	});
 });

@@ -87,4 +87,14 @@ public class Frontend extends Controller {
 		return ok(views.html.controlMeeting.render(null, meeting, ppt));
 	}
 	
+	public static Result joinMeeting(){
+		return ok(views.html.joinMeeting.render());
+	}
+	
+	public static Result viewMeeting(Long meetingId){
+		Meeting meeting = Meeting.find.byId(meetingId);
+		Ppt ppt = meeting.ppt;
+		return ok(views.html.viewMeeting.render(null, meeting, ppt));
+	}
+	
 }

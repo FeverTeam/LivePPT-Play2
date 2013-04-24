@@ -11,12 +11,12 @@
 	    <tbody>
     	@for(m <- myFoundedMeetingList) {
 			<tr>
-			<td>@m.id</td>
-			<td>@m.topic</td>
-			<td>@m.ppt.id</td>
-			<td>@m.founder.email</td>
-			<td><button class="btn enter-control-meeting" meetingid="@m.id">进入会议</button></td>
-			<td><button class="btn delete-meeting" meetingid="@m.id">删除会议</button></td>
+				<td>@m.id</td>
+				<td>@m.topic</td>
+				<td>@m.ppt.id</td>
+				<td>@m.founder.email</td>
+				<td><button class="btn enter-control-meeting" meetingid="@m.id">进入会议</button></td>
+				<td><button class="btn delete-meeting" meetingid="@m.id">删除会议</button></td>
 			</tr>
 		}
 		</tbody>
@@ -27,18 +27,48 @@
 
 
 	<h2>我参与的会议</h2>
-	<p>我共参与了@myFoundedMeetingList.size()个会议。</p>
+	<p>我共参与了@myAttendingMeetingList.size()个会议。</p>
+	<button class="btn" id="btn-showpage-join-meeting">加入会议</button>
+	<br><br>
+	<table class="table">
+	    <tbody>
+    	@for(m <- myAttendingMeetingList) {
+			<tr>
+				<td>@m.id</td>
+				<td>@m.topic</td>
+				<td>@m.ppt.id</td>
+				<td>@m.founder.email</td>
+				<td><button class="btn view-meeting" meetingid="@m.id">进入会议</button></td>
+				<td><button class="btn quit-meeting" meetingid="@m.id">退出会议</button></td>
+			</tr>
+		}
+		</tbody>
+	</table>
 	<hr>
 
 
 
 
 
-	<!-- Modal -->
+	<!-- Modal For Launching Meeting -->
 	<div id="modal-ppt-list" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
 	  <div class="modal-header">
 	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	    <h3 id="myModalLabel">选择一个用于直播的PPT。</h3>
+	    <h3 id="myModalLabel">加入PPT会议</h3>
+	  </div>
+	  <div class="modal-body">
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	  </div>
+	</div>
+
+
+	<!-- Modal For Joining Meeting -->
+	<div id="modal-join-meeting" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">加入会议</h3>
 	  </div>
 	  <div class="modal-body">
 	  </div>
