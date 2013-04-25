@@ -2,10 +2,16 @@ define(function(require, exports, module) {
 
 	console.log("viewMeeting.js");
 
-	var ws = new WebSocket("ws://localhost:9000/viewWebsocket");
+	// var ws_address = "ws://localhost:9000/viewWebsocket";
+	var ws_address = "ws://live-ppt.com:9000/viewWebsocket";
+
+	var meetingId = $('div#dataDiv').attr('meetingid');
+
+	var ws = new WebSocket(ws_address);
 
 	ws.onopen = function(){
-		ws.send("1");
+		ws.send(meetingId);
+		console.log('WebSocket Connection open [meetingId='+meetingId+']');
 	};
 
 	ws.onclose = function(){ 
