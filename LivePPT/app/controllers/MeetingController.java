@@ -108,7 +108,7 @@ public class MeetingController extends Controller {
    
 						Akka.system().scheduler().schedule(
 							Duration.create(0, TimeUnit.MILLISECONDS),
-							Duration.create(1000, TimeUnit.MILLISECONDS), 
+							Duration.create(10, TimeUnit.MILLISECONDS), 
 							new Runnable(){
 								Long currentIndex;
 								Long temp = (long)1;
