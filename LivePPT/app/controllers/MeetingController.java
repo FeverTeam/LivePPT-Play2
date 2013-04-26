@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -71,12 +72,19 @@ public class MeetingController extends Controller {
 			result.put("message", "没有这个用户。");
 			return ok(result);
 		}
-
-		Attender attending = Attender.find.where().eq("user_id", userId)
-				.findUnique();
-		if (attending == null) {
-			attending = new Attender(meeting, user);
-			attending.save();
+		
+		List<Attender> attendings = user.attendents;
+		boolean isAttended = false;
+		for (Attender attending : attendings){
+			if (attending.meeting.id.equals(meeting.id)){
+				isAttended = true;
+				break;
+			}
+		}
+		
+		if (!isAttended){
+			Attender newAttending = new Attender(meeting, user);
+			newAttending.save();
 		}
 
 		result.put("success", true);
