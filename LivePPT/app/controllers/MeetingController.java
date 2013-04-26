@@ -91,6 +91,7 @@ public class MeetingController extends Controller {
 		           public void invoke(String meetingIdStr) {
 		        	// Log events to the console
 		             Long meetingId = Long.parseLong(meetingIdStr);
+		             Logger.info("WebSocket Started by meetingId="+meetingIdStr);
 		             Long pptId = Meeting.find.byId(meetingId).ppt.id;
 	        	   String cacheKey=Long.toString(meetingId);
 	        	   Long temp = (long)1,currentIndex;
@@ -105,7 +106,7 @@ public class MeetingController extends Controller {
 	 		    		  out.write(pptId+"-"+currentIndex);
 	 		    	  }
 	 		    	  try {
-						Thread.sleep(10);
+						Thread.sleep(100);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
