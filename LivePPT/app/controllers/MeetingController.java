@@ -3,25 +3,23 @@ package controllers;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
+
+import play.Logger;
+import play.cache.Cache;
+import play.libs.Akka;
+import play.libs.F.Callback;
+import play.libs.Json;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.WebSocket;
+import scala.concurrent.duration.Duration;
 
 import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.google.inject.Inject;
-
-import play.Logger;
-import play.mvc.WebSocket;
-import play.cache.Cache;
-import play.libs.F.Callback;
-import play.libs.F.Callback0;
-import play.libs.Akka;
-import play.libs.Json;
-import play.mvc.Controller;
-import play.mvc.Result;
-import scala.concurrent.duration.Duration;
 
 public class MeetingController extends Controller {
 
@@ -86,62 +84,44 @@ public class MeetingController extends Controller {
 	}
 
 	public static WebSocket<String> viewWebsocket() {
-		  return new WebSocket<String>() {
-		      
-		    public void onReady(WebSocket.In<String> in, final WebSocket.Out<String> out) {
-		    	// For each event received on the socket,
-		        in.onMessage(new Callback<String>() {
-		           public void invoke(String meetingIdStr) {
-		        	// Log events to the console
-		             Long meetingId = Long.parseLong(meetingIdStr);
-		             Logger.info("WebSocket Started by meetingId="+meetingIdStr);
-		           final Long pptId = Meeting.find.byId(meetingId).ppt.id;
-	        	   final String cacheKey=Long.toString(meetingId);
-	        	   
-	        	   
-	        	   Akka.system().scheduler().schedule(Duration.create(0, TimeUnit.MILLISECONDS),
-	        			   Duration.create(1000, TimeUnit.MILLISECONDS), new Runnable(){
-	        		   		Long temp = (long)1,currentIndex;
-							@Override
-							public void run() {
-								Logger.info("running.");
-								
-								// TODO Auto-generated method stub	
-								currentIndex = (Long) Cache.get(cacheKey);
-								if (currentIndex==null){
-				 		    		  currentIndex=(long) 1;
-				 		    	  }
-				 		    	  if (!temp.equals(currentIndex)){
-				 		    		  temp = currentIndex;
-				 		    		  Logger.info(pptId+"-"+currentIndex);
-				 		    		  out.write(pptId+"-"+currentIndex);
-				 		    	  }		 		    	  
-							}	        		   
-	        	   }, Akka.system().dispatcher());
-	        	   
-	        	   
-	        	   
-//	 		      do {
-//	 		    	  currentIndex = (Long) Cache.get(cacheKey);
-//	 		    	  if (currentIndex==null){
-//	 		    		  currentIndex=(long) 1;
-//	 		    	  }
-//	 		    	  if (!temp.equals(currentIndex)){
-//	 		    		  temp = currentIndex;
-//	 		    		  Logger.info(pptId+"-"+currentIndex);
-//	 		    		  out.write(pptId+"-"+currentIndex);
-//	 		    	  }
-//	 		    	  try {
-//						Thread.sleep(100);
-//					} catch (InterruptedException e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//	 		    	  
-//	 		      }while(true);	               
-		           } 
-		        });		      
-		    }		    
+		return new WebSocket<String>() {
+			
+			@Override
+			public void onReady(WebSocket.In<String> in, final WebSocket.Out<String> out) {
+				// For each event received on the socket,
+				in.onMessage(new Callback<String>() {
+					@Override
+					public void invoke(String meetingIdStr) {
+						// Log events to the console
+						Long meetingId = Long.parseLong(meetingIdStr);
+						Logger.info("WebSocket Started by meetingId="+meetingIdStr);
+						final Long pptId = Meeting.find.byId(meetingId).ppt.id;
+						final String cacheKey=Long.toString(meetingId);   
+   
+						Akka.system().scheduler().schedule(
+							Duration.create(0, TimeUnit.MILLISECONDS),
+							Duration.create(1000, TimeUnit.MILLISECONDS), 
+							new Runnable(){
+								Long currentIndex;
+								Long temp = (long)1;
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub	
+									currentIndex = (Long) Cache.get(cacheKey);
+									if (currentIndex==null){
+										currentIndex=(long) 1;
+									}
+									if (!temp.equals(currentIndex)){
+										temp = currentIndex;
+										Logger.info(pptId+"-"+currentIndex);
+										out.write(pptId+"-"+currentIndex);
+									}		 		    	  
+								}	        		   
+							},
+							Akka.system().dispatcher());	   
+					} 
+				});		      
+			}
 		  };
 		}
 }
