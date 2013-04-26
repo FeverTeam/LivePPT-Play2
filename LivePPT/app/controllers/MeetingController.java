@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -16,9 +17,11 @@ import play.mvc.WebSocket;
 import play.cache.Cache;
 import play.libs.F.Callback;
 import play.libs.F.Callback0;
+import play.libs.Akka;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import scala.concurrent.duration.Duration;
 
 public class MeetingController extends Controller {
 
@@ -92,27 +95,50 @@ public class MeetingController extends Controller {
 		        	// Log events to the console
 		             Long meetingId = Long.parseLong(meetingIdStr);
 		             Logger.info("WebSocket Started by meetingId="+meetingIdStr);
-		             Long pptId = Meeting.find.byId(meetingId).ppt.id;
-	        	   String cacheKey=Long.toString(meetingId);
-	        	   Long temp = (long)1,currentIndex;
-	 		      do {
-	 		    	  currentIndex = (Long) Cache.get(cacheKey);
-	 		    	  if (currentIndex==null){
-	 		    		  currentIndex=(long) 1;
-	 		    	  }
-	 		    	  if (!temp.equals(currentIndex)){
-	 		    		  temp = currentIndex;
-	 		    		  Logger.info(pptId+"-"+currentIndex);
-	 		    		  out.write(pptId+"-"+currentIndex);
-	 		    	  }
-	 		    	  try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	 		    	  
-	 		      }while(true);	               
+		           final Long pptId = Meeting.find.byId(meetingId).ppt.id;
+	        	   final String cacheKey=Long.toString(meetingId);
+	        	   
+	        	   
+	        	   Akka.system().scheduler().schedule(Duration.create(0, TimeUnit.MILLISECONDS),
+	        			   Duration.create(1000, TimeUnit.MILLISECONDS), new Runnable(){
+	        		   		Long temp = (long)1,currentIndex;
+							@Override
+							public void run() {
+								Logger.info("running.");
+								
+								// TODO Auto-generated method stub	
+								currentIndex = (Long) Cache.get(cacheKey);
+								if (currentIndex==null){
+				 		    		  currentIndex=(long) 1;
+				 		    	  }
+				 		    	  if (!temp.equals(currentIndex)){
+				 		    		  temp = currentIndex;
+				 		    		  Logger.info(pptId+"-"+currentIndex);
+				 		    		  out.write(pptId+"-"+currentIndex);
+				 		    	  }		 		    	  
+							}	        		   
+	        	   }, Akka.system().dispatcher());
+	        	   
+	        	   
+	        	   
+//	 		      do {
+//	 		    	  currentIndex = (Long) Cache.get(cacheKey);
+//	 		    	  if (currentIndex==null){
+//	 		    		  currentIndex=(long) 1;
+//	 		    	  }
+//	 		    	  if (!temp.equals(currentIndex)){
+//	 		    		  temp = currentIndex;
+//	 		    		  Logger.info(pptId+"-"+currentIndex);
+//	 		    		  out.write(pptId+"-"+currentIndex);
+//	 		    	  }
+//	 		    	  try {
+//						Thread.sleep(100);
+//					} catch (InterruptedException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//	 		    	  
+//	 		      }while(true);	               
 		           } 
 		        });		      
 		    }		    
