@@ -11,11 +11,11 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.AmazonSQSClient;
 
 /**
- * 用于存放有关AWS服务的常用工具
+ * AWS服务连接生成类
  * @author 梁博文
  *
  */
-public class AWSUtils {
+public class AwsConnGenerator {
 
 	/**
 	 * 组装东京S3client

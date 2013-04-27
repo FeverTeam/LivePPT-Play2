@@ -13,6 +13,11 @@ import play.db.ebean.Model;
 
 import com.avaje.ebean.validation.NotNull;
 
+/**
+ * 会议类
+ * @author 梁博文
+ *
+ */
 @Entity
 public class Meeting extends Model {
 

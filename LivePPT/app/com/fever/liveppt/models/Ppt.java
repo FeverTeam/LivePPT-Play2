@@ -14,9 +14,9 @@ import play.db.ebean.*;
 import play.data.validation.*;
 
 /**
- * PPT
+ * PPT 类
  * 
- * @author Bowen Liang
+ * @author 梁博文
  * 
  */
 @Entity

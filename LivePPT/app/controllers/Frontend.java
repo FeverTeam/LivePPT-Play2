@@ -17,6 +17,11 @@ import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 
+/**
+ * 页面Action
+ * @author 梁博文
+ *
+ */
 public class Frontend extends Controller {
 
 	public static Result index() {

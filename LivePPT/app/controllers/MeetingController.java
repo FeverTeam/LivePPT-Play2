@@ -22,6 +22,11 @@ import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.google.inject.Inject;
 
+/**
+ * 有关Meeting的数据接口
+ * @author 梁博文
+ *
+ */
 public class MeetingController extends Controller {
 
 	@Inject

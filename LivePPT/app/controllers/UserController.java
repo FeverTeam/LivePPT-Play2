@@ -14,6 +14,11 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+/**
+ * 有关用户的数据接口
+ * @author 梁博文
+ *
+ */
 public class UserController extends Controller {
 	public static Result login(){
 		ObjectNode result = Json.newObject();

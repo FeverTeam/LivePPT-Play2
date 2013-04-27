@@ -14,7 +14,7 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.AWSUtils;
+import com.fever.liveppt.utils.AwsConnGenerator;
 
 public class PptServiceImpl implements PptService {
 
@@ -29,7 +29,7 @@ public class PptServiceImpl implements PptService {
 		if (imgBytes!=null){
 			return imgBytes;			
 		} else {
-			AmazonS3 s3 = AWSUtils.genTokyoS3();
+			AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
 			
 			GetObjectRequest getObjectRequest = new GetObjectRequest("pptstore",
 					pageKey);

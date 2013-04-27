@@ -6,6 +6,11 @@ import com.fever.liveppt.service.impl.MeetingServiceImpl;
 import com.fever.liveppt.service.impl.PptServiceImpl;
 import com.google.inject.AbstractModule;
 
+/**
+ * 用于Guice绑定依赖注入关系
+ * @author 梁博文
+ *
+ */
 public class ConfigModule extends AbstractModule {
 
 	@Override
