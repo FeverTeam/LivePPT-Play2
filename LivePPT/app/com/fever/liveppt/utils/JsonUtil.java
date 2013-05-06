@@ -1,5 +1,6 @@
 package com.fever.liveppt.utils;
 
+import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.libs.Json;
@@ -21,6 +22,19 @@ public class JsonUtil {
 	 * @return
 	 */
 	public static ObjectNode genResultJson(Boolean isSuccess, ObjectNode data) {
+		ObjectNode json = Json.newObject();
+		json.put(IS_SUCCESS, isSuccess.toString());
+		json.put(DATA, data);
+		return json;
+	}
+	
+	/**
+	 * 用于封装JSON接口的返回结果
+	 * @param isSuccess 是否执行成功
+	 * @param data 数据，以ArrayNode类封装的JSON格式
+	 * @return
+	 */
+	public static ObjectNode genResultJson(Boolean isSuccess, ArrayNode data) {
 		ObjectNode json = Json.newObject();
 		json.put(IS_SUCCESS, isSuccess.toString());
 		json.put(DATA, data);

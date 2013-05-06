@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.validation.NotNull;
@@ -12,6 +14,7 @@ import com.avaje.ebean.validation.NotNull;
 import play.Logger;
 import play.db.ebean.*;
 import play.data.validation.*;
+import play.libs.Json;
 
 /**
  * PPT
@@ -68,5 +71,15 @@ public class Ppt extends Model {
 		this.fileSize = fileSize;
 		this.isConverted = false;
 		this.pagecount = 0;
+	}
+	
+	public ObjectNode toJsonNode(){
+		ObjectNode pptNode = Json.newObject();
+		pptNode = Json.newObject();
+		pptNode.put("pptId", this.id);
+		pptNode.put("title", this.title);
+		pptNode.put("time", this.time.toString());
+		pptNode.put("size", this.fileSize);
+		return pptNode;
 	}
 }

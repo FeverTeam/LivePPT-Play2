@@ -6,13 +6,19 @@ import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
 
+import play.Logger;
 import play.cache.Cache;
+import play.libs.Json;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
 import com.fever.liveppt.models.Ppt;
+import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
 import com.fever.liveppt.utils.AWSUtils;
 
@@ -61,6 +67,22 @@ public class PptServiceImpl implements PptService {
 			ppt.pagecount = pageCount;
 			ppt.save();
 		}
+	}
+
+	@Override
+	public ArrayNode getPptList(Long UserId) {
+		// TODO Auto-generated method stub
+		ArrayNode pptArrayNode = new ArrayNode(JsonNodeFactory.instance);;
+		User user = User.find.byId(UserId);
+		if (user!=null){
+			List<Ppt> ppts = user.ppts;			 
+			int index=0;
+			for (Ppt ppt : ppts){
+				pptArrayNode.add(ppt.toJsonNode());
+				index++;
+			}			
+		}
+		return pptArrayNode;
 	}
 
 }
