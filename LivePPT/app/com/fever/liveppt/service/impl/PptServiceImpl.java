@@ -72,7 +72,7 @@ public class PptServiceImpl implements PptService {
 	@Override
 	public ArrayNode getPptList(Long UserId) {
 		// TODO Auto-generated method stub
-		ArrayNode pptArrayNode = new ArrayNode(JsonNodeFactory.instance);;
+		ArrayNode pptArrayNode = new ArrayNode(JsonNodeFactory.instance);
 		User user = User.find.byId(UserId);
 		if (user!=null){
 			List<Ppt> ppts = user.ppts;			 

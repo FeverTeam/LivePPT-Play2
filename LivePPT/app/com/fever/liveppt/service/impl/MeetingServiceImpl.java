@@ -1,5 +1,14 @@
 package com.fever.liveppt.service.impl;
 
+import java.util.List;
+
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
+import org.codehaus.jackson.node.ObjectNode;
+
+import play.libs.Json;
+
+import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
@@ -25,6 +34,19 @@ public class MeetingServiceImpl implements MeetingService {
 		meeting.ppt = ppt;
 		meeting.topic = topic;
 		meeting.save();		
+	}
+
+	@Override
+	public ArrayNode getAttendingMeetingsList(Long userId) {
+		// TODO Auto-generated method stub
+		ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
+		User user = User.find.byId(userId);
+		if (user!=null){
+			for (Attender attender:user.attendents){
+				resultJson.add(attender.meeting.toJson());
+			}
+		}
+		return resultJson;
 	}
 
 }

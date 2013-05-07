@@ -7,8 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
+import play.libs.Json;
 import play.mvc.Http.Session;
 
 /**
@@ -76,6 +79,14 @@ public class User extends Model {
 			return users.get(0).id;
 		}
 		return null;
+	}
+	
+	public ObjectNode toJsonNode(){
+		ObjectNode resultJson = Json.newObject();
+		resultJson.put("userId", this.id);
+		resultJson.put("displayName", this.displayname);
+		resultJson.put("email", this.email);
+		return resultJson;
 	}
 
 }

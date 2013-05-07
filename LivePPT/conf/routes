@@ -46,7 +46,9 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 # For App
 POST 	/app/login					@controllers.app.App_UserController.login()
 POST 	/app/getPptList				@controllers.app.App_PptController.getPptList()
+POST 	/app/getAttendingMeetingsList @controllers.app.App_MeetingController.getAttendingMeetingsList()
 
 
 
 GET 	/app/testWS 				controllers.app.App_MeetingController.testWS()
+
