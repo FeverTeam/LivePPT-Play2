@@ -18,9 +18,8 @@ public class App_PptController extends Controller {
 
 	@Inject
 	PptService pptService;
-	
-	
-	public Result getPptList(){
+
+	public Result getPptList() {
 		Map<String, String[]> params = request().body().asFormUrlEncoded();
 		Long userId = Long.parseLong(params.get("userId")[0]);
 		ObjectNode resultJson;
