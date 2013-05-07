@@ -17,9 +17,9 @@ import play.data.validation.*;
 import play.libs.Json;
 
 /**
- * PPT
+ * PPT 类
  * 
- * @author Bowen Liang
+ * @author 梁博文
  * 
  */
 @Entity

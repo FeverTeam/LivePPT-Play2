@@ -17,7 +17,7 @@ import play.mvc.Http.Session;
 /**
  * 用户类
  * 
- * @author Bowen Liang
+ * @author 梁博文
  * 
  */
 @Entity

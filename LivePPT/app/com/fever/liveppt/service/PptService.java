@@ -3,6 +3,11 @@ package com.fever.liveppt.service;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 
+/**
+ * PPT服务
+ * @author 梁博文
+ *
+ */
 public interface PptService {
 
 	public byte[] getPptPage(Long pptId, Long pageId);

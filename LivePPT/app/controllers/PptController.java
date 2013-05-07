@@ -26,9 +26,14 @@ import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.AWSUtils;
+import com.fever.liveppt.utils.AwsConnGenerator;
 import com.google.inject.Inject;
 
+/**
+ * 有关PPT的数据接口
+ * @author 梁博文
+ *
+ */
 public class PptController extends Controller {
 	private final static String FILE_PARAM = "Filedata";
 	
@@ -73,7 +78,7 @@ public class PptController extends Controller {
 			Logger.info("not null" + title2+file.length()+"-"+title);
 			
 			//存入AmazonS3
-			AmazonS3 s3 = AWSUtils.genTokyoS3();
+			AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
 			String storeKey = UUID.randomUUID().toString().replaceAll("-", "");
 			s3.putObject("pptstore", storeKey, file);
 			
@@ -85,7 +90,7 @@ public class PptController extends Controller {
 	        Logger.debug("StoreKey:"+storeKey);
 			
 			//向SNS写入PPT的id，并告知win端进行转换
-			AmazonSQS sqs = AWSUtils.genTokyoSQS();
+			AmazonSQS sqs = AwsConnGenerator.genTokyoSQS();
 			CreateQueueRequest createQueueRequest = new CreateQueueRequest(QUEUE_NAME);
             String myQueueUrl = sqs.createQueue(createQueueRequest).getQueueUrl();
 			sqs.sendMessage(new SendMessageRequest(myQueueUrl,storeKey));
@@ -113,11 +118,10 @@ public class PptController extends Controller {
 	 * @return
 	 */
 	public Result getPptPage(){
-		String params = request().body().asText();
-		Logger.info(params+"");
 		Long pptId = Long.parseLong(request().getQueryString("pptid"));
 		Long pageId = Long.parseLong(request().getQueryString("pageid"));
 		response().setContentType("image/jpeg");
+		response().setHeader(CACHE_CONTROL, "max-age=3600");
 		return ok(pptService.getPptPage(pptId, pageId));
 	}
 	

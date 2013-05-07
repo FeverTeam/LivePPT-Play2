@@ -10,7 +10,11 @@ import com.avaje.ebean.validation.NotNull;
 import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
 
-
+/**
+ * 参与会议关系类
+ * @author 梁博文
+ *
+ */
 @Entity
 public class Attender extends Model {
 
