@@ -30,7 +30,7 @@ import com.fever.liveppt.utils.AwsConnGenerator;
 import com.google.inject.Inject;
 
 /**
- * 有关PPPT的数据接口
+ * 有关PPT的数据接口
  * @author 梁博文
  *
  */
@@ -118,11 +118,10 @@ public class PptController extends Controller {
 	 * @return
 	 */
 	public Result getPptPage(){
-		String params = request().body().asText();
-		Logger.info(params+"");
 		Long pptId = Long.parseLong(request().getQueryString("pptid"));
 		Long pageId = Long.parseLong(request().getQueryString("pageid"));
 		response().setContentType("image/jpeg");
+		response().setHeader(CACHE_CONTROL, "max-age=3600");
 		return ok(pptService.getPptPage(pptId, pageId));
 	}
 	
