@@ -118,10 +118,16 @@ public class PptController extends Controller {
 	 * @return
 	 */
 	public Result getPptPage(){
+		String[] ifModifiedSince = request().headers().get(Controller.IF_MODIFIED_SINCE);
+		if (ifModifiedSince!=null &&ifModifiedSince.length>0){
+			return status(NOT_MODIFIED);
+		}
 		Long pptId = Long.parseLong(request().getQueryString("pptid"));
 		Long pageId = Long.parseLong(request().getQueryString("pageid"));
+		//设置ContentType为image/jpeg
 		response().setContentType("image/jpeg");
-		response().setHeader(CACHE_CONTROL, "max-age=3600");
+		//设置返回头LastModified
+		response().setHeader(Controller.LAST_MODIFIED, ""+new Date().getTime());
 		return ok(pptService.getPptPage(pptId, pageId));
 	}
 	
