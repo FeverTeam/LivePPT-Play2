@@ -2,8 +2,8 @@ define(function(require, exports, module) {
 
 	console.log("viewMeeting.js");
 
-	// var ws_address = "ws://localhost:9000/viewWebsocket";
-	var ws_address = "ws://live-ppt.com:9000/viewWebsocket";
+	var ws_address = "ws://localhost:9000/viewWebsocket";
+	// var ws_address = "ws://live-ppt.com:9000/viewWebsocket";
 
 	var meetingId = $('div#dataDiv').attr('meetingid');
 

@@ -1,5 +1,8 @@
 package com.fever.liveppt.service;
 
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.ObjectNode;
+
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 
@@ -24,5 +27,11 @@ public interface MeetingService {
 	 * @param meetingId
 	 */
 	public void deleteMeeting(Long meetingId);
+	
+	/**
+	 * 获取用户观看的会议
+	 * @param userId
+	 */
+	public ArrayNode getAttendingMeetingsList(Long userId);
 
 }
