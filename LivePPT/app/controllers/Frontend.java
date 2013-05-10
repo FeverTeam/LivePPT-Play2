@@ -55,7 +55,7 @@ public class Frontend extends Controller {
 		Long userId = User.genUserIdFromSession(ctx().session());
 		User user = User.find.byId(userId);
 		
-		List<Meeting> myFoundedMeetingList = (user.myFoundedMeeting!=null)?user.myFoundedMeeting:new LinkedList<Meeting>();
+		List<Meeting> myFoundedMeetingList = user.myFoundedMeeting;
 		List<Meeting> myAttendingMeetingList = new LinkedList<Meeting>();
 		List<Attender> attendents = user.attendents;
 		for (Attender attendding : attendents){
