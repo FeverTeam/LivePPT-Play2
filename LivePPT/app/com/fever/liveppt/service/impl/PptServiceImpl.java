@@ -18,6 +18,7 @@ import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
 import com.fever.liveppt.utils.AwsConnGenerator;
+import com.fever.liveppt.utils.JsonResult;
 
 public class PptServiceImpl implements PptService {
 
@@ -80,6 +81,17 @@ public class PptServiceImpl implements PptService {
 			}			
 		}
 		return pptArrayNode;
+	}
+
+	@Override
+	public JsonResult getPptInfo(Long pptId) {
+		// TODO Auto-generated method stub
+		Ppt ppt = Ppt.find.byId(pptId);
+		if (ppt==null){
+			return JsonResult.genResultJson(false, "不存在该PPT", null);
+		} else {
+			return JsonResult.genResultJson(true, ppt.toJsonNode());
+		}
 	}
 
 }

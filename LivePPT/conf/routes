@@ -55,14 +55,16 @@ POST 	/app/register 						@controllers.app.App_UserController.register()
 
 ## PPT接口 ##
 
-#获取指定PPT的指定页面的图片
-GET		/app/getPptPage/:pptId/:pageIndex	@controllers.app.App_PptController.getPptPage(pptId:Long, pageIndex:Long)
-
-
 #获取用户所有PPT的列表
 GET 	/app/getPptList						@controllers.app.App_PptController.getPptList()
 
 #获取指定PPT的信息
+GET 	/app/getPptInfo/:pptId 				@controllers.app.App_PptController.getPptInfo(pptId:Long)
+
+#获取指定PPT的指定页面的图片
+GET		/app/getPptPage/:pptId/:pageIndex	@controllers.app.App_PptController.getPptPage(pptId:Long, pageIndex:Long)
+
+
 
 ## 会议接口 ##
 

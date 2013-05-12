@@ -34,6 +34,17 @@ public class App_PptController extends Controller {
 		Logger.info(Json.stringify(resultJson));
 		return ok(resultJson);
 	}
+	
+	/**
+	 * 获取指定PPT的信息
+	 * @param pptId
+	 * @return
+	 */
+	public Result getPptInfo(Long pptId) {
+		JsonResult resultJson = pptService.getPptInfo(pptId);
+		Logger.info(resultJson.toString());
+		return ok(resultJson);
+	}
 
 	public Result getPptPage(Long pptId, Long pageIndex) {
 		String[] ifModifiedSince = request().headers().get(
