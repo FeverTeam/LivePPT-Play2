@@ -75,6 +75,3 @@ GET 	/app/getAttendingMeetings 			@controllers.app.App_MeetingController.getMyAt
 #获取指定会议的信息
 
 
-
-GET 	/app/testWS 				controllers.app.App_MeetingController.testWS()
-

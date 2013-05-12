@@ -49,39 +49,4 @@ public class App_MeetingController extends Controller {
 		return ok(resultJson);
 	}
 
-	public static WebSocket<String> testWS() {
-		return new WebSocket<String>() {
-
-			// Called when the Websocket Handshake is done.
-			public void onReady(WebSocket.In<String> in,
-					final WebSocket.Out<String> out) {
-
-				// For each event received on the socket,
-				in.onMessage(new Callback<String>() {
-					public void invoke(String event) {
-
-						// Log events to the console
-						Logger.info(event);
-						out.write("i am server");
-
-					}
-				});
-
-				// When the socket is closed.
-				in.onClose(new Callback0() {
-					public void invoke() {
-
-						Logger.info("Disconnected");
-
-					}
-				});
-
-				// Send a single 'Hello!' message
-				out.write("Hello!");
-
-			}
-
-		};
-	}
-
 }
