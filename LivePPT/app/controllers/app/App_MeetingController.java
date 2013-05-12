@@ -19,14 +19,30 @@ public class App_MeetingController extends Controller {
 	@Inject
 	MeetingService meetingService;
 
-	public Result getAttendingMeetingsList() {
+	/**
+	 * 获取用户所有观看的会议的列表
+	 * @return
+	 */
+	public Result getMyAttendingMeetings() {
 		ObjectNode resultJson;
-		// Long userId = Long.parseLong(request().getQueryString("userId"));
-		Long userId = Long.parseLong(request().body().asFormUrlEncoded()
-				.get("userId")[0]);
+		Long userId = Long.parseLong(request().getQueryString("userId"));
+//		Long userId = Long.parseLong(request().body().asFormUrlEncoded().get("userId")[0]);
 		ArrayNode attendingMeetingsArrayNode = meetingService
-				.getAttendingMeetingsList(userId);
+				.getMyAttendingMeetings(userId);
 		resultJson = JsonResult.genResultJson(true, attendingMeetingsArrayNode);
+		Logger.info(Json.stringify(resultJson));
+		return ok(resultJson);
+	}
+	
+	/**
+	 * 获取用户所有自己发起的会议的列表
+	 * @return
+	 */
+	public Result getMyFoundedMeetings(){
+		Long userId = Long.parseLong(request().getQueryString("userId"));
+		ArrayNode foundedMeetingsArrayNode = meetingService
+				.getMyFoundedMeetings(userId);
+		ObjectNode resultJson = JsonResult.genResultJson(true, foundedMeetingsArrayNode);
 		Logger.info(Json.stringify(resultJson));
 		return ok(resultJson);
 	}

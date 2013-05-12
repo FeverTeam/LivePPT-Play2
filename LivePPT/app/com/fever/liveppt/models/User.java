@@ -46,10 +46,10 @@ public class User extends Model {
 	public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
 			User.class);
 
-	public User(String email, String password, String displayname) {
+	public User(String email, String password, String displayName) {
 		this.email = email;
 		this.password = password;
-		this.displayname = displayname;
+		this.displayname = displayName;
 	}
 
 	public static boolean isExistedByEmail(String email) {

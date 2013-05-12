@@ -22,7 +22,7 @@ public class JsonResult extends ObjectNode {
 	 * @param dataNode 数据，以JsonNode类封装的JSON格式
 	 * @return
 	 */
-	public static ObjectNode genResultJson(Boolean isSuccess, String message, JsonNode dataNode) {
+	public static JsonResult genResultJson(Boolean isSuccess, String message, JsonNode dataNode) {
 		JsonResult json = new JsonResult(isSuccess, message, dataNode);
 		return json;
 	}
@@ -33,7 +33,7 @@ public class JsonResult extends ObjectNode {
 	 * @param dataNode 数据，以JsonNode类封装的JSON格式
 	 * @return
 	 */
-	public static ObjectNode genResultJson(Boolean isSuccess, JsonNode dataNode) {
+	public static JsonResult genResultJson(Boolean isSuccess, JsonNode dataNode) {
 		JsonResult json = new JsonResult(isSuccess, "", dataNode);
 		return json;
 	}
