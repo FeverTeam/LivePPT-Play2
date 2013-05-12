@@ -1,17 +1,14 @@
 package controllers.app;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
-import play.libs.F.Callback;
-import play.libs.F.Callback0;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.WebSocket;
 
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.JsonResult;
@@ -26,13 +23,19 @@ public class App_MeetingController extends Controller {
 	 * @return
 	 */
 	public Result getMyAttendingMeetings() {
-		ObjectNode resultJson;
-		Long userId = Long.parseLong(request().getQueryString("userId"));
-//		Long userId = Long.parseLong(request().body().asFormUrlEncoded().get("userId")[0]);
+		Map<String, String[]> params = request().queryString();
+		
+		//检查必须的参数是否存在
+		Set<String> keySet = params.keySet();
+		if (keySet.contains("userId")){
+			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
+		}
+		
+		Long userId = Long.parseLong(params.get("userId")[0]);
 		ArrayNode attendingMeetingsArrayNode = meetingService
 				.getMyAttendingMeetings(userId);
-		resultJson = JsonResult.genResultJson(true, attendingMeetingsArrayNode);
-		Logger.info(Json.stringify(resultJson));
+		ObjectNode resultJson = JsonResult.genResultJson(true, attendingMeetingsArrayNode);
+		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
 	
@@ -41,11 +44,19 @@ public class App_MeetingController extends Controller {
 	 * @return
 	 */
 	public Result getMyFoundedMeetings(){
-		Long userId = Long.parseLong(request().getQueryString("userId"));
+		Map<String, String[]> params = request().queryString();
+		
+		//检查必须的参数是否存在
+		Set<String> keySet = params.keySet();
+		if (keySet.contains("userId")) {
+			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
+		}
+		
+		Long userId = Long.parseLong(params.get("userId")[0]);
 		ArrayNode foundedMeetingsArrayNode = meetingService
 				.getMyFoundedMeetings(userId);
 		ObjectNode resultJson = JsonResult.genResultJson(true, foundedMeetingsArrayNode);
-		Logger.info(Json.stringify(resultJson));
+		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
 
