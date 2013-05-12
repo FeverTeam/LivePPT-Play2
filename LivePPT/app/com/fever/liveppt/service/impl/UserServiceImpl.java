@@ -7,7 +7,7 @@ import play.libs.Json;
 
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.UserService;
-import com.fever.liveppt.utils.JsonUtil;
+import com.fever.liveppt.utils.JsonResult;
 
 public class UserServiceImpl implements UserService {
 
@@ -24,14 +24,14 @@ public class UserServiceImpl implements UserService {
 			data.put("displayName", user.displayname);
 
 			// 封装返回信息
-			jsonNode = JsonUtil.genResultJson(true, data);
+			jsonNode = JsonResult.genResultJson(true, data);
 		} else {
 			// 验证失败
 			ObjectNode data = Json.newObject();
 			data.put("message", "用户名/密码不正确，或未注册。");
 
 			// 封装返回信息
-			jsonNode = JsonUtil.genResultJson(false, data);
+			jsonNode = JsonResult.genResultJson(false, data);
 		}
 		
 		return jsonNode;

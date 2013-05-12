@@ -6,7 +6,7 @@ import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.JsonUtil;
+import com.fever.liveppt.utils.JsonResult;
 import com.google.inject.Inject;
 
 import play.Logger;
@@ -24,7 +24,7 @@ public class App_PptController extends Controller {
 		Long userId = Long.parseLong(params.get("userId")[0]);
 		ObjectNode resultJson;
 		ArrayNode pptArrayNode = pptService.getPptList(userId);
-		resultJson = JsonUtil.genResultJson(true, pptArrayNode);
+		resultJson = JsonResult.genResultJson(true, pptArrayNode);
 		Logger.info(Json.stringify(resultJson));
 		return ok(resultJson);
 	}
