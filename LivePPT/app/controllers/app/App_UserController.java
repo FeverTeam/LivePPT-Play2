@@ -1,11 +1,11 @@
 package controllers.app;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -22,17 +22,25 @@ public class App_UserController extends Controller {
 	 * @return
 	 */
 	public Result login() {
-		// 返回json对象
-		ObjectNode resultJson;
-
-		// 获取POST参数
-		Map<String, String[]> postData = request().body().asFormUrlEncoded();
-		String email = postData.get("email")[0];
-		String password = postData.get("password")[0];
-
-		resultJson = userService.isPassworrdCorrect(email, password);
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
 		
-		Logger.info(Json.stringify(resultJson));
+		//检查必须的参数是否存在
+		Set<String> keySet = params.keySet();
+		if (keySet.contains("email")){
+			return ok(JsonResult.genResultJson(false, "email字段不存在。", null));
+		}
+		if (keySet.contains("password")){
+			return ok(JsonResult.genResultJson(false, "password字段不存在。", null));
+		}
+
+		// 获取参数		
+		String email = params.get("email")[0];
+		String password = params.get("password")[0];
+
+		//验证帐号密码是否匹配
+		ObjectNode resultJson = userService.isPassworrdCorrect(email, password);
+		
+		Logger.info(resultJson.toString());
 
 		return ok(resultJson);
 	}
@@ -42,12 +50,28 @@ public class App_UserController extends Controller {
 	 * @return
 	 */
 	public Result register(){
-		// 获取POST参数
-		Map<String, String[]> postData = request().body().asFormUrlEncoded();
-		String email = postData.get("email")[0];
-		String password = postData.get("password")[0];
-		String displayName = postData.get("displayName")[0];
+//		Map<String, String[]> params = request().queryString();
+		Map<String, String[]> params = request().body().asFormUrlEncoded();		
 		
+		//检查必须的参数是否存在
+		Set<String> keySet = params.keySet();
+		if (!keySet.contains("email")){
+			return ok(JsonResult.genResultJson(false, "email字段不存在。", null));
+		}
+		if (!keySet.contains("password")){
+			return ok(JsonResult.genResultJson(false, "password字段不存在。", null));
+		}
+		if (!keySet.contains("displayName")){
+			Logger.info("dis");
+			return ok(JsonResult.genResultJson(false, "displayName字段不存在。", null));
+		}
+		
+		// 获取参数		
+		String email = params.get("email")[0];
+		String password = params.get("password")[0];
+		String displayName = params.get("displayName")[0];
+		
+		//注册用户
 		JsonResult resultJson = userService.register(email, password, displayName);
 		
 		Logger.info(resultJson.toString());
