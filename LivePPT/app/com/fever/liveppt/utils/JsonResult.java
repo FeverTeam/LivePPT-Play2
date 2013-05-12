@@ -42,7 +42,7 @@ public class JsonResult extends ObjectNode {
 	public JsonResult(Boolean isSuccess, String message, JsonNode dataNode){
 		super(JsonNodeFactory.instance);
 		this.setIsSuccess(isSuccess);
-		this.setMessage("");
+		this.setMessage(message);
 		this.setData(dataNode);
 	}
 	
