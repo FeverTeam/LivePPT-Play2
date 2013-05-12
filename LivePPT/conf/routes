@@ -45,6 +45,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 ######
 # For App
 
+################################
 ## 用户接口 ##
 
 #用户登录接口
@@ -53,6 +54,7 @@ POST 	/app/login							@controllers.app.App_UserController.login()
 #用户注册接口
 POST 	/app/register 						@controllers.app.App_UserController.register()
 
+################################
 ## PPT接口 ##
 
 #获取用户所有PPT的列表
@@ -64,8 +66,7 @@ GET 	/app/getPptInfo/:pptId 				@controllers.app.App_PptController.getPptInfo(pp
 #获取指定PPT的指定页面的图片
 GET		/app/getPptPage/:pptId/:pageIndex	@controllers.app.App_PptController.getPptPage(pptId:Long, pageIndex:Long)
 
-
-
+################################
 ## 会议接口 ##
 
 #获取用户所有发起会议的列表
@@ -75,5 +76,6 @@ GET 	/app/getFoundedMeetings 			@controllers.app.App_MeetingController.getMyFoun
 GET 	/app/getAttendingMeetings 			@controllers.app.App_MeetingController.getMyAttendingMeetings()
 
 #获取指定会议的信息
+GET 	/app/getMeetingInfo/:meetingId		@controllers.app.App_MeetingController.getMeetingInfo(meetingId:Long)
 
 

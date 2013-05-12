@@ -8,6 +8,7 @@ import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
+import com.fever.liveppt.utils.JsonResult;
 
 public class MeetingServiceImpl implements MeetingService {
 
@@ -53,6 +54,19 @@ public class MeetingServiceImpl implements MeetingService {
 			for (Meeting meeting : user.myFoundedMeeting) {
 				resultJson.add(meeting.toJson());
 			}
+		}
+		return resultJson;
+	}
+
+	@Override
+	public JsonResult getMeetingInfo(Long meetingId) {
+		// TODO Auto-generated method stub
+		JsonResult resultJson;
+		Meeting meeting = Meeting.find.byId(meetingId);
+		if (meeting==null){
+			resultJson = JsonResult.genResultJson(false, "没有该会议。", null);
+		} else {
+			resultJson = JsonResult.genResultJson(true, "", meeting.toJson());
 		}
 		return resultJson;
 	}

@@ -46,6 +46,12 @@ public class App_PptController extends Controller {
 		return ok(resultJson);
 	}
 
+	/**
+	 * 获取指定PPT和页码的图片
+	 * @param pptId
+	 * @param pageIndex
+	 * @return
+	 */
 	public Result getPptPage(Long pptId, Long pageIndex) {
 		String[] ifModifiedSince = request().headers().get(
 				Controller.IF_MODIFIED_SINCE);
@@ -57,6 +63,7 @@ public class App_PptController extends Controller {
 		// 设置返回头LastModified
 		response().setHeader(Controller.LAST_MODIFIED,
 				"" + new Date().getTime());
+		
 		return ok(pptService.getPptPage(pptId, pageIndex));
 	}
 }

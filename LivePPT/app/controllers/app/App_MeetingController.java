@@ -59,5 +59,17 @@ public class App_MeetingController extends Controller {
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
+	
+
+	/**
+	 * 获取指定会议的信息
+	 * @param meetingId
+	 * @return
+	 */
+	public Result getMeetingInfo(Long meetingId){
+		JsonResult resultJson = meetingService.getMeetingInfo(meetingId);
+		Logger.info(resultJson.toString());
+		return ok(resultJson);
+	}
 
 }

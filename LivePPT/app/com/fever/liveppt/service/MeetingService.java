@@ -2,6 +2,8 @@ package com.fever.liveppt.service;
 
 import org.codehaus.jackson.node.ArrayNode;
 
+import com.fever.liveppt.utils.JsonResult;
+
 
 /**
  * 会议服务
@@ -35,6 +37,13 @@ public interface MeetingService {
 	 * @param userId
 	 */
 	public ArrayNode getMyAttendingMeetings(Long userId);
+	
+	/**
+	 * 获取指定的会议的信息
+	 * @param meetingId
+	 * @return
+	 */
+	public JsonResult getMeetingInfo(Long meetingId);
 	
 	
 
