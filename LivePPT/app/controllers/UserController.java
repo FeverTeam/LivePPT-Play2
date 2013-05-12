@@ -1,18 +1,17 @@
 package controllers;
 
-import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.node.ObjectNode;
-
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
-import com.fever.liveppt.models.User;
 
 import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Query;
+import com.fever.liveppt.models.User;
 
 /**
  * 有关用户的数据接口

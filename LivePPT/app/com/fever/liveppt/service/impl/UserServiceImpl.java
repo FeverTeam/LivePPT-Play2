@@ -2,7 +2,6 @@ package com.fever.liveppt.service.impl;
 
 import org.codehaus.jackson.node.ObjectNode;
 
-import play.Logger;
 import play.libs.Json;
 
 import com.fever.liveppt.models.User;
