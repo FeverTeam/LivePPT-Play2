@@ -3,6 +3,9 @@ package com.fever.liveppt.service.impl;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 
+import play.Logger;
+import play.cache.Cache;
+
 import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
@@ -68,6 +71,16 @@ public class MeetingServiceImpl implements MeetingService {
 		} else {
 			resultJson = JsonResult.genResultJson(true, "", meeting.toJson());
 		}
+		return resultJson;
+	}
+
+	@Override
+	public JsonResult setMeetingPageIndex(Long meetingId, Long pageIndex) {
+		// TODO Auto-generated method stub		
+		String cacheKey=meetingId.toString();
+		Logger.info(meetingId + "-" + pageIndex);
+		Cache.set(cacheKey, pageIndex);
+		JsonResult resultJson = JsonResult.genResultJson(true, "", null);		
 		return resultJson;
 	}
 

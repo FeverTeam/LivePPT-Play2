@@ -70,12 +70,14 @@ GET		/app/getPptPage/:pptId/:pageIndex	@controllers.app.App_PptController.getPpt
 ## 会议接口 ##
 
 #获取用户所有发起会议的列表
-GET 	/app/getFoundedMeetings 			@controllers.app.App_MeetingController.getMyFoundedMeetings()
+GET 	/app/getMyFoundedMeetings 			@controllers.app.App_MeetingController.getMyFoundedMeetings()
 
 #获取用户所有观看会议的列表
-GET 	/app/getAttendingMeetings 			@controllers.app.App_MeetingController.getMyAttendingMeetings()
+GET 	/app/getMyAttendingMeetings 		@controllers.app.App_MeetingController.getMyAttendingMeetings()
 
 #获取指定会议的信息
 GET 	/app/getMeetingInfo/:meetingId		@controllers.app.App_MeetingController.getMeetingInfo(meetingId:Long)
 
+#设置会议直播PPT的页码
+POST 	/app/setMeetingPageIndex/:meetingId/:pageIndex @controllers.app.App_MeetingController.setMeetingPageIndex(meetingId:Long, pageIndex:Long)
 

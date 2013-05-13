@@ -71,5 +71,18 @@ public class App_MeetingController extends Controller {
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
+	
+	/**
+	 * 设置会议的直播PPT页码
+	 * @param meetingId
+	 * @param pageIndex
+	 * @return
+	 */
+	public Result setMeetingPageIndex(Long meetingId, Long pageIndex) {
+		Logger.info(meetingId+"+"+pageIndex);
+		JsonResult resultJson = meetingService.setMeetingPageIndex(meetingId, pageIndex);
+		Logger.info(resultJson.toString());
+		return ok(resultJson);
+	}
 
 }

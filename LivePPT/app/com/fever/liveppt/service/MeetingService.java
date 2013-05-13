@@ -46,5 +46,11 @@ public interface MeetingService {
 	public JsonResult getMeetingInfo(Long meetingId);
 	
 	
-
+	/**
+	 * 设置会议的直播PPT页码
+	 * @param meetingId
+	 * @param pageIndex
+	 * @return
+	 */
+	public JsonResult setMeetingPageIndex(Long meetingId, Long pageIndex);
 }
