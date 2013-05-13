@@ -26,10 +26,10 @@ public class App_UserController extends Controller {
 		
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
-		if (keySet.contains("email")){
+		if (!keySet.contains("email")){
 			return ok(JsonResult.genResultJson(false, "email字段不存在。", null));
 		}
-		if (keySet.contains("password")){
+		if (!keySet.contains("password")){
 			return ok(JsonResult.genResultJson(false, "password字段不存在。", null));
 		}
 

@@ -27,7 +27,7 @@ public class App_MeetingController extends Controller {
 		
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
-		if (keySet.contains("userId")){
+		if (!keySet.contains("userId")){
 			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
 		}
 		
@@ -48,7 +48,7 @@ public class App_MeetingController extends Controller {
 		
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
-		if (keySet.contains("userId")) {
+		if (!keySet.contains("userId")) {
 			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
 		}
 		
