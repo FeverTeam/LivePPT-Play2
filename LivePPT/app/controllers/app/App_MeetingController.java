@@ -31,7 +31,9 @@ public class App_MeetingController extends Controller {
 			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
 		}
 		
+		//获取参数
 		Long userId = Long.parseLong(params.get("userId")[0]);
+		
 		ArrayNode attendingMeetingsArrayNode = meetingService
 				.getMyAttendingMeetings(userId);
 		ObjectNode resultJson = JsonResult.genResultJson(true, attendingMeetingsArrayNode);
@@ -52,7 +54,9 @@ public class App_MeetingController extends Controller {
 			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
 		}
 		
+		//获取参数
 		Long userId = Long.parseLong(params.get("userId")[0]);
+		
 		ArrayNode foundedMeetingsArrayNode = meetingService
 				.getMyFoundedMeetings(userId);
 		ObjectNode resultJson = JsonResult.genResultJson(true, foundedMeetingsArrayNode);
@@ -79,7 +83,6 @@ public class App_MeetingController extends Controller {
 	 * @return
 	 */
 	public Result setMeetingPageIndex(Long meetingId, Long pageIndex) {
-		Logger.info(meetingId+"+"+pageIndex);
 		JsonResult resultJson = meetingService.setMeetingPageIndex(meetingId, pageIndex);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);

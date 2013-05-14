@@ -1,6 +1,8 @@
 package controllers.app;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -25,13 +27,22 @@ public class App_PptController extends Controller {
 	 * @return
 	 */
 	public Result getPptList() {
+		Map<String, String[]> params = request().queryString();
 		// Map<String, String[]> params = request().body().asFormUrlEncoded();
-		// Long userId = Long.parseLong(params.get("userId")[0]);
-		Long userId = Long.parseLong(request().getQueryString("userId"));
-		ObjectNode resultJson;
+		
+		//检查必须的参数是否存在
+		Set<String> keySet = params.keySet();
+		if (!keySet.contains("userId")) {
+			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
+		}
+		
+		//获取参数
+		Long userId = Long.parseLong(params.get("userId")[0]);
+		
 		ArrayNode pptArrayNode = pptService.getPptList(userId);
-		resultJson = JsonResult.genResultJson(true, pptArrayNode);
-		Logger.info(Json.stringify(resultJson));
+		
+		ObjectNode resultJson = JsonResult.genResultJson(true, pptArrayNode);
+		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
 	
