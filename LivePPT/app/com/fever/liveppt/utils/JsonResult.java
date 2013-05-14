@@ -23,8 +23,7 @@ public class JsonResult extends ObjectNode {
 	 * @return
 	 */
 	public static JsonResult genResultJson(Boolean isSuccess, String message, JsonNode dataNode) {
-		JsonResult json = new JsonResult(isSuccess, message, dataNode);
-		return json;
+		return new JsonResult(isSuccess, message, dataNode);
 	}
 	
 	/**
@@ -34,8 +33,21 @@ public class JsonResult extends ObjectNode {
 	 * @return
 	 */
 	public static JsonResult genResultJson(Boolean isSuccess, JsonNode dataNode) {
-		JsonResult json = new JsonResult(isSuccess, "", dataNode);
-		return json;
+		return new JsonResult(isSuccess, dataNode);
+	}
+	
+	//Constructors
+	
+	public JsonResult(Boolean isSuccess){
+		this(isSuccess, "", null);
+	}
+	
+	public JsonResult(Boolean isSuccess, String message){
+		this(isSuccess, message, null);
+	}
+	
+	public JsonResult(Boolean isSuccess, JsonNode dataNode){
+		this(isSuccess, "", dataNode);
 	}
 	
 	
