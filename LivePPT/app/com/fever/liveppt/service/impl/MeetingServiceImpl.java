@@ -67,9 +67,9 @@ public class MeetingServiceImpl implements MeetingService {
 		JsonResult resultJson;
 		Meeting meeting = Meeting.find.byId(meetingId);
 		if (meeting==null){
-			resultJson = JsonResult.genResultJson(false, "没有该会议。", null);
+			resultJson = new JsonResult(false, "没有该会议。");
 		} else {
-			resultJson = JsonResult.genResultJson(true, "", meeting.toJson());
+			resultJson = new JsonResult(true, "", meeting.toJson());
 		}
 		return resultJson;
 	}
@@ -80,7 +80,7 @@ public class MeetingServiceImpl implements MeetingService {
 		String cacheKey=meetingId.toString();
 		Logger.info(meetingId + "-" + pageIndex);
 		Cache.set(cacheKey, pageIndex);
-		JsonResult resultJson = JsonResult.genResultJson(true, "", null);		
+		JsonResult resultJson = new JsonResult(true);		
 		return resultJson;
 	}
 

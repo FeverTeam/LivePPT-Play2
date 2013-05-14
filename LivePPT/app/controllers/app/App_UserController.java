@@ -27,10 +27,10 @@ public class App_UserController extends Controller {
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
 		if (!keySet.contains("email")){
-			return ok(JsonResult.genResultJson(false, "email字段不存在。", null));
+			return ok(new JsonResult(false, "email字段不存在。", null));
 		}
 		if (!keySet.contains("password")){
-			return ok(JsonResult.genResultJson(false, "password字段不存在。", null));
+			return ok(new JsonResult(false, "password字段不存在。", null));
 		}
 
 		// 获取参数		
@@ -56,14 +56,14 @@ public class App_UserController extends Controller {
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
 		if (!keySet.contains("email")){
-			return ok(JsonResult.genResultJson(false, "email字段不存在。", null));
+			return ok(new JsonResult(false, "email字段不存在。"));
 		}
 		if (!keySet.contains("password")){
-			return ok(JsonResult.genResultJson(false, "password字段不存在。", null));
+			return ok(new JsonResult(false, "password字段不存在。"));
 		}
 		if (!keySet.contains("displayName")){
 			Logger.info("dis");
-			return ok(JsonResult.genResultJson(false, "displayName字段不存在。", null));
+			return ok(new JsonResult(false, "displayName字段不存在。"));
 		}
 		
 		// 获取参数		

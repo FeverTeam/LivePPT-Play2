@@ -8,7 +8,6 @@ import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -33,7 +32,7 @@ public class App_PptController extends Controller {
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
 		if (!keySet.contains("userId")) {
-			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
+			return ok(new JsonResult(false, "userId字段不存在"));
 		}
 		
 		//获取参数
@@ -41,7 +40,7 @@ public class App_PptController extends Controller {
 		
 		ArrayNode pptArrayNode = pptService.getPptList(userId);
 		
-		ObjectNode resultJson = JsonResult.genResultJson(true, pptArrayNode);
+		ObjectNode resultJson = new JsonResult(true, pptArrayNode);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}

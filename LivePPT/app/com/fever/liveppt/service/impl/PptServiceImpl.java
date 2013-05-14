@@ -73,11 +73,9 @@ public class PptServiceImpl implements PptService {
 		ArrayNode pptArrayNode = new ArrayNode(JsonNodeFactory.instance);
 		User user = User.find.byId(UserId);
 		if (user!=null){
-			List<Ppt> ppts = user.ppts;			 
-			int index=0;
+			List<Ppt> ppts = user.ppts;
 			for (Ppt ppt : ppts){
 				pptArrayNode.add(ppt.toJsonNode());
-				index++;
 			}			
 		}
 		return pptArrayNode;
@@ -88,9 +86,9 @@ public class PptServiceImpl implements PptService {
 		// TODO Auto-generated method stub
 		Ppt ppt = Ppt.find.byId(pptId);
 		if (ppt==null){
-			return JsonResult.genResultJson(false, "不存在该PPT", null);
+			return new JsonResult(false, "不存在该PPT");
 		} else {
-			return JsonResult.genResultJson(true, ppt.toJsonNode());
+			return new JsonResult(true, ppt.toJsonNode());
 		}
 	}
 

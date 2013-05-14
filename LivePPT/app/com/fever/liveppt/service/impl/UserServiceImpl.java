@@ -25,14 +25,14 @@ public class UserServiceImpl implements UserService {
 			data.put("displayName", user.displayname);
 
 			// 封装返回信息
-			jsonNode = JsonResult.genResultJson(true, data);
+			jsonNode = new JsonResult(true, data);
 		} else {
 			// 验证失败
 			ObjectNode data = Json.newObject();
 			data.put("message", "用户名/密码不正确，或未注册。");
 
 			// 封装返回信息
-			jsonNode = JsonResult.genResultJson(false, data);
+			jsonNode = new JsonResult(false, data);
 		}
 		
 		return jsonNode;
@@ -46,12 +46,12 @@ public class UserServiceImpl implements UserService {
 		List<User> sameUsers = User.find.where().eq("email", email).findList();
 		if (sameUsers.size()!=0){
 			//注册失败，已存在相同email帐号的用户
-			return JsonResult.genResultJson(false, "以存在相同Email的帐号。", null);
+			return new JsonResult(false, "以存在相同Email的帐号。", null);
 		} else {
 			//注册新用户
 			User user = new User(email, password, displayName);
 			user.save();
-			return JsonResult.genResultJson(true, "注册成功", null);
+			return new JsonResult(true, "注册成功", null);
 		}
 	}
 

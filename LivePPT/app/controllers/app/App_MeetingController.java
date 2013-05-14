@@ -28,7 +28,7 @@ public class App_MeetingController extends Controller {
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
 		if (!keySet.contains("userId")){
-			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
+			return ok(new JsonResult(false, "userId字段不存在"));
 		}
 		
 		//获取参数
@@ -36,7 +36,7 @@ public class App_MeetingController extends Controller {
 		
 		ArrayNode attendingMeetingsArrayNode = meetingService
 				.getMyAttendingMeetings(userId);
-		ObjectNode resultJson = JsonResult.genResultJson(true, attendingMeetingsArrayNode);
+		ObjectNode resultJson = new JsonResult(true, attendingMeetingsArrayNode);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
@@ -51,7 +51,7 @@ public class App_MeetingController extends Controller {
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
 		if (!keySet.contains("userId")) {
-			return ok(JsonResult.genResultJson(false, "userId字段不存在", null));
+			return ok(new JsonResult(false, "userId字段不存在"));
 		}
 		
 		//获取参数
@@ -59,7 +59,7 @@ public class App_MeetingController extends Controller {
 		
 		ArrayNode foundedMeetingsArrayNode = meetingService
 				.getMyFoundedMeetings(userId);
-		ObjectNode resultJson = JsonResult.genResultJson(true, foundedMeetingsArrayNode);
+		ObjectNode resultJson = new JsonResult(true, foundedMeetingsArrayNode);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
