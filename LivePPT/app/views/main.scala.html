@@ -59,15 +59,22 @@
     <div class="container-narrow">
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
-        <li><a href="/">首页</a></li>
-        <li><a href="/myppt">我的PPT</a></li>
-        <li><a href="/mymeeting">会议列表</a></li>
+        <li id="index"><a href="/">首页</a></li>
+        <li id="myppt"><a href="/myppt">我的PPT</a></li>
+        <li id="mymeeting"><a href="/mymeeting">会议列表</a></li>
+        <li id="appDownload"><a href="/appDownload">获取应用</a></li>
+        <li id="aboutUs"><a href="/aboutUs">关于我们</a></li>
         </ul>
         <h3 class="muted">LivePPT</h3>
       </div>
 
       <hr>
     	@content
+      <hr>
+
+      <div class="footer">
+        <p>&copy; 梁博文 & Fever Team 2013 <a target="_blank" href="http://weibo.com/feverteam"></a></p>
+      </div>
     </div> <!-- /container -->
 
     <script src="/assets/js/jquery-1.9.1.min.js"></script>

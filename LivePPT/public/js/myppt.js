@@ -2,6 +2,9 @@ define(function(require, exports, module) {
 
 	console.log("myppt");
 
+  $('li#myppt').addClass('active');
+
+
 	// require('uploadify');
     require('uploadifive');
 

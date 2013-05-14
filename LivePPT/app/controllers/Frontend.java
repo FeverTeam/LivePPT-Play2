@@ -3,9 +3,6 @@ package controllers;
 import java.util.LinkedList;
 import java.util.List;
 
-import play.Logger;
-import play.api.Application;
-import play.api.Play;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
@@ -102,6 +99,14 @@ public class Frontend extends Controller {
 		Meeting meeting = Meeting.find.byId(meetingId);
 		Ppt ppt = meeting.ppt;
 		return ok(views.html.viewMeeting.render(null, meeting, ppt));
+	}	
+	
+	public static Result appDownload(){
+		return ok(views.html.appDownload.render());
+	}
+	
+	public static Result aboutUs(){
+		return ok(views.html.aboutUs.render());
 	}
 	
 }

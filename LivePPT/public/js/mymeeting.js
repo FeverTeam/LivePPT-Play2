@@ -1,6 +1,8 @@
 define(function(require, exports, module) {
 	console.log("mymeeting");
 
+	$('li#mymeeting').addClass('active');
+
 	var
 	modalPptList = $('#modal-ppt-list'),
 	modalPptList_body = $('#modal-ppt-list .modal-body'),
