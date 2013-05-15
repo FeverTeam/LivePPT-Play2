@@ -22,7 +22,8 @@ public class App_UserController extends Controller {
 	 * @return
 	 */
 	public Result login() {
-		Map<String, String[]> params = request().body().asFormUrlEncoded();
+		/*Map<String, String[]> params = request().body().asFormUrlEncoded();*/
+		Map<String, String[]> params = request().queryString();
 		
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
