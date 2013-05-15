@@ -28,6 +28,7 @@ GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
 # Data
 POST 	/signup						controllers.UserController.signup()
 POST	/login						controllers.UserController.login()
+GET 	/logout 					controllers.UserController.logout()
 
 POST	/convertstatus				@controllers.PptController.convertstatus()
 

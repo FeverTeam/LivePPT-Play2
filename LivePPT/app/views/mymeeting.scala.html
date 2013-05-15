@@ -1,8 +1,10 @@
-@(title: String = "mymeeting", myFoundedMeetingList: List[com.fever.liveppt.models.Meeting], myAttendingMeetingList: List[com.fever.liveppt.models.Meeting])
+@(title: String = "mymeeting", user: com.fever.liveppt.models.User, myFoundedMeetingList: List[com.fever.liveppt.models.Meeting], myAttendingMeetingList: List[com.fever.liveppt.models.Meeting])
 
 @main(name="mymeeting", title) {
 
 }{
+	<p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>
+	<br><br>
 	<h2>我主持的会议</h2>
 	<p>我共发起了@myFoundedMeetingList.size()个会议。</p>
 	<button class="btn" id="btn-found-new-meeting">发起会议</button>

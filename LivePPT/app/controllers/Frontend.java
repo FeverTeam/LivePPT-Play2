@@ -41,16 +41,15 @@ public class Frontend extends Controller {
 	
 	@With(CheckLoginAction.class)
 	public static Result myppt(){
-		String displayname = session("displayname");
+		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
 		Long userId = User.genUserIdFromSession(ctx().session());
 		List<Ppt> ppts = User.find.byId(userId).ppts;
-		return ok(myppt.render(null, displayname, ppts));
+		return ok(myppt.render(null, user, ppts));
 	}
 	
 	@With(CheckLoginAction.class)
 	public static Result mymeeting(){
-		Long userId = User.genUserIdFromSession(ctx().session());
-		User user = User.find.byId(userId);
+		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
 		
 		List<Meeting> myFoundedMeetingList = user.myFoundedMeeting;
 		List<Meeting> myAttendingMeetingList = new LinkedList<Meeting>();
@@ -58,7 +57,7 @@ public class Frontend extends Controller {
 		for (Attender attendding : attendents){
 			myAttendingMeetingList.add(attendding.meeting);
 		}
-		return ok(views.html.mymeeting.render(null, myFoundedMeetingList, myAttendingMeetingList));
+		return ok(views.html.mymeeting.render(null, user, myFoundedMeetingList, myAttendingMeetingList));
 	}
 	
 	public static Result pptListForMeeting(){

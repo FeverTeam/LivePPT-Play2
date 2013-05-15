@@ -88,4 +88,9 @@ public class UserController extends Controller {
 			return ok(result);
 		}
 	}
+	
+	public static Result logout(){
+		session().remove("email");
+		return Controller.redirect(controllers.routes.Frontend.index());
+	}
 }
