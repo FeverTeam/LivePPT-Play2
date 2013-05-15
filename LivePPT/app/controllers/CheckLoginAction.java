@@ -1,5 +1,7 @@
 package controllers;
 
+import com.fever.liveppt.models.User;
+
 import play.Logger;
 import play.mvc.Action;
 import play.mvc.Http;
@@ -17,11 +19,17 @@ public class CheckLoginAction extends Action.Simple {
 	private static String URL_LOGIN = controllers.routes.Frontend.login().url();
 	private static String URL_SIGNUP = controllers.routes.Frontend.signup().url();
 	private static String URL_MYMEETING = controllers.routes.Frontend.mymeeting().url();
+	
+	public static String KEY_CTX_ARG_USER = "user";
 
 	public Result call(Http.Context ctx) throws Throwable {
 
 		// 判断是否已经登陆
-		if (isLogined(ctx)) {
+		User user = getUser(ctx);
+		if (user!=null) {
+			//将User放入ctx
+			ctx.args.put(KEY_CTX_ARG_USER, user);
+			
 			// 已登录，则跳转到myppt页面
 			String requestUrl = ctx.request().uri();
 			// 判断是否请求myppt页面，避免多层重定向
@@ -58,7 +66,7 @@ public class CheckLoginAction extends Action.Simple {
 	 *            传入Http.Context
 	 * @return
 	 */
-	public static boolean isLogined(Http.Context ctx) {
+	public static User getUser(Http.Context ctx) {
 		// 获取session
 		Session sess = ctx.session();
 
@@ -68,10 +76,10 @@ public class CheckLoginAction extends Action.Simple {
 		// 若字段不存在则判定为未登录，否则为已登录
 		if (email == null || email.equals("")) {
 			Logger.info("Not logined!");
-			return false;
+			return null;
 		} else {
 			Logger.info("Logined " + email);
-			return true;
+			return User.find.where().eq("email", email).findUnique();
 		}
 	}
 }

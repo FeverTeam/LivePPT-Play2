@@ -1,11 +1,12 @@
-@(title: String = "myppt", displayname: String = "", ppts: List[com.fever.liveppt.models.Ppt])
+@(title: String = "myppt", user: com.fever.liveppt.models.User, ppts: List[com.fever.liveppt.models.Ppt])
 
 
 
 @main(name="myppt", title) {
 
 }{ 
-	<h2>@displayname 的PPT</h2>
+  <p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>
+  <br><br>
   <input type="file" name="file_upload" id="file_upload" />
   <div>你有@ppts.size个PPT！</div>
   <br><br>
