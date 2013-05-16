@@ -24,7 +24,7 @@ import com.fever.liveppt.models.User;
 public class Frontend extends Controller {
 
 	public static Result index() {
-		return ok(index.render(null));
+		return ok(index.render("LivePPT"));
 	}
 
 	@With(CheckLoginAction.class)
