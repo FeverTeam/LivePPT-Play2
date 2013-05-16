@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
 			// 验证成功
 			ObjectNode data = Json.newObject();
 			data.put("userId", user.id);
-			data.put("email", user.email);
 			data.put("displayName", user.displayname);
 
 			// 封装返回信息
@@ -46,7 +45,24 @@ public class UserServiceImpl implements UserService {
 		List<User> sameUsers = User.find.where().eq("email", email).findList();
 		if (sameUsers.size()!=0){
 			//注册失败，已存在相同email帐号的用户
-			return new JsonResult(false, "以存在相同Email的帐号。", null);
+			return new JsonResult(false, "已存在相同Email的帐号。", null);
+		} else {
+			//注册新用户
+			User user = new User(email, password, displayName);
+			user.save();
+			return new JsonResult(true, "注册成功", null);
+		}
+	}
+
+	@Override
+	public JsonResult logout(String email, String password, String displayName) {
+		// TODO Auto-generated method stub
+		
+		//判断是否已存在相同用户
+		List<User> sameUsers = User.find.where().eq("email", email).findList();
+		if (sameUsers.size()!=0){
+			//注册失败，已存在相同email帐号的用户
+			return new JsonResult(false, "已存在相同Email的帐号。", null);
 		} else {
 			//注册新用户
 			User user = new User(email, password, displayName);
