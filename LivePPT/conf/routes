@@ -28,6 +28,7 @@ GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
 # Data
 POST 	/signup						controllers.UserController.signup()
 POST	/login						controllers.UserController.login()
+GET 	/logout 					controllers.UserController.logout()
 
 POST	/convertstatus				@controllers.PptController.convertstatus()
 
@@ -53,7 +54,7 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 ## 用户接口 ##
 
 #用户登录接口
-POST 	/app/login							@controllers.app.App_UserController.login()
+GET 	/app/login							@controllers.app.App_UserController.login()
 
 #用户注册接口
 POST 	/app/register 						@controllers.app.App_UserController.register()
