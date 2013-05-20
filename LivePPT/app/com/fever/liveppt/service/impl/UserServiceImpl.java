@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 			} else {
 
 				// 封装返回信息
-				jsonNode = new JsonResult(false, StatusCode.PASSWORD_ERROR).setMessage("密码错误");
+				jsonNode = new JsonResult(false, StatusCode.USER_PASSWORD_ERROR).setMessage("密码错误");
 			}	
 		}
 		return jsonNode;

@@ -13,6 +13,7 @@ import play.mvc.Result;
 
 import com.fever.liveppt.service.PptService;
 import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.utils.StatusCode;
 import com.google.inject.Inject;
 
 public class App_PptController extends Controller {
@@ -39,9 +40,8 @@ public class App_PptController extends Controller {
 		//获取参数
 		Long userId = Long.parseLong(params.get("userId")[0]);
 		
-		ArrayNode pptArrayNode = pptService.getPptList(userId);
-		
-		ObjectNode resultJson = new JsonResult(true, pptArrayNode);
+		//获取ppt
+		ObjectNode resultJson = pptService.getPptList(userId);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
