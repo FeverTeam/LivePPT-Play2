@@ -27,14 +27,15 @@ public class App_PptController extends Controller {
 	 */
 	public Result getPptList() {
 		Map<String, String[]> params = request().queryString();
-		// Map<String, String[]> params = request().body().asFormUrlEncoded();
 		
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
+		if (keySet==null)
+			return ok(new JsonResult(false, "","无字段"));
 		if (!keySet.contains("userId")) {
-			return ok(new JsonResult(false, "userId字段不存在"));
+			return ok(new JsonResult(false, "","userId字段不存在"));
 		}
-		
+
 		//获取参数
 		Long userId = Long.parseLong(params.get("userId")[0]);
 		
