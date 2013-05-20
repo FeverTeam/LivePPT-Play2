@@ -86,7 +86,7 @@ public class PptServiceImpl implements PptService {
 		// TODO Auto-generated method stub
 		Ppt ppt = Ppt.find.byId(pptId);
 		if (ppt==null){
-			return new JsonResult(false, "不存在该PPT");
+			return new JsonResult(false, "","不存在该PPT");
 		} else {
 			return new JsonResult(true, ppt.toJsonNode());
 		}
