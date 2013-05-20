@@ -28,6 +28,6 @@ public interface PptService {
 	 * @param userId
 	 * @return JSON格式PPT信息列表
 	 */
-	public ArrayNode getPptList(Long userId);
+	public JsonResult getPptList(Long userId);
 
 }
