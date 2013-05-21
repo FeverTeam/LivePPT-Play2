@@ -1,7 +1,5 @@
 package com.fever.liveppt.service.impl;
 
-import java.util.List;
-
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.libs.Json;

@@ -23,7 +23,7 @@ public class JsonResult extends ObjectNode {
 	 * @param isSuccess 是否执行成功
 	 */
 	public JsonResult(Boolean isSuccess){
-		this(isSuccess, "0000", null,"");
+		this(isSuccess, StatusCode.NONE, null,"");
 	}
 	
 	/**
@@ -31,7 +31,7 @@ public class JsonResult extends ObjectNode {
 	 * @param isSuccess 是否执行成功
 	 * @param statusCode 状态码
 	 */
-	public JsonResult(Boolean isSuccess, String statusCode){
+	public JsonResult(Boolean isSuccess, Integer statusCode){
 		this(isSuccess, statusCode, null,"");
 	}
 	
@@ -41,7 +41,7 @@ public class JsonResult extends ObjectNode {
 	 * @param dataNode JsonNode类型的数据
 	 */
 	public JsonResult(Boolean isSuccess, JsonNode dataNode){
-		this(isSuccess, "0000", dataNode,"");
+		this(isSuccess, StatusCode.NONE, dataNode,"");
 	}
 	
 
@@ -51,12 +51,8 @@ public class JsonResult extends ObjectNode {
 	 * @param statusCode 状态码
 	 * @param dataNode JsonNode类型的数据
 	 */
-	public JsonResult(Boolean isSuccess, String statusCode, JsonNode dataNode){
-		super(JsonNodeFactory.instance);
-		this.setIsSuccess(isSuccess);
-		this.setStatusCode(statusCode);
-		this.setData(dataNode);
-		this.setMessage("");
+	public JsonResult(Boolean isSuccess, Integer statusCode, JsonNode dataNode){
+		this(isSuccess, statusCode, dataNode, "");
 	}
 
 	/**
@@ -65,8 +61,8 @@ public class JsonResult extends ObjectNode {
 	 * @param statusCode 状态码
 	 * @param message 附加信息
 	 */
-	public JsonResult(Boolean isSuccess, String statusCode,String message){
-		this(isSuccess, statusCode, null,message);
+	public JsonResult(Boolean isSuccess, Integer statusCode,String message){
+		this(isSuccess, statusCode, null, message);
 	}
 
 	/**
@@ -76,8 +72,9 @@ public class JsonResult extends ObjectNode {
 	 * @param dataNode JsonNode类型的数据
 	 * @param message 附加信息
 	 */
-	public JsonResult(Boolean isSuccess, String statusCode, JsonNode dataNode,String message){
+	public JsonResult(Boolean isSuccess, Integer statusCode, JsonNode dataNode,String message){
 		super(JsonNodeFactory.instance);
+		
 		this.setIsSuccess(isSuccess);
 		this.setStatusCode(statusCode);
 		this.setData(dataNode);
@@ -118,7 +115,7 @@ public class JsonResult extends ObjectNode {
 		return this.get(KEY_STATUS_CODE).getTextValue();
 	}
 
-	public void setStatusCode(String statusCode)
+	public void setStatusCode(Integer statusCode)
 	{
 		this.put(KEY_STATUS_CODE,statusCode);
 	}

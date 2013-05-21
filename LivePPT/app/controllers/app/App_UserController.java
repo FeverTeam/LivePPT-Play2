@@ -28,12 +28,12 @@ public class App_UserController extends Controller {
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
 		if (keySet==null)
-			return ok(new JsonResult(false, "","无字段"));
+			return ok(new JsonResult(false, null,"无字段"));
 		if (!keySet.contains("email")){
-			return ok(new JsonResult(false,"", "email字段不存在。"));
+			return ok(new JsonResult(false, null, "email字段不存在。"));
 		}
 		if (!keySet.contains("password")){
-			return ok(new JsonResult(false,"", "password字段不存在。"));
+			return ok(new JsonResult(false, null, "password字段不存在。"));
 		}
 
 		// 获取参数		
@@ -58,15 +58,15 @@ public class App_UserController extends Controller {
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
 		if (keySet==null)
-			return ok(new JsonResult(false,"","无字段"));
+			return ok(new JsonResult(false, null,"无字段"));
 		if (!keySet.contains("email")){
-			return ok(new JsonResult(false,"","email字段不存在。"));
+			return ok(new JsonResult(false, null,"email字段不存在。"));
 		}
 		if (!keySet.contains("password")){
-			return ok(new JsonResult(false,"", "password字段不存在。"));
+			return ok(new JsonResult(false, null, "password字段不存在。"));
 		}
 		if (!keySet.contains("displayName")){
-			return ok(new JsonResult(false,"", "displayName字段不存在。"));
+			return ok(new JsonResult(false, null, "displayName字段不存在。"));
 		}
 		
 		// 获取参数		

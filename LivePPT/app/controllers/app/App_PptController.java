@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
@@ -13,7 +12,6 @@ import play.mvc.Result;
 
 import com.fever.liveppt.service.PptService;
 import com.fever.liveppt.utils.JsonResult;
-import com.fever.liveppt.utils.StatusCode;
 import com.google.inject.Inject;
 
 public class App_PptController extends Controller {
@@ -32,9 +30,9 @@ public class App_PptController extends Controller {
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
 		if (keySet==null)
-			return ok(new JsonResult(false, "","无字段"));
+			return ok(new JsonResult(false, null,"无字段"));
 		if (!keySet.contains("userId")) {
-			return ok(new JsonResult(false, "","userId字段不存在"));
+			return ok(new JsonResult(false, null,"userId字段不存在"));
 		}
 
 		//获取参数
