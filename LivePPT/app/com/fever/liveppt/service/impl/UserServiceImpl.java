@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
 				ObjectNode data = Json.newObject();
 				// 密码验证成功
 				data.put("userId", user.id);
+				data.put("email", user.email);
 				data.put("displayName", user.displayname);
 
 				// 封装返回信息
