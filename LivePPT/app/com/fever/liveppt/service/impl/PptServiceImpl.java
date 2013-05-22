@@ -19,6 +19,7 @@ import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
 import com.fever.liveppt.utils.AwsConnGenerator;
 import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.utils.StatusCode;
 
 public class PptServiceImpl implements PptService {
 
@@ -68,17 +69,29 @@ public class PptServiceImpl implements PptService {
 	}
 
 	@Override
-	public ArrayNode getPptList(Long UserId) {
+	public JsonResult getPptList(Long UserId) {
+		JsonResult resultJson ;
 		// TODO Auto-generated method stub
 		ArrayNode pptArrayNode = new ArrayNode(JsonNodeFactory.instance);
 		User user = User.find.byId(UserId);
 		if (user!=null){
 			List<Ppt> ppts = user.ppts;
-			for (Ppt ppt : ppts){
-				pptArrayNode.add(ppt.toJsonNode());
-			}			
+			if (ppts.size()==0)
+			{
+				resultJson = new JsonResult(false, StatusCode.PPT_LIST_NULL);
+			}else 
+			{
+				for (Ppt ppt : ppts){
+					pptArrayNode.add(ppt.toJsonNode());
+				}			
+				resultJson = new JsonResult(true, pptArrayNode);
+			}
+			
+		}else
+		{
+			resultJson = new JsonResult(false, StatusCode.USER_NOT_EXISTED,"用户ID不存在");
 		}
-		return pptArrayNode;
+		return resultJson;
 	}
 
 	@Override
@@ -86,7 +99,7 @@ public class PptServiceImpl implements PptService {
 		// TODO Auto-generated method stub
 		Ppt ppt = Ppt.find.byId(pptId);
 		if (ppt==null){
-			return new JsonResult(false, "不存在该PPT");
+			return new JsonResult(false,StatusCode.PPT_NOT_EXISTED ,"不存在该PPT");
 		} else {
 			return new JsonResult(true, ppt.toJsonNode());
 		}

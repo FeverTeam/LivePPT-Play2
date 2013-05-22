@@ -22,16 +22,18 @@ public class App_UserController extends Controller {
 	 * @return
 	 */
 	public Result login() {
-		/*Map<String, String[]> params = request().body().asFormUrlEncoded();*/
+		//获取get类型的参数
 		Map<String, String[]> params = request().queryString();
 		
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
+		if (keySet==null)
+			return ok(new JsonResult(false, null,"无字段"));
 		if (!keySet.contains("email")){
-			return ok(new JsonResult(false, "email字段不存在。", null));
+			return ok(new JsonResult(false, null, "email字段不存在。"));
 		}
 		if (!keySet.contains("password")){
-			return ok(new JsonResult(false, "password字段不存在。", null));
+			return ok(new JsonResult(false, null, "password字段不存在。"));
 		}
 
 		// 获取参数		
@@ -51,20 +53,20 @@ public class App_UserController extends Controller {
 	 * @return
 	 */
 	public Result register(){
-//		Map<String, String[]> params = request().queryString();
 		Map<String, String[]> params = request().body().asFormUrlEncoded();		
-		
+
 		//检查必须的参数是否存在
 		Set<String> keySet = params.keySet();
+		if (keySet==null)
+			return ok(new JsonResult(false, null,"无字段"));
 		if (!keySet.contains("email")){
-			return ok(new JsonResult(false, "email字段不存在。"));
+			return ok(new JsonResult(false, null,"email字段不存在。"));
 		}
 		if (!keySet.contains("password")){
-			return ok(new JsonResult(false, "password字段不存在。"));
+			return ok(new JsonResult(false, null, "password字段不存在。"));
 		}
 		if (!keySet.contains("displayName")){
-			Logger.info("dis");
-			return ok(new JsonResult(false, "displayName字段不存在。"));
+			return ok(new JsonResult(false, null, "displayName字段不存在。"));
 		}
 		
 		// 获取参数		

@@ -81,6 +81,7 @@ public class Ppt extends Model {
 		pptNode.put("time", this.time.toString());
 		pptNode.put("size", this.fileSize);
 		pptNode.put("pageCount", this.pagecount);
+		pptNode.put("isConverted", this.isConverted);
 		return pptNode;
 	}
 }

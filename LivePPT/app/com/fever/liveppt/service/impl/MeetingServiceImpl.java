@@ -67,9 +67,9 @@ public class MeetingServiceImpl implements MeetingService {
 		JsonResult resultJson;
 		Meeting meeting = Meeting.find.byId(meetingId);
 		if (meeting==null){
-			resultJson = new JsonResult(false, "没有该会议。");
+			resultJson = new JsonResult(false, null, "没有该会议。");
 		} else {
-			resultJson = new JsonResult(true, "", meeting.toJson());
+			resultJson = new JsonResult(true, null, meeting.toJson());
 		}
 		return resultJson;
 	}
