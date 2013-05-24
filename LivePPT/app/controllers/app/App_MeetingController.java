@@ -20,6 +20,7 @@ public class App_MeetingController extends Controller {
 
 	/**
 	 * 获取用户所有观看的会议的列表
+	 * @param userId 用户Id
 	 * @return
 	 */
 	public Result getMyAttendingMeetings() {
