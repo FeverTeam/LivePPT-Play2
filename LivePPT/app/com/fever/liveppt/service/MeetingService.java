@@ -18,7 +18,7 @@ public interface MeetingService {
 	 * @param ppt
 	 * @param topic
 	 */
-	public void foundNewMeeting(Long founderId, Long pptId, String topic);
+	public JsonResult foundNewMeeting(Long founderId, Long pptId, String topic);
 	
 	/**
 	 * 删除会议

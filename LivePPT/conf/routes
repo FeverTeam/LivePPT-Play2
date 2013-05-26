@@ -86,3 +86,5 @@ GET 	/app/getMeetingInfo					@controllers.app.App_MeetingController.getMeetingIn
 #设置会议直播PPT的页码
 POST 	/app/setMeetingPageIndex			@controllers.app.App_MeetingController.setMeetingPageIndex()
 
+#建立新的会议
+POST 	/app/foundNewMeeting				@controllers.app.App_MeetingController.foundNewMeeting()
