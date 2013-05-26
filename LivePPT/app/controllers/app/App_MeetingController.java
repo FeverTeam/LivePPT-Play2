@@ -12,6 +12,7 @@ import play.mvc.Result;
 
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.utils.StatusCode;
 import com.google.inject.Inject;
 
 public class App_MeetingController extends Controller {
@@ -83,7 +84,34 @@ public class App_MeetingController extends Controller {
 	 * @param pageIndex
 	 * @return
 	 */
-	public Result setMeetingPageIndex(Long meetingId, Long pageIndex) {
+	public Result setMeetingPageIndex() {
+		Long meetingId;
+		Long pageIndex;
+		// 获取POST参数
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
+
+		Set<String> keySet; 
+
+		// 获取参数并检查必须的参数是否存在
+		try
+		{
+			keySet = params.keySet();
+			meetingId = Long.valueOf(params.get("meetingId")[0]);
+		}catch (Exception e)
+		{
+			System.out.println(e);
+			return ok(new JsonResult(false, StatusCode.MEETING_ID_ERROR, "MeetingId字段错误."));
+		}
+		
+		try
+		{
+			pageIndex = Long.valueOf(params.get("pageIndex")[0]);
+		}catch (Exception e)
+		{
+			System.out.println(e);
+			return ok(new JsonResult(false, StatusCode.MEETING_PAGEINDEX_ERROR, "pageIndex字段错误."));
+		}
+		
 		JsonResult resultJson = meetingService.setMeetingPageIndex(meetingId, pageIndex);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
