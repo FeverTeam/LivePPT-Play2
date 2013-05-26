@@ -110,9 +110,9 @@ public class JsonResult extends ObjectNode {
 		this.put(KEY_DATA, data);
 	}
 
-	public String getStatusCode()
+	public Integer getStatusCode()
 	{
-		return this.get(KEY_STATUS_CODE).getTextValue();
+		return this.get(KEY_STATUS_CODE).getValueAsInt();
 	}
 
 	public void setStatusCode(Integer statusCode)

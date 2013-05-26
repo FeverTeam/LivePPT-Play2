@@ -1,10 +1,9 @@
 package controllers.app;
 
 import java.util.Map;
-import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
 import play.mvc.Controller;
@@ -27,18 +26,19 @@ public class App_MeetingController extends Controller {
 	public Result getMyAttendingMeetings() {
 		Map<String, String[]> params = request().queryString();
 		
-		//检查必须的参数是否存在
-		Set<String> keySet = params.keySet();
-		if (!keySet.contains("userId")){
-			return ok(new JsonResult(false, null, "userId字段不存在"));
-		}
+		JsonResult resultJson;
+		
+		//检查userId
+		resultJson = checkUserId(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);		
 		
 		//获取参数
 		Long userId = Long.parseLong(params.get("userId")[0]);
 		
 		ArrayNode attendingMeetingsArrayNode = meetingService
 				.getMyAttendingMeetings(userId);
-		ObjectNode resultJson = new JsonResult(true, attendingMeetingsArrayNode);
+		resultJson = new JsonResult(true, attendingMeetingsArrayNode);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
@@ -50,18 +50,19 @@ public class App_MeetingController extends Controller {
 	public Result getMyFoundedMeetings(){
 		Map<String, String[]> params = request().queryString();
 		
-		//检查必须的参数是否存在
-		Set<String> keySet = params.keySet();
-		if (!keySet.contains("userId")) {
-			return ok(new JsonResult(false, null, "userId字段不存在"));
-		}
+		JsonResult resultJson;
+		
+		//检查userId
+		resultJson = checkUserId(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);		
 		
 		//获取参数
 		Long userId = Long.parseLong(params.get("userId")[0]);
 		
 		ArrayNode foundedMeetingsArrayNode = meetingService
 				.getMyFoundedMeetings(userId);
-		ObjectNode resultJson = new JsonResult(true, foundedMeetingsArrayNode);
+		resultJson = new JsonResult(true, foundedMeetingsArrayNode);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
@@ -69,11 +70,21 @@ public class App_MeetingController extends Controller {
 
 	/**
 	 * 获取指定会议的信息
-	 * @param meetingId
+	 * 
 	 * @return
 	 */
-	public Result getMeetingInfo(Long meetingId){
-		JsonResult resultJson = meetingService.getMeetingInfo(meetingId);
+	public Result getMeetingInfo(){
+		Map<String, String[]> params = request().queryString();
+		
+		JsonResult resultJson;
+		
+		//检查meetingId
+		resultJson = checkMeetingId(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);
+		
+		Long meetingId = Long.parseLong(params.get("meetingId")[0]);
+		resultJson = meetingService.getMeetingInfo(meetingId);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
@@ -89,32 +100,70 @@ public class App_MeetingController extends Controller {
 		Long pageIndex;
 		// 获取POST参数
 		Map<String, String[]> params = request().body().asFormUrlEncoded();
-
-		Set<String> keySet; 
-
-		// 获取参数并检查必须的参数是否存在
-		try
-		{
-			keySet = params.keySet();
-			meetingId = Long.valueOf(params.get("meetingId")[0]);
-		}catch (Exception e)
-		{
-			System.out.println(e);
-			return ok(new JsonResult(false, StatusCode.MEETING_ID_ERROR, "MeetingId字段错误."));
-		}
+		JsonResult resultJson;
 		
-		try
-		{
-			pageIndex = Long.valueOf(params.get("pageIndex")[0]);
-		}catch (Exception e)
-		{
-			System.out.println(e);
-			return ok(new JsonResult(false, StatusCode.MEETING_PAGEINDEX_ERROR, "pageIndex字段错误."));
-		}
+		resultJson = checkMeetingId(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);
 		
-		JsonResult resultJson = meetingService.setMeetingPageIndex(meetingId, pageIndex);
+		resultJson = checkPageIndex(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);
+		
+		meetingId = Long.valueOf(params.get("meetingId")[0]);
+		pageIndex = Long.valueOf(params.get("pageIndex")[0]);
+		
+		resultJson = meetingService.setMeetingPageIndex(meetingId, pageIndex);
 		Logger.info(resultJson.toString());
 		return ok(resultJson);
 	}
 
+	//数字匹配器
+	Pattern patternNumbers = Pattern.compile("^[-\\+]?[\\d]*$");
+	
+	/**
+	 * 检查userId字段
+	 * @param params
+	 * @return
+	 */
+	JsonResult checkUserId(Map<String, String[]> params)
+	{
+		if (!params.containsKey("userId")){
+			return new JsonResult(false, StatusCode.USER_ID_ERROR, "userId字段错误");
+		}
+		    
+	    if (! patternNumbers.matcher(params.get("userId")[0]).matches())
+	    	return new JsonResult(false, StatusCode.USER_ID_ERROR, "userId字段错误");
+		return new JsonResult(true);
+	}
+	
+	/**
+	 * 检查meetingId字段
+	 * @param params
+	 * @return
+	 */
+	JsonResult checkMeetingId(Map<String, String[]> params)
+	{
+		if (!params.containsKey("meetingId")){
+			return new JsonResult(false, StatusCode.MEETING_ID_ERROR, "meetingId字段错误");
+		}
+		if (! patternNumbers.matcher(params.get("meetingId")[0]).matches())
+			return new JsonResult(false, StatusCode.MEETING_ID_ERROR, "meetingId字段错误");
+		return new JsonResult(true);
+	} 
+	
+	/**
+	 * 检查pageIndex字段
+	 * @param params
+	 * @return
+	 */
+	JsonResult checkPageIndex(Map<String, String[]> params)
+	{
+		if (!params.containsKey("pageIndex")){
+			return new JsonResult(false, StatusCode.MEETING_PAGEINDEX_ERROR, "pageIndex字段错误");
+		}
+		if (! patternNumbers.matcher(params.get("pageIndex")[0]).matches())
+			return new JsonResult(false, StatusCode.MEETING_PAGEINDEX_ERROR, "pageIndex字段错误");
+		return new JsonResult(true);
+	} 
 }
