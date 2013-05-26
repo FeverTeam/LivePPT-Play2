@@ -1,7 +1,9 @@
 package com.fever.liveppt.models;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.persistence.*;
 
@@ -73,12 +75,28 @@ public class Ppt extends Model {
 		this.pagecount = 0;
 	}
 	
+	//默认UTC时间
 	public ObjectNode toJsonNode(){
 		ObjectNode pptNode = Json.newObject();
 		pptNode = Json.newObject();
 		pptNode.put("pptId", this.id);
 		pptNode.put("title", this.title);
 		pptNode.put("time", this.time.toString());
+		pptNode.put("size", this.fileSize);
+		pptNode.put("pageCount", this.pagecount);
+		pptNode.put("isConverted", this.isConverted);
+		return pptNode;
+	}
+	//指定时区
+	//Sample:timeZone = "+8"; 
+	public ObjectNode toJsonNode(String timeZone){
+		ObjectNode pptNode = Json.newObject();
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT"+timeZone));
+		pptNode = Json.newObject();
+		pptNode.put("pptId", this.id);
+		pptNode.put("title", this.title);
+		pptNode.put("time", sdf.format(this.time).toString());
 		pptNode.put("size", this.fileSize);
 		pptNode.put("pageCount", this.pagecount);
 		pptNode.put("isConverted", this.isConverted);
