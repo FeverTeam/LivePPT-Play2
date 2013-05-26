@@ -23,8 +23,13 @@ public class StatusCode {
 	public final static int USER_PASSWORD_ERROR = 1100;
 	//用户不存在
 	public final static int USER_NOT_EXISTED = 1101;
+	//用户email字段错误
+	public final static int USER_EMAIL_ERROR = 1102;	
+	//用户Id字段错误
+	public final static int USER_ID_ERROR = 1103;
 	//用户已存在
 	public final static int USER_EXISTED = 1300;
+
 	
 	//****************PPT类型错误*****************
 	//PPT不存在

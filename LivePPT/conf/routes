@@ -81,7 +81,7 @@ GET 	/app/getMyFoundedMeetings 			@controllers.app.App_MeetingController.getMyFo
 GET 	/app/getMyAttendingMeetings 		@controllers.app.App_MeetingController.getMyAttendingMeetings()
 
 #获取指定会议的信息
-GET 	/app/getMeetingInfo/:meetingId		@controllers.app.App_MeetingController.getMeetingInfo(meetingId:Long)
+GET 	/app/getMeetingInfo					@controllers.app.App_MeetingController.getMeetingInfo()
 
 #设置会议直播PPT的页码
 POST 	/app/setMeetingPageIndex			@controllers.app.App_MeetingController.setMeetingPageIndex()
