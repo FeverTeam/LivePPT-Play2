@@ -15,5 +15,7 @@ public class StatusCode {
 	
 	public final static int PPT_NOT_EXISTED = 2100;
 	public final static int PPT_LIST_NULL = 2200;
+
+	public final static int MEETING_NULL = 3100;
 	
 }

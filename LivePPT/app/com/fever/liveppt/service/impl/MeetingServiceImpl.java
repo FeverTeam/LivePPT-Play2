@@ -12,6 +12,7 @@ import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.utils.StatusCode;
 
 public class MeetingServiceImpl implements MeetingService {
 
@@ -67,9 +68,9 @@ public class MeetingServiceImpl implements MeetingService {
 		JsonResult resultJson;
 		Meeting meeting = Meeting.find.byId(meetingId);
 		if (meeting==null){
-			resultJson = new JsonResult(false, null, "没有该会议。");
+			resultJson = new JsonResult(false, StatusCode.MEETING_NULL, "没有该会议。");
 		} else {
-			resultJson = new JsonResult(true, null, meeting.toJson());
+			resultJson = new JsonResult(true, StatusCode.NONE, meeting.toJson());
 		}
 		return resultJson;
 	}
