@@ -27,6 +27,8 @@ public class StatusCode {
 	public final static int USER_EMAIL_ERROR = 1102;	
 	//用户Id字段错误
 	public final static int USER_ID_ERROR = 1103;
+	//用户昵称错误
+	public final static int USER_DISPLAYNAME_ERROR = 1103;
 	//用户已存在
 	public final static int USER_EXISTED = 1300;
 

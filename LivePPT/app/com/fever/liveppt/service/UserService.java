@@ -12,7 +12,7 @@ public interface UserService {
 	 * @param password
 	 * @return 返回JsonResult格式的信息
 	 */
-	public ObjectNode isPassworrdCorrect(String email, String password);
+	public JsonResult isPassworrdCorrect(String email, String password);
 	
 	/**
 	 * 注册新用户
