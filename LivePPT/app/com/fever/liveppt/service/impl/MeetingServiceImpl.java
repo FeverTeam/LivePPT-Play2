@@ -24,16 +24,19 @@ public class MeetingServiceImpl implements MeetingService {
 	}
 
 	@Override
-	public void foundNewMeeting(Long founderId, Long pptId, String topic) {
+	public JsonResult foundNewMeeting(Long founderId, Long pptId, String topic) {
 		// TODO Auto-generated method stub
 		User founder = User.find.byId(founderId);
 		Ppt ppt = Ppt.find.byId(pptId);
-
+		if (ppt==null)
+			return new JsonResult(false,StatusCode.PPT_NOT_EXISTED);
+		
 		Meeting meeting = new Meeting();
 		meeting.founder = founder;
 		meeting.ppt = ppt;
 		meeting.topic = topic;
 		meeting.save();
+		return new JsonResult(true);
 	}
 
 	@Override

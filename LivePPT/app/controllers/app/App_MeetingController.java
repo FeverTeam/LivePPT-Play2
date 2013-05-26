@@ -9,6 +9,7 @@ import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.StatusCode;
@@ -40,6 +41,35 @@ public class App_MeetingController extends Controller {
 				.getMyAttendingMeetings(userId);
 		resultJson = new JsonResult(true, attendingMeetingsArrayNode);
 		Logger.info(resultJson.toString());
+		return ok(resultJson);
+	}
+	
+	/**
+	 * 建立新的meeting
+	 * @return
+	 */
+	public Result foundNewMeeting() {
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
+		
+		//check userId ,pptId,topic
+		JsonResult resultJson;
+		
+		resultJson = checkUserId(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);
+		
+		resultJson = checkPptId(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);
+		
+		resultJson = checkTopic(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);
+		
+		String topic = params.get("topic")[0];
+		Long pptId = Long.parseLong(params.get("pptid")[0]);
+		Long userId = Long.parseLong(params.get("userId")[0]);
+		resultJson = meetingService.foundNewMeeting(userId, pptId, topic);
 		return ok(resultJson);
 	}
 	
@@ -166,4 +196,33 @@ public class App_MeetingController extends Controller {
 			return new JsonResult(false, StatusCode.MEETING_PAGEINDEX_ERROR, "pageIndex字段错误");
 		return new JsonResult(true);
 	} 
+	
+	/**
+	 * 检查pptId字段
+	 * @param params
+	 * @return
+	 */
+	JsonResult checkPptId(Map<String, String[]> params)
+	{
+		if (!params.containsKey("pptId")){
+			return new JsonResult(false, StatusCode.PPT_ID_ERROR, "pptId错误");
+		}
+		    
+	    if (! patternNumbers.matcher(params.get("pptId")[0]).matches())
+	    	return new JsonResult(false, StatusCode.PPT_ID_ERROR, "pptId错误");
+		return new JsonResult(true);
+	}
+	
+	/**
+	 * 检查topic字段
+	 * @param params
+	 * @return
+	 */
+	JsonResult checkTopic(Map<String, String[]> params)
+	{
+		if (!params.containsKey("topic")){
+			return new JsonResult(false, StatusCode.MEETING_TOPIC_NOT_EXISTED, "topic错误");
+		}
+		return new JsonResult(true);
+	}
 }
