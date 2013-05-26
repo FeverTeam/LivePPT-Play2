@@ -1,11 +1,9 @@
 package controllers.app;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.ObjectNode;
 
 import play.Logger;
 import play.mvc.Controller;
@@ -80,7 +78,7 @@ public class App_MeetingController extends Controller {
 		
 		JsonResult resultJson;
 		
-		//检查userId
+		//检查meetingId
 		resultJson = checkMeetingId(params);
 		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
 			return ok(resultJson);
@@ -122,7 +120,12 @@ public class App_MeetingController extends Controller {
 
 	//数字匹配器
 	Pattern patternNumbers = Pattern.compile("^[-\\+]?[\\d]*$");
-	//检查userId字段
+	
+	/**
+	 * 检查userId字段
+	 * @param params
+	 * @return
+	 */
 	JsonResult checkUserId(Map<String, String[]> params)
 	{
 		if (!params.containsKey("userId")){
@@ -133,7 +136,12 @@ public class App_MeetingController extends Controller {
 	    	return new JsonResult(false, StatusCode.USER_ID_ERROR, "userId字段错误");
 		return new JsonResult(true);
 	}
-	//检查meetingId字段
+	
+	/**
+	 * 检查meetingId字段
+	 * @param params
+	 * @return
+	 */
 	JsonResult checkMeetingId(Map<String, String[]> params)
 	{
 		if (!params.containsKey("meetingId")){
@@ -143,7 +151,12 @@ public class App_MeetingController extends Controller {
 			return new JsonResult(false, StatusCode.MEETING_ID_ERROR, "meetingId字段错误");
 		return new JsonResult(true);
 	} 
-	//检查pageIndex字段
+	
+	/**
+	 * 检查pageIndex字段
+	 * @param params
+	 * @return
+	 */
 	JsonResult checkPageIndex(Map<String, String[]> params)
 	{
 		if (!params.containsKey("pageIndex")){

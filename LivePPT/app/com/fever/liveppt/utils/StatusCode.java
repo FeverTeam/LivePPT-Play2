@@ -30,17 +30,20 @@ public class StatusCode {
 	//用户已存在
 	public final static int USER_EXISTED = 1300;
 
-	
 	//****************PPT类型错误*****************
 	//PPT不存在
 	public final static int PPT_NOT_EXISTED = 2100;
+	//pptId错误
+	public final static int PPT_ID_ERROR = 2101;
+	//ppt的pageIndex字段错误
+	public final static int PPT_PAGEINDEX_ERROR = 2102;
 	//PPT列表为空
 	public final static int PPT_LIST_NULL = 2200;
 	
 	//****************MEETING类型错误**************
 	//meetingId字段错误
 	public final static int MEETING_ID_ERROR = 3100;
-	//pageIndex字段错误
+	//meeting的pageIndex字段错误
 	public final static int MEETING_PAGEINDEX_ERROR = 3102;
 	//根据meetingID查询的meeting不存在
 	public final static int MEETING_NOT_EXISTED = 3200;	
