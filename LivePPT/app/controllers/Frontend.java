@@ -34,7 +34,7 @@ public class Frontend extends Controller {
 	
 	@With(CheckLoginAction.class)
 	public static Result signup(){
-		return ok(signup.render(null));
+		return ok(signup.render());
 	}
 	
 	
