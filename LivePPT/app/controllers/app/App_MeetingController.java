@@ -67,7 +67,7 @@ public class App_MeetingController extends Controller {
 			return ok(resultJson);
 		
 		String topic = params.get("topic")[0];
-		Long pptId = Long.parseLong(params.get("pptid")[0]);
+		Long pptId = Long.parseLong(params.get("pptId")[0]);
 		Long userId = Long.parseLong(params.get("userId")[0]);
 		resultJson = meetingService.foundNewMeeting(userId, pptId, topic);
 		return ok(resultJson);
