@@ -1,8 +1,8 @@
-@(title: String = "myppt", user: com.fever.liveppt.models.User, ppts: List[com.fever.liveppt.models.Ppt])
+@(user: com.fever.liveppt.models.User, ppts: List[com.fever.liveppt.models.Ppt])
 
 
 
-@main(name="myppt", title) {
+@main(name="myppt", "我的PPT") {
 
 }{ 
   <p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>
