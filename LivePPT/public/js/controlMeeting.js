@@ -36,6 +36,8 @@ define(function(require, exports, module) {
 
 		$('.page#'+pre).addClass('hide');
 		$('.page#'+next).addClass('hide');
+
+		setPagination(index);
 	}
 
 	function setPreImg(){
@@ -65,8 +67,14 @@ define(function(require, exports, module) {
 				currentPageIndex: currentPageIndex
 			},
 			success: function(data, textSuccess, jqH){
+				console.log("Set remote page index:"+currentIndex);
 			}
 		})
+	}
+
+	function setPagination(currentPageIndex){
+		$('.pagination li').removeClass('active');
+		$('.pagination li#page'+currentPageIndex).addClass('active');
 	}
 
 

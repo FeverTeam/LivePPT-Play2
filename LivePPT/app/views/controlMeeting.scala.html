@@ -1,23 +1,35 @@
 @(title: String = "controlMeeting", meeting: com.fever.liveppt.models.Meeting, ppt: com.fever.liveppt.models.Ppt)
 
-@main(name="controlMeeting", title) {
+@main(name="controlMeeting", title="控制会议") {
 } {
-	<h3>controlMeeting</h3>
-
-	<p>Meeting ID:@meeting.id</p>
-	<p>Ppt ID:@ppt.id</p>
-
-	<button class="btn" id="prePage">上一页</button>
-	<button class="btn" id="nextPage">下一页</button>
+	<p>控制你的会议 —— 切换的PPT图像会实时同步到同一会议的观看者屏幕中。</p>
+	<br>
+	<h2>@meeting.topic (会议ID:@meeting.id)</h2>
 	
+	<br>
+
+	<div class="btn-group">
+		<button class="btn btn-medium" id="prePage">Pre 上一页</button>
+		<button class="btn btn-medium" id="nextPage">下一页 Next</button>
+	</div>
+
+	<br>
 	
 	<!-- 显示ppt当前页 -->
 	<img id="img-current-page"/>
 
 
 	@for(i <- 1 to ppt.pagecount){
-		<img src="/getpptpage?pptid=@ppt.id&pageid=@i" class="page hide" id="@i"/>
+		<img src="/getpptpage?pptid=@ppt.id&pageid=@i" class="page hide img-polaroid" id="@i"/>
 	}
+
+	<div class="pagination">
+	  <ul>
+	    @for(index <- 1 to ppt.pagecount){
+	    	<li id="page@index"+><a href="#">@index</a></li>
+		}
+	  </ul>
+	</div>
 
 	<div class="hide" id="datadiv" 
 	meetingid="@meeting.id"
