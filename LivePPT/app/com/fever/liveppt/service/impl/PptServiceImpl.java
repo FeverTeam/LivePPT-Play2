@@ -1,13 +1,19 @@
 package com.fever.liveppt.service.impl;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
+import org.imgscalr.Scalr;
 
 import play.cache.Cache;
 
@@ -51,6 +57,22 @@ public class PptServiceImpl implements PptService {
 			}
 			return imgBytes;
 		}
+	}
+	
+	public byte[] getPptPageAsMid(Long pptId, Long pageId) {
+		InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
+		try {
+			BufferedImage img = ImageIO.read(input);
+			img = Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH,
+		               400, 100, Scalr.OP_ANTIALIAS);
+			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+			ImageIO.write(img, "jpg", bStream);
+			return bStream.toByteArray();			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override
