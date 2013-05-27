@@ -66,10 +66,10 @@ POST 	/app/register 						@controllers.app.App_UserController.register()
 GET 	/app/getPptList						@controllers.app.App_PptController.getPptList()
 
 #获取指定PPT的信息
-GET 	/app/getPptInfo/:pptId 				@controllers.app.App_PptController.getPptInfo(pptId:Long)
+GET 	/app/getPptInfo					@controllers.app.App_PptController.getPptInfo()
 
 #获取指定PPT的指定页面的图片
-GET		/app/getPptPage/:pptId/:pageIndex	@controllers.app.App_PptController.getPptPage(pptId:Long, pageIndex:Long)
+GET		/app/getPptPage					@controllers.app.App_PptController.getPptPage()
 
 ################################
 ## 会议接口 ##
@@ -81,8 +81,10 @@ GET 	/app/getMyFoundedMeetings 			@controllers.app.App_MeetingController.getMyFo
 GET 	/app/getMyAttendingMeetings 		@controllers.app.App_MeetingController.getMyAttendingMeetings()
 
 #获取指定会议的信息
-GET 	/app/getMeetingInfo/:meetingId		@controllers.app.App_MeetingController.getMeetingInfo(meetingId:Long)
+GET 	/app/getMeetingInfo					@controllers.app.App_MeetingController.getMeetingInfo()
 
 #设置会议直播PPT的页码
-POST 	/app/setMeetingPageIndex/:meetingId/:pageIndex @controllers.app.App_MeetingController.setMeetingPageIndex(meetingId:Long, pageIndex:Long)
+POST 	/app/setMeetingPageIndex			@controllers.app.App_MeetingController.setMeetingPageIndex()
 
+#建立新的会议
+POST 	/app/foundNewMeeting				@controllers.app.App_MeetingController.foundNewMeeting()

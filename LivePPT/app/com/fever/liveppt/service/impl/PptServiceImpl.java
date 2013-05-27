@@ -30,18 +30,20 @@ public class PptServiceImpl implements PptService {
 		Ppt ppt = Ppt.find.where().eq("id", pptId).findUnique();
 		String storeKey = ppt.storeKey;
 		String pageKey = storeKey + "p" + pageId;
+		//若文件存在于Cache中，则直接返回
 		imgBytes = (byte[]) Cache.get(pageKey);
 		if (imgBytes!=null){
 			return imgBytes;			
 		} else {
+			//组装S3获取信息
 			AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
 			
 			GetObjectRequest getObjectRequest = new GetObjectRequest("pptstore",
 					pageKey);
 			S3Object obj = s3.getObject(getObjectRequest);
-			
+			//转换为bytes
 			try {
-				 imgBytes = IOUtils.toByteArray((InputStream) obj.getObjectContent());
+				imgBytes = IOUtils.toByteArray((InputStream) obj.getObjectContent());
 				Cache.set(pageKey, imgBytes);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block

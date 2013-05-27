@@ -12,6 +12,7 @@ import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.utils.StatusCode;
 
 public class MeetingServiceImpl implements MeetingService {
 
@@ -23,16 +24,19 @@ public class MeetingServiceImpl implements MeetingService {
 	}
 
 	@Override
-	public void foundNewMeeting(Long founderId, Long pptId, String topic) {
+	public JsonResult foundNewMeeting(Long founderId, Long pptId, String topic) {
 		// TODO Auto-generated method stub
 		User founder = User.find.byId(founderId);
 		Ppt ppt = Ppt.find.byId(pptId);
-
+		if (ppt==null)
+			return new JsonResult(false,StatusCode.PPT_NOT_EXISTED);
+		
 		Meeting meeting = new Meeting();
 		meeting.founder = founder;
 		meeting.ppt = ppt;
 		meeting.topic = topic;
 		meeting.save();
+		return new JsonResult(true);
 	}
 
 	@Override
@@ -67,9 +71,9 @@ public class MeetingServiceImpl implements MeetingService {
 		JsonResult resultJson;
 		Meeting meeting = Meeting.find.byId(meetingId);
 		if (meeting==null){
-			resultJson = new JsonResult(false, null, "没有该会议。");
+			resultJson = new JsonResult(false, StatusCode.MEETING_NOT_EXISTED, "没有该会议。");
 		} else {
-			resultJson = new JsonResult(true, null, meeting.toJson());
+			resultJson = new JsonResult(true, StatusCode.NONE, meeting.toJson());
 		}
 		return resultJson;
 	}

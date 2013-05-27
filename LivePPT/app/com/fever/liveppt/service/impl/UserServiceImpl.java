@@ -11,8 +11,8 @@ import com.fever.liveppt.utils.StatusCode;
 
 public class UserServiceImpl implements UserService {
 
-	public ObjectNode isPassworrdCorrect(String email, String password) {
-		ObjectNode jsonNode;
+	public JsonResult isPassworrdCorrect(String email, String password) {
+		JsonResult jsonNode;
 
 		// 验证用户是否存在
 		User user = User.find.where().eq("email", email).findUnique();
