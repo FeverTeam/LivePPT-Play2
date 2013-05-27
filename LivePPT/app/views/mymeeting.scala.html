@@ -1,6 +1,6 @@
-@(title: String = "mymeeting", user: com.fever.liveppt.models.User, myFoundedMeetingList: List[com.fever.liveppt.models.Meeting], myAttendingMeetingList: List[com.fever.liveppt.models.Meeting])
+@(user: com.fever.liveppt.models.User, myFoundedMeetingList: List[com.fever.liveppt.models.Meeting], myAttendingMeetingList: List[com.fever.liveppt.models.Meeting])
 
-@main(name="mymeeting", title) {
+@main(name="mymeeting", "我的PPT会议") {
 
 }{
 	<p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>

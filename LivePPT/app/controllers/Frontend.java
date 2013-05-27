@@ -24,13 +24,12 @@ import com.fever.liveppt.models.User;
 public class Frontend extends Controller {
 
 	public static Result index() {
-		return ok(index.render("LivePPT"));
+		return ok(index.render());
 	}
 
 	@With(CheckLoginAction.class)
 	public static Result login() {
-		session("name", "lbw");
-		return ok(login.render(null));
+		return ok(login.render());
 	}
 	
 	@With(CheckLoginAction.class)
@@ -44,7 +43,7 @@ public class Frontend extends Controller {
 		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
 		Long userId = User.genUserIdFromSession(ctx().session());
 		List<Ppt> ppts = User.find.byId(userId).ppts;
-		return ok(myppt.render(null, user, ppts));
+		return ok(myppt.render(user, ppts));
 	}
 	
 	@With(CheckLoginAction.class)
@@ -57,7 +56,7 @@ public class Frontend extends Controller {
 		for (Attender attendding : attendents){
 			myAttendingMeetingList.add(attendding.meeting);
 		}
-		return ok(views.html.mymeeting.render(null, user, myFoundedMeetingList, myAttendingMeetingList));
+		return ok(views.html.mymeeting.render(user, myFoundedMeetingList, myAttendingMeetingList));
 	}
 	
 	public static Result pptListForMeeting(){
