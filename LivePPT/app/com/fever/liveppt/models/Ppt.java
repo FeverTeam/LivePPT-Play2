@@ -75,13 +75,15 @@ public class Ppt extends Model {
 		this.pagecount = 0;
 	}
 	
-	//默认UTC时间
+	//默认中国时间
 	public ObjectNode toJsonNode(){
 		ObjectNode pptNode = Json.newObject();
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
 		pptNode = Json.newObject();
 		pptNode.put("pptId", this.id);
 		pptNode.put("title", this.title);
-		pptNode.put("time", this.time.toString());
+		pptNode.put("time", sdf.format(this.time).toString());
 		pptNode.put("size", this.fileSize);
 		pptNode.put("pageCount", this.pagecount);
 		pptNode.put("isConverted", this.isConverted);
