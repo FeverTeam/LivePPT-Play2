@@ -58,13 +58,45 @@ public class PptServiceImpl implements PptService {
 			return imgBytes;
 		}
 	}
+
+	public byte[] getPptPageAsSmall(Long pptId, Long pageId) {
+		InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
+		try {
+			BufferedImage img = ImageIO.read(input);
+			img = Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH,
+		               300, 100, Scalr.OP_ANTIALIAS);
+			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+			ImageIO.write(img, "jpg", bStream);
+			return bStream.toByteArray();			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public byte[] getPptPageAsMid(Long pptId, Long pageId) {
 		InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
 		try {
 			BufferedImage img = ImageIO.read(input);
 			img = Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH,
-		               400, 100, Scalr.OP_ANTIALIAS);
+		               500, 100, Scalr.OP_ANTIALIAS);
+			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+			ImageIO.write(img, "jpg", bStream);
+			return bStream.toByteArray();			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public byte[] getPptPageAsBig(Long pptId, Long pageId) {
+		InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
+		try {
+			BufferedImage img = ImageIO.read(input);
+			img = Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH,
+		               800, 100, Scalr.OP_ANTIALIAS);
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ImageIO.write(img, "jpg", bStream);
 			return bStream.toByteArray();			
