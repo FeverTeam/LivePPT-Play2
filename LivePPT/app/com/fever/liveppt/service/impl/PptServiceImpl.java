@@ -33,23 +33,24 @@ public class PptServiceImpl implements PptService {
 	public byte[] getPptPage(Long pptId, Long pageId) {
 		// TODO Auto-generated method stub
 		byte[] imgBytes = null;
-		Ppt ppt = Ppt.find.where().eq("id", pptId).findUnique();
+		Ppt ppt = Ppt.find.byId(pptId);
 		String storeKey = ppt.storeKey;
 		String pageKey = storeKey + "p" + pageId;
-		//若文件存在于Cache中，则直接返回
+		// 若文件存在于Cache中，则直接返回
 		imgBytes = (byte[]) Cache.get(pageKey);
-		if (imgBytes!=null){
-			return imgBytes;			
+		if (imgBytes != null) {
+			return imgBytes;
 		} else {
-			//组装S3获取信息
+			// 组装S3获取信息
 			AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
-			
-			GetObjectRequest getObjectRequest = new GetObjectRequest("pptstore",
-					pageKey);
+
+			GetObjectRequest getObjectRequest = new GetObjectRequest(
+					"pptstore", pageKey);
 			S3Object obj = s3.getObject(getObjectRequest);
-			//转换为bytes
+			// 转换为bytes
 			try {
-				imgBytes = IOUtils.toByteArray((InputStream) obj.getObjectContent());
+				imgBytes = IOUtils.toByteArray((InputStream) obj
+						.getObjectContent());
 				Cache.set(pageKey, imgBytes);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -63,27 +64,27 @@ public class PptServiceImpl implements PptService {
 		InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
 		try {
 			BufferedImage img = ImageIO.read(input);
-			img = Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH,
-		               300, 100, Scalr.OP_ANTIALIAS);
+			img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
+					Scalr.Mode.FIT_TO_WIDTH, 300, 100, Scalr.OP_ANTIALIAS);
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ImageIO.write(img, "jpg", bStream);
-			return bStream.toByteArray();			
+			return bStream.toByteArray();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
+
 	public byte[] getPptPageAsMid(Long pptId, Long pageId) {
 		InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
 		try {
 			BufferedImage img = ImageIO.read(input);
-			img = Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH,
-		               500, 100, Scalr.OP_ANTIALIAS);
+			img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
+					Scalr.Mode.FIT_TO_WIDTH, 500, 100, Scalr.OP_ANTIALIAS);
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ImageIO.write(img, "jpg", bStream);
-			return bStream.toByteArray();			
+			return bStream.toByteArray();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,11 +96,11 @@ public class PptServiceImpl implements PptService {
 		InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
 		try {
 			BufferedImage img = ImageIO.read(input);
-			img = Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_WIDTH,
-		               800, 100, Scalr.OP_ANTIALIAS);
+			img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
+					Scalr.Mode.FIT_TO_WIDTH, 800, 100, Scalr.OP_ANTIALIAS);
 			ByteArrayOutputStream bStream = new ByteArrayOutputStream();
 			ImageIO.write(img, "jpg", bStream);
-			return bStream.toByteArray();			
+			return bStream.toByteArray();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -126,26 +127,24 @@ public class PptServiceImpl implements PptService {
 
 	@Override
 	public JsonResult getPptList(Long UserId) {
-		JsonResult resultJson ;
+		JsonResult resultJson;
 		// TODO Auto-generated method stub
 		ArrayNode pptArrayNode = new ArrayNode(JsonNodeFactory.instance);
 		User user = User.find.byId(UserId);
-		if (user!=null){
+		if (user != null) {
 			List<Ppt> ppts = user.ppts;
-			if (ppts.size()==0)
-			{
+			if (ppts.size() == 0) {
 				resultJson = new JsonResult(false, StatusCode.PPT_LIST_NULL);
-			}else 
-			{
-				for (Ppt ppt : ppts){
+			} else {
+				for (Ppt ppt : ppts) {
 					pptArrayNode.add(ppt.toJsonNode());
-				}			
+				}
 				resultJson = new JsonResult(true, pptArrayNode);
 			}
-			
-		}else
-		{
-			resultJson = new JsonResult(false, StatusCode.USER_NOT_EXISTED,"用户ID不存在");
+
+		} else {
+			resultJson = new JsonResult(false, StatusCode.USER_NOT_EXISTED,
+					"用户ID不存在");
 		}
 		return resultJson;
 	}
@@ -154,8 +153,8 @@ public class PptServiceImpl implements PptService {
 	public JsonResult getPptInfo(Long pptId) {
 		// TODO Auto-generated method stub
 		Ppt ppt = Ppt.find.byId(pptId);
-		if (ppt==null){
-			return new JsonResult(false,StatusCode.PPT_NOT_EXISTED ,"不存在该PPT");
+		if (ppt == null) {
+			return new JsonResult(false, StatusCode.PPT_NOT_EXISTED, "不存在该PPT");
 		} else {
 			return new JsonResult(true, ppt.toJsonNode());
 		}
