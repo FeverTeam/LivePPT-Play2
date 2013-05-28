@@ -23,6 +23,11 @@ import play.mvc.Http.Session;
 @Entity
 public class User extends Model {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4396006371291229467L;
+
 	@Id
 	public Long id;
 
@@ -64,18 +69,18 @@ public class User extends Model {
 	public static User isPasswordCorrect(String email, String password) {
 		User user = User.find.where().eq("email", email)
 				.eq("password", password).findUnique();
-		if (user!=null) {
+		if (user != null) {
 			return user;
 		} else {
 			return null;
 		}
 	}
 
-	public static Long genUserIdFromSession(Session sess) {
+	public static User genUserFromSession(Session sess) {
 		String email = sess.get("email");
 		User user = User.find.where().eq("email", email).findUnique();
-		if (user!=null) {
-			return user.id;
+		if (user != null) {
+			return user;
 		}
 		return null;
 	}

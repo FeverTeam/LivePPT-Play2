@@ -40,7 +40,7 @@ public class MeetingController extends Controller {
 		Map<String, String[]> data = request().body().asFormUrlEncoded();
 		String topic = data.get("topic")[0];
 		Long pptId = Long.parseLong(data.get("pptid")[0]);
-		Long userId = User.genUserIdFromSession(ctx().session());
+		Long userId = User.genUserFromSession(ctx().session()).id;
 		meetingService.foundNewMeeting(userId, pptId, topic);
 		return ok("foundNewMeeting");
 	}
@@ -65,7 +65,7 @@ public class MeetingController extends Controller {
 	public static Result joinMeeting() {
 		Map<String, String[]> data = request().body().asFormUrlEncoded();
 		Long meetingId = Long.parseLong(data.get("inputMeetingId")[0]);
-		Long userId = User.genUserIdFromSession(ctx().session());
+		User user = User.genUserFromSession(ctx().session());
 
 		Meeting meeting = Meeting.find.byId(meetingId);
 		ObjectNode result = Json.newObject();
@@ -75,7 +75,6 @@ public class MeetingController extends Controller {
 			return ok(result);
 		}
 
-		User user = User.find.byId(userId);
 		if (user == null) {
 			result.put("success", false);
 			result.put("message", "没有这个用户。");
@@ -130,7 +129,7 @@ public class MeetingController extends Controller {
 												TimeUnit.MILLISECONDS),
 										new Runnable() {
 											Long currentIndex;
-											Long temp = (long) 1;
+											Long temp = (long) -1;
 
 											@Override
 											public void run() {

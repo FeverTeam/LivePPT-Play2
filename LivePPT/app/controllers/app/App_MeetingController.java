@@ -9,7 +9,6 @@ import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.StatusCode;
