@@ -6,10 +6,19 @@ import java.util.List;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
+import views.html.aboutUs;
+import views.html.appDownload;
+import views.html.controlMeeting;
+import views.html.foundNewMeeting;
 import views.html.index;
+import views.html.joinMeeting;
 import views.html.login;
+import views.html.mymeeting;
 import views.html.myppt;
+import views.html.pptListForMeeting;
+import views.html.pptplainshow;
 import views.html.signup;
+import views.html.viewMeeting;
 
 import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
@@ -56,7 +65,7 @@ public class Frontend extends Controller {
 		for (Attender attendding : attendents){
 			myAttendingMeetingList.add(attendding.meeting);
 		}
-		return ok(views.html.mymeeting.render(user, myFoundedMeetingList, myAttendingMeetingList));
+		return ok(mymeeting.render(user, myFoundedMeetingList, myAttendingMeetingList));
 	}
 	
 	public static Result pptListForMeeting(){
@@ -65,46 +74,45 @@ public class Frontend extends Controller {
 		List<Ppt> convertedPpts = new LinkedList<Ppt>();
 		for (Ppt ppt : ppts){
 			if (ppt.isConverted){
-			convertedPpts.add(ppt);
+				convertedPpts.add(ppt);
 			}
 		}
-		return ok(views.html.pptListForMeeting.render(convertedPpts));
+		return ok(pptListForMeeting.render(convertedPpts));
 	}
 	
 	public static Result foundNewMeeting(Long pptId){
 		Ppt ppt = Ppt.find.where().eq("id", pptId).findUnique();
-		return ok(views.html.foundNewMeeting.render(ppt));
+		return ok(foundNewMeeting.render(ppt));
 	}
 	
 	
 	public static Result pptplainshow(Long pptid){
 		int pageCount = Ppt.find.where().eq("id", pptid).findUnique().pagecount;
-		return ok(views.html.pptplainshow.render(null, pptid, pageCount));
+		return ok(pptplainshow.render(pptid, pageCount));
 	}
 	
 	
 	public static Result controlMeeting(Long meetingId){
 		Meeting meeting = Meeting.find.byId(meetingId);
 		Ppt ppt = meeting.ppt;
-		return ok(views.html.controlMeeting.render(null, meeting, ppt));
+		return ok(controlMeeting.render(null, meeting, ppt));
 	}
 	
 	public static Result joinMeeting(){
-		return ok(views.html.joinMeeting.render());
+		return ok(joinMeeting.render());
 	}
 	
 	public static Result viewMeeting(Long meetingId){
 		Meeting meeting = Meeting.find.byId(meetingId);
 		Ppt ppt = meeting.ppt;
-		return ok(views.html.viewMeeting.render(null, meeting, ppt));
+		return ok(viewMeeting.render(null, meeting, ppt));
 	}	
 	
 	public static Result appDownload(){
-		return ok(views.html.appDownload.render());
+		return ok(appDownload.render());
 	}
 	
 	public static Result aboutUs(){
-		return ok(views.html.aboutUs.render());
+		return ok(aboutUs.render());
 	}
-	
 }
