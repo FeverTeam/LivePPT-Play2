@@ -33,5 +33,7 @@ public interface PptService {
 	public JsonResult getPptList(Long userId);
 
 	public byte[] getPptPageAsMid(Long pptId, Long pageId);
+	public byte[] getPptPageAsBig(Long pptId, Long pageId);
+	public byte[] getPptPageAsSmall(Long pptId, Long pageId);
 
 }
