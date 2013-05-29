@@ -1,21 +1,23 @@
-@(title: String = "viewMeeting", meeting: com.fever.liveppt.models.Meeting, ppt: com.fever.liveppt.models.Ppt)
+@(meeting: com.fever.liveppt.models.Meeting)
 
 @main(name="viewMeeting", "观看会议") {
 } {
-	<p>观看会议 —— 在这里可以实时观看会议PPT的变化。</p>
-	<br>
-	<h2>@meeting.topic (会议ID:@meeting.id)</h2>
-	
-	<br>
-	<div class="ws-labels">
-		<span id="ws-success-label" class="label label-success hide">实时同步中</span>
-		<span id="ws-fail-label" class="label label-important hide">同步已断开</span>
-		<span id="ws-recover-label" class="label label-warning hide">同步已断开，正尝试恢复...</span>
-	</div>
-	<br>
+	@defining(meeting.ppt){ppt=>
+		<p>观看会议 —— 在这里可以实时观看会议PPT的变化。</p>
+		<br>
+		<h2>@meeting.topic (会议ID:@meeting.id)</h2>
+		
+		<br>
+		<div class="ws-labels">
+			<span id="ws-success-label" class="label label-success hide">实时同步中</span>
+			<span id="ws-fail-label" class="label label-important hide">同步已断开</span>
+			<span id="ws-recover-label" class="label label-warning hide">同步已断开，正尝试恢复...</span>
+		</div>
+		<br>
 
-	<div id="pageImgPool">
-	</div>
+		<div id="pageImgPool">
+		</div>
 
-	<div class="hide" id="dataDiv" meetingid="@meeting.id" pptId="@meeting.ppt.id"></div>
+		<div class="hide" id="dataDiv" meetingid="@meeting.id" pptId="@meeting.ppt.id"></div>
+	}
 }

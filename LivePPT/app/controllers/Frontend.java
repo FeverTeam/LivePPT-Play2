@@ -56,8 +56,7 @@ public class Frontend extends Controller {
 	
 	@With(CheckLoginAction.class)
 	public static Result mymeeting(){
-		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-		
+		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);		
 		List<Meeting> myFoundedMeetingList = user.myFoundedMeeting;
 		List<Meeting> myAttendingMeetingList = new LinkedList<Meeting>();
 		List<Attender> attendents = user.attendents;
@@ -69,7 +68,7 @@ public class Frontend extends Controller {
 	
 	@With(CheckLoginAction.class)
 	public static Result pptListForMeeting(){
-		User user = User.genUserFromSession(session());
+		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
 		List<Ppt> ppts = user.ppts;
 		for (Ppt ppt : ppts){
 			if (!ppt.isConverted){
@@ -86,26 +85,24 @@ public class Frontend extends Controller {
 	
 	@With(CheckLoginAction.class)
 	public static Result pptplainshow(Long pptid){
-		Ppt ppt = Ppt.find.where().eq("id", pptid).findUnique();
-		int pageCount = ppt.pagecount;
-		return ok(pptplainshow.render(pptid, pageCount));
+		Ppt ppt = Ppt.find.byId(pptid);
+		return ok(pptplainshow.render(ppt));
 	}
 	
-	
+	@With(CheckLoginAction.class)
 	public static Result controlMeeting(Long meetingId){
 		Meeting meeting = Meeting.find.byId(meetingId);
-		Ppt ppt = meeting.ppt;
-		return ok(controlMeeting.render(null, meeting, ppt));
+		return ok(controlMeeting.render(meeting));
 	}
 	
 	public static Result joinMeeting(){
 		return ok(joinMeeting.render());
 	}
 	
+	@With(CheckLoginAction.class)
 	public static Result viewMeeting(Long meetingId){
 		Meeting meeting = Meeting.find.byId(meetingId);
-		Ppt ppt = meeting.ppt;
-		return ok(viewMeeting.render(null, meeting, ppt));
+		return ok(viewMeeting.render(meeting));
 	}	
 	
 	public static Result appDownload(){
