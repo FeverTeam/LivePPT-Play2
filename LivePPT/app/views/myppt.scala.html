@@ -7,10 +7,12 @@
 }{
   @defining(user.ppts){ppts=>
     <p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>
-    <br><br>
+    <br>
+      <p>你有@ppts.size个PPT<p>
+      <br>
     <input type="file" name="file_upload" id="file_upload" />
-    <div>你有@ppts.size个PPT！</div>
-    <br><br>
+
+    <br>
     <table class="table table-hover">
       <thead>
         <tr>
@@ -23,21 +25,21 @@
         </tr>
       </thead>
       <tbody>
-        @for(o <- ppts){
+        @for(ppt <- ppts){
         <tr class="
-          @if(o.isConverted){
+          @if(ppt.isConverted){
           success 
           } else {
           warning 
           }
           ">
-          <td>@o.id</td>
-          <td>@o.title</td>
-          <td>@(o.time.getYear()+1900)年@(o.time.getMonth())月@(o.time.getDay())日@(o.time.getHours()):@(o.time.getMinutes()):@(o.time.getSeconds())</td>
-          <td>@o.fileSize B</td>
-          @if(o.isConverted){
-            <td><a href="/pptplainshow/@o.id">已转换</a></td>
-            <td>@o.pagecount</td>
+          <td>@ppt.id</td>
+          <td>@ppt.title</td>
+            <td>@(new java.text.SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(ppt.time))</td>          
+          <td>@(ppt.fileSize/1024) KB</td>
+          @if(ppt.isConverted){
+            <td><a href="/pptplainshow/@ppt.id">已转换</a></td>
+            <td>@ppt.pagecount</td>
           } else {
             <td>未转换</td>
             <td></td>
