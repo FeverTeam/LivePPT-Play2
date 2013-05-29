@@ -4,23 +4,21 @@
 
 }{
 
-<div id="pptCarousel" class="carousel slide">
-  <ol class="carousel-indicators">
-	@for(i <- 1 to ppt.pagecount){
-  	<li data-target="#pptCarousel" data-slide-to="@(i-1)" id='indicator@(i-1)'></li>
-	}
-  </ol>
-  <!-- Carousel items -->
-  <div class="carousel-inner">
+  <div id="pptCarousel" class="carousel slide">
+    <ol class="carousel-indicators">
   	@for(i <- 1 to ppt.pagecount){
-		<div class="item" id="pic@i"><img src="/getpptpage?pptid=@ppt.id&pageid=@i"/></div>
-	   }
-  </div>
-  <!-- Carousel nav -->
-  <a class="carousel-control left" href="#pptCarousel" data-slide="prev">&lsaquo;</a>
-  <a class="carousel-control right" href="#pptCarousel" data-slide="next">&rsaquo;</a>
-</div>
-
-	
+    	<li data-target="#pptCarousel" data-slide-to="@(i-1)" id='indicator@(i-1)'></li>
+  	}
+    </ol>
+    <!-- Carousel items -->
+    <div class="carousel-inner">
+    	@for(i <- 1 to ppt.pagecount){
+  		<div class="item" id="pic@i"><img src="/getpptpage?pptid=@ppt.id&pageid=@i"/></div>
+  	   }
+    </div>
+    <!-- Carousel nav -->
+    <a class="carousel-control left" href="#pptCarousel" data-slide="prev">&lsaquo;</a>
+    <a class="carousel-control right" href="#pptCarousel" data-slide="next">&rsaquo;</a>
+  </div>	
 
 }
