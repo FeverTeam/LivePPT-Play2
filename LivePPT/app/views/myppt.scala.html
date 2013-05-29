@@ -38,7 +38,7 @@
             <td>@(new java.text.SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(ppt.time))</td>          
           <td>@(ppt.fileSize/1024) KB</td>
           @if(ppt.isConverted){
-            <td><a href="/pptplainshow/@ppt.id">已转换</a></td>
+            <td><a href="/pptplainshow/@ppt.id" target="_blank">已转换</a></td>
             <td>@ppt.pagecount</td>
           } else {
             <td>未转换</td>

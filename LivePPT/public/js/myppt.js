@@ -35,7 +35,6 @@ define(function(require, exports, module) {
         },
         'onError': function(errorType) {
           $('#file_upload').uploadifive('clearQueue');
-          var alertMessage = "";
           switch (errorType) {
             case "FORBIDDEN_FILE_TYPE":
               alertMessage = "请选择PPT/PPTX文件~";
@@ -44,7 +43,7 @@ define(function(require, exports, module) {
               alertMessage = "每次只可上传一个文件哦~";
               break;
           }
-          if (!alertMessage==""){
+          if (alertMessage){
             alert(alertMessage);
           }
           
