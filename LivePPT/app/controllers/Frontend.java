@@ -50,8 +50,7 @@ public class Frontend extends Controller {
 	@With(CheckLoginAction.class)
 	public static Result myppt(){
 		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-		List<Ppt> ppts = user.ppts;
-		return ok(myppt.render(user, ppts));
+		return ok(myppt.render(user));
 	}
 	
 	@With(CheckLoginAction.class)
