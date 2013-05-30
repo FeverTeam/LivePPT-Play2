@@ -1,12 +1,12 @@
 package controllers;
 
-import com.fever.liveppt.models.User;
-
 import play.Logger;
 import play.mvc.Action;
 import play.mvc.Http;
 import play.mvc.Http.Session;
 import play.mvc.Result;
+
+import com.fever.liveppt.models.User;
 
 /**
  * 用于检查用户是否已登录的Action
@@ -17,37 +17,30 @@ import play.mvc.Result;
 public class CheckLoginAction extends Action.Simple {
 	private static String URL_MYPPT = controllers.routes.Frontend.myppt().url();
 	private static String URL_LOGIN = controllers.routes.Frontend.login().url();
-	private static String URL_SIGNUP = controllers.routes.Frontend.signup().url();
-	private static String URL_MYMEETING = controllers.routes.Frontend.mymeeting().url();
-	
+	private static String URL_SIGNUP = controllers.routes.Frontend.signup()
+			.url();
+	// private static String URL_MYMEETING =
+	// controllers.routes.Frontend.mymeeting().url();
+
 	public static String KEY_CTX_ARG_USER = "user";
 
 	public Result call(Http.Context ctx) throws Throwable {
 
 		// 判断是否已经登陆
 		User user = getUser(ctx);
-		if (user!=null) {
-			//将User放入ctx
+		String requestUrl = ctx.request().uri();
+		if (user != null) {
+			// 将User放入ctx
 			ctx.args.put(KEY_CTX_ARG_USER, user);
-			
-			// 已登录，则跳转到myppt页面
-			String requestUrl = ctx.request().uri();
-			// 判断是否请求myppt页面，避免多层重定向
-			if (requestUrl.equals(URL_MYPPT)) {
+
+			if (requestUrl.equals(URL_LOGIN)) {
+				return redirect(URL_MYPPT);
+			} else {
 				return delegate.call(ctx);
 			}
-			// 判断是否请求myppt页面，避免多层重定向
-			if (requestUrl.equals(URL_MYMEETING)) {
-				return delegate.call(ctx);
-			}
-			
-			return redirect(URL_MYPPT);
+
 		} else {
 			// 未登录，则继续页面请求
-
-			String requestUrl = ctx.request().uri();
-
-			Logger.info(requestUrl);
 
 			if (requestUrl.equals(URL_LOGIN) || requestUrl.equals(URL_SIGNUP)) {
 				// 请求login和signup

@@ -24,6 +24,11 @@ import com.avaje.ebean.validation.NotNull;
 @Entity
 public class Meeting extends Model {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8840227542777988716L;
+
 	@Id
 	public Long id;
 

@@ -1,7 +1,5 @@
 package com.fever.liveppt.service;
 
-import org.codehaus.jackson.node.ObjectNode;
-
 import com.fever.liveppt.utils.JsonResult;
 
 public interface UserService {

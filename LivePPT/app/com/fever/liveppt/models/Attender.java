@@ -3,12 +3,10 @@ package com.fever.liveppt.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
-import com.avaje.ebean.validation.NotNull;
 
 import play.db.ebean.Model;
-import play.db.ebean.Model.Finder;
+
+import com.avaje.ebean.validation.NotNull;
 
 /**
  * 参与会议关系类
@@ -17,6 +15,11 @@ import play.db.ebean.Model.Finder;
  */
 @Entity
 public class Attender extends Model {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7569560456239630312L;
 
 	@Id
 	public Long id;

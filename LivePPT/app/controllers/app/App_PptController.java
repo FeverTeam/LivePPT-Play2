@@ -97,7 +97,7 @@ public class App_PptController extends Controller {
 		response().setHeader(Controller.LAST_MODIFIED,
 				"" + new Date().getTime());
 		
-		return ok(pptService.getPptPage(pptId, pageIndex));
+		return ok(pptService.getPptPageAsBig(pptId, pageIndex));
 	}
 	
 	//数字匹配器

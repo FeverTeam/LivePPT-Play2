@@ -1,31 +1,52 @@
-@(user: com.fever.liveppt.models.User, ppts: List[com.fever.liveppt.models.Ppt])
+@(user: com.fever.liveppt.models.User)
 
 
 
 @main(name="myppt", "我的PPT") {
 
-}{ 
-  <p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>
-  <br><br>
-  <input type="file" name="file_upload" id="file_upload" />
-  <div>你有@ppts.size个PPT！</div>
-  <br><br>
-  <table class="table">
-    <tbody>
-      @for(o <- ppts){
-      <tr>
-        <td>@o.id</td>
-        <td>@o.title</td>
-        <td>@o.time</td>
-        <td>@o.fileSize B</td>
-        @if(o.isConverted){
-          <td><a href="/pptplainshow/@o.id">已转换</a></td>
-          <td>@o.pagecount</td>
-        } else {
-          <td>未转换</td>
+}{
+  @defining(user.ppts){ppts=>
+    <p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>
+    <br>
+      <p>你有@ppts.size个PPT<p>
+      <br>
+    <input type="file" name="file_upload" id="file_upload" />
+
+    <br>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>标题</th>
+          <th>上传时间</th>
+          <th>文件大小</th>
+          <th>是否转码</th>
+          <th>页数</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(ppt <- ppts){
+        <tr class="
+          @if(ppt.isConverted){
+          success 
+          } else {
+          warning 
+          }
+          ">
+          <td>@ppt.id</td>
+          <td>@ppt.title</td>
+            <td>@(new java.text.SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(ppt.time))</td>          
+          <td>@(ppt.fileSize/1024) KB</td>
+          @if(ppt.isConverted){
+            <td><a href="/pptplainshow/@ppt.id" target="_blank">已转换</a></td>
+            <td>@ppt.pagecount</td>
+          } else {
+            <td>未转换</td>
+            <td></td>
+          }
+        </tr>
         }
-      </tr>
-      }
-    </tbody>
-  </table>
+      </tbody>
+    </table>
+  }
 }

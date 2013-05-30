@@ -1,7 +1,6 @@
 package com.fever.liveppt.service;
 
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
 
 import com.fever.liveppt.utils.JsonResult;
 
@@ -29,5 +28,9 @@ public interface PptService {
 	 * @return JSON格式PPT信息列表
 	 */
 	public JsonResult getPptList(Long userId);
+
+	public byte[] getPptPageAsMid(Long pptId, Long pageId);
+	public byte[] getPptPageAsBig(Long pptId, Long pageId);
+	public byte[] getPptPageAsSmall(Long pptId, Long pageId);
 
 }

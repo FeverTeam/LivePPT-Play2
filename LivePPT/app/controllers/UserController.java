@@ -9,8 +9,6 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.Query;
 import com.fever.liveppt.models.User;
 
 /**
@@ -59,8 +57,6 @@ public class UserController extends Controller {
 		String email = postData.get("email")[0];
 		String password = postData.get("password")[0];
 		String displayname = postData.get("displayname")[0];
-
-		Query<User> q = Ebean.createQuery(User.class);
 
 		// 查找是否已经有相同email的用户，若有则返回错误
 		if (User.isExistedByEmail(email)) {
