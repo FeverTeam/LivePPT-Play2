@@ -24,6 +24,31 @@ public class MeetingServiceImpl implements MeetingService {
 		Meeting meeting = Meeting.find.byId(meetingId);
 		meeting.delete();
 	}
+	
+	@Override
+	public JsonResult quitMeeting(Long userId,Long meetingId) {
+		// TODO Auto-generated method stub
+		JsonResult resultJson = new JsonResult(true);
+		User user = User.find.byId(userId);
+		Boolean isDeleted = false;
+		if (user != null) {
+			for (Attender attender : user.attendents) {
+				if (attender.meeting.id.equals(meetingId))
+				{
+					attender.delete();
+					isDeleted = true;
+					break;
+				}
+			}
+		}else 
+		{
+			resultJson = new JsonResult(false,StatusCode.MEETING_NOT_EXISTED);
+		}
+		if (isDeleted==false)
+			resultJson = new JsonResult(false,StatusCode.MEETING_DELETE_MEETING_FAIL);
+		return resultJson;
+	}
+	
 
 	@Override
 	public JsonResult foundNewMeeting(Long founderId, Long pptId, String topic) {

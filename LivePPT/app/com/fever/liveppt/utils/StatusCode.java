@@ -45,13 +45,14 @@ public class StatusCode {
 	//****************MEETING类型错误**************
 	//meetingId字段错误
 	public final static int MEETING_ID_ERROR = 3100;
+	//用户不存在
+	public final static int MEETING_USER_NOT_EXIST = 3101;
 	//meeting的pageIndex字段错误
 	public final static int MEETING_PAGEINDEX_ERROR = 3102;
 	//根据meetingID查询的meeting不存在
 	public final static int MEETING_NOT_EXISTED = 3200;	
 	//topic字段错误
 	public final static int MEETING_TOPIC_ERROR = 3300;	
-	//
-	public final static int MEETING_USER_NOT_EXIST = 3300;
-	
+	//删除会议错误
+	public final static int MEETING_DELETE_MEETING_FAIL = 3400;
 }

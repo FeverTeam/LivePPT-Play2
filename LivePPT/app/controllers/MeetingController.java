@@ -23,6 +23,7 @@ import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
+import com.fever.liveppt.utils.JsonResult;
 import com.google.inject.Inject;
 
 /**
@@ -39,7 +40,7 @@ public class MeetingController extends Controller {
 	public Result foundNewMeeting() {
 		Map<String, String[]> data = request().body().asFormUrlEncoded();
 		String topic = data.get("topic")[0];
-		Long pptId = Long.parseLong(data.get("pptid")[0]);
+		Long pptId = Long.parseLong(data.get("pptId")[0]);
 		Long userId = User.genUserFromSession(ctx().session()).id;
 		meetingService.foundNewMeeting(userId, pptId, topic);
 		return ok("foundNewMeeting");
@@ -47,10 +48,28 @@ public class MeetingController extends Controller {
 
 	public Result deleteMeeting() {
 		Map<String, String[]> data = request().body().asFormUrlEncoded();
-		Long meetingId = Long.parseLong(data.get("meetingid")[0]);
+		Long meetingId = Long.parseLong(data.get("meetingId")[0]);
 		meetingService.deleteMeeting(meetingId);
 		return ok("deleteMeeting" + meetingId);
 	}
+	
+	public Result quitMeeting() {
+		JsonResult resultJson;
+
+		Map<String, String[]> data = request().body().asFormUrlEncoded();
+		//TUDO 检查参数
+		Long meetingId = Long.parseLong(data.get("meetingId")[0]);
+		Long userId = Long.parseLong(data.get("userId")[0]);
+		resultJson = meetingService.quitMeeting(userId,meetingId);
+		return ok(resultJson);
+	}
+
+/*	public Result quitMeeting(Long userId,Long meetingId) {
+		JsonResult resultJson;
+		//TUDO 检查参数
+		resultJson = meetingService.quitMeeting(userId,meetingId);
+		return ok(resultJson);
+	}*/
 
 	public Result setMeetingPage() {
 		Map<String, String[]> data = request().body().asFormUrlEncoded();
