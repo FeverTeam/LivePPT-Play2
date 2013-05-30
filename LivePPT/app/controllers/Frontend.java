@@ -107,4 +107,8 @@ public class Frontend extends Controller {
 		return ok(views.html.aboutUs.render());
 	}
 	
+	public static Result test(){
+		return ok(views.html.test.render());
+	}
+	
 }
