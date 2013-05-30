@@ -88,3 +88,6 @@ POST 	/app/setMeetingPageIndex			@controllers.app.App_MeetingController.setMeeti
 
 #建立新的会议
 POST 	/app/foundNewMeeting				@controllers.app.App_MeetingController.foundNewMeeting()
+
+#加入新的会议
+GET 	/app/joinMeeting					@controllers.app.App_MeetingController.joinMeeting()

@@ -49,7 +49,9 @@ public class StatusCode {
 	public final static int MEETING_PAGEINDEX_ERROR = 3102;
 	//根据meetingID查询的meeting不存在
 	public final static int MEETING_NOT_EXISTED = 3200;	
-	//根据meetingID查询的meeting不存在
-	public final static int MEETING_TOPIC_NOT_EXISTED = 3300;
+	//topic字段错误
+	public final static int MEETING_TOPIC_ERROR = 3300;	
+	//
+	public final static int MEETING_USER_NOT_EXIST = 3300;
 	
 }

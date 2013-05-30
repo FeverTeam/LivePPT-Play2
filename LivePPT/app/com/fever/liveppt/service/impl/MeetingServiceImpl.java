@@ -1,5 +1,7 @@
 package com.fever.liveppt.service.impl;
 
+import java.util.List;
+
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 
@@ -85,6 +87,38 @@ public class MeetingServiceImpl implements MeetingService {
 		Logger.info(meetingId + "-" + pageIndex);
 		Cache.set(cacheKey, pageIndex);
 		JsonResult resultJson = new JsonResult(true);		
+		return resultJson;
+	}
+
+	@Override
+	public JsonResult joinMeeting(Long userId,Long meetingId) {
+		JsonResult resultJson;
+		
+		Meeting meeting = Meeting.find.byId(meetingId);
+		if (meeting == null) {
+			resultJson = new JsonResult(false,StatusCode.MEETING_NOT_EXISTED);
+			return resultJson;
+		}
+		User user = User.find.byId(userId);
+		if (user == null) {
+			resultJson = new JsonResult(false,StatusCode.MEETING_USER_NOT_EXIST);
+			return resultJson;
+		}
+
+		List<Attender> attendings = user.attendents;
+		boolean isAttended = false;
+		for (Attender attending : attendings) {
+			if (attending.meeting.id.equals(meeting.id)) {
+				isAttended = true;
+				break;
+			}
+		}
+
+		if (!isAttended) {
+			Attender newAttending = new Attender(meeting, user);
+			newAttending.save();
+		}
+		resultJson = new JsonResult(true);
 		return resultJson;
 	}
 

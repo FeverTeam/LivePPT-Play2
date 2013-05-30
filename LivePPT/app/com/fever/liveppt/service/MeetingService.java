@@ -45,6 +45,13 @@ public interface MeetingService {
 	 */
 	public JsonResult getMeetingInfo(Long meetingId);
 	
+	/**
+	 * 加入新的会议
+	 * @param  userId    用户Id
+	 * @param  meetingId 准备加入的会议号
+	 * @return           [description]
+	 */
+	public JsonResult joinMeeting(Long userId,Long meetingId);
 	
 	/**
 	 * 设置会议的直播PPT页码
