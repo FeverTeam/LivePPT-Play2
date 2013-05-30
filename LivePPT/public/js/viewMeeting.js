@@ -1,12 +1,17 @@
 define(function(require, exports, module) {
+	require('jquery-knob');
 
 	console.log("viewMeeting.js");
 
 	// var ws_address = "ws://localhost:9000/viewWebsocket";
 	var ws_address = "ws://live-ppt.com:9000/viewWebsocket";
 
-	var meetingId = $('div#dataDiv').attr('meetingid');
-	var pptId = $('div#dataDiv').attr('pptId');
+	var dataDiv = $('div#dataDiv');
+	var meetingId = dataDiv.attr('meetingid');
+	var pptId = dataDiv.attr('pptId');
+	var pageCount = dataDiv.attr('pageCount');
+
+	var pageKnob = $('#pageKnob');
 
 	var webSocket = undefined;
 
@@ -20,6 +25,7 @@ define(function(require, exports, module) {
 
 	function init(meetingId){
 		ws = initWebSocket(meetingId);
+		initPageKnob();
 	}
 
 
@@ -51,6 +57,8 @@ define(function(require, exports, module) {
 			console.log(pptid + "--"+pageid);
 			// $('#currentImg').attr('src','/getpptpage?pptid='+pptid+'&pageid='+pageid);
 			showIndexImg(pptid, pageid);
+
+			pageKnob.val(pageid).trigger('change');
 			
 		};
 
@@ -59,9 +67,7 @@ define(function(require, exports, module) {
 	}
 
 	function setWSstatusLabel(status){
-		ws_success_label.addClass('hide');
-		ws_fail_label.addClass('hide');
-		ws_recover_label.addClass('hide');
+		$('span.label').addClass('hide');
 		switch (status) {
 			case 0:
 				ws_success_label.removeClass('hide');
@@ -96,6 +102,14 @@ define(function(require, exports, module) {
 				$('div#pageImgPool').append('<img src="/getpptpage?pptid='+pptId+'&pageid='+pageId+'" class="page hide img-polaroid" id="page'+pageId+'"/>');
 			}
 		}
+	}
+
+	function initPageKnob(){
+		pageKnob.knob({
+			min:0,
+			max: pageCount,
+			readOnly: true
+		});
 	}
 	
 

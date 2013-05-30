@@ -5,7 +5,8 @@ seajs.config({
 		'bootstrap': '/assets/js/bootstrap.min.js',
 		'fineuploader': '/assets/js/fineuploader/jquery.fineuploader-3.4.1.min.js',
 		'uploadify': '/assets/js/jquery.uploadify.min.js',
-		'uploadifive': '/assets/js/jquery.uploadifive.min.js'
+		'uploadifive': '/assets/js/jquery.uploadifive.min.js',
+		'jquery-knob': '/assets/js/jquery.knob.js'
 	},
 
 	preload: ['jquery','bootstrap']
