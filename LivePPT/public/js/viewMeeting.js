@@ -5,8 +5,9 @@ define(function(require, exports, module) {
 	// var ws_address = "ws://localhost:9000/viewWebsocket";
 	var ws_address = "ws://live-ppt.com:9000/viewWebsocket";
 
-	var meetingId = $('div#dataDiv').attr('meetingid');
-	var pptId = $('div#dataDiv').attr('pptId');
+	var dataDiv = $('div#dataDiv');
+	var meetingId = dataDiv.attr('meetingid');
+	var pptId = dataDiv.attr('pptId');
 
 	var webSocket = undefined;
 
