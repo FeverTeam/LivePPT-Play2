@@ -9,7 +9,6 @@ import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.StatusCode;
@@ -70,6 +69,34 @@ public class App_MeetingController extends Controller {
 		Long pptId = Long.parseLong(params.get("pptId")[0]);
 		Long userId = Long.parseLong(params.get("userId")[0]);
 		resultJson = meetingService.foundNewMeeting(userId, pptId, topic);
+		return ok(resultJson);
+	}
+
+	/**
+	 * 加入新的会议
+	 * @return [description]
+	 */
+	public Result joinMeeting(){
+		//Map<String, String[]> params = request().body().asFormUrlEncoded();
+		Map<String, String[]> params = request().queryString();
+		//check userId ,meetingId
+		JsonResult resultJson;
+		
+		//检查用户Id
+		resultJson = checkUserId(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);
+		
+		//检查meetingId
+		resultJson = checkMeetingId(params);
+		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+			return ok(resultJson);
+
+		Long meetingId = Long.parseLong(params.get("meetingId")[0]);
+		Long userId = Long.parseLong(params.get("userId")[0]);
+
+		resultJson = meetingService.joinMeeting(userId,meetingId);
+
 		return ok(resultJson);
 	}
 	
@@ -221,7 +248,7 @@ public class App_MeetingController extends Controller {
 	JsonResult checkTopic(Map<String, String[]> params)
 	{
 		if (!params.containsKey("topic")){
-			return new JsonResult(false, StatusCode.MEETING_TOPIC_NOT_EXISTED, "topic错误");
+			return new JsonResult(false, StatusCode.MEETING_TOPIC_ERROR, "topic错误");
 		}
 		return new JsonResult(true);
 	}

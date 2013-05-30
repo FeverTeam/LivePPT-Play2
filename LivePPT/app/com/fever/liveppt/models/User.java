@@ -23,6 +23,11 @@ import play.mvc.Http.Session;
 @Entity
 public class User extends Model {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4396006371291229467L;
+
 	@Id
 	public Long id;
 
@@ -34,13 +39,13 @@ public class User extends Model {
 
 	public String displayname;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	public List<Ppt> ppts;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	public List<Meeting> myFoundedMeeting;
-	
-	@OneToMany(cascade=CascadeType.ALL)
+
+	@OneToMany(cascade = CascadeType.ALL)
 	public List<Attender> attendents;
 
 	public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
@@ -53,9 +58,8 @@ public class User extends Model {
 	}
 
 	public static boolean isExistedByEmail(String email) {
-		List<User> existedUsers = User.find.where().eq("email", email)
-				.findList();
-		if (existedUsers.size() > 0) {
+		User user = User.find.where().eq("email", email).findUnique();
+		if (user != null) {
 			return true;
 		} else {
 			return false;
@@ -63,25 +67,25 @@ public class User extends Model {
 	}
 
 	public static User isPasswordCorrect(String email, String password) {
-		List<User> targetUser = User.find.where().eq("email", email)
-				.eq("password", password).findList();
-		if (targetUser.size() == 1) {
-			return targetUser.get(0);
+		User user = User.find.where().eq("email", email)
+				.eq("password", password).findUnique();
+		if (user != null) {
+			return user;
 		} else {
 			return null;
 		}
 	}
 
-	public static Long genUserIdFromSession(Session sess) {
+	public static User genUserFromSession(Session sess) {
 		String email = sess.get("email");
-		List<User> users = User.find.where().eq("email", email).findList();
-		if (users.size() > 0) {
-			return users.get(0).id;
+		User user = User.find.where().eq("email", email).findUnique();
+		if (user != null) {
+			return user;
 		}
 		return null;
 	}
-	
-	public ObjectNode toJsonNode(){
+
+	public ObjectNode toJsonNode() {
 		ObjectNode resultJson = Json.newObject();
 		resultJson.put("userId", this.id);
 		resultJson.put("displayName", this.displayname);

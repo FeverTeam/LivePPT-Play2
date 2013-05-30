@@ -1,40 +1,41 @@
-@(title: String = "controlMeeting", meeting: com.fever.liveppt.models.Meeting, ppt: com.fever.liveppt.models.Ppt)
+@(meeting: com.fever.liveppt.models.Meeting)
 
 @main(name="controlMeeting", title="控制会议") {
 } {
-	<p>控制你的会议 —— 切换的PPT图像会实时同步到同一会议的观看者屏幕中。</p>
-	<br>
-	<h2>@meeting.topic (会议ID:@meeting.id)</h2>
-	
-	<br>
+	@defining(meeting.ppt){ppt=>
+		<p>控制你的会议 —— 切换的PPT图像会实时同步到同一会议的观看者屏幕中。</p>
+		<br>
+		<h2>@meeting.topic (会议ID:@meeting.id)</h2>
+		
+		<br>
 
-	<div class="btn-group">
-		<button class="btn btn-medium" id="prePage">Pre 上一页</button>
-		<button class="btn btn-medium" id="nextPage">下一页 Next</button>
-	</div>
+		<div class="btn-group">
+			<button class="btn btn-medium" id="prePage">Pre 上一页</button>
+			<button class="btn btn-medium" id="nextPage">下一页 Next</button>
+		</div>
 
-	<br>
-	
-	<!-- 显示ppt当前页 -->
-	<img id="img-current-page"/>
+		<br>
+		
+		<!-- 显示ppt当前页 -->
+		<img id="img-current-page"/>
 
 
-	@for(i <- 1 to ppt.pagecount){
-		<img src="/getpptpage?pptid=@ppt.id&pageid=@i" class="page hide img-polaroid" id="@i"/>
-	}
-
-	<div class="pagination">
-	  <ul>
-	    @for(index <- 1 to ppt.pagecount){
-	    	<li id="page@index"+><a href="#">@index</a></li>
+		@for(i <- 1 to ppt.pagecount){
+			<img src="/getpptpage?pptid=@ppt.id&pageid=@i" class="page hide img-polaroid" id="@i"/>
 		}
-	  </ul>
-	</div>
 
-	<div class="hide" id="datadiv" 
-	meetingid="@meeting.id"
-	pptid="@ppt.id"
-	pagecount="@ppt.pagecount"	
-	></div>
+		<div class="pagination">
+		  <ul>
+		    @for(index <- 1 to ppt.pagecount){
+		    	<li id="page@index"+><a href="#">@index</a></li>
+			}
+		  </ul>
+		</div>
 
+		<div class="hide" id="datadiv" 
+		meetingid="@meeting.id"
+		pptid="@ppt.id"
+		pagecount="@ppt.pagecount"	
+		></div>
+	}
 }

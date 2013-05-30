@@ -50,15 +50,12 @@ public class Frontend extends Controller {
 	@With(CheckLoginAction.class)
 	public static Result myppt(){
 		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-		Long userId = User.genUserIdFromSession(ctx().session());
-		List<Ppt> ppts = User.find.byId(userId).ppts;
-		return ok(myppt.render(user, ppts));
+		return ok(myppt.render(user));
 	}
 	
 	@With(CheckLoginAction.class)
 	public static Result mymeeting(){
-		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-		
+		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);		
 		List<Meeting> myFoundedMeetingList = user.myFoundedMeeting;
 		List<Meeting> myAttendingMeetingList = new LinkedList<Meeting>();
 		List<Attender> attendents = user.attendents;
@@ -68,44 +65,43 @@ public class Frontend extends Controller {
 		return ok(mymeeting.render(user, myFoundedMeetingList, myAttendingMeetingList));
 	}
 	
+	@With(CheckLoginAction.class)
 	public static Result pptListForMeeting(){
-		Long userId = User.genUserIdFromSession(ctx().session());
-		List<Ppt> ppts = User.find.byId(userId).ppts;
-		List<Ppt> convertedPpts = new LinkedList<Ppt>();
+		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+		List<Ppt> ppts = user.ppts;
 		for (Ppt ppt : ppts){
-			if (ppt.isConverted){
-				convertedPpts.add(ppt);
-			}
+			if (!ppt.isConverted){
+				ppts.remove(ppt);
+			}			
 		}
-		return ok(pptListForMeeting.render(convertedPpts));
+		return ok(pptListForMeeting.render(ppts));
 	}
 	
 	public static Result foundNewMeeting(Long pptId){
-		Ppt ppt = Ppt.find.where().eq("id", pptId).findUnique();
+		Ppt ppt = Ppt.find.byId(pptId);
 		return ok(foundNewMeeting.render(ppt));
 	}
 	
-	
+	@With(CheckLoginAction.class)
 	public static Result pptplainshow(Long pptid){
-		int pageCount = Ppt.find.where().eq("id", pptid).findUnique().pagecount;
-		return ok(pptplainshow.render(pptid, pageCount));
+		Ppt ppt = Ppt.find.byId(pptid);
+		return ok(pptplainshow.render(ppt));
 	}
 	
-	
+	@With(CheckLoginAction.class)
 	public static Result controlMeeting(Long meetingId){
 		Meeting meeting = Meeting.find.byId(meetingId);
-		Ppt ppt = meeting.ppt;
-		return ok(controlMeeting.render(null, meeting, ppt));
+		return ok(controlMeeting.render(meeting));
 	}
 	
 	public static Result joinMeeting(){
 		return ok(joinMeeting.render());
 	}
 	
+	@With(CheckLoginAction.class)
 	public static Result viewMeeting(Long meetingId){
 		Meeting meeting = Meeting.find.byId(meetingId);
-		Ppt ppt = meeting.ppt;
-		return ok(viewMeeting.render(null, meeting, ppt));
+		return ok(viewMeeting.render(meeting));
 	}	
 	
 	public static Result appDownload(){

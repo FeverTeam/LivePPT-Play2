@@ -5,6 +5,7 @@
   <head>
     <title> @title - LivePPT 跨平台PPT云直播应用</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <link rel="SHORTCUT ICON" href="/assets/images/liveppt-icon-favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="/assets/css/bootstrap-combined.min.css" rel="stylesheet">
@@ -39,14 +40,6 @@
         font-size: 21px;
         padding: 14px 24px;
       }
-
-      /* Supporting marketing content */
-      .marketing {
-        margin: 60px 0;
-      }
-      .marketing p + h4 {
-        margin-top: 28px;
-      }
     </style>
 
     <style type="text/css">
@@ -59,25 +52,26 @@
     <div class="container-narrow">
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
-        <li id="index"><a href="/">首页</a></li>
-        <li id="myppt"><a href="/myppt">我的PPT</a></li>
-        <li id="mymeeting"><a href="/mymeeting">会议列表</a></li>
-        <li id="appDownload"><a href="/appDownload">应用下载</a></li>
-        <li id="aboutUs"><a href="/aboutUs">关于我们</a></li>
+          <li id="index"><a href="/">首页</a></li>
+          <li id="myppt"><a href="/myppt">我的PPT</a></li>
+          <li id="mymeeting"><a href="/mymeeting">会议列表</a></li>
+          <li id="appDownload"><a href="/appDownload">应用下载</a></li>
+          <li id="aboutUs"><a href="/aboutUs">关于我们</a></li>
         </ul>
-        <h3 class="muted">LivePPT</h3>
+
+        <h3 class="muted"><img src="/assets/images/liveppt-icon.png" class="img-rounded" width="30" height="20"/>&nbsp;LivePPT </h3>
       </div>
+
 
       <hr>
     	@content
       <hr>
 
       <div class="footer">
-        <p>&copy; 梁博文 & Fever Team 2013 <a target="_blank" href="http://weibo.com/feverteam"></a></p>
+        <p>&copy; Fever Team 2013 梁博文 黎伟杰 何俊浩<a target="_blank" href="http://weibo.com/feverteam"></a></p>
       </div>
     </div> <!-- /container -->
 
-    <script src="/assets/js/jquery-1.9.1.min.js"></script>
     <script src="/assets/js/sea-2.0.0.js" data-config="/assets/js/main-config"></script>
     <script>
       seajs.use('@name');
