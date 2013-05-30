@@ -19,7 +19,7 @@ define(function(require, exports, module) {
 			type: 'POST',
 			url: '/deleteMeeting',
 			data: {
-				meetingid: meetingId
+				meetingId: meetingId
 			},
 			success: function(data, textStatus, jqXHR){
 				if (textStatus=='success'){
@@ -60,7 +60,7 @@ define(function(require, exports, module) {
 			url: '/foundNewMeeting',
 			data: {
 				topic: $('#inputTopic').val(),
-				pptid: $(this).attr('pptid')
+				pptId: $(this).attr('pptid')
 			},
 			success: function(data, textStatus, jqXHR){
 				if (textStatus=='success'){
@@ -109,7 +109,21 @@ define(function(require, exports, module) {
 		window.location = '/viewMeeting/'+meetingId;
 	});
 
-	btnQuitMeeting.on('click', function(e){		
-		alert("btnQuitMeeting");
+	btnQuitMeeting.on('click', function(e){	
+		var meetingId = $(this).attr('meetingid');
+		var userId = $(this).attr('userId');
+		$.ajax({
+			type: 'POST',
+			url: '/quitMeeting',
+			data: {
+				meetingId: meetingId,
+				userId: userId
+			},
+			success: function(data, textStatus, jqXHR){
+				if (textStatus=='success'){
+					window.location = window.location;
+				}
+			}
+		});	
 	});
 });

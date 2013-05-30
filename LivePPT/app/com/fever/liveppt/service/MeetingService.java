@@ -60,4 +60,12 @@ public interface MeetingService {
 	 * @return
 	 */
 	public JsonResult setMeetingPageIndex(Long meetingId, Long pageIndex);
+
+	/**
+	 * 退出会议
+	 * @param userId
+	 * @param meetingId
+	 * @return
+	 */
+	public JsonResult quitMeeting(Long userId, Long meetingId);
 }

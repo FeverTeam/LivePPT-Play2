@@ -36,6 +36,7 @@ POST	/pptupload					controllers.PptController.pptUpload()
 
 POST 	/foundNewMeeting			@controllers.MeetingController.foundNewMeeting()
 POST	/deleteMeeting				@controllers.MeetingController.deleteMeeting()
+POST	/quitMeeting				@controllers.MeetingController.quitMeeting()
 
 POST 	/setMeetingPage				@controllers.MeetingController.setMeetingPage()
 
