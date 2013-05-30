@@ -4,14 +4,16 @@
 } {
 	@defining(meeting.ppt){ppt=>
 		<p>控制你的会议 —— 切换的PPT图像会实时同步到同一会议的观看者屏幕中。</p>
-		<br>
 		<h2>@meeting.topic (会议ID:@meeting.id)</h2>
-		
-		<br>
 
-		<div class="btn-group">
-			<button class="btn btn-medium" id="prePage">Pre 上一页</button>
-			<button class="btn btn-medium" id="nextPage">下一页 Next</button>
+		<div class="row-fluid">
+			<div class="btn-group span2">
+				<button class="btn btn-medium" id="prePage">Pre 上一页</button>
+				<button class="btn btn-medium" id="nextPage">下一页 Next</button>
+			</div>
+			<div class="span2 offset8">
+				<input type="text" data-width="50" data-height="50" id="pageKnob">
+			</div>
 		</div>
 
 		<br>
