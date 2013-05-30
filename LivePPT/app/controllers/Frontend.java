@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -69,12 +70,13 @@ public class Frontend extends Controller {
 	public static Result pptListForMeeting(){
 		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
 		List<Ppt> ppts = user.ppts;
+		List<Ppt> converted = new ArrayList<Ppt>();
 		for (Ppt ppt : ppts){
-			if (!ppt.isConverted){
-				ppts.remove(ppt);
+			if (ppt.isConverted){
+				converted.add(ppt);
 			}			
 		}
-		return ok(pptListForMeeting.render(ppts));
+		return ok(pptListForMeeting.render(converted));
 	}
 	
 	public static Result foundNewMeeting(Long pptId){
