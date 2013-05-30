@@ -77,8 +77,7 @@ public class App_MeetingController extends Controller {
 	 * @return [description]
 	 */
 	public Result joinMeeting(){
-		//Map<String, String[]> params = request().body().asFormUrlEncoded();
-		Map<String, String[]> params = request().queryString();
+		Map<String, String[]> params = request().body().asFormUrlEncoded();
 		//check userId ,meetingId
 		JsonResult resultJson;
 		
