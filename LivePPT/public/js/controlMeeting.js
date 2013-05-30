@@ -1,4 +1,5 @@
 define(function(require, exports, module) {
+	require('jquery-knob');
 
 	console.log("contrlMeeting.js");
 
@@ -11,9 +12,13 @@ define(function(require, exports, module) {
 	var btnPrePage = $('button#prePage');
 	var btnNextPage = $('button#nextPage');
 
+	var pageKnob = $('#pageKnob');
+
 	currentImg.data('currentIndex', 1);
 	// currentImg.attr('src', '/getpptpage?pptid='+pptId+'&pageid='+currentImg.data('currentIndex'));
 	setCurrentImg(1);
+
+	initPageKnob();
 
 
 	//上一页
@@ -38,6 +43,8 @@ define(function(require, exports, module) {
 		$('.page#'+next).addClass('hide');
 
 		setPagination(index);
+
+		pageKnob.val(index).trigger('change');
 	}
 
 	function setPreImg(){
@@ -75,6 +82,14 @@ define(function(require, exports, module) {
 	function setPagination(currentPageIndex){
 		$('.pagination li').removeClass('active');
 		$('.pagination li#page'+currentPageIndex).addClass('active');
+	}
+
+	function initPageKnob(){
+		pageKnob.knob({
+			min:0,
+			max: pageCount,
+			readOnly: true
+		});
 	}
 
 
