@@ -33,3 +33,18 @@ index_block3_txt = Cross-platform
 index_block3_sub = via iOS/Android apps or just Web Browser, Watch or Control your meeting easily.
 index_block4_txt = Easy-use
 index_block4_sub = So easy to get started without any burden.
+
+#登录login
+
+login_title = Sign In
+login_btn_login = Sign in
+login_jump_to_signup = Havent LivePPT Account? Sign up now!
+
+#注册signup
+
+signup_title = Register LivePPT Account
+signup_placeholder_email = Input your email
+signup_placeholder_password = your password?
+signup_placeholder_displayname = How should we call you?
+signup_btn_signup = Sign up
+signup_jump_to_login = Already have LivePPT account? Log in here.

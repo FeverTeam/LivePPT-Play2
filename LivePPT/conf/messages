@@ -35,5 +35,22 @@ index_block4_txt =易用
 index_block4_sub =几乎无需学习，LivePPT一切皆如你所愿。
 
 
+#登录login
+
+login_title = 登入LivePPT
+login_btn_login = 登录
+login_jump_to_signup = 还没有LivePPT账号？马上注册吧！
+
+
+#注册signup
+
+signup_title = 注册LivePPT账号
+signup_placeholder_email = 输入你的Email地址
+signup_placeholder_password = 输入你的密码
+signup_placeholder_displayname = 希望我们如何称呼你？
+signup_btn_signup = 注册
+signup_jump_to_login = 已有LivePPT账号？马上登录吧！
+
+
 
 

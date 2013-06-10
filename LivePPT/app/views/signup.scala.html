@@ -1,3 +1,5 @@
+@import play.i18n._
+
 @main(name="signup", "注册账号") {
   @** Extra CSS **@
   body {
@@ -36,21 +38,21 @@
 }{ 
 
   <form class="form-signup">
-    <h2 class="form-signup-heading">注册LivePPT</h2>
+    <h2 class="form-signup-heading">@Messages.get("signup_title")</h2>
     <div class="control-group">
       <label class="control-label" for="inputEmail">Email</label>
       <div class="controls">
-        <input type="text" id="inputEmail" placeholder="输入你的Email地址">
+        <input type="text" id="inputEmail" placeholder="@Messages.get("signup_placeholder_email")">
       </div>
 
       <label class="control-label" for="inputDisplayName">Display Name</label>
       <div class="controls">
-        <input type="text" id="inputDisplayName" placeholder="希望我们如何称呼你？">
+        <input type="text" id="inputDisplayName" placeholder="@Messages.get("signup_placeholder_displayname")">
       </div>
 
       <label class="control-label" for="inputPassword">Password</label>
       <div class="controls">
-        <input type="password" id="inputPassword" placeholder="输入你的密码">
+        <input type="password" id="inputPassword" placeholder="@Messages.get("signup_placeholder_password")">
       </div>
 
       <!-- <label class="control-label" for="inputPasswordAgain">Confirm Password</label>
@@ -60,7 +62,7 @@
  -->
     </div>
 
-    <a class="btn btn-primary btn-large btn-signup-submit">注册</a>
+    <a class="btn btn-primary btn-large btn-signup-submit">@Messages.get("signup_btn_signup")</a>
 
     <br><br>
 
@@ -70,6 +72,6 @@
     </div>
 
     <br>
-    <a href="/login">已有LivePPT账号？马上登录吧！</a>
+    <a href="/login">@Messages.get("signup_jump_to_login")</a>
   </form>
 }
