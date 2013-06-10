@@ -1,6 +1,7 @@
 #通用gen
 
 gen_subtitle = LivePPT 跨平台PPT云直播应用
+gen_logout_txt = 登出
 
 
 #导航栏nav
@@ -62,7 +63,24 @@ myppt_tbl_pagecount = 页数
 myppt_tbl_converted_yes = 已转换
 myppt_tbl_converted_no = 正在转换
 
+
+#会议列表mymeeting
+
+mymeeting_tbl_caption_myfoundedmeetings = 我发起的会议
+mymeeting_tbl_caption_myattendingmeetings = 我观看的会议
+mymeeting_tbl_toggle_count = 共{0}个
+
+mymeeting_tbl_meetingid = 会议ID
+mymeeting_tbl_meetingtopic = 会议主题
+mymeeting_tbl_targetppt = 对应PPT文件
+mymeeting_tbl_meetingfounder = 发起人
+
+mymeeting_btn_launchmeeting = 发起会议
+mymeeting_btn_joinmeeting = 加入观看会议
+
+
 #应用下载appdownload
+
 appdownload_ios = Oops...iOS应用正在闯关AppStore审批的路上。快到了！
 appdownload_android = Android应用已发布到Play市场！点击即可进入下载
 
