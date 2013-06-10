@@ -50,6 +50,16 @@ signup_btn_signup = Sign up
 signup_jump_to_login = Already have LivePPT account? Log in here.
 
 
+#我的PPTmyppt
+
+myppt_tbl_ppttitle = Title
+myppt_tbl_uploadtime = Upload Time
+myppt_tbl_filesize = File Size
+myppt_tbl_isconverted = IsConverted
+myppt_tbl_pagecount = PageCount
+myppt_tbl_converted_yes = Success
+myppt_tbl_converted_no = In progress
+
 #应用下载appdownload
 appdownload_ios = Coming soon, iOS App is being waiting for Apple's pre-release review...
 appdownload_android = LivePPT for Android has now available in Google Play Market! Go and get it to your Android!

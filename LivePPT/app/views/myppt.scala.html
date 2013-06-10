@@ -17,11 +17,11 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>标题</th>
-          <th>上传时间</th>
-          <th>文件大小</th>
-          <th>是否转码</th>
-          <th>页数</th>
+          <th>@Messages("myppt_tbl_ppttitle")</th>
+          <th>@Messages("myppt_tbl_uploadtime")</th>
+          <th>@Messages("myppt_tbl_filesize")</th>
+          <th>@Messages("myppt_tbl_isconverted")</th>
+          <th>@Messages("myppt_tbl_pagecount")</th>
         </tr>
       </thead>
       <tbody>
@@ -38,10 +38,10 @@
             <td>@(new java.text.SimpleDateFormat("yyyy年MM月dd日 hh:mm:ss").format(ppt.time))</td>          
           <td>@(ppt.fileSize/1024) KB</td>
           @if(ppt.isConverted){
-            <td><a href="/pptplainshow/@ppt.id" target="_blank">已转换</a></td>
+            <td><a href="/pptplainshow/@ppt.id" target="_blank">@Messages("myppt_tbl_converted_yes")</a></td>
             <td>@ppt.pagecount</td>
           } else {
-            <td>未转换</td>
+            <td>@Messages("myppt_tbl_converted_no")</td>
             <td></td>
           }
         </tr>
