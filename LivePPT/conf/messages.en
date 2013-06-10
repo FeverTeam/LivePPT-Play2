@@ -48,3 +48,8 @@ signup_placeholder_password = your password?
 signup_placeholder_displayname = How should we call you?
 signup_btn_signup = Sign up
 signup_jump_to_login = Already have LivePPT account? Log in here.
+
+
+#应用下载appdownload
+appdownload_ios = Coming soon, iOS App is being waiting for Apple's pre-release review...
+appdownload_android = LivePPT for Android has now available in Google Play Market! Go and get it to your Android!

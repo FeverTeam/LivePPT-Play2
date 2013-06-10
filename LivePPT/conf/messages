@@ -52,5 +52,7 @@ signup_btn_signup = 注册
 signup_jump_to_login = 已有LivePPT账号？马上登录吧！
 
 
-
+#应用下载appdownload
+appdownload_ios = Oops...iOS应用正在闯关AppStore审批的路上。快到了！
+appdownload_android = Android应用已发布到Play市场！点击即可进入下载
 
