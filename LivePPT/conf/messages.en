@@ -1,0 +1,35 @@
+#通用gen
+
+gen_subtitle = LivePPT Sync your presentation everywhere!
+
+
+#导航栏nav
+
+nav_tab_index = Welcome
+nav_tab_myppt = MyPPT
+nav_tab_mymeeting = MyMeetings
+nav_tab_appdownload = App Downloads
+nav_tab_aboutus = About us
+
+
+#首页index
+
+index_main_title = Welcome to LivePPT!
+index_sub_title_1 = Free, Cross-platform, Easy-use app for syncing presentation
+index_sub_title_2 = 
+index_btn_signup = Sign up 
+index_txt_login = Already have LivePPT account? Log in here.
+
+index_tooltip_web = Wow! Yor are now here! In Alpha testing status.
+index_tooltip_chrome = Click to Install in Chrome !
+index_tooltip_android = Get LivePPT Android App from Google Market
+index_tooltip_ios = Coming soon, iOS App is being waiting for Apple's pre-release review...
+
+index_block1_txt = Online Presentation Meeting
+index_block1_sub = Forget projectors, Launch your presentation meeting with LivePPT.
+index_block2_txt = Free
+index_block2_sub = High-quality service, yet free.
+index_block3_txt = Cross-platform
+index_block3_sub = via iOS/Android apps or just Web Browser, Watch or Control your meeting easily.
+index_block4_txt = Easy-use
+index_block4_sub = So easy to get started without any burden.

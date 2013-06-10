@@ -1,3 +1,5 @@
+@import play.i18n._
+
 @main(name="index", "欢迎使用"){
   @** Extra CSS **@
 
@@ -16,34 +18,34 @@
 
 }{ 
   <div class="jumbotron">
-    <h1>欢迎使用LivePPT!</h1>
+    <h1>@Messages.get("index_main_title")</h1>
     <p class="lead">
-      跨平台PPT云直播应用，就在你的眼前。
+      @Messages.get("index_sub_title_1")
       <br><br>      
-      随时随地PPT直播，让你的想法更有力。
+      @Messages.get("index_sub_title_2")
     </p>
-    <a class="btn btn-large btn-success" href="/signup">Sign up today</a>
-    <br>
-    <a href="/login">已经有账号了? 快来登录吧。</a>
+    <a class="btn btn-large btn-success" href="/signup">@Messages.get("index_btn_signup")</a>
+    <br><br>
+    <a href="/login">@Messages.get("index_txt_login")</a>
   </div>
 
   <div class="row-fluid span10 platforms">
     <div class="span2 offset2">
-      <a href="#" data-toggle="tooltip" title="你就在这里！请尽情享用吧！Alpha测试阶段" onmouseover="$(this).tooltip('show');">
+      <a href="#" data-toggle="tooltip" title="@Messages.get("index_tooltip_web")" onmouseover="$(this).tooltip('show');">
         <img src="/assets/images/web-small-logo.png"/>
       &nbsp;Web</a>
     </div>
     <div class="span2">
-      <a href="https://chrome.google.com/webstore/detail/liveppt/pnpaagoieoljcnaehfomfabajfocmalo" data-toggle="tooltip" title="马上安装到Chrome吧！" onmouseover="$(this).tooltip('show');">
+      <a href="https://chrome.google.com/webstore/detail/liveppt/pnpaagoieoljcnaehfomfabajfocmalo" data-toggle="tooltip" title="@Messages.get("index_tooltip_chrome")" onmouseover="$(this).tooltip('show');">
         <img src="/assets/images/chrome-small-logo.png"/>&nbsp;Chrome
       </a>
       </div>
     <div class="span2">
-      <a href="https://play.google.com/store/apps/details?id=com.app.liveppt" data-toggle="tooltip" title="安装到Android手机上吧！" onmouseover="$(this).tooltip('show');">
+      <a href="https://play.google.com/store/apps/details?id=com.app.liveppt" data-toggle="tooltip" title="@Messages.get("index_tooltip_android")" onmouseover="$(this).tooltip('show');">
         <img src="/assets/images/android-small-logo.png"/></div>
       </a>
     <div class="span2">
-      <a href="#" data-toggle="tooltip" title="Oops...iOS应用正在闯关AppStore审批的路上。快到了！" onmouseover="$(this).tooltip('show');">
+      <a href="#" data-toggle="tooltip" title="@Messages.get("index_tooltip_ios")" onmouseover="$(this).tooltip('show');">
         <img src="/assets/images/iphone-small-logo.png"/></div>
       </a>
   </div>
@@ -52,19 +54,19 @@
 
   <div class="row-fluid marketing">
     <div class="span5 offset1">
-      <h4>在线PPT会议</h4>
-      <p>没有投影仪，一样可以开PPT会议。</p>
+      <h4>@Messages.get("index_block1_txt")</h4>
+      <p>@Messages.get("index_block1_sub")</p>
 
-      <h4>免费</h4>
-      <p>高质量的服务，而且免费。</p>
+      <h4>@Messages.get("index_block2_txt")</h4>
+      <p>@Messages.get("index_block2_sub")</p>
     </div>
 
     <div class="span5 offset1">
-      <h4>跨平台</h4>
-      <p>通过浏览器和LivePPT应用，即可享受服务。</p>
+      <h4>@Messages.get("index_block3_txt")</h4>
+      <p>@Messages.get("index_block3_sub")</p>
 
-      <h4>易用</h4>
-      <p>几乎无需学习，LivePPT一切皆如你所愿。</p>
+      <h4>@Messages.get("index_block4_txt")</h4>
+      <p>@Messages.get("index_block4_sub")</p>
     </div>
   </div>
 }

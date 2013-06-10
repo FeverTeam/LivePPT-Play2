@@ -1,0 +1,39 @@
+#通用gen
+
+gen_subtitle = LivePPT 跨平台PPT云直播应用
+
+
+#导航栏nav
+
+nav_tab_index = 首页
+nav_tab_myppt = 我的PPT
+nav_tab_mymeeting = 会议列表
+nav_tab_appdownload = 应用下载
+nav_tab_aboutus = 关于我们
+
+
+#首页index
+
+index_main_title = 欢迎使用LivePPT!
+index_sub_title_1 = 跨平台PPT云直播应用，就在你的眼前。
+index_sub_title_2 = 随时随地PPT直播，让你的想法更有力。
+index_btn_signup = 马上注册LivePPT账号
+index_txt_login = 已经有账号了? 快来登录吧。
+
+index_tooltip_web = 你就在这里！请尽情享用吧！Alpha测试阶段
+index_tooltip_chrome = 马上安装到Chrome吧！
+index_tooltip_android = 安装到Android手机上吧！
+index_tooltip_ios = Oops...iOS应用正在闯关AppStore审批的路上。快到了！
+
+index_block1_txt  =在线PPT会议
+index_block1_sub = 没有投影仪，一样可以开PPT会议。
+index_block2_txt =免费
+index_block2_sub =高质量的服务，而且免费。
+index_block3_txt =跨平台
+index_block3_sub =通过浏览器和LivePPT应用，即可享受服务。
+index_block4_txt =易用
+index_block4_sub =几乎无需学习，LivePPT一切皆如你所愿。
+
+
+
+
