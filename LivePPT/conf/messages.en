@@ -1,7 +1,7 @@
 #通用gen
 
 gen_subtitle = LivePPT Sync your presentation everywhere!
-gen_logout_txt = Sign Out
+
 
 #导航栏nav
 
@@ -60,23 +60,6 @@ myppt_tbl_pagecount = PageCount
 myppt_tbl_converted_yes = Success
 myppt_tbl_converted_no = In progress
 
-
-#会议列表mymeeting
-
-mymeeting_tbl_caption_myfoundedmeetings = Meetings in my Control
-mymeeting_tbl_caption_myattendingmeetings = Meetings for Watching
-mymeeting_tbl_toggle_count = {0} in total
-
-mymeeting_tbl_meetingid = Meeting ID
-mymeeting_tbl_meetingtopic = Topic
-mymeeting_tbl_targetppt = Target PPT
-mymeeting_tbl_meetingfounder = Founder
-
-mymeeting_btn_launchmeeting = Launch Meeting
-mymeeting_btn_joinmeeting = Join Meeting
-
-
 #应用下载appdownload
-
 appdownload_ios = Coming soon, iOS App is being waiting for Apple's pre-release review...
 appdownload_android = LivePPT for Android has now available in Google Play Market! Go and get it to your Android!
