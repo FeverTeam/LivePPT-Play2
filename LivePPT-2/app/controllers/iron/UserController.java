@@ -25,10 +25,11 @@ public class UserController extends Controller {
   	 */
     public Result regist() {
 
-        Map<String, String[]> params = request().body().asFormUrlEncoded();
+        Map<String, String[]> params = request().queryString();
         UserR userR =  userService.genUserR(params);
         userR = userService.regist(userR);
         UserJson userJson =userService.genJson(userR);
+        System.out.println(userJson.toString());
         return ok(userJson);
 
     }

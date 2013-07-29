@@ -24,6 +24,8 @@ public class UserServiceImpl implements UserService{
         //TODO 添加错误类检验抛出
 
         UserR user = new UserR();
+        System.out.println("genUserR");
+        System.out.println(params.get("email")[0]);
         user.email = params.get("email")[0];
         user.password = params.get("password")[0];
         user.display = params.get("display")[0];

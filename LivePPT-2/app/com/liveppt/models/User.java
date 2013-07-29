@@ -3,6 +3,7 @@ package com.liveppt.models;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
@@ -10,6 +11,7 @@ import javax.persistence.Id;
  * author 黎伟杰
  */
 
+@Entity
 public class User extends Model {
 
     @Id
