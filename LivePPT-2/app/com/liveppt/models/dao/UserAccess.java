@@ -15,7 +15,7 @@ public class UserAccess {
      * @return
      * last modified黎伟杰l
      */
-    public UserR create(UserR userR){
+    static public UserR create(UserR userR){
         //TODO 重名检查
         User user = new User(userR.email,userR.password,userR.display);
         user.save();
