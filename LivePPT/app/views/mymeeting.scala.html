@@ -3,17 +3,20 @@
 @main(name="mymeeting", "我的PPT会议") {
 
 }{
-	<p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>
+	<p>hi, @user.displayname! <a href="/logout">@Messages("gen_logout_txt")</a></p>
 	<br>
-	<h2>我主持的会议<span class="badge badge-info">共@(myFoundedMeetingList.size())个</span></h2>
-	<button class="btn" id="btn-found-new-meeting">发起会议</button>
+	<h2>
+		@Messages("mymeeting_tbl_caption_myfoundedmeetings")
+		<span class="badge badge-info">@Messages("mymeeting_tbl_toggle_count", myFoundedMeetingList.size())</span>
+	</h2>
+	<button class="btn" id="btn-found-new-meeting">@Messages("mymeeting_btn_launchmeeting")</button>
 	<br><br>
 	<table class="table">
 		<thead>
 	      <tr>
-	        <th>会议ID</th>
-	        <th>会议主题</th>
-	        <th>对应PPT文件</th>
+	        <th>@Messages("mymeeting_tbl_meetingid")</th>
+	        <th>@Messages("mymeeting_tbl_meetingtopic")</th>
+	        <th>@Messages("mymeeting_tbl_targetppt")</th>
 	      </tr>
 	    </thead>
 	    <tbody>
@@ -33,15 +36,18 @@
 
 
 
-	<h2>我参与的会议<span class="badge badge-info">共@(myAttendingMeetingList.size())个</span></h2>
-	<button class="btn" id="btn-showpage-join-meeting">加入会议</button>
+	<h2>
+		@Messages("mymeeting_tbl_caption_myattendingmeetings")
+		<span class="badge badge-info">@Messages("mymeeting_tbl_toggle_count", myAttendingMeetingList.size())</span>
+	</h2>
+	<button class="btn" id="btn-showpage-join-meeting">@Messages("mymeeting_btn_joinmeeting")</button>
 	<br><br>
 	<table class="table">
 		<thead>
 	      <tr>
-	        <th>会议ID</th>
-	        <th>会议主题</th>
-	        <th>发起人</th>
+	        <th>@Messages("mymeeting_tbl_meetingid")</th>
+	        <th>@Messages("mymeeting_tbl_meetingtopic")</th>
+	        <th>@Messages("mymeeting_tbl_meetingfounder")</th>
 	      </tr>
 	    </thead>
 	    <tbody>

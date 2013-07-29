@@ -1,0 +1,82 @@
+#通用gen
+
+gen_subtitle = LivePPT Sync your presentation everywhere!
+gen_logout_txt = Sign Out
+
+#导航栏nav
+
+nav_tab_index = Welcome
+nav_tab_myppt = MyPPT
+nav_tab_mymeeting = MyMeetings
+nav_tab_appdownload = App Downloads
+nav_tab_aboutus = About us
+
+
+#首页index
+
+index_main_title = Welcome to LivePPT!
+index_sub_title_1 = Free, Cross-platform, Easy-use app for syncing presentation
+index_sub_title_2 = 
+index_btn_signup = Sign up 
+index_txt_login = Already have LivePPT account? Log in here.
+
+index_tooltip_web = Wow! Yor are now here! In Alpha testing status.
+index_tooltip_chrome = Click to Install in Chrome !
+index_tooltip_android = Get LivePPT Android App from Google Market
+index_tooltip_ios = Coming soon, iOS App is being waiting for Apple's pre-release review...
+
+index_block1_txt = Online Presentation Meeting
+index_block1_sub = Forget projectors, Launch your presentation meeting with LivePPT.
+index_block2_txt = Free
+index_block2_sub = High-quality service, yet free.
+index_block3_txt = Cross-platform
+index_block3_sub = via iOS/Android apps or just Web Browser, Watch or Control your meeting easily.
+index_block4_txt = Easy-use
+index_block4_sub = So easy to get started without any burden.
+
+#登录login
+
+login_title = Sign In
+login_btn_login = Sign in
+login_jump_to_signup = Havent LivePPT Account? Sign up now!
+
+#注册signup
+
+signup_title = Register LivePPT Account
+signup_placeholder_email = Input your email
+signup_placeholder_password = your password?
+signup_placeholder_displayname = How should we call you?
+signup_btn_signup = Sign up
+signup_jump_to_login = Already have LivePPT account? Log in here.
+
+
+#我的PPTmyppt
+
+myppt_tbl_ppttitle = Title
+myppt_tbl_uploadtime = Upload Time
+myppt_tbl_filesize = File Size
+myppt_tbl_isconverted = IsConverted
+myppt_tbl_pagecount = PageCount
+myppt_tbl_converted_yes = Success
+myppt_tbl_converted_no = In progress
+
+
+#会议列表mymeeting
+
+mymeeting_tbl_caption_myfoundedmeetings = Meetings in my Control
+mymeeting_tbl_caption_myattendingmeetings = Meetings for Watching
+mymeeting_tbl_toggle_count = {0} in total
+
+mymeeting_tbl_meetingid = Meeting ID
+mymeeting_tbl_meetingtopic = Topic
+mymeeting_tbl_targetppt = Target PPT
+mymeeting_tbl_meetingfounder = Founder
+
+mymeeting_btn_launchmeeting = Launch Meeting
+mymeeting_btn_joinmeeting = Join Meeting
+
+
+#应用下载appdownload
+
+appdownload_ios = Coming soon, iOS App is being waiting for Apple's pre-release review...
+appdownload_android = LivePPT for Android has now available in Google Play Market! Go and get it to your Android!

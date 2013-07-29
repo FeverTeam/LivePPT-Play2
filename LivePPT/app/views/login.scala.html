@@ -1,3 +1,5 @@
+@import play.i18n._
+
 @main(name="login", "登入") {
   @** Extra CSS **@
 
@@ -36,19 +38,19 @@
 
 }{
   <form class="form-signin">
-    <h2 class="form-signin-heading">登入LivePPT</h2>
+    <h2 class="form-signin-heading">@Messages.get("login_title")</h2>
     <input type="text" class="input-block-level" placeholder="Email address" id="inputEmail">
     <input type="password" class="input-block-level" placeholder="Password" id="inputPassword">
     <!--<label class="checkbox">
       <input type="checkbox" value="remember-me" disabled> Remember me
     </label>-->
-    <button class="btn btn-large btn-success btn-login-submit" type="submit">登录</button>
+    <button class="btn btn-large btn-success btn-login-submit" type="submit">@Messages.get("login_btn_login")</button>
     <br><br>
     <div class="alert alert-error fade in" id="alertBox">
       <button type="button" class="close" data-dismiss="alert">&times;</button>
       <span></span>
     </div>
     <br>
-    <a href='/signup'>还没有LivePPT账号？马上注册吧！</a>
+    <a href='/signup'>@Messages.get("login_jump_to_signup")</a>
   </form>
 }
