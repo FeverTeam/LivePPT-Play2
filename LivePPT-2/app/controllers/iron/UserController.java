@@ -1,7 +1,13 @@
 package controllers.iron;
 
+import com.google.inject.Inject;
+import com.liveppt.services.UserService;
+import com.liveppt.utils.UserJson;
+import com.liveppt.utils.UserR;
 import play.*;
 import play.mvc.*;
+
+import java.util.Map;
 
 /**
  * 用户接口
@@ -9,14 +15,23 @@ import play.mvc.*;
  */
 
 public class UserController extends Controller {
+    @Inject
+    UserService userService;
   
   	/**
   	 * 注册账号
   	 * @return 
   	 * last modified 黎伟杰
   	 */
-    public static Result regist() {
-        return TODO;
+    public Result regist() {
+
+        Map<String, String[]> params = request().queryString();
+        UserR userR =  userService.genUserR(params);
+        userR = userService.regist(userR);
+        UserJson userJson =userService.genJson(userR);
+        System.out.println(userJson.toString());
+        return ok(userJson);
+
     }
 
     /**
@@ -24,7 +39,7 @@ public class UserController extends Controller {
      * @return 
      * last modified 黎伟杰
      */
-    public static Result login() {
+    public Result login() {
         return TODO;
     }
 
@@ -33,7 +48,7 @@ public class UserController extends Controller {
      * @return 
      * last modified 黎伟杰
      */
-    public static Result upToProfile() {
+    public Result upToProfile() {
         return TODO;
     }
   	
