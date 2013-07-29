@@ -12,7 +12,9 @@ public class UserR {
 
     public String password;
 
-    public String displayname;
+    public String newPassword;
+
+    public String display;
 
     public int status;
 
