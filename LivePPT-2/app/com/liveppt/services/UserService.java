@@ -1,7 +1,7 @@
 package com.liveppt.services;
 
-import com.liveppt.utils.UserJson;
-import com.liveppt.utils.UserR;
+import com.liveppt.utils.models.UserJson;
+import com.liveppt.utils.models.UserReader;
 
 import java.util.Map;
 
@@ -11,19 +11,19 @@ import java.util.Map;
  */
 public interface UserService {
 
-    public UserR genUserR(Map<String, String[]> params);
+    public UserReader genUserR(Map<String, String[]> params);
 
-    public UserJson genJson(UserR user);
+    public UserJson genJson(UserReader user);
 
-    public UserR regist(UserR user);
+    public UserReader regist(UserReader user);
     
     public boolean loginCheck(String email, String password);
     
-    public UserR updateByEmail(UserR user, String newEmail);
+    public UserReader updateByEmail(UserReader user, String newEmail);
 
-    public UserR updateByPassword(UserR userR, String newPassword);
+    public UserReader updateByPassword(UserReader userReader, String newPassword);
     
-    public UserR updateByDisplayname(UserR userR, String newDisplayname);
+    public UserReader updateByDisplayname(UserReader userReader, String newDisplayname);
     
 
 }

@@ -4,7 +4,7 @@ package com.liveppt.models.dao;
 
 
 import com.liveppt.models.User;
-import com.liveppt.utils.UserR;
+import com.liveppt.utils.models.UserReader;
 
 /**
  * description
@@ -14,16 +14,16 @@ public class UserAccess {
 
     /**
      * 创建新的用户
-     * @param userR
+     * @param userReader
      * @return
      * last modified黎伟杰l
      */
-    static public UserR create(UserR userR){
+    static public UserReader create(UserReader userReader){
         //TODO 重名检查
-        User user = new User(userR.email,userR.password,userR.display);
+        User user = new User(userReader.email, userReader.password, userReader.display);
         user.save();
-        userR.id = user.id;
-        return userR;
+        userReader.id = user.id;
+        return userReader;
     }
     
     /*
@@ -49,34 +49,34 @@ public class UserAccess {
     /*
      * update by email
      */
-    static public UserR updateByEmail(UserR userR,String newEmail)
+    static public UserReader updateByEmail(UserReader userReader,String newEmail)
 	{   
-    	User user = User.find.where().eq("email", userR.email).findUnique();
+    	User user = User.find.where().eq("email", userReader.email).findUnique();
 		user.email=newEmail;
-		userR.email = user.email;
+		userReader.email = user.email;
 		user.save();
-		return userR;
+		return userReader;
 	}
     /*
      * update by password
      */
-    static public UserR updateByPassword(UserR userR,String newPassword)
+    static public UserReader updateByPassword(UserReader userReader,String newPassword)
 	{   
-    	User user = User.find.where().eq("password", userR.password).findUnique();
+    	User user = User.find.where().eq("password", userReader.password).findUnique();
 		user.password=newPassword;
-		userR.password = user.password;
+		userReader.password = user.password;
 		user.save();
-		return userR;
+		return userReader;
 	}
     /*
      * update by disoplay name
      */
-    static public UserR updateByDisplayname(UserR userR,String newDisplayname)
+    static public UserReader updateByDisplayname(UserReader userReader,String newDisplayname)
 	{   
-    	User user = User.find.where().eq("displayname", userR.display).findUnique();
+    	User user = User.find.where().eq("displayname", userReader.display).findUnique();
 		user.displayname=newDisplayname;
-		userR.display = user.displayname;
+		userReader.display = user.displayname;
 		user.save();
-		return userR;
+		return userReader;
 	}
 }

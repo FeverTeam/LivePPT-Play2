@@ -2,9 +2,8 @@ package controllers.iron;
 
 import com.google.inject.Inject;
 import com.liveppt.services.UserService;
-import com.liveppt.utils.UserJson;
-import com.liveppt.utils.UserR;
-import play.*;
+import com.liveppt.utils.models.UserJson;
+import com.liveppt.utils.models.UserReader;
 import play.mvc.*;
 
 import java.util.Map;
@@ -26,9 +25,9 @@ public class UserController extends Controller {
     public Result regist() {
 
         Map<String, String[]> params = request().queryString();
-        UserR userR =  userService.genUserR(params);
-        userR = userService.regist(userR);
-        UserJson userJson =userService.genJson(userR);
+        UserReader userReader =  userService.genUserR(params);
+        userReader = userService.regist(userReader);
+        UserJson userJson =userService.genJson(userReader);
         System.out.println(userJson.toString());
         return ok(userJson);
 

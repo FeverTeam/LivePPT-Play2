@@ -3,8 +3,8 @@ package com.liveppt.services.impl;
 import com.liveppt.models.User;
 import com.liveppt.models.dao.UserAccess;
 import com.liveppt.services.UserService;
-import com.liveppt.utils.UserJson;
-import com.liveppt.utils.UserR;
+import com.liveppt.utils.models.UserJson;
+import com.liveppt.utils.models.UserReader;
 
 import java.util.Map;
 
@@ -23,10 +23,10 @@ public class UserServiceImpl implements UserService{
      * last modified 黎伟杰
      */
     @Override
-    public UserR genUserR(Map<String, String[]> params) {
+    public UserReader genUserR(Map<String, String[]> params) {
         //TODO 添加错误类检验抛出
 
-        UserR user = new UserR();
+        UserReader user = new UserReader();
         System.out.println("genUserR");
         System.out.println(params.get("email")[0]);
         user.email = params.get("email")[0];
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService{
      * last modified 黎伟杰
      */
     @Override
-    public UserJson genJson(UserR user) {
+    public UserJson genJson(UserReader user) {
         //TODO 错误检查抛出
         UserJson userJson = new UserJson(user.email,user.password,user.display);
         return userJson;
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService{
      * last modified 黎伟杰
      */
     @Override
-    public UserR regist(UserR user) {
+    public UserReader regist(UserReader user) {
         //TODO 错误检查抛出
         return UserAccess.create(user);
     }
@@ -82,19 +82,19 @@ public class UserServiceImpl implements UserService{
     /*
      * update by Email
      */
-    public UserR updateByEmail(UserR userR, String newEmail){
-    	return UserAccess.updateByEmail(userR, newEmail);
+    public UserReader updateByEmail(UserReader userReader, String newEmail){
+    	return UserAccess.updateByEmail(userReader, newEmail);
     }
     /*
      * update by Email
      */
-    public UserR updateByPassword(UserR userR, String newPassword){
-    	return UserAccess.updateByEmail(userR, newPassword);
+    public UserReader updateByPassword(UserReader userReader, String newPassword){
+    	return UserAccess.updateByEmail(userReader, newPassword);
     }
     /*
      * update by Email
      */
-    public UserR updateByDisplayname(UserR userR, String newDisplayname){
-    	return UserAccess.updateByEmail(userR, newDisplayname);
+    public UserReader updateByDisplayname(UserReader userReader, String newDisplayname){
+    	return UserAccess.updateByEmail(userReader, newDisplayname);
     }
 }

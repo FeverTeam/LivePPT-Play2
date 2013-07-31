@@ -1,4 +1,4 @@
-package com.liveppt.utils;
+package com.liveppt.utils.models;
 
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
