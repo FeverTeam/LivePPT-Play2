@@ -18,7 +18,7 @@ public class Application extends Controller {
   	 * last modified XXX
   	 */
     public static Result index() {
-        return TODO;
+        return ok(index.render());
     }
   
 }
