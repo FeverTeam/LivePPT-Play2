@@ -16,5 +16,14 @@ public interface UserService {
     public UserJson genJson(UserR user);
 
     public UserR regist(UserR user);
+    
+    public boolean loginCheck(String email, String password);
+    
+    public UserR updateByEmail(UserR user, String newEmail);
+
+    public UserR updateByPassword(UserR userR, String newPassword);
+    
+    public UserR updateByDisplayname(UserR userR, String newDisplayname);
+    
 
 }
