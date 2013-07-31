@@ -11,11 +11,11 @@ import java.util.Map;
  */
 public interface UserService {
 
-    public UserReader genUserR(Map<String, String[]> params);
+//    public UserReader genUserR(Map<String, String[]> params);
 
-    public UserJson genJson(UserReader user);
+//    public UserJson genJson(UserReader user);
 
-    public UserReader regist(UserReader user);
+    public UserJson regist(Map<String, String[]> params);
     
     public boolean loginCheck(String email, String password);
     

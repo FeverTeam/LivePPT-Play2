@@ -25,9 +25,7 @@ public class UserController extends Controller {
     public Result regist() {
 
         Map<String, String[]> params = request().queryString();
-        UserReader userReader =  userService.genUserR(params);
-        userReader = userService.regist(userReader);
-        UserJson userJson =userService.genJson(userReader);
+        UserJson userJson =userService.regist(params);
         System.out.println(userJson.toString());
         return ok(userJson);
 

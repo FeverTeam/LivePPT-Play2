@@ -4,7 +4,10 @@ package com.liveppt.models.dao;
 
 
 import com.liveppt.models.User;
+import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
+
+import java.util.Map;
 
 /**
  * description
@@ -14,16 +17,17 @@ public class UserAccess {
 
     /**
      * 创建新的用户
-     * @param userReader
+     * @param params
      * @return
      * last modified黎伟杰l
      */
-    static public UserReader create(UserReader userReader){
+    static public UserJson create(Map<String, String[]> params){
         //TODO 重名检查
-        User user = new User(userReader.email, userReader.password, userReader.display);
+        UserReader userReader = genUserReader(params);
+        User user = new User(userReader);
         user.save();
         userReader.id = user.id;
-        return userReader;
+        return genUserJson(userReader);
     }
     
     /*
@@ -74,9 +78,39 @@ public class UserAccess {
     static public UserReader updateByDisplayname(UserReader userReader,String newDisplayname)
 	{   
     	User user = User.find.where().eq("displayname", userReader.display).findUnique();
-		user.displayname=newDisplayname;
-		userReader.display = user.displayname;
+		user.display=newDisplayname;
+		userReader.display = user.display;
 		user.save();
 		return userReader;
 	}
+
+    /**
+     * 产生Json
+     * @param user
+     * @return
+     * last modified 黎伟杰
+     */
+    static public UserJson genUserJson(UserReader user) {
+        //TODO 错误检查抛出
+        UserJson userJson = new UserJson(user.email,user.password,user.display);
+        return userJson;
+    }
+
+    /**
+     * 产生UserR类
+     * @param params
+     * @return
+     * last modified 黎伟杰
+     */
+    static public UserReader genUserReader(Map<String, String[]> params) {
+        //TODO 添加错误类检验抛出
+
+        UserReader user = new UserReader();
+        System.out.println("genUserR");
+        System.out.println(params.get("email")[0]);
+        user.email = params.get("email")[0];
+        user.password = params.get("password")[0];
+        user.display = params.get("display")[0];
+        return user;
+    }
 }

@@ -18,4 +18,5 @@ public class UserReader {
 
     public int status;
 
+
 }
