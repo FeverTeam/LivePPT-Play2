@@ -1,5 +1,6 @@
 package com.liveppt.models;
 
+import com.liveppt.utils.models.UserReader;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
@@ -24,15 +25,21 @@ public class User extends Model {
     public String password;
 
     @Constraints.Required
-    public String displayname;
+    public String display;
 
     public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
             User.class);
 
-    public User(String email, String password, String displayName) {
+    public User(String email, String password, String display) {
         this.email = email;
         this.password = password;
-        this.displayname = displayName;
+        this.display = display;
+    }
+
+    public User(UserReader userReader) {
+        this.email = userReader.email;
+        this.password = userReader.password;
+        this.display = userReader.display;
     }
 
 }
