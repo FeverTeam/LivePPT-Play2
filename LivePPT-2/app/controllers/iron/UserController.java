@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * 用户接口
- * Author 黎伟杰
+ * Author 黎伟杰, 黄梓财
  */
 
 public class UserController extends Controller {
@@ -34,10 +34,15 @@ public class UserController extends Controller {
     /**
      * 登陆返回用户信息
      * @return 
-     * last modified 黎伟杰
+     * last modified 黄梓财
      */
     public Result login() {
-        return TODO;
+
+        Map<String, String[]> params = request().queryString();
+        UserJson userJson =userService.login(params);
+        System.out.println(userJson.toString());
+        return ok(userJson);
+
     }
 
     /**
