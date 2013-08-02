@@ -1,0 +1,32 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.tiny-logo {
+	margin: 40px 0 0 0;
+}
+
+.tiny-logo img{
+	height: 40px;
+	margin-right: 5px;
+}
+
+.tiny-logo li {
+	display: inline-block;
+	padding: 0 5px;
+}
+
+.about-me .title {
+	float: left;
+	display: block;
+	min-width: 65px;
+}
+
+.product ul {
+	list-style: none;
+}
+
+.product span {
+	padding-left: 5px;
+}
