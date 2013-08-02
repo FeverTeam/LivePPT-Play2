@@ -28,60 +28,100 @@ public class UserAccess {
         user.save();
         userReader.id = user.id;
         return genUserJson(userReader);
+    } 
+    
+    /**
+     * 检查账户是否存在
+     * @param params
+     * @return
+     * last modified Zijing Lee
+     */
+    static public boolean isEmailExist(Map<String, String[]> params){
+        UserReader userReader = genUserReader(params);
+        User user = User.find.where().eq("email", userReader.email).findUnique();
+        if(user == null){
+        // 用户不存在
+        // 设置用户不存在状态码为1101
+        //userReader.putStatus(1101);
+        return false;
+        }
+        else return true;
     }
     
-    /*
-     * 密码检查
+    /**
+     * 检查密码是否正确
+     * @param params
+     * @return
+     * last modified Zijing Lee
      */
-    static public boolean isPasswordCorrect(String email,String password){
-    	User user = User.find.where().eq("email", email).findUnique();
-    	if(user.password.equals(password)){
-    			return true;
+    static public boolean isPasswordCorrect(Map<String,String[]> params){
+    	UserReader userReader = genUserReader(params);
+    	User user = User.find.where().eq("email", userReader.email).findUnique();
+    	if(user.password.equals(userReader.password)){
+    	//密码正确
+    	return true;
     	}
        else return false;
     	
-    }
-   
-    /*
+    } 
+    /**
      * 删除用户
+     * @param params
+     * @return
+     * last modified Zijing Lee
      */
-    static public void delete(Long userId){
-    	User user  = User.find.byId(userId);
+    static public void delete(Map<String,String[]> params){
+    	UserReader userReader = genUserReader(params);
+    	User user  = User.find.byId(userReader.id);
     	user.delete();
     }
     
-    /*
-     * update by email
+    /**
+     * 更新Email
+     * @param params,newEmail
+     * @return
+     * last modified Zijing Lee
      */
-    static public UserReader updateByEmail(UserReader userReader,String newEmail)
+    static public UserJson updateByEmail(Map<String,String[]> params,String newEmail)
 	{   
+    	UserReader userReader = genUserReader(params);
     	User user = User.find.where().eq("email", userReader.email).findUnique();
 		user.email=newEmail;
 		userReader.email = user.email;
 		user.save();
-		return userReader;
+		return genUserJson(userReader);		
 	}
-    /*
-     * update by password
+    
+    /**
+     * 更新Password
+     * @param params,newPassword
+     * @return
+     * last modified Zijing Lee
      */
-    static public UserReader updateByPassword(UserReader userReader,String newPassword)
+    static public UserJson updateByPassword(Map<String,String[]> params,String newPassword)
 	{   
+    	UserReader userReader = genUserReader(params);
     	User user = User.find.where().eq("password", userReader.password).findUnique();
 		user.password=newPassword;
 		userReader.password = user.password;
 		user.save();
-		return userReader;
+		return genUserJson(userReader);	
 	}
-    /*
-     * update by disoplay name
+    
+    /**
+     * 更新display
+     * @param params,newDisplay
+     * @return
+     * last modified Zijing Lee
      */
-    static public UserReader updateByDisplayname(UserReader userReader,String newDisplayname)
+    static public UserJson updateByDisplay(Map<String,String[]> params,String newDisplay)
 	{   
-    	User user = User.find.where().eq("displayname", userReader.display).findUnique();
-		user.display=newDisplayname;
+    	UserReader userReader = genUserReader(params);
+    	User user = User.find.where().eq("display", userReader.display).findUnique();
+		user.display=newDisplay;
 		userReader.display = user.display;
 		user.save();
-		return userReader;
+		return genUserJson(userReader);	
 	}
 
     /**
