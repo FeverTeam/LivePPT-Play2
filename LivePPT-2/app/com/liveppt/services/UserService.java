@@ -16,8 +16,8 @@ public interface UserService {
 //    public UserJson genJson(UserReader user);
 
     public UserJson regist(Map<String, String[]> params);
-    
-    public boolean loginCheck(String email, String password);
+
+    public UserJson login(Map<String, String[]> params);
     
     public UserReader updateByEmail(UserReader user, String newEmail);
 

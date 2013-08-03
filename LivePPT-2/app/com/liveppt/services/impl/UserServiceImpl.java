@@ -17,31 +17,9 @@ import java.util.Map;
 public class UserServiceImpl implements UserService{
 
 
-
-
-    /*
-     * 登陆检查
-     */
-    public boolean loginCheck(String email, String password){
-		User user = User.find.where().eq("email", email).findUnique();
-		if (user == null) {
-			// 用户不存在
-			return false;
-		} else {
-			// 用户存在
-			// 验证用户密码
-			if (UserAccess.isPasswordCorrect(email, password)) {
-				return true;
-			} else {
-
-				return false;
-			}
-		}
-		
-	}
     /**
      * 用户注册
-     * @param user
+     * @param params
      * @return
      * last modified 黎伟杰
      */
@@ -50,7 +28,19 @@ public class UserServiceImpl implements UserService{
         //TODO 错误检查抛出
         return UserAccess.create(params);
     }
-    
+
+    /**
+     * 用户登陆
+     * @param params
+     * @return
+     * last modified 黎伟杰
+     */
+    @Override
+    public UserJson login(Map<String, String[]> params) {
+        //TODO 错误检查抛出
+        return UserAccess.login(params);
+    }
+
     /*
      * update by Email
      */

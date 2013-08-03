@@ -13,6 +13,7 @@ public class UserJson extends ObjectNode{
     static String  PASS = "password";
     static String  DISPLAY = "display";
     static String  STATUS = "status";
+    static String  MESSAGE = "message";
 
     /**
      * 初始化产生UserJson

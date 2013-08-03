@@ -34,7 +34,7 @@ public class UserController extends Controller {
     /**
      * 登陆返回用户信息
      * @return 
-     * last modified 黄梓财
+     * last modified 黎伟杰
      */
     public Result login() {
 
