@@ -29,6 +29,13 @@ public class UserJson extends ObjectNode{
         putDisplay(display);
     }
 
+    public UserJson(int status){
+        super(JsonNodeFactory.instance);
+        putStatus(status);
+    }
+
+
+
     /**
      * 为UserJson加入email信息
      * @param email

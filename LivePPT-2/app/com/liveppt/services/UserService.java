@@ -1,5 +1,6 @@
 package com.liveppt.services;
 
+import com.liveppt.utils.exception.params.ParamsException;
 import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
 
@@ -15,13 +16,13 @@ public interface UserService {
 
 //    public UserJson genJson(UserReader user);
 
-    public UserJson regist(Map<String, String[]> params);
+    public UserJson regist(Map<String, String[]> params) throws ParamsException;
 
-    public UserJson login(Map<String, String[]> params);
+    public UserJson login(Map<String, String[]> params) throws ParamsException;
 
-    public UserJson updatePassword(Map<String, String[]> params);
+    public UserJson updatePassword(Map<String, String[]> params) throws ParamsException;
     
-    public UserJson updateDisplayname(Map<String, String[]> paramse);
+    public UserJson updateDisplayname(Map<String, String[]> paramse) throws ParamsException;
     
 
 }
