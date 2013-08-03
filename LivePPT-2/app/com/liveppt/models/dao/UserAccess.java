@@ -2,6 +2,10 @@ package com.liveppt.models.dao;
 
 import com.liveppt.models.User;
 import com.liveppt.utils.StatusCode;
+import com.liveppt.utils.exception.params.DisplayNotFoundException;
+import com.liveppt.utils.exception.params.EmailNotFoundException;
+import com.liveppt.utils.exception.params.ParamsException;
+import com.liveppt.utils.exception.params.PasswordNotFoundException;
 import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
 
@@ -19,7 +23,7 @@ public class UserAccess {
      * @return
      * last modified黎伟杰l
      */
-    static public UserJson create(Map<String, String[]> params){
+    static public UserJson create(Map<String, String[]> params) throws ParamsException {
         //TODO 重名检查
         UserReader userReader = genUserReader(params);
         User user = new User(userReader);
@@ -34,7 +38,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public UserJson login(Map<String, String[]> params){
+    static public UserJson login(Map<String, String[]> params) throws ParamsException {
         UserReader userReader = genUserReader(params);
         User user = User.find.where().eq("email",userReader.email).findUnique();
         UserJson userJson = genUserJson(userReader);
@@ -57,9 +61,9 @@ public class UserAccess {
      * 检查账户是否存在
      * @param params
      * @return
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-    static public boolean isEmailExist(Map<String, String[]> params){
+    static public boolean isEmailExist(Map<String, String[]> params) throws ParamsException {
         UserReader userReader = genUserReader(params);
         User user = User.find.where().eq("email", userReader.email).findUnique();
         if(user == null){
@@ -75,9 +79,9 @@ public class UserAccess {
      * 检查密码是否正确
      * @param params
      * @return
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-    static public boolean isPasswordCorrect(Map<String,String[]> params){
+    static public boolean isPasswordCorrect(Map<String,String[]> params) throws ParamsException {
     	UserReader userReader = genUserReader(params);
     	User user = User.find.where().eq("email", userReader.email).findUnique();
     	if(user.password.equals(userReader.password)){
@@ -91,9 +95,9 @@ public class UserAccess {
      * 删除用户
      * @param params
      * @return
-     * last modified Zijing Lee
+     * last modified   黎伟杰
      */
-    static public void delete(Map<String,String[]> params){
+    static public void delete(Map<String,String[]> params) throws ParamsException {
     	UserReader userReader = genUserReader(params);
     	User user  = User.find.byId(userReader.id);
     	user.delete();
@@ -105,8 +109,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public UserJson updatePassword(Map<String,String[]> params)
-	{
+    static public UserJson updatePassword(Map<String,String[]> params) throws ParamsException {
         //TODO 错误检查
     	UserReader userReader = genUserReader(params);
         String newPassword = params.get("newPassword")[0];
@@ -124,8 +127,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public UserJson updateDisplay(Map<String,String[]> params)
-	{
+    static public UserJson updateDisplay(Map<String,String[]> params) throws ParamsException {
         //TODO 将取参数的域修改为静态字符变量，错误抛出
     	UserReader userReader = genUserReader(params);
         String newDisplay = params.get("newDisplay")[0];
@@ -155,14 +157,17 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public UserReader genUserReader(Map<String, String[]> params) {
+    static public UserReader genUserReader(Map<String, String[]> params) throws ParamsException {
         //TODO 添加错误类检验抛出
 
         UserReader user = new UserReader();
         System.out.println("genUserR");
         System.out.println(params.get("email")[0]);
+        if (params.get("email")[0]==null) throw  new EmailNotFoundException();
         user.email = params.get("email")[0];
+        if (params.get("password")[0]==null) throw  new PasswordNotFoundException();
         user.password = params.get("password")[0];
+        if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
         user.display = params.get("display")[0];
         return user;
     }

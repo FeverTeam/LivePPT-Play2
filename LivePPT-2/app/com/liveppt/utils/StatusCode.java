@@ -24,11 +24,15 @@ public class StatusCode {
 	//用户不存在
 	public final static int USER_NOT_EXISTED = 1101;
 	//用户email字段错误
-	public final static int USER_EMAIL_ERROR = 1102;	
-	//用户Id字段错误
-	public final static int USER_ID_ERROR = 1103;
-	//用户昵称错误
-	public final static int USER_DISPLAYNAME_ERROR = 1103;
+	public final static int USER_EMAIL_ERROR = 1102;
+	//参数中用户Id字段不存在
+	public final static int USER_ID_NOT_FOUND = 1103;
+	//参数中用户昵称不存在
+	public final static int USER_DISPLAY_NOT_FOUND = 1103;
+    //参数中用户email不存在
+    public final static int USER_EMAIL_NOT_FOUND = 1104;
+    //参数中用户PASSWORD不存在
+    public final static int USER_PASSWORD_NOT_FOUND = 1105;
 	//用户已存在
 	public final static int USER_EXISTED = 1300;
 

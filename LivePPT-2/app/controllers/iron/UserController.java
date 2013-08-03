@@ -2,6 +2,7 @@ package controllers.iron;
 
 import com.google.inject.Inject;
 import com.liveppt.services.UserService;
+import com.liveppt.utils.exception.params.ParamsException;
 import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
 import play.mvc.*;
@@ -25,7 +26,14 @@ public class UserController extends Controller {
     public Result regist() {
 
         Map<String, String[]> params = request().queryString();
-        UserJson userJson =userService.regist(params);
+        UserJson userJson = null;
+        try {
+            userJson = userService.regist(params);
+        } catch (ParamsException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            System.out.println(e.getMessage());
+            userJson = new UserJson(e.getStatus());
+        }
         System.out.println(userJson.toString());
         return ok(userJson);
 
@@ -39,7 +47,14 @@ public class UserController extends Controller {
     public Result login() {
 
         Map<String, String[]> params = request().queryString();
-        UserJson userJson =userService.login(params);
+        UserJson userJson = null;
+        try {
+            userJson = userService.login(params);
+        } catch (ParamsException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            System.out.println(e.getMessage());
+            userJson = new UserJson(e.getStatus());
+        }
         System.out.println(userJson.toString());
         return ok(userJson);
 
