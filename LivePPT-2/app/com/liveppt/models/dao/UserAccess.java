@@ -1,9 +1,7 @@
 package com.liveppt.models.dao;
 
-
-
-
 import com.liveppt.models.User;
+import com.liveppt.utils.StatusCode;
 import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
 
@@ -28,8 +26,33 @@ public class UserAccess {
         user.save();
         userReader.id = user.id;
         return genUserJson(userReader);
-    } 
-    
+    }
+
+    /**
+     * 登陆并反馈信息
+     * @param params
+     * @return
+     * last modified 黎伟杰
+     */
+    static public UserJson login(Map<String, String[]> params){
+        UserReader userReader = genUserReader(params);
+        User user = User.find.where().eq("email",userReader.email).findUnique();
+        UserJson userJson = genUserJson(userReader);
+        if (user==null){
+            //用户不存在
+            //TODO 抛出异常,用户不存在错误代码补充
+            return userJson.putStatus(StatusCode.TODO);
+        } else {
+            if (userJson.equals(user.password)) {
+                //TODO 应该有User生成，补充ppt，meeting等信息
+                return userJson.putStatus(StatusCode.NONE);
+            } else {
+                return userJson.putStatus(StatusCode.USER_PASSWORD_ERROR);
+            }
+        }
+
+    }
+
     /**
      * 检查账户是否存在
      * @param params
