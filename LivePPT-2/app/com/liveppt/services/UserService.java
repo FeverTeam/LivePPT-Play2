@@ -18,12 +18,10 @@ public interface UserService {
     public UserJson regist(Map<String, String[]> params);
 
     public UserJson login(Map<String, String[]> params);
-    
-    public UserReader updateByEmail(UserReader user, String newEmail);
 
-    public UserReader updateByPassword(UserReader userReader, String newPassword);
+    public UserJson updatePassword(Map<String, String[]> params);
     
-    public UserReader updateByDisplayname(UserReader userReader, String newDisplayname);
+    public UserJson updateDisplayname(Map<String, String[]> paramse);
     
 
 }

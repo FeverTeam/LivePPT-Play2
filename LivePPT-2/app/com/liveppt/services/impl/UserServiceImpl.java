@@ -41,22 +41,25 @@ public class UserServiceImpl implements UserService{
         return UserAccess.login(params);
     }
 
-    /*
-     * update by Email
+    /**
+     * 修改密码
+     * @param params
+     * @return
+     * last modified 黎伟杰
      */
-    public UserReader updateByEmail(UserReader userReader, String newEmail){
-    	return UserAccess.updateByEmail(userReader, newEmail);
+    @Override
+    public UserJson updatePassword(Map<String, String[]> params){
+    	return UserAccess.updatePassword(params);
     }
-    /*
-     * update by Email
+
+    /**
+     * 修改用户名
+     * @param params
+     * @return
+     * last modified 黎伟杰
      */
-    public UserReader updateByPassword(UserReader userReader, String newPassword){
-    	return UserAccess.updateByEmail(userReader, newPassword);
-    }
-    /*
-     * update by Email
-     */
-    public UserReader updateByDisplayname(UserReader userReader, String newDisplayname){
-    	return UserAccess.updateByEmail(userReader, newDisplayname);
+    @Override
+    public UserJson updateDisplayname(Map<String, String[]> params){
+    	return UserAccess.updateDisplay(params);
     }
 }

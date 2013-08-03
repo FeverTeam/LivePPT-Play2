@@ -100,31 +100,18 @@ public class UserAccess {
     }
     
     /**
-     * 更新Email
-     * @param params,newEmail
-     * @return
-     * last modified Zijing Lee
-     */
-    static public UserJson updateByEmail(Map<String,String[]> params,String newEmail)
-	{   
-    	UserReader userReader = genUserReader(params);
-    	User user = User.find.where().eq("email", userReader.email).findUnique();
-		user.email=newEmail;
-		userReader.email = user.email;
-		user.save();
-		return genUserJson(userReader);		
-	}
-    
-    /**
      * 更新Password
-     * @param params,newPassword
+     * @param params
      * @return
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-    static public UserJson updateByPassword(Map<String,String[]> params,String newPassword)
-	{   
+    static public UserJson updatePassword(Map<String,String[]> params)
+	{
+        //TODO 错误检查
     	UserReader userReader = genUserReader(params);
-    	User user = User.find.where().eq("password", userReader.password).findUnique();
+        String newPassword = params.get("newPassword")[0];
+    	User user = User.find.where().eq("email", userReader.email).findUnique();
+        //TODO 旧密码正确检查
 		user.password=newPassword;
 		userReader.password = user.password;
 		user.save();
@@ -133,14 +120,17 @@ public class UserAccess {
     
     /**
      * 更新display
-     * @param params,newDisplay
+     * @param params
      * @return
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-    static public UserJson updateByDisplay(Map<String,String[]> params,String newDisplay)
-	{   
+    static public UserJson updateDisplay(Map<String,String[]> params)
+	{
+        //TODO 将取参数的域修改为静态字符变量，错误抛出
     	UserReader userReader = genUserReader(params);
-    	User user = User.find.where().eq("display", userReader.display).findUnique();
+        String newDisplay = params.get("newDisplay")[0];
+        User user = User.find.where().eq("email", userReader.email).findUnique();
+        //TODO 检查密码再修改
 		user.display=newDisplay;
 		userReader.display = user.display;
 		user.save();
@@ -148,7 +138,7 @@ public class UserAccess {
 	}
 
     /**
-     * 产生Json
+     * 产生UserJson
      * @param user
      * @return
      * last modified 黎伟杰
