@@ -16,6 +16,8 @@ public class UserReader {
 
     public String display;
 
+    public String newDisplay;
+
     public int status;
 
 

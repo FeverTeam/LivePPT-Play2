@@ -21,7 +21,7 @@ public interface UserService {
 
     public UserJson updatePassword(Map<String, String[]> params);
     
-    public UserJson updateDisplayname(Map<String, String[]> paramse);
+    public UserJson updateDisplay(Map<String, String[]> params);
     
 
 }

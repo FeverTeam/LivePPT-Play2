@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService{
      * last modified 黎伟杰
      */
     @Override
-    public UserJson updateDisplayname(Map<String, String[]> params){
+    public UserJson updateDisplay(Map<String, String[]> params){
     	return UserAccess.updateDisplay(params);
     }
 }
