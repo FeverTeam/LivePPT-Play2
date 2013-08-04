@@ -8,13 +8,10 @@ import java.util.Map;
 
 /**
  * 用户接口
- * author 黎伟杰
+ * author 黎伟杰，黄梓财
  */
 public interface UserService {
 
-//    public UserReader genUserR(Map<String, String[]> params);
-
-//    public UserJson genJson(UserReader user);
 
     public UserJson regist(Map<String, String[]> params) throws ParamsException;
 
@@ -22,7 +19,7 @@ public interface UserService {
 
     public UserJson updatePassword(Map<String, String[]> params) throws ParamsException;
 
-    public UserJson updateDisplay(Map<String, String[]> paramse) throws ParamsException;
+    public UserJson updateDisplay(Map<String, String[]> params) throws ParamsException;
     
 
 }

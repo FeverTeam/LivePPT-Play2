@@ -61,12 +61,45 @@ public class UserController extends Controller {
     }
 
     /**
-     * 更新用户email，password，display
+     * 更新用户的密码
      * @return 
-     * last modified 黎伟杰
+     * last modified 黄梓财
      */
-    public Result upToProfile() {
-        return TODO;
+    public Result updatePassword() {
+
+        Map<String, String[]> params = request().queryString();
+        UserJson userJson = null;
+        try {
+            userJson = userService.updatePassword(params);
+        } catch (ParamsException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            System.out.println(e.getMessage());
+            userJson = new UserJson(e.getStatus());
+        }
+        System.out.println(userJson.toString());
+        return ok(userJson);        
+
+    }
+
+    /**
+     * 更新用户的显示名称
+     * @return 
+     * last modified 黄梓财
+     */
+    public Result updateDisplay() {
+
+        Map<String, String[]> params = request().queryString();
+        UserJson userJson = null;
+        try {
+            userJson = userService.updateDisplay(params);
+        } catch (ParamsException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            System.out.println(e.getMessage());
+            userJson = new UserJson(e.getStatus());
+        }
+        System.out.println(userJson.toString());
+        return ok(userJson);        
+
     }
   	
 
