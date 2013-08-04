@@ -7,6 +7,7 @@ import com.liveppt.utils.exception.params.EmailNotFoundException;
 import com.liveppt.utils.exception.params.ParamsException;
 import com.liveppt.utils.exception.params.PasswordErrorException;
 import com.liveppt.utils.exception.params.PasswordNotFoundException;
+import com.liveppt.utils.exception.params.UserExistedException;
 import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 
 /**
  * description
- * author 黎伟杰
+ * author 黎伟杰，黄梓财
  */
 public class UserAccess {
 
@@ -22,15 +23,21 @@ public class UserAccess {
      * 创建新的用户
      * @param params
      * @return
-     * last modified黎伟杰l
+     * last modified 黄梓财
      */
     static public UserJson create(Map<String, String[]> params) throws ParamsException {
-        //TODO 重名检查
         UserReader userReader = genUserReader(params);
-        User user = new User(userReader);
-        user.save();
-        userReader.id = user.id;
-        return genUserJson(userReader);
+        User user = User.find.where().eq("email",userReader.email).findUnique();
+        UserJson userJson = genUserJson(userReader);
+        if (user==null) {
+            User user = new User(userReader);
+            user.save();
+            userReader.id = user.id;
+            return userJson.putStatus(StatusCode.NONE);            
+        } else {
+            throw new UserExistedException();
+            return userJson.putStatus(StatusCode.USER_EXISTED);
+        }
     }
 
     /**
