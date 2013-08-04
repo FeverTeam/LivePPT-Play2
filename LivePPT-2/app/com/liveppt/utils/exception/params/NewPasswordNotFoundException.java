@@ -9,7 +9,7 @@ import com.liveppt.utils.StatusCode;
 public class NewPasswordNotFoundException extends ParamsException{
 
     public NewPasswordNotFoundException(){
-        super(StatusCode.USER_NEWPASSWORD_NOT_FOUND);
+        super(StatusCode.USER_NEW_PASSWORD_NOT_FOUND);
     }
 
     public NewPasswordNotFoundException(int status){

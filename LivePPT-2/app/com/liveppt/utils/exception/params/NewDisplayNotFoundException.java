@@ -9,7 +9,7 @@ import com.liveppt.utils.StatusCode;
 public class NewDisplayNotFoundException extends  ParamsException{
 
     public NewDisplayNotFoundException(){
-        super(StatusCode.USER_NEWDISPLAY_NOT_FOUND);
+        super(StatusCode.USER_NEW_DISPLAY_NOT_FOUND);
     }
 
     public NewDisplayNotFoundException(int status){

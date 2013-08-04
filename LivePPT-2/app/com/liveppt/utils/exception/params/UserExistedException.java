@@ -9,7 +9,7 @@ import com.liveppt.utils.StatusCode;
 public class UserExistedException extends ParamsException{
 
     public UserExistedException(){
-        super(StatusCode.USER_EXISTED);
+        super(StatusCode.USER_EMAIL_EXISTED);
     }
 
     public UserExistedException(int status){
