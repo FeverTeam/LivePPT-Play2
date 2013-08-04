@@ -33,10 +33,10 @@ public class UserAccess {
     }
 
     /**
-     * 登陆并反馈信息
+     * 登录并反馈信息
      * @param params
      * @return
-     * last modified 黎伟杰
+     * last modified 黄梓财
      */
     static public UserJson login(Map<String, String[]> params) throws ParamsException {
         UserReader userReader = genUserReader(params);
@@ -44,8 +44,8 @@ public class UserAccess {
         UserJson userJson = genUserJson(userReader);
         if (user==null){
             //用户不存在
-            //TODO 抛出异常,用户不存在错误代码补充
-            return userJson.putStatus(StatusCode.TODO);
+            throw new EmailNotFoundException();
+            return userJson.putStatus(StatusCode.USER_EMAIL_NOT_FOUND);
         } else {
             if (userJson.equals(user.password)) {
                 //TODO 应该有User生成，补充ppt，meeting等信息
