@@ -5,6 +5,7 @@ import com.liveppt.utils.StatusCode;
 import com.liveppt.utils.exception.params.DisplayNotFoundException;
 import com.liveppt.utils.exception.params.EmailNotFoundException;
 import com.liveppt.utils.exception.params.ParamsException;
+import com.liveppt.utils.exception.params.PasswordErrorException;
 import com.liveppt.utils.exception.params.PasswordNotFoundException;
 import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
@@ -51,6 +52,7 @@ public class UserAccess {
                 //TODO 应该有User生成，补充ppt，meeting等信息
                 return userJson.putStatus(StatusCode.NONE);
             } else {
+                throw new PasswordErrorException();
                 return userJson.putStatus(StatusCode.USER_PASSWORD_ERROR);
             }
         }
