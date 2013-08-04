@@ -12,7 +12,7 @@ package com.liveppt.utils;
  * x5xx更改类错误
  * 9000操作成功
  * 
- * @author 黎伟杰
+ * @author 黎伟杰，黄梓财
  *
  */
 public class StatusCode {
@@ -33,6 +33,10 @@ public class StatusCode {
     public final static int USER_EMAIL_NOT_FOUND = 1104;
     //参数中用户PASSWORD不存在
     public final static int USER_PASSWORD_NOT_FOUND = 1105;
+    //参数中用户newPassword不存在
+    public final static int USER_NEWPASSWORD_NOT_FOUND = 1106;
+    //参数中用户newDisplay不存在
+    public final static int USER_NEWDISPLAY_NOT_FOUND = 1107;
 	//用户已存在
 	public final static int USER_EXISTED = 1300;
 

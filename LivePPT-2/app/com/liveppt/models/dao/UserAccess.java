@@ -4,6 +4,8 @@ import com.liveppt.models.User;
 import com.liveppt.utils.StatusCode;
 import com.liveppt.utils.exception.params.DisplayNotFoundException;
 import com.liveppt.utils.exception.params.EmailNotFoundException;
+import com.liveppt.utils.exception.params.NewDisplayNotFoundException;
+import com.liveppt.utils.exception.params.NewPasswordNotFoundException;
 import com.liveppt.utils.exception.params.ParamsException;
 import com.liveppt.utils.exception.params.PasswordErrorException;
 import com.liveppt.utils.exception.params.PasswordNotFoundException;
@@ -116,11 +118,12 @@ public class UserAccess {
      * 更新Password
      * @param params
      * @return
-     * last modified 黎伟杰
+     * last modified 黄梓财
      */
     static public UserJson updatePassword(Map<String,String[]> params) throws ParamsException {
         //TODO 错误检查
     	UserReader userReader = genUserReader(params);
+        if (params.get("newPassword")[0]==null) throw  new NewPasswordNotFoundException();
         String newPassword = params.get("newPassword")[0];
     	User user = User.find.where().eq("email", userReader.email).findUnique();
         //TODO 旧密码正确检查
@@ -134,11 +137,12 @@ public class UserAccess {
      * 更新display
      * @param params
      * @return
-     * last modified 黎伟杰
+     * last modified 黄梓财
      */
     static public UserJson updateDisplay(Map<String,String[]> params) throws ParamsException {
         //TODO 将取参数的域修改为静态字符变量，错误抛出
     	UserReader userReader = genUserReader(params);
+        if (params.get("newDisplay")[0]==null) throw  new NewDisplayNotFoundException();
         String newDisplay = params.get("newDisplay")[0];
         User user = User.find.where().eq("email", userReader.email).findUnique();
         //TODO 检查密码再修改
