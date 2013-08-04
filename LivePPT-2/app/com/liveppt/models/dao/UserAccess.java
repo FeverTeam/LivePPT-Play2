@@ -2,14 +2,7 @@ package com.liveppt.models.dao;
 
 import com.liveppt.models.User;
 import com.liveppt.utils.StatusCode;
-import com.liveppt.utils.exception.params.DisplayNotFoundException;
-import com.liveppt.utils.exception.params.EmailNotFoundException;
-import com.liveppt.utils.exception.params.NewDisplayNotFoundException;
-import com.liveppt.utils.exception.params.NewPasswordNotFoundException;
-import com.liveppt.utils.exception.params.ParamsException;
-import com.liveppt.utils.exception.params.PasswordErrorException;
-import com.liveppt.utils.exception.params.PasswordNotFoundException;
-import com.liveppt.utils.exception.params.UserExistedException;
+import com.liveppt.utils.exception.params.*;
 import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
 
@@ -32,13 +25,12 @@ public class UserAccess {
         User user = User.find.where().eq("email",userReader.email).findUnique();
         UserJson userJson = genUserJson(userReader);
         if (user==null) {
-            User user = new User(userReader);
+            user = new User(userReader);
             user.save();
             userReader.id = user.id;
             return userJson.putStatus(StatusCode.NONE);            
         } else {
             throw new UserExistedException();
-            return userJson.putStatus(StatusCode.USER_EXISTED);
         }
     }
 
@@ -46,7 +38,7 @@ public class UserAccess {
      * 登录并反馈信息
      * @param params
      * @return
-     * last modified 黄梓财
+     * last modified 黎伟杰
      */
     static public UserJson login(Map<String, String[]> params) throws ParamsException {
         UserReader userReader = genUserReader(params);
@@ -54,15 +46,13 @@ public class UserAccess {
         UserJson userJson = genUserJson(userReader);
         if (user==null){
             //用户不存在
-            throw new EmailNotFoundException();
-            return userJson.putStatus(StatusCode.USER_EMAIL_NOT_FOUND);
+            throw new EmailNotExistedException();
         } else {
             if (userJson.equals(user.password)) {
                 //TODO 应该有User生成，补充ppt，meeting等信息
                 return userJson.putStatus(StatusCode.NONE);
             } else {
                 throw new PasswordErrorException();
-                return userJson.putStatus(StatusCode.USER_PASSWORD_ERROR);
             }
         }
 
