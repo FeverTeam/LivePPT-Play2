@@ -1,8 +1,7 @@
-﻿package com.liveppt.services;
+package com.liveppt.services;
 
 import com.liveppt.utils.exception.params.ParamsException;
 import com.liveppt.utils.models.UserJson;
-import com.liveppt.utils.models.UserReader;
 
 import java.util.Map;
 
@@ -11,7 +10,6 @@ import java.util.Map;
  * author 黎伟杰，黄梓财
  */
 public interface UserService {
-
 
     public UserJson regist(Map<String, String[]> params) throws ParamsException;
 

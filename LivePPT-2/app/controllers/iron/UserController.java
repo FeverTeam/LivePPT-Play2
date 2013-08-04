@@ -57,7 +57,6 @@ public class UserController extends Controller {
         }
         System.out.println(userJson.toString());
         return ok(userJson);
-
     }
 
     /**
@@ -98,10 +97,16 @@ public class UserController extends Controller {
             userJson = new UserJson(e.getStatus());
         }
         System.out.println(userJson.toString());
-        return ok(userJson);        
-
+        return ok(userJson);
     }
-  	
 
+    /**
+     * 测试用
+     * @return
+     * last modified 黎伟杰
+     */
+    public Result test() {
+        return ok(test.render());
+    }
 
 }

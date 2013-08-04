@@ -7,6 +7,9 @@ GET     /                           controllers.cold.Application.index()
 
 # API
 GET     /user/regist                @controllers.iron.UserController.regist()
+GET     /user/login                 @controllers.iron.UserController.login()
+GET     /user/updatePassword        @controllers.iron.UserController.updatePassword()
+GET     /user/updateDisplay         @controllers.iron.UserController.updateDisplay()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
