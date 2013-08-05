@@ -39,6 +39,8 @@ public class StatusCode {
     public final static int USER_NEW_DISPLAY_NOT_FOUND = 1107;
 	//用户已存在
 	public final static int USER_EMAIL_EXISTED = 1300;
+    //没有登录
+    public final static int USER_NO_LOGIN = 1108;
 
 	//****************PPT类型错误*****************
 	//PPT不存在

@@ -1,11 +1,9 @@
 package com.liveppt.services.impl;
 
-import com.liveppt.models.User;
 import com.liveppt.models.dao.UserAccess;
 import com.liveppt.services.UserService;
-import com.liveppt.utils.exception.params.ParamsException;
+import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.models.UserJson;
-import com.liveppt.utils.models.UserReader;
 
 import java.util.Map;
 
@@ -23,7 +21,7 @@ public class UserServiceImpl implements UserService{
      * last modified 黎伟杰
      */
     @Override
-    public UserJson regist(Map<String, String[]> params) throws ParamsException {
+    public UserJson regist(Map<String, String[]> params) throws UserException {
         //TODO 错误检查抛出
         return UserAccess.create(params);
     }
@@ -35,7 +33,7 @@ public class UserServiceImpl implements UserService{
      * last modified 黎伟杰
      */
     @Override
-    public UserJson login(Map<String, String[]> params) throws ParamsException {
+    public UserJson login(Map<String, String[]> params) throws UserException {
         //TODO 错误检查抛出
         return UserAccess.login(params);
     }
@@ -47,7 +45,7 @@ public class UserServiceImpl implements UserService{
      * last modified 黎伟杰
      */
     @Override
-    public UserJson updatePassword(Map<String, String[]> params) throws ParamsException {
+    public UserJson updatePassword(Map<String, String[]> params) throws UserException {
     	return UserAccess.updatePassword(params);
     }
 
@@ -58,7 +56,7 @@ public class UserServiceImpl implements UserService{
      * last modified 黎伟杰
      */
     @Override
-    public UserJson updateDisplay(Map<String, String[]> params) throws ParamsException {
+    public UserJson updateDisplay(Map<String, String[]> params) throws UserException {
     	return UserAccess.updateDisplay(params);
     }
 }
