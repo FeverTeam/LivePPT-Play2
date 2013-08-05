@@ -4,10 +4,12 @@ import com.google.inject.Inject;
 import com.liveppt.services.UserService;
 import com.liveppt.utils.exception.params.ParamsException;
 import com.liveppt.utils.models.UserJson;
-import com.liveppt.utils.models.UserReader;
+
 import play.mvc.*;
 
 import java.util.Map;
+
+import views.html.*;
 
 /**
  * 用户接口
@@ -106,7 +108,7 @@ public class UserController extends Controller {
      * last modified 黎伟杰
      */
     public Result test() {
-        return ok(test.render());
+        return ok(testD.render());
     }
 
 }

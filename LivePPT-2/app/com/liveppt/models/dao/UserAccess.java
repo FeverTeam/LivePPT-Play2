@@ -22,6 +22,8 @@ public class UserAccess {
      */
     static public UserJson create(Map<String, String[]> params) throws ParamsException {
         UserReader userReader = genUserReader(params);
+        if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
+        userReader.display = params.get("display")[0];
         User user = User.find.where().eq("email",userReader.email).findUnique();
         UserJson userJson = genUserJson(userReader);
         if (user==null) {
@@ -48,9 +50,9 @@ public class UserAccess {
             //用户不存在
             throw new EmailNotExistedException();
         } else {
-            if (userJson.equals(user.password)) {
+            if (userJson.getPassword().equals(user.password)) {
                 //TODO 应该有User生成，补充ppt，meeting等信息
-                return userJson.putStatus(StatusCode.NONE);
+                return userJson.putStatus(StatusCode.NONE).putDisplay(user.display);
             } else {
                 throw new PasswordErrorException();
             }
@@ -108,7 +110,7 @@ public class UserAccess {
      * 更新Password
      * @param params
      * @return
-     * last modified 黄梓财
+     * last modified 黎伟杰
      */
     static public UserJson updatePassword(Map<String,String[]> params) throws ParamsException {
         //TODO 错误检查
@@ -116,10 +118,13 @@ public class UserAccess {
         if (params.get("newPassword")[0]==null) throw  new NewPasswordNotFoundException();
         String newPassword = params.get("newPassword")[0];
     	User user = User.find.where().eq("email", userReader.email).findUnique();
-        //TODO 旧密码正确检查
-		user.password=newPassword;
-		userReader.password = user.password;
-		user.save();
+        if (userReader.password.equals(user.password)) {
+            user.password=newPassword;
+            user.save();
+            userReader.password = user.password;
+        } else {
+            throw new PasswordErrorException();
+        }
 		return genUserJson(userReader);	
 	}
     
@@ -127,18 +132,27 @@ public class UserAccess {
      * 更新display
      * @param params
      * @return
-     * last modified 黄梓财
+     * last modified 黎伟杰
      */
     static public UserJson updateDisplay(Map<String,String[]> params) throws ParamsException {
         //TODO 将取参数的域修改为静态字符变量，错误抛出
     	UserReader userReader = genUserReader(params);
+        if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
+        userReader.display = params.get("display")[0];
         if (params.get("newDisplay")[0]==null) throw  new NewDisplayNotFoundException();
         String newDisplay = params.get("newDisplay")[0];
         User user = User.find.where().eq("email", userReader.email).findUnique();
         //TODO 检查密码再修改
-		user.display=newDisplay;
-		userReader.display = user.display;
-		user.save();
+        if (userReader.password.equals(user.password)) {
+            user.display=newDisplay;
+            user.save();
+//            System.out.println(user.password);
+//            user = User.find.where().eq("email", userReader.email).findUnique();
+//            System.out.println(user.password);
+            userReader.display = user.display;
+        } else {
+            throw new PasswordErrorException();
+        }
 		return genUserJson(userReader);	
 	}
 
@@ -170,8 +184,6 @@ public class UserAccess {
         user.email = params.get("email")[0];
         if (params.get("password")[0]==null) throw  new PasswordNotFoundException();
         user.password = params.get("password")[0];
-        if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
-        user.display = params.get("display")[0];
         return user;
     }
 }

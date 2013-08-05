@@ -48,6 +48,16 @@ public class UserJson extends ObjectNode{
     }
 
     /**
+     * 从UserJson取出email状态信息
+     * @param
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public String getEmail(){
+        return this.get(EMAIL).asText();
+    }
+
+    /**
      * 为UserJson加入password信息
      * @param password
      * @return  itself
@@ -56,6 +66,16 @@ public class UserJson extends ObjectNode{
     public UserJson putPassword(String password){
         this.put(PASS,password);
         return this;
+    }
+
+    /**
+     * 从UserJson取出password状态信息
+     * @param
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public String getPassword(){
+        return this.get(PASS).asText();
     }
 
     /**
@@ -70,6 +90,16 @@ public class UserJson extends ObjectNode{
     }
 
     /**
+     * 从UserJson取出display状态信息
+     * @param
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public String getDisplay(){
+        return this.get(DISPLAY).asText();
+    }
+
+    /**
      * 为UserJson加入status状态信息
      * @param status
      * @return  itself
@@ -78,6 +108,16 @@ public class UserJson extends ObjectNode{
     public UserJson putStatus(int status){
         this.put(STATUS,status);
         return this;
+    }
+
+    /**
+     * 从UserJson取出status状态信息
+     * @param
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public String getStatus(){
+        return this.get(STATUS).asText();
     }
 
 }
