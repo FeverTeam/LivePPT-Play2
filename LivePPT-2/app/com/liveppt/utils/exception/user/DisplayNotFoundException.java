@@ -1,4 +1,4 @@
-package com.liveppt.utils.exception.params;
+package com.liveppt.utils.exception.user;
 
 import com.liveppt.utils.StatusCode;
 
@@ -6,7 +6,7 @@ import com.liveppt.utils.StatusCode;
  * description
  * author 黎伟杰
  */
-public class DisplayNotFoundException extends  ParamsException{
+public class DisplayNotFoundException extends UserException {
 
     public DisplayNotFoundException(){
         super(StatusCode.USER_DISPLAY_NOT_FOUND);

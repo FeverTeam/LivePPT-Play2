@@ -1,4 +1,4 @@
-package com.liveppt.utils.exception.params;
+package com.liveppt.utils.exception.user;
 
 import com.liveppt.utils.StatusCode;
 
@@ -6,7 +6,7 @@ import com.liveppt.utils.StatusCode;
  * description
  * author 黄梓财
  */
-public class UserExistedException extends ParamsException{
+public class UserExistedException extends UserException {
 
     public UserExistedException(){
         super(StatusCode.USER_EMAIL_EXISTED);

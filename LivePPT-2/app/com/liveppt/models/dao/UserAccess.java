@@ -2,7 +2,7 @@ package com.liveppt.models.dao;
 
 import com.liveppt.models.User;
 import com.liveppt.utils.StatusCode;
-import com.liveppt.utils.exception.params.*;
+import com.liveppt.utils.exception.user.*;
 import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
 
@@ -20,7 +20,7 @@ public class UserAccess {
      * @return
      * last modified 黄梓财
      */
-    static public UserJson create(Map<String, String[]> params) throws ParamsException {
+    static public UserJson create(Map<String, String[]> params) throws UserException {
         UserReader userReader = genUserReader(params);
         if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
         userReader.display = params.get("display")[0];
@@ -42,7 +42,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public UserJson login(Map<String, String[]> params) throws ParamsException {
+    static public UserJson login(Map<String, String[]> params) throws UserException {
         UserReader userReader = genUserReader(params);
         User user = User.find.where().eq("email",userReader.email).findUnique();
         UserJson userJson = genUserJson(userReader);
@@ -66,7 +66,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public boolean isEmailExist(Map<String, String[]> params) throws ParamsException {
+    static public boolean isEmailExist(Map<String, String[]> params) throws UserException {
         UserReader userReader = genUserReader(params);
         User user = User.find.where().eq("email", userReader.email).findUnique();
         if(user == null){
@@ -84,7 +84,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public boolean isPasswordCorrect(Map<String,String[]> params) throws ParamsException {
+    static public boolean isPasswordCorrect(Map<String,String[]> params) throws UserException {
     	UserReader userReader = genUserReader(params);
     	User user = User.find.where().eq("email", userReader.email).findUnique();
     	if(user.password.equals(userReader.password)){
@@ -100,7 +100,7 @@ public class UserAccess {
      * @return
      * last modified   黎伟杰
      */
-    static public void delete(Map<String,String[]> params) throws ParamsException {
+    static public void delete(Map<String,String[]> params) throws UserException {
     	UserReader userReader = genUserReader(params);
     	User user  = User.find.byId(userReader.id);
     	user.delete();
@@ -112,7 +112,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public UserJson updatePassword(Map<String,String[]> params) throws ParamsException {
+    static public UserJson updatePassword(Map<String,String[]> params) throws UserException {
         //TODO 错误检查
     	UserReader userReader = genUserReader(params);
         if (params.get("newPassword")[0]==null) throw  new NewPasswordNotFoundException();
@@ -134,7 +134,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public UserJson updateDisplay(Map<String,String[]> params) throws ParamsException {
+    static public UserJson updateDisplay(Map<String,String[]> params) throws UserException {
         //TODO 将取参数的域修改为静态字符变量，错误抛出
     	UserReader userReader = genUserReader(params);
         if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
@@ -174,7 +174,7 @@ public class UserAccess {
      * @return
      * last modified 黎伟杰
      */
-    static public UserReader genUserReader(Map<String, String[]> params) throws ParamsException {
+    static public UserReader genUserReader(Map<String, String[]> params) throws UserException {
         //TODO 添加错误类检验抛出
 
         UserReader user = new UserReader();

@@ -1,4 +1,4 @@
-package com.liveppt.utils.exception.params;
+package com.liveppt.utils.exception.user;
 
 import com.liveppt.utils.StatusCode;
 
@@ -6,7 +6,7 @@ import com.liveppt.utils.StatusCode;
  * description
  * author 黄梓财
  */
-public class PasswordErrorException extends ParamsException{
+public class PasswordErrorException extends UserException {
 
     public PasswordErrorException(){
         super(StatusCode.USER_PASSWORD_ERROR);
