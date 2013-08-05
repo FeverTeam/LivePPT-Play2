@@ -17,7 +17,6 @@ public interface UserService {
 
     public UserJson updatePassword(Map<String, String[]> params) throws ParamsException;
 
-    public UserJson updateDisplay(Map<String, String[]> params) throws ParamsException;
-    
+    public UserJson updateDisplay(Map<String, String[]> params) throws ParamsException;    
 
 }

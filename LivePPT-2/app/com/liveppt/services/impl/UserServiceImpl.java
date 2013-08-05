@@ -1,4 +1,4 @@
-﻿package com.liveppt.services.impl;
+package com.liveppt.services.impl;
 
 import com.liveppt.models.User;
 import com.liveppt.models.dao.UserAccess;
@@ -8,8 +8,6 @@ import com.liveppt.utils.models.UserJson;
 import com.liveppt.utils.models.UserReader;
 
 import java.util.Map;
-
-
 
 /**
  * 用户接口的实现
