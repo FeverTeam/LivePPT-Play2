@@ -27,7 +27,7 @@ public class UserController extends Controller {
   	 */
     public Result regist() {
 
-        Map<String, String[]> params = request().queryString();
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
         UserJson userJson = null;
         try {
             userJson = userService.regist(params);

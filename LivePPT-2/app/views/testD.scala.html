@@ -10,20 +10,20 @@
     <br/>
 </div>
 
-<!--<script type="text/javascript">-->
-    <!--$.ajax({-->
-        <!--type: "GET",-->
-        <!--url: "http://localhost:9000/user/regist", // your POST target goes here-->
-        <!--dataType: "json",-->
-        <!--data: {"email":"sdsd","password":"pa","display":"L" }, // message to send goes here-->
-        <!--success: function (data)-->
-        <!--{-->
-            <!--/*var obj = $.parseJSON(data);*/-->
-            <!--console.log(data);-->
-            <!--// do something with result-->
-        <!--}-->
-    <!--});-->
-<!--</script>-->
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:9000/user/regist", // your POST target goes here
+        dataType: "json",
+        data: {"email":"abd","password":"pa","display":"L" }, // message to send goes here
+        success: function (data)
+        {
+            /*var obj = $.parseJSON(data);*/
+            console.log(data);
+            // do something with result
+        }
+    });
+</script>
 
 <script type="text/javascript">
     $.ajax({
