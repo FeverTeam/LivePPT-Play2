@@ -1,4 +1,4 @@
-package com.liveppt.utils.exception.params;
+package com.liveppt.utils.exception.user;
 
 import com.liveppt.utils.StatusCode;
 
@@ -6,7 +6,7 @@ import com.liveppt.utils.StatusCode;
  * description
  * author 黎伟杰
  */
-public class EmailNotFoundException extends ParamsException{
+public class EmailNotFoundException extends UserException {
 
     public EmailNotFoundException(){
         super(StatusCode.USER_EMAIL_NOT_FOUND);
