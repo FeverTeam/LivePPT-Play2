@@ -1,10 +1,10 @@
-package com.liveppt.utils;
+package com.liveppt.utils.models;
 
 /**
  * 用户类载体
  * author 黎伟杰
  */
-public class UserR {
+public class UserReader {
 
     public Long id;
 
@@ -16,6 +16,9 @@ public class UserR {
 
     public String display;
 
+    public String newDisplay;
+
     public int status;
+
 
 }

@@ -1,29 +1,22 @@
 package com.liveppt.services;
 
-import com.liveppt.utils.UserJson;
-import com.liveppt.utils.UserR;
+import com.liveppt.utils.exception.user.UserException;
+import com.liveppt.utils.models.UserJson;
 
 import java.util.Map;
 
 /**
  * 用户接口
- * author 黎伟杰
+ * author 黎伟杰，黄梓财
  */
 public interface UserService {
 
-    public UserR genUserR(Map<String, String[]> params);
+    public UserJson regist(Map<String, String[]> params) throws UserException;
 
-    public UserJson genJson(UserR user);
+    public UserJson login(Map<String, String[]> params) throws UserException;
 
-    public UserR regist(UserR user);
-    
-    public boolean loginCheck(String email, String password);
-    
-    public UserR updateByEmail(UserR user, String newEmail);
+    public UserJson updatePassword(Map<String, String[]> params) throws UserException;
 
-    public UserR updateByPassword(UserR userR, String newPassword);
-    
-    public UserR updateByDisplayname(UserR userR, String newDisplayname);
-    
+    public UserJson updateDisplay(Map<String, String[]> params) throws UserException;
 
 }

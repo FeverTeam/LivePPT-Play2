@@ -7,7 +7,7 @@ create table user (
   id                        bigint auto_increment not null,
   email                     varchar(255),
   password                  varchar(255),
-  displayname               varchar(255),
+  display                   varchar(255),
   constraint pk_user primary key (id))
 ;
 

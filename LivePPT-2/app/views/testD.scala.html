@@ -1,0 +1,75 @@
+<html>
+<head>
+    <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
+</head>
+<body>
+<div>
+    <input type="string" name="email" value=""/>
+    <br/>
+    <input type="password" name="password" value=""/>
+    <br/>
+</div>
+
+<script type="text/javascript">
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:9000/user/regist", // your POST target goes here
+        dataType: "json",
+        data: {"email":"abd","password":"pa","display":"L" }, // message to send goes here
+        success: function (data)
+        {
+            /*var obj = $.parseJSON(data);*/
+            console.log(data);
+            // do something with result
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:9000/user/login", // your POST target goes here
+        dataType: "json",
+        data: {"email":"sdsd","password":"pa" }, // message to send goes here
+        success: function (data)
+        {
+            /*var obj = $.parseJSON(data);*/
+            console.log(data);
+            // do something with result
+        }
+    });
+</script>
+
+
+    <script type="text/javascript">
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:9000/user/updatePassword", // your POST target goes here
+            dataType: "json",
+            data: {"email":"sdsd","password":"pa","newPassword":"abc" }, // message to send goes here
+            success: function (data)
+            {
+                /*var obj = $.parseJSON(data);*/
+                console.log(data);
+                // do something with result
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:9000/user/updateDisplay", // your POST target goes here
+            dataType: "json",
+            data: {"email":"sdsd","password":"pa","display":"L","newDisplay":"sssL" }, // message to send goes here
+            success: function (data)
+            {
+                /*var obj = $.parseJSON(data);*/
+                console.log(data);
+                // do something with result
+            }
+        });
+    </script>
+
+</body>
+</html>

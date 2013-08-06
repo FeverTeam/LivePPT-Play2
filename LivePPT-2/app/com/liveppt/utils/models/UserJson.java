@@ -1,4 +1,4 @@
-package com.liveppt.utils;
+package com.liveppt.utils.models;
 
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
@@ -13,6 +13,7 @@ public class UserJson extends ObjectNode{
     static String  PASS = "password";
     static String  DISPLAY = "display";
     static String  STATUS = "status";
+    static String  MESSAGE = "message";
 
     /**
      * 初始化产生UserJson
@@ -28,6 +29,13 @@ public class UserJson extends ObjectNode{
         putDisplay(display);
     }
 
+    public UserJson(int status){
+        super(JsonNodeFactory.instance);
+        putStatus(status);
+    }
+
+
+
     /**
      * 为UserJson加入email信息
      * @param email
@@ -37,6 +45,16 @@ public class UserJson extends ObjectNode{
     public UserJson putEmail(String email){
         this.put(EMAIL,email);
         return this;
+    }
+
+    /**
+     * 从UserJson取出email状态信息
+     * @param
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public String getEmail(){
+        return this.get(EMAIL).asText();
     }
 
     /**
@@ -51,6 +69,16 @@ public class UserJson extends ObjectNode{
     }
 
     /**
+     * 从UserJson取出password状态信息
+     * @param
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public String getPassword(){
+        return this.get(PASS).asText();
+    }
+
+    /**
      * 为UserJson加入display信息
      * @param display
      * @return  itself
@@ -62,6 +90,16 @@ public class UserJson extends ObjectNode{
     }
 
     /**
+     * 从UserJson取出display状态信息
+     * @param
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public String getDisplay(){
+        return this.get(DISPLAY).asText();
+    }
+
+    /**
      * 为UserJson加入status状态信息
      * @param status
      * @return  itself
@@ -70,6 +108,16 @@ public class UserJson extends ObjectNode{
     public UserJson putStatus(int status){
         this.put(STATUS,status);
         return this;
+    }
+
+    /**
+     * 从UserJson取出status状态信息
+     * @param
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public String getStatus(){
+        return this.get(STATUS).asText();
     }
 
 }
