@@ -20,5 +20,8 @@ public class Application extends Controller {
     public static Result index() {
         return ok(index.render());
     }
-  
+
+    public static Result signup(){
+        return ok(signup.render());
+    }
 }

@@ -5,6 +5,10 @@
 # Home page
 GET     /                           controllers.cold.Application.index()
 
+
+#Pages
+GET     /signup                    controllers.cold.Application.signup()
+
 # API
 #*查询接口***************************************************************************
 GET     /user/login                 @controllers.iron.UserController.login()

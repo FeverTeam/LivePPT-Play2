@@ -2,7 +2,8 @@ define(function(require, exports, module){
 	require('jquery');
 	require('underscore');
     require('backbone');
-
+    require('bootstrap2');
+    /*
 	var indexPage = Backbone.View.extend({
     	el: $("body"),
     	events: {
@@ -21,4 +22,5 @@ define(function(require, exports, module){
  		}
 	});  
     var app = new indexPage;
+    */
 });
