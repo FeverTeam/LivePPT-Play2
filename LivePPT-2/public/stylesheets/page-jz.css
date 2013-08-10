@@ -1,0 +1,28 @@
+/*
+*   Author : Johnbug
+    prefix : jz-
+*/
+
+/*common set*/
+.jz-hg-300{height: 300px;}
+
+
+.jz-bg-1{background-color: #4cae4c;}
+/*
+ *  sign up page
+*/
+.jz-border-right{border-right: 1px solid #2e2f2f;}
+.jz-border-s1{border: 1px solid #e5e5e5;border-radius: 4px;box-shadow: rgba(0, 0, 0, 0.2) 0 2px 6px 0;}
+.jz-padding-5{padding: 5px;}
+.jz-padding-10{padding: 10px;}
+.jz-padding-15{padding: 15px;}
+.jz-mt-100{margin-top: 100px;}
+
+#jz-left-eff{
+    display: none;
+    text-align: center;
+}
+
+
+
+
