@@ -5,9 +5,6 @@
  * Time: 下午6:26
  */
 define(function(require, exports, module){
-    require('jquery');
-    require('underscore');
-    require('backbone');
 
     var signup = Backbone.View.extend({
         el: $("#signup"),
