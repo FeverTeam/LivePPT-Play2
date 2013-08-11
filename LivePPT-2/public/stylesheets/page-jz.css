@@ -7,7 +7,23 @@
 .jz-hg-300{height: 300px;}
 
 
+/*analogous color config*/
+.jz-bg-base{background-color: #d35400;}
+.jz-bg-l1{background-color: #E0970B;}
+.jz-bg-l2{background-color: #EA850C;}
+.jz-bg-r1{background-color: #EA440C;}
+.jz-bg-r2{background-color: #E0220B;}
+.jz-cl-base{color: #ffffff;}
+.jz-cl-against{color: #863E0D;}
+
+/*end*/
+
+
+
 .jz-bg-1{background-color: #4cae4c;}
+.jz-bg-active{background-color: #c0392b;}
+
+
 /*
  *  sign up page
 */
@@ -24,5 +40,5 @@
 }
 
 
-
+/*com*/
 

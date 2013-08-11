@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(js : String, title: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -19,16 +19,12 @@
     <!--[if lt IE 9]>
         <script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
     <![endif]-->
-    <script src="@routes.Assets.at("javascripts/sea/sea.js")" type="text/javascript"></script>
-    <script src="@routes.Assets.at("javascripts/jquery/jquery-1.9.0.min.js")" type="text/javascript"></script>
-    <script src="@routes.Assets.at("javascripts/backbone/underscore.js")" type="text/javascript"></script>
-    <script src="@routes.Assets.at("javascripts/backbone/backbone.js")" type="text/javascript"></script>
-    <script src="@routes.Assets.at("javascripts/app/config.js")" type="text/javascript"></script>
-    <script type="text/javascript">
-        seajs.use("/assets/javascripts/app/main.js");
-    </script>
 </head>
 <body>
 @content
-</body>
+<script src="@routes.Assets.at("javascripts/sea/sea.js")" type="text/javascript"></script>
+<script src="@routes.Assets.at("javascripts/app/config.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    seajs.use("@js");
+</script></body>
 </html>

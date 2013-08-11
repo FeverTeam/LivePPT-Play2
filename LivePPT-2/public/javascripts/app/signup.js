@@ -5,7 +5,8 @@
  * Time: 下午6:26
  */
 define(function(require, exports, module){
-
+    require("backbone");
+    require("bootstrap3");
     var signup = Backbone.View.extend({
         el: $("#signup"),
         //注册事件
@@ -55,6 +56,8 @@ define(function(require, exports, module){
                    //sign up success
                    if(data.status == 9000){
                         window.location.href = "/";
+                   }else{
+                       console.log("error");
                    }
                 }
             });
