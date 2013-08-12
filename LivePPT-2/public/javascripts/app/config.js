@@ -6,7 +6,8 @@ seajs.config({
         'bootstrap2' : '/assets/javascripts/bootstrap/2/bootstrap.min.js',
         'bootstrap3' : '/assets/javascripts/bootstrap/3/bootstrap.min.js',
         'signup'     : '/assets/javascripts/app/signup.js',
-        'index'      : '/assets/javascripts/app/index.js'
+        'index'      : '/assets/javascripts/app/index.js',
+        'login'		 : '/assets/javascripts/app/login.js'
 	},
     preload : ['jquery','underscore']
 });
