@@ -2,10 +2,12 @@ package controllers.iron;
 
 import com.google.inject.Inject;
 import com.liveppt.services.UserService;
+import com.liveppt.utils.ResultJson;
 import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.exception.user.UserNoLoginException;
 import com.liveppt.utils.models.UserJson;
 
+import com.liveppt.utils.models.UserReader;
 import play.mvc.*;
 
 import java.util.Map;
@@ -29,17 +31,16 @@ public class UserController extends Controller {
     public Result regist() {
 
         Map<String, String[]> params = request().body().asFormUrlEncoded();
-        UserJson userJson = null;
+        ResultJson resultJson = null;
         try {
-            userJson = userService.regist(params);
+            resultJson = new ResultJson(userService.regist(params));
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
-            userJson = new UserJson(e.getStatus());
+            resultJson = new ResultJson(e);
         }
-        System.out.println(userJson.toString());
-        return ok(userJson);
-
+        System.out.println(resultJson.toString());
+        return ok(resultJson);
     }
 
     /**
@@ -50,18 +51,18 @@ public class UserController extends Controller {
     public Result login() {
 
         Map<String, String[]> params = request().queryString();
-        UserJson userJson = null;
+        ResultJson resultJson = null;
         try {
-            userJson = userService.login(params);
-            session("email",userJson.getEmail());
-            session("password",userJson.getPassword());
+            resultJson = new ResultJson(userService.login(params));
+            session("email",params.get(UserJson.KEY_EMAIL)[0]);
+            session("password",params.get(UserJson.KEY_PASSWORD)[0]);
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
-            userJson = new UserJson(e.getStatus());
+            resultJson = new ResultJson(e);
         }
-        System.out.println(userJson.toString());
-        return ok(userJson);
+        System.out.println(resultJson.toString());
+        return ok(resultJson);
     }
 
     /**
@@ -83,24 +84,24 @@ public class UserController extends Controller {
     public Result updatePassword() {
 
         Map<String, String[]> params = request().queryString();
-        UserJson userJson = null;
+        ResultJson resultJson = null;
         try {
+            //从session里面得到email和password信息
             String email = ctx().session().get("email");
             if (email==null) throw new UserNoLoginException();
             params.put("email",new String[]{email});
             String password = ctx().session().get("password");
             if (password==null) throw new UserNoLoginException();
             params.put("password",new String[]{password});
-
-            userJson = userService.updatePassword(params);
+            //更新密码
+            resultJson =  new ResultJson(userService.updatePassword(params));
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
-            userJson = new UserJson(e.getStatus());
+            resultJson = new ResultJson(e);
         }
-        System.out.println(userJson.toString());
-        return ok(userJson);        
-
+        System.out.println(resultJson.toString());
+        return ok(resultJson);
     }
 
     /**
@@ -111,32 +112,33 @@ public class UserController extends Controller {
     public Result updateDisplay() {
 
         Map<String, String[]> params = request().queryString();
-        UserJson userJson = null;
+        ResultJson resultJson = null;
         try {
+            //从session里面得到email和password信息
             String email = ctx().session().get("email");
             if (email==null) throw new UserNoLoginException();
             params.put("email",new String[]{email});
             String password = ctx().session().get("password");
             if (password==null) throw new UserNoLoginException();
             params.put("password",new String[]{password});
-
-            userJson = userService.updateDisplay(params);
+            //更新显示名
+            resultJson = new ResultJson(userService.updateDisplay(params));
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
-            userJson = new UserJson(e.getStatus());
+            resultJson = new ResultJson(e);
         }
-        System.out.println(userJson.toString());
-        return ok(userJson);
+        System.out.println(resultJson.toString());
+        return ok(resultJson);
     }
 
-    /**
-     * 测试用
-     * @return
-     * last modified 黎伟杰
-     */
-    public Result test() {
-        return ok(testD.render());
-    }
+//    /**
+//     * 测试用
+//     * @return
+//     * last modified 黎伟杰
+//     */
+//    public Result test() {
+//        return ok(testD.render());
+//    }
 
 }

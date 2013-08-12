@@ -9,9 +9,9 @@ import org.codehaus.jackson.node.ObjectNode;
  */
 public class UserJson extends ObjectNode{
 
-    static String KEY_EMAIL = "email";
-    static String KEY_PASSWORD = "password";
-    static String KEY_DISPLAY = "display";
+    public static String KEY_EMAIL = "email";
+    public static String KEY_PASSWORD = "password";
+    public static String KEY_DISPLAY = "display";
 
     /**
      * 初始化产生UserJson
