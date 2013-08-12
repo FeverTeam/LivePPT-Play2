@@ -84,7 +84,7 @@ public class UserController extends Controller {
      */
     public Result updatePassword() {
 
-        Map<String, String[]> params = request().queryString();
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson = null;
         try {
             //从session里面得到email和password信息
@@ -112,7 +112,7 @@ public class UserController extends Controller {
      */
     public Result updateDisplay() {
 
-        Map<String, String[]> params = request().queryString();
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson = null;
         try {
             //从session里面得到email和password信息

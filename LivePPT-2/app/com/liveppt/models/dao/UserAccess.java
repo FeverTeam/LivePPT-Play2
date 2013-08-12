@@ -18,13 +18,13 @@ public class UserAccess {
      * 创建新的用户
      * @param params
      * @return
-     * last modified 黄梓财
+     * last modified 黎伟杰
      */
     static public UserJson create(Map<String, String[]> params) throws UserException {
         UserReader userReader = new UserReader(params);
         //用户名不存在则抛出错误
         if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
-        userReader.display = params.get("display")[0];
+        userReader.display = params.get(UserReader.KEY_DISPLAY)[0];
         User user = User.find.where().eq("email",userReader.email).findUnique();
         if (user==null) {
 
