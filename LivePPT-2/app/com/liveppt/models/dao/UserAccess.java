@@ -21,16 +21,18 @@ public class UserAccess {
      * last modified 黄梓财
      */
     static public UserJson create(Map<String, String[]> params) throws UserException {
-        UserReader userReader = genUserReader(params);
+        UserReader userReader = new UserReader(params);
+        //用户名不存在则抛出错误
         if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
         userReader.display = params.get("display")[0];
         User user = User.find.where().eq("email",userReader.email).findUnique();
-        UserJson userJson = genUserJson(userReader);
         if (user==null) {
+
             user = new User(userReader);
             user.save();
             userReader.id = user.id;
-            return userJson.putStatus(StatusCode.NONE);            
+            UserJson userJson = genUserJson(userReader);
+            return userJson;
         } else {
             throw new UserExistedException();
         }
@@ -43,8 +45,8 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public UserJson login(Map<String, String[]> params) throws UserException {
-        UserReader userReader = genUserReader(params);
-        User user = User.find.where().eq("email",userReader.email).findUnique();
+        UserReader userReader = new UserReader(params);
+        User user = User.find.where().eq(UserReader.KEY_EMAIL,userReader.email).findUnique();
         UserJson userJson = genUserJson(userReader);
         if (user==null){
             //用户不存在
@@ -52,7 +54,7 @@ public class UserAccess {
         } else {
             if (userJson.getPassword().equals(user.password)) {
                 //TODO 应该有User生成，补充ppt，meeting等信息
-                return userJson.putStatus(StatusCode.NONE).putDisplay(user.display);
+                return userJson.putDisplay(user.display);
             } else {
                 throw new PasswordErrorException();
             }
@@ -67,8 +69,8 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public boolean isEmailExist(Map<String, String[]> params) throws UserException {
-        UserReader userReader = genUserReader(params);
-        User user = User.find.where().eq("email", userReader.email).findUnique();
+        UserReader userReader = new UserReader(params);
+        User user = User.find.where().eq(UserReader.KEY_EMAIL, userReader.email).findUnique();
         if(user == null){
         // 用户不存在
         // 设置用户不存在状态码为1101
@@ -85,8 +87,8 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public boolean isPasswordCorrect(Map<String,String[]> params) throws UserException {
-    	UserReader userReader = genUserReader(params);
-    	User user = User.find.where().eq("email", userReader.email).findUnique();
+    	UserReader userReader = new UserReader(params);
+    	User user = User.find.where().eq(UserReader.KEY_EMAIL, userReader.email).findUnique();
     	if(user.password.equals(userReader.password)){
     	//密码正确
     	return true;
@@ -101,7 +103,7 @@ public class UserAccess {
      * last modified   黎伟杰
      */
     static public void delete(Map<String,String[]> params) throws UserException {
-    	UserReader userReader = genUserReader(params);
+    	UserReader userReader = new UserReader(params);
     	User user  = User.find.byId(userReader.id);
     	user.delete();
     }
@@ -113,11 +115,10 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public UserJson updatePassword(Map<String,String[]> params) throws UserException {
-        //TODO 错误检查
-    	UserReader userReader = genUserReader(params);
-        if (params.get("newPassword")[0]==null) throw  new NewPasswordNotFoundException();
-        String newPassword = params.get("newPassword")[0];
-    	User user = User.find.where().eq("email", userReader.email).findUnique();
+    	UserReader userReader = new UserReader(params);
+        if (params.get(UserReader.KEY_NEW_PASSWORD)[0]==null) throw  new NewPasswordNotFoundException();
+        String newPassword = params.get(UserReader.KEY_NEW_PASSWORD)[0];
+    	User user = User.find.where().eq(UserReader.KEY_EMAIL, userReader.email).findUnique();
         if (userReader.password.equals(user.password)) {
             user.password=newPassword;
             user.save();
@@ -135,20 +136,16 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public UserJson updateDisplay(Map<String,String[]> params) throws UserException {
-        //TODO 将取参数的域修改为静态字符变量，错误抛出
-    	UserReader userReader = genUserReader(params);
-        if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
-        userReader.display = params.get("display")[0];
-        if (params.get("newDisplay")[0]==null) throw  new NewDisplayNotFoundException();
-        String newDisplay = params.get("newDisplay")[0];
-        User user = User.find.where().eq("email", userReader.email).findUnique();
-        //TODO 检查密码再修改
+        //TODO 将取参数的域修改为静态字符变量
+    	UserReader userReader = new UserReader(params);
+        if (params.get(UserReader.KEY_DISPLAY)[0]==null) throw  new DisplayNotFoundException();
+        userReader.display = params.get(UserReader.KEY_DISPLAY)[0];
+        if (params.get(UserReader.KEY_NEW_DISPLAY)[0]==null) throw  new NewDisplayNotFoundException();
+        String newDisplay = params.get(UserReader.KEY_NEW_DISPLAY)[0];
+        User user = User.find.where().eq(UserReader.KEY_EMAIL, userReader.email).findUnique();
         if (userReader.password.equals(user.password)) {
             user.display=newDisplay;
             user.save();
-//            System.out.println(user.password);
-//            user = User.find.where().eq("email", userReader.email).findUnique();
-//            System.out.println(user.password);
             userReader.display = user.display;
         } else {
             throw new PasswordErrorException();
@@ -163,27 +160,9 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public UserJson genUserJson(UserReader user) {
-        //TODO 错误检查抛出
         UserJson userJson = new UserJson(user.email,user.password,user.display);
         return userJson;
     }
 
-    /**
-     * 产生UserR类
-     * @param params
-     * @return
-     * last modified 黎伟杰
-     */
-    static public UserReader genUserReader(Map<String, String[]> params) throws UserException {
-        //TODO 添加错误类检验抛出
 
-        UserReader user = new UserReader();
-        System.out.println("genUserR");
-        System.out.println(params.get("email")[0]);
-        if (params.get("email")[0]==null) throw  new EmailNotFoundException();
-        user.email = params.get("email")[0];
-        if (params.get("password")[0]==null) throw  new PasswordNotFoundException();
-        user.password = params.get("password")[0];
-        return user;
-    }
 }
