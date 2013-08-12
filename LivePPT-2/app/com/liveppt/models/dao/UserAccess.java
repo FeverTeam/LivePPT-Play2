@@ -113,7 +113,6 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public UserJson updatePassword(Map<String,String[]> params) throws UserException {
-        //TODO 错误检查
     	UserReader userReader = genUserReader(params);
         if (params.get("newPassword")[0]==null) throw  new NewPasswordNotFoundException();
         String newPassword = params.get("newPassword")[0];
@@ -135,14 +134,13 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public UserJson updateDisplay(Map<String,String[]> params) throws UserException {
-        //TODO 将取参数的域修改为静态字符变量，错误抛出
+        //TODO 将取参数的域修改为静态字符变量
     	UserReader userReader = genUserReader(params);
         if (params.get("display")[0]==null) throw  new DisplayNotFoundException();
         userReader.display = params.get("display")[0];
         if (params.get("newDisplay")[0]==null) throw  new NewDisplayNotFoundException();
         String newDisplay = params.get("newDisplay")[0];
         User user = User.find.where().eq("email", userReader.email).findUnique();
-        //TODO 检查密码再修改
         if (userReader.password.equals(user.password)) {
             user.display=newDisplay;
             user.save();
@@ -163,7 +161,6 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public UserJson genUserJson(UserReader user) {
-        //TODO 错误检查抛出
         UserJson userJson = new UserJson(user.email,user.password,user.display);
         return userJson;
     }
@@ -175,8 +172,6 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public UserReader genUserReader(Map<String, String[]> params) throws UserException {
-        //TODO 添加错误类检验抛出
-
         UserReader user = new UserReader();
         System.out.println("genUserR");
         System.out.println(params.get("email")[0]);

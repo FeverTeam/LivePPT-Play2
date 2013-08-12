@@ -9,11 +9,9 @@ import org.codehaus.jackson.node.ObjectNode;
  */
 public class UserJson extends ObjectNode{
 
-    static String  EMAIL = "email";
-    static String  PASS = "password";
-    static String  DISPLAY = "display";
-    static String  STATUS = "status";
-    static String  MESSAGE = "message";
+    static String KEY_EMAIL = "email";
+    static String KEY_PASSWORD = "password";
+    static String KEY_DISPLAY = "display";
 
     /**
      * 初始化产生UserJson
@@ -29,13 +27,6 @@ public class UserJson extends ObjectNode{
         putDisplay(display);
     }
 
-    public UserJson(int status){
-        super(JsonNodeFactory.instance);
-        putStatus(status);
-    }
-
-
-
     /**
      * 为UserJson加入email信息
      * @param email
@@ -43,7 +34,7 @@ public class UserJson extends ObjectNode{
      * last modified 黎伟杰
      */
     public UserJson putEmail(String email){
-        this.put(EMAIL,email);
+        this.put(KEY_EMAIL,email);
         return this;
     }
 
@@ -54,7 +45,7 @@ public class UserJson extends ObjectNode{
      * last modified 黎伟杰
      */
     public String getEmail(){
-        return this.get(EMAIL).asText();
+        return this.get(KEY_EMAIL).asText();
     }
 
     /**
@@ -64,7 +55,7 @@ public class UserJson extends ObjectNode{
      * last modified 黎伟杰
      */
     public UserJson putPassword(String password){
-        this.put(PASS,password);
+        this.put(KEY_PASSWORD,password);
         return this;
     }
 
@@ -75,7 +66,7 @@ public class UserJson extends ObjectNode{
      * last modified 黎伟杰
      */
     public String getPassword(){
-        return this.get(PASS).asText();
+        return this.get(KEY_PASSWORD).asText();
     }
 
     /**
@@ -85,7 +76,7 @@ public class UserJson extends ObjectNode{
      * last modified 黎伟杰
      */
     public UserJson putDisplay(String display){
-        this.put(DISPLAY,display);
+        this.put(KEY_DISPLAY,display);
         return this;
     }
 
@@ -96,28 +87,7 @@ public class UserJson extends ObjectNode{
      * last modified 黎伟杰
      */
     public String getDisplay(){
-        return this.get(DISPLAY).asText();
-    }
-
-    /**
-     * 为UserJson加入status状态信息
-     * @param status
-     * @return  itself
-     * last modified 黎伟杰
-     */
-    public UserJson putStatus(int status){
-        this.put(STATUS,status);
-        return this;
-    }
-
-    /**
-     * 从UserJson取出status状态信息
-     * @param
-     * @return  itself
-     * last modified 黎伟杰
-     */
-    public String getStatus(){
-        return this.get(STATUS).asText();
+        return this.get(KEY_DISPLAY).asText();
     }
 
 }

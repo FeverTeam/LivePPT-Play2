@@ -17,7 +17,7 @@ package com.liveppt.utils;
  */
 public class StatusCode {
 	//一切正常
-	public final static int NONE = 9000;
+	public final static int ALL_IS_OK = 9000;
 	//****************用户类型错误*****************
 	//用户密码错误
 	public final static int USER_PASSWORD_ERROR = 1100;
