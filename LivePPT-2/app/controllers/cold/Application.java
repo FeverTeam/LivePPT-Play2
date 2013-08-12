@@ -18,7 +18,14 @@ public class Application extends Controller {
   	 * last modified XXX
   	 */
     public static Result index() {
-        return TODO;
+        return ok(index.render());
     }
-  
+
+    public static Result signup(){
+        return ok(signup.render());
+    }
+
+    public static Result login(){
+        return ok(login.render());
+    }
 }
