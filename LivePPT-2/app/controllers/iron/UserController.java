@@ -54,6 +54,7 @@ public class UserController extends Controller {
         ResultJson resultJson = null;
         try {
             resultJson = new ResultJson(userService.login(params));
+            //TODO 修改为登陆ID
             session("email",params.get(UserJson.KEY_EMAIL)[0]);
             session("password",params.get(UserJson.KEY_PASSWORD)[0]);
         } catch (UserException e) {
