@@ -25,6 +25,10 @@ public class Application extends Controller {
         return ok(signup.render());
     }
 
+    public static Result list(){
+        return ok(list.render());
+    }
+    
     public static Result login(){
         return ok(login.render());
     }
