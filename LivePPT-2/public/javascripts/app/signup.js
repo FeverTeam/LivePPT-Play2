@@ -54,6 +54,7 @@ define(function(require, exports, module){
                 data: {"email":email,"password":password,"display":displayname },
                 success: function (data){
                    //sign up success
+                   console.log(data);
                    if(data.status == 9000){
                         window.location.href = "/";
                    }else{

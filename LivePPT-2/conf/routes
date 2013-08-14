@@ -9,6 +9,7 @@ GET     /                           controllers.cold.Application.index()
 #Pages
 GET     /signup                     controllers.cold.Application.signup()
 GET     /login                      controllers.cold.Application.login()
+GET     /myppt                      controllers.cold.Application.myppt()
 
 # API
 #*查询接口***************************************************************************

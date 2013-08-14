@@ -28,4 +28,9 @@ public class Application extends Controller {
     public static Result login(){
         return ok(login.render());
     }
+
+    public static Result myppt(){
+        String name = ctx().session().get("email");
+        return ok(myppt.render(name));
+    }
 }

@@ -20,11 +20,19 @@ define(function(require, exports, module){
                 },
                 success: function(data){
                     console.log(data);
-                    /*后台返回的data似乎只有status，待修改*/
+                    if(data.statusCode == 9000){
+                        window.location.href = "/myppt";
+                    }else if(data.statusCode == 1101){
+                        $("#loginMessage").html("email不存在");
+                        $("#loginMessage").css("display", "inline");
+                    }else{
+                        $("#loginMessage").html("密码错误");
+                        $("#loginMessage").css("display", "inline");
+                    }
                 },
                 error: function(status){
-                    console.log("error");
-                    /*待修改*/
+                    $("#loginMessage").html("网络错误");
+                    $("#loginMessage").css("display", "inline");
                 }
             });
         },
