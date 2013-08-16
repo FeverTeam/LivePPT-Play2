@@ -1,11 +1,16 @@
 package com.liveppt.models;
 
+import java.util.List;
+
+
 import com.liveppt.utils.models.UserReader;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  * 用户类
@@ -26,7 +31,10 @@ public class User extends Model {
 
     @Constraints.Required
     public String display;
-
+    
+    @OneToMany(cascade = CascadeType.ALL)
+	public List<Ppt> ppts;
+    
     public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
             User.class);
 
