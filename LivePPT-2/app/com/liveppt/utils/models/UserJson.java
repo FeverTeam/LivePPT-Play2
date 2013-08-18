@@ -9,6 +9,7 @@ import org.codehaus.jackson.node.ObjectNode;
  */
 public class UserJson extends ObjectNode{
 
+    public static String KEY_ID = "userId";
     public static String KEY_EMAIL = "email";
     public static String KEY_PASSWORD = "password";
     public static String KEY_DISPLAY = "display";
@@ -41,7 +42,7 @@ public class UserJson extends ObjectNode{
     /**
      * 从UserJson取出email状态信息
      * @param
-     * @return  itself
+     * @return  email
      * last modified 黎伟杰
      */
     public String getEmail(){
@@ -62,7 +63,7 @@ public class UserJson extends ObjectNode{
     /**
      * 从UserJson取出password状态信息
      * @param
-     * @return  itself
+     * @return  password
      * last modified 黎伟杰
      */
     public String getPassword(){
@@ -83,11 +84,32 @@ public class UserJson extends ObjectNode{
     /**
      * 从UserJson取出display状态信息
      * @param
-     * @return  itself
+     * @return  display
      * last modified 黎伟杰
      */
     public String getDisplay(){
         return this.get(KEY_DISPLAY).asText();
+    }
+
+    /**
+     * 为UserJson加入userId信息
+     * @param id
+     * @return  itself
+     * last modified 黎伟杰
+     */
+    public UserJson putId(Long id){
+        this.put(KEY_ID,id);
+        return this;
+    }
+
+    /**
+     * 从UserJson取出userId信息
+     * @param
+     * @return  id
+     * last modified 黎伟杰
+     */
+    public Long getId(){
+        return this.get(KEY_DISPLAY).asLong();
     }
 
 }

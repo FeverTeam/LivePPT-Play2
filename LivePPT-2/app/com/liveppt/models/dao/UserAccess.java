@@ -54,7 +54,7 @@ public class UserAccess {
         } else {
             if (userJson.getPassword().equals(user.password)) {
                 //TODO 应该有User生成，补充ppt，meeting等信息
-                return userJson.putDisplay(user.display);
+                return userJson.putDisplay(user.display).putId(user.id);
             } else {
                 throw new PasswordErrorException();
             }

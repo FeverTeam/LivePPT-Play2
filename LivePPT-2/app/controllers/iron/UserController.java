@@ -7,7 +7,6 @@ import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.exception.user.UserNoLoginException;
 import com.liveppt.utils.models.UserJson;
 
-import com.liveppt.utils.models.UserReader;
 import play.mvc.*;
 
 import java.util.Map;
@@ -54,9 +53,7 @@ public class UserController extends Controller {
         ResultJson resultJson = null;
         try {
             resultJson = new ResultJson(userService.login(params));
-            //TODO 修改为登陆ID
-            session("email",params.get(UserJson.KEY_EMAIL)[0]);
-            session("password",params.get(UserJson.KEY_PASSWORD)[0]);
+            session(UserJson.KEY_ID, String.valueOf(resultJson.getData().get(UserJson.KEY_ID).asLong()));
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
@@ -72,8 +69,7 @@ public class UserController extends Controller {
      * last modified 黎伟杰
      */
     public Result logout() {
-        session().remove("email");
-        session().remove("password");
+        session().remove(UserJson.KEY_ID);
         return ok();
     }
 
@@ -87,13 +83,10 @@ public class UserController extends Controller {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson = null;
         try {
-            //从session里面得到email和password信息
-            String email = ctx().session().get("email");
-            if (email==null) throw new UserNoLoginException();
-            params.put("email",new String[]{email});
-            String password = ctx().session().get("password");
-            if (password==null) throw new UserNoLoginException();
-            params.put("password",new String[]{password});
+            //从session里面得到id信息
+            String id = ctx().session().get(UserJson.KEY_ID);
+            if (id==null) throw new UserNoLoginException();
+            params.put(UserJson.KEY_ID,new String[]{id});
             //更新密码
             resultJson =  new ResultJson(userService.updatePassword(params));
         } catch (UserException e) {
@@ -115,13 +108,10 @@ public class UserController extends Controller {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson = null;
         try {
-            //从session里面得到email和password信息
-            String email = ctx().session().get("email");
-            if (email==null) throw new UserNoLoginException();
-            params.put("email",new String[]{email});
-            String password = ctx().session().get("password");
-            if (password==null) throw new UserNoLoginException();
-            params.put("password",new String[]{password});
+            //从session里面得到id信息
+            String id = ctx().session().get(UserJson.KEY_ID);
+            if (id==null) throw new UserNoLoginException();
+            params.put(UserJson.KEY_ID,new String[]{id});
             //更新显示名
             resultJson = new ResultJson(userService.updateDisplay(params));
         } catch (UserException e) {
