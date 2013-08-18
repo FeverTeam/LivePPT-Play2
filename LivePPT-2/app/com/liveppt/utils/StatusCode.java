@@ -45,6 +45,8 @@ public class StatusCode {
 	//****************PPT类型错误*****************
 	//PPT不存在
 	public final static int PPT_NOT_EXISTED = 2100;
+    //PPT_FILE_NOT_FOUND
+    public final static int PPT_FILE_NOT_FOUND = 2103;
 	//pptId错误
 	public final static int PPT_ID_ERROR = 2101;
 	//ppt的pageIndex字段错误

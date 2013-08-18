@@ -7,6 +7,7 @@ import java.io.IOException;
  * author 黎伟杰
  */
 public class LivePPTException extends IOException {
+    //TODO 重新考虑Exception构造器
 
     int status;
 

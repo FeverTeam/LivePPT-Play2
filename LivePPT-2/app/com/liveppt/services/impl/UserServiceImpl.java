@@ -22,7 +22,6 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     public UserJson regist(Map<String, String[]> params) throws UserException {
-        //TODO 错误检查抛出
         return UserAccess.create(params);
     }
 
@@ -34,7 +33,6 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     public UserJson login(Map<String, String[]> params) throws UserException {
-        //TODO 错误检查抛出
         return UserAccess.login(params);
     }
 
