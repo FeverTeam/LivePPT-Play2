@@ -12,7 +12,9 @@ public class UserJson extends ObjectNode{
     public static String KEY_ID = "userId";
     public static String KEY_EMAIL = "email";
     public static String KEY_PASSWORD = "password";
+    public static String KEY_NEW_PASSWORD = "newPassword";
     public static String KEY_DISPLAY = "display";
+    public static String KEY_NEW_DISPLAY = "newDisplay";
 
     /**
      * 初始化产生UserJson

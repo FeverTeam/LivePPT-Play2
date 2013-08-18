@@ -1,8 +1,6 @@
 package com.liveppt.utils.models;
 
-import com.liveppt.utils.exception.user.EmailNotFoundException;
-import com.liveppt.utils.exception.user.PasswordNotFoundException;
-import com.liveppt.utils.exception.user.UserException;
+import com.liveppt.utils.exception.user.*;
 
 import java.util.Map;
 
@@ -12,27 +10,8 @@ import java.util.Map;
  */
 public class UserReader {
 
-    public static String KEY_EMAIL = "email";
-    public static String KEY_PASSWORD = "password";
-    public static String KEY_NEW_PASSWORD = "newPassword";
-    public static String KEY_DISPLAY = "display";
-    public static String KEY_NEW_DISPLAY = "newDisplay";
 
     //constructors
-
-    /**
-     * 产生UserReader类
-     * @param email 传入email
-     * @param password 传入password
-     * @return
-     * last modified 黎伟杰
-     */
-    public UserReader(String email,String password){
-        this.email = email;
-        this.password = password;
-    }
-
-    //TODO 编写field的setter和getter ,和对应的抛出异常，构造函数中调用方法
 
     /**
      * 产生UserReader类
@@ -40,12 +19,8 @@ public class UserReader {
      * @return
      * last modified 黎伟杰
      */
-    public UserReader(Map<String, String[]> params) throws UserException {
-        System.out.println("genUserR");
-        if (params.get(KEY_EMAIL)[0]==null) throw  new EmailNotFoundException();
-        this.email = params.get(KEY_EMAIL)[0];
-        if (params.get(KEY_PASSWORD)[0]==null) throw  new PasswordNotFoundException();
-        this.password = params.get(KEY_PASSWORD)[0];
+    public UserReader(Map<String, String[]> params) {
+        this.params = params;
     }
 
     public Long id;
@@ -60,7 +35,83 @@ public class UserReader {
 
     public String newDisplay;
 
-    public int status;
+    public Map<String, String[]> params;
 
+    /**
+     * 通过params设置Id
+     * @return
+     * @throws UserIdNotFoundException
+     * last modified 黎伟杰
+     */
+    public UserReader setId() throws UserIdNotFoundException {
+        String id = params.get(UserJson.KEY_ID)[0];
+        if (id==null) throw  new UserIdNotFoundException();
+        this.id = Long.valueOf(id);
+        return this;
+    }
 
+    /**
+     * 通过params设置email
+     * @return
+     * @throws EmailNotFoundException
+     * last modified 黎伟杰
+     */
+    public UserReader setEmail() throws EmailNotFoundException {
+        String email = params.get(UserJson.KEY_EMAIL)[0];
+        if (email==null) throw  new EmailNotFoundException();
+        this.email = email;
+        return this;
+    }
+
+    /**
+     * 通过params设置password
+     * @return
+     * @throws PasswordNotFoundException
+     * last modified 黎伟杰
+     */
+    public UserReader setPassword() throws PasswordNotFoundException {
+        String password = params.get(UserJson.KEY_PASSWORD)[0];
+        if (password==null) throw  new PasswordNotFoundException();
+        this.password = password;
+        return this;
+    }
+
+    /**
+     * 通过params设置newPassword
+     * @return
+     * @throws NewPasswordNotFoundException
+     * last modified 黎伟杰
+     */
+    public UserReader setNewPassword() throws NewPasswordNotFoundException {
+        String newPassword = params.get(UserJson.KEY_NEW_PASSWORD)[0];
+        if (newPassword==null) throw  new NewPasswordNotFoundException();
+        this.newPassword = newPassword;
+        return this;
+    }
+
+    /**
+     * 通过params设置display
+     * @return
+     * @throws DisplayNotFoundException
+     * last modified 黎伟杰
+     */
+    public UserReader setDisplay() throws DisplayNotFoundException {
+        String display = params.get(UserJson.KEY_DISPLAY)[0];
+        if (display==null) throw  new DisplayNotFoundException();
+        this.display = display;
+        return this;
+    }
+
+    /**
+     * 通过params设置newPisplay
+     * @return
+     * @throws NewDisplayNotFoundException
+     * last modified 黎伟杰
+     */
+    public UserReader setNewDisplay() throws NewDisplayNotFoundException {
+        String newDisplay = params.get(UserJson.KEY_NEW_PASSWORD)[0];
+        if (newDisplay==null) throw  new NewDisplayNotFoundException();
+        this.newDisplay = newDisplay;
+        return this;
+    }
 }
