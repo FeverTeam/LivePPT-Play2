@@ -1,7 +1,4 @@
-/**
- * @param
- * @return
- */
+
 package com.liveppt.utils.models;
 import java.util.Date;
 import org.codehaus.jackson.JsonNode;
@@ -12,13 +9,14 @@ import org.codehaus.jackson.node.ObjectNode;
  *
  */
 public class PptJson extends ObjectNode{
-	public static String KEY_ID = "id";
-	public static String KEY_USER_ID = "userId";
-	public static String KEY_FILENAME = "fileName";
-	public static String KEY_TIME = "time";
-	public static String KEY_FILESIZE = "fileSize";
-	public static String KEY_CONVERT_STATUS = "convertStatus";
-	public static String KEY_PAGECOUNT = "pageCount";
+
+	public static String KEY_PPT_ID = "id";
+	public static String KEY_PPT_USER_ID = "userId";
+	public static String KEY_PPT_FILENAME = "fileName";
+	public static String KEY_PPT_TIME = "time";
+	public static String KEY_PPT_FILESIZE = "fileSize";
+	public static String KEY_PTT_CONVERT_STATUS = "convertStatus";
+	public static String KEY_PPT_PAGECOUNT = "pageCount";
 	
 	/**
      * 初始化产生PptJson
@@ -42,7 +40,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public PptJson putUserId(Long userId){
-        this.put(KEY_USER_ID,userId);
+        this.put(KEY_PPT_USER_ID,userId);
         return this;
     }
 
@@ -53,7 +51,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public String getUserId(){
-        return this.get(KEY_USER_ID).asText();
+        return this.get(KEY_PPT_USER_ID).asText();
     }
 
     /**
@@ -63,7 +61,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public PptJson putFileName(String fileName){
-        this.put(KEY_FILENAME,fileName);
+        this.put(KEY_PPT_FILENAME,fileName);
         return this;
     }
 
@@ -74,7 +72,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public String getFileName(){
-        return this.get(KEY_FILENAME).asText();
+        return this.get(KEY_PPT_FILENAME).asText();
     }
 
     /**
@@ -84,7 +82,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public PptJson putFileSize(Long fileSize){
-        this.put(KEY_FILESIZE,fileSize);
+        this.put(KEY_PPT_FILESIZE,fileSize);
         return this;
     }
 
@@ -95,7 +93,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public String getFileSize(){
-        return this.get(KEY_FILESIZE).asText();
+        return this.get(KEY_PPT_FILESIZE).asText();
     }
     
     /**
@@ -105,7 +103,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public PptJson  putConvertStatus(boolean convertStatus){
-        this.put(KEY_CONVERT_STATUS,convertStatus);
+        this.put(KEY_PTT_CONVERT_STATUS,convertStatus);
         return this;
     }
 
@@ -116,7 +114,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public String getConvertStatus(){
-        return this.get(KEY_TIME).asText();
+        return this.get(KEY_PPT_TIME).asText();
     }
     
     /**
@@ -126,7 +124,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public PptJson putPageCount(int pageCount){
-        this.put(KEY_PAGECOUNT,pageCount);
+        this.put(KEY_PPT_PAGECOUNT,pageCount);
         return this;
     }
 
@@ -137,7 +135,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing Lee
      */
     public String getPageCount(){
-        return this.get(KEY_PAGECOUNT).asText();
+        return this.get(KEY_PPT_PAGECOUNT).asText();
     }
     
     /**
@@ -147,7 +145,7 @@ public class PptJson extends ObjectNode{
      * last modified Zijing LEE
      */
     public PptJson putTime(Date time){
-        this.put(KEY_TIME,time.toString());
+        this.put(KEY_PPT_TIME,time.toString());
         return this;
     }
 
@@ -158,6 +156,6 @@ public class PptJson extends ObjectNode{
      * last modified Zijing LEE
      */
     public String getTime(){
-        return this.get(KEY_TIME).asText();
+        return this.get(KEY_PPT_TIME).asText();
     }
 }
