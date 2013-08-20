@@ -2,12 +2,10 @@ package controllers.iron;
 
 import com.google.inject.Inject;
 import com.liveppt.services.PptService;
-import com.liveppt.services.UserService;
 
 import com.liveppt.utils.ResultJson;
-import com.liveppt.utils.exception.LivePPTException;
 import com.liveppt.utils.exception.ppt.PptException;
-import com.liveppt.utils.exception.ppt.PptFileNotFoundException;
+import com.liveppt.utils.exception.ppt.PptFileErrorException;
 import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.exception.user.UserNoLoginException;
 import com.liveppt.utils.models.PptJson;
@@ -44,7 +42,7 @@ public class PptController extends Controller{
             params.put(UserJson.KEY_ID,new String[]{id});
             //提取文件
             Http.MultipartFormData.FilePart filePart = request().body().asMultipartFormData().getFile("PptFile");
-            if (filePart==null) throw new PptFileNotFoundException();
+            if (filePart==null) throw new PptFileErrorException();
             File file = filePart.getFile();
 
             PptJson pptJson = pptService.uploadPpt(params,file);
@@ -61,5 +59,7 @@ public class PptController extends Controller{
 
         return ok(resultJson);
     }
+
+
 
 }
