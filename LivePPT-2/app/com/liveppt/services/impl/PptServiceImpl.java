@@ -11,11 +11,13 @@ import com.liveppt.utils.AwsConnGenerator;
 import com.liveppt.utils.exception.ppt.PptException;
 import com.liveppt.utils.exception.ppt.PptFileErrorException;
 import com.liveppt.utils.models.PptJson;
+import org.codehaus.jackson.JsonNode;
 import play.Logger;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,9 +33,6 @@ public class PptServiceImpl implements PptService{
 
     @Override
     public PptJson uploadPpt(Map<String, String[]> params, File file) throws PptException {
-
-
-        //TODO 上传文件
 
         String title = file.getName();
         Long filesize = file.length();
@@ -56,6 +55,8 @@ public class PptServiceImpl implements PptService{
         params.put(PptJson.KEY_PPT_FILENAME,new String[]{title2});
         //设置filesize
         params.put(PptJson.KEY_PPT_FILESIZE,new String[]{String.valueOf(filesize)});
+        //设置storekey
+        params.put(PptJson.KEY_PPT_STOREKEY,new String[]{storeKey});
 
         //添加ppt信息
         PptJson pptJson = PptAccess.create(params);
@@ -69,6 +70,21 @@ public class PptServiceImpl implements PptService{
         sqs.sendMessage(new SendMessageRequest(myQueueUrl, storeKey));
 
         return pptJson;
+    }
+
+    @Override
+    public void updatePptConvertedStatus(JsonNode messageJson) {
+
+        Boolean isSuccess = messageJson.findPath("isSuccess").getBooleanValue();
+        if (!isSuccess.equals(null) && isSuccess) {
+            String storeKey = messageJson.findPath("storeKey").getTextValue();
+            int pageCount = messageJson.findPath("pageCount").getIntValue();
+
+            List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey)
+                    .findList();
+            Ppt ppt = pptList.get(0);
+            PptAccess.updatePptConvertedStatus(storeKey,true,pageCount);
+        }
     }
 
 }

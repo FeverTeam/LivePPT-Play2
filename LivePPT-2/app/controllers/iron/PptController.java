@@ -10,6 +10,8 @@ import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.exception.user.UserNoLoginException;
 import com.liveppt.utils.models.PptJson;
 import com.liveppt.utils.models.UserJson;
+import org.codehaus.jackson.JsonNode;
+import play.libs.Json;
 import play.mvc.*;
 
 import java.io.File;
@@ -30,7 +32,7 @@ public class PptController extends Controller{
      * @return
      * last modified 黎伟杰
      */
-    public Result uploadPpt(){
+    public Result pptUpload(){
 
         Map<String, String[]> params = request().body().asFormUrlEncoded();
 
@@ -58,6 +60,19 @@ public class PptController extends Controller{
         }
 
         return ok(resultJson);
+    }
+
+    /**
+     * 更新PPT转换的状态
+     *
+     * @return
+     */
+    public Result convertstatus() {
+        JsonNode json = Json.parse(request().body().asText());
+        JsonNode messageJson = Json.parse(json.findPath("Message")
+                .getTextValue());
+        pptService.updatePptConvertedStatus(messageJson);
+        return ok();
     }
 
 
