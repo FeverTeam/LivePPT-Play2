@@ -20,7 +20,7 @@ POST    /user/regist                @controllers.iron.UserController.regist()
 POST    /user/updatePassword        @controllers.iron.UserController.updatePassword()
 POST    /user/updateDisplay         @controllers.iron.UserController.updateDisplay()
 POST	/convertstatus				@controllers.PptController.convertstatus()
-POST	/pptupload					controllers.PptController.pptUpload()
+POST	/pptupload					@controllers.PptController.pptUpload()
 
 #*测试接口***************************************************************************
 #GET     /user/test                  @controllers.iron.UserController.test()
