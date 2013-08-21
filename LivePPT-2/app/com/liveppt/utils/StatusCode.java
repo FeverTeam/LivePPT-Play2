@@ -41,6 +41,8 @@ public class StatusCode {
 	public final static int USER_EMAIL_EXISTED = 1300;
     //没有登录
     public final static int USER_NO_LOGIN = 1108;
+    //没权访问
+    public final static int USER_PERMISSION_DENY = 1109;
 
 	//****************PPT类型错误*****************
 	//PPT不存在
@@ -50,7 +52,7 @@ public class StatusCode {
 	//pptId错误
 	public final static int PPT_ID_ERROR = 2101;
 	//ppt的pageIndex字段错误
-	public final static int PPT_PAGEINDEX_ERROR = 2102;
+	public final static int PPT_PAGE_INDEX_ERROR = 2102;
 	//PPT列表为空
 	public final static int PPT_LIST_NULL = 2200;
 	

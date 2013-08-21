@@ -18,4 +18,8 @@ public interface PptService {
     public PptJson uploadPpt(Map<String, String[]> params, File file) throws PptException;
 
     public void updatePptConvertedStatus(JsonNode messageJson);
+
+    byte[] getPptPage(Long id, Long pptId, Long pageId);
+
+    byte[] getPptPageFromMeeting(Long id, Long meetingId, Long pageId);
 }
