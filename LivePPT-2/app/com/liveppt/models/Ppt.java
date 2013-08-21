@@ -48,6 +48,10 @@ public class Ppt extends Model{
 	@NotNull
 	@Constraints.Required
 	public boolean isConverted;
+	
+	@NotNull
+	@Constraints.Required
+	public String storeKey;
 
 	@NotNull
 	@Constraints.Required

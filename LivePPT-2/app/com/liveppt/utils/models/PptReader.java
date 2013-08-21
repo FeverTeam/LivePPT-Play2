@@ -126,8 +126,8 @@ public class PptReader {
      * @throws TimeNotFoundException
      * last modified Zijing Lee
      */
-    public PptReader setTime(){
-        String time = params.get(PptJson.KEY_PPT_PAGECOUNT)[0];
+   /* public PptReader setTime(){
+        String time = params.get(PptJson.KEY_PPT_TIME)[0];
        // if (time==null) throw  new timeNotFoundException();
        // else
         {
@@ -142,6 +142,6 @@ public class PptReader {
 			}
         }
         return this;
-    }
+    }*/
 }
 

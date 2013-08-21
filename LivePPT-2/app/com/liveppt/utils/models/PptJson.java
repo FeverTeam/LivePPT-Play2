@@ -17,6 +17,7 @@ public class PptJson extends ObjectNode{
 	public static String KEY_PPT_FILESIZE = "fileSize";
 	public static String KEY_PTT_CONVERT_STATUS = "convertStatus";
 	public static String KEY_PPT_PAGECOUNT = "pageCount";
+	public static String KEY_PPT_STOREKEY = "storeKey";
 	
 	/**
      * 初始化产生PptJson
