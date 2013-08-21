@@ -79,10 +79,6 @@ public class PptServiceImpl implements PptService{
         if (!isSuccess.equals(null) && isSuccess) {
             String storeKey = messageJson.findPath("storeKey").getTextValue();
             int pageCount = messageJson.findPath("pageCount").getIntValue();
-
-            List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey)
-                    .findList();
-            Ppt ppt = pptList.get(0);
             PptAccess.updatePptConvertedStatus(storeKey,true,pageCount);
         }
     }
