@@ -14,6 +14,8 @@ GET     /login                      controllers.cold.Application.login()
 #*查询接口***************************************************************************
 GET     /user/login                 @controllers.iron.UserController.login()
 GET 	/logout 				    @controllers.iron.UserController.logout()
+GET     /getPptPageFromPpt          @controllers.iron.PptController.getPptPage()
+GET     /getPptPageFromMeeting      @controllers.iron.PptController.getPptPageFromMeeting()
 
 #*写入接口***************************************************************************
 POST    /user/regist                @controllers.iron.UserController.regist()
