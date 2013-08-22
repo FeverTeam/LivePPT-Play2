@@ -4,6 +4,7 @@ import com.liveppt.models.dao.UserAccess;
 import com.liveppt.services.UserService;
 import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.models.UserJson;
+import com.liveppt.utils.models.UserReader;
 
 import java.util.Map;
 
@@ -16,45 +17,41 @@ public class UserServiceImpl implements UserService{
 
     /**
      * 用户注册
-     * @param params
      * @return
      * last modified 黎伟杰
      */
     @Override
-    public UserJson regist(Map<String, String[]> params) throws UserException {
-        return UserAccess.create(params);
+    public UserReader regist(UserReader userReader) throws UserException {
+        return UserAccess.create(userReader);
     }
 
     /**
      * 用户登陆
-     * @param params
      * @return
      * last modified 黎伟杰
      */
     @Override
-    public UserJson login(Map<String, String[]> params) throws UserException {
-        return UserAccess.login(params);
+    public UserReader login(UserReader userReader) throws UserException {
+        return UserAccess.login(userReader);
     }
 
     /**
      * 修改密码
-     * @param params
      * @return
      * last modified 黎伟杰
      */
     @Override
-    public UserJson updatePassword(Map<String, String[]> params) throws UserException {
-    	return UserAccess.updatePassword(params);
+    public UserReader updatePassword(UserReader userReader) throws UserException {
+    	return UserAccess.updatePassword(userReader);
     }
 
     /**
      * 修改用户名
-     * @param params
      * @return
      * last modified 黎伟杰
      */
     @Override
-    public UserJson updateDisplay(Map<String, String[]> params) throws UserException {
-    	return UserAccess.updateDisplay(params);
+    public UserReader updateDisplay(UserReader userReader) throws UserException {
+    	return UserAccess.updateDisplay(userReader);
     }
 }
