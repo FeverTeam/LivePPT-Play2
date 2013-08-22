@@ -7,18 +7,22 @@ package com.liveppt.models;
 
 
 import java.util.Date;
+import java.util.List;
 
 import com.liveppt.utils.models.PptReader;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.db.ebean.Model.Finder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.avaje.ebean.validation.NotNull;
+import com.fever.liveppt.models.Meeting;
 
 /**
  * @author Zijing Lee2013-8-16
@@ -56,7 +60,10 @@ public class Ppt extends Model{
 	@NotNull
 	@Constraints.Required
 	public int pagecount = 0;
-
+    
+	@OneToMany(cascade = CascadeType.ALL)
+	public List<Meeting> meetings;
+	
 	public static Finder<Long, Ppt> find = new Finder<Long, Ppt>(Long.class,
 			Ppt.class);
 
