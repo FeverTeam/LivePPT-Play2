@@ -56,26 +56,5 @@ public class PptAccess {
 		PptJson pptJson = genPptJson(ppt);
 		return pptJson;
     }
-    /**
-     * 产生PptJson
-     * @param
-     * @return PptJson
-     * last modified Zijing Lee
-     */
-    static public PptJson genPptJson (PptReader ppt) {
-    	PptJson pptJson = new PptJson(ppt.userId,ppt.fileName, ppt.time, ppt.fileSize, ppt.convertStatus, ppt.pageCount);
-        return pptJson;
-    }
-    
-    /**
-     * 产生PptJson
-     * @param
-     * @return PptJson
-     * last modified Zijing Lee
-     */
-    static public PptJson genPptJson (Ppt ppt) {
-    	
-    	PptJson pptJson = new PptJson(ppt.owner.id,ppt.fileName, ppt.time, ppt.fileSize, ppt.isConverted, ppt.pagecount);
-        return pptJson;
-    }
+
 }

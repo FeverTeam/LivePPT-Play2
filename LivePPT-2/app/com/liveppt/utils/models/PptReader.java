@@ -1,12 +1,10 @@
 package com.liveppt.utils.models;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import com.liveppt.utils.exception.ppt.PptIdErrorException;
+
 import java.util.Date;
-import java.util.Map;
 
 /**
- * @author Zijing Lee2013-8-16
+ * @author Zijing Lee,黎伟杰
  *
  */
 public class PptReader {
@@ -19,89 +17,96 @@ public class PptReader {
      * @param 
      * @param 
      * @return
-     * last modified Zijing LEE
+     * last modified 黎伟杰
      */
-    public PptReader(Map<String, String[]> params) {
-        this.params = params;
+    public PptReader() {
     }
 
- 	public Long id;
-	
-	public Long userId;
-	
-	public String fileName;
-	
-	public Date time;
-	
-	public Long fileSize;
-	
-	public boolean convertStatus;
-	
-	public int pageCount;
-	
-	public int status;
+ 	private Long id;
 
-    public String storekey;
+    private Long userId;
 
-    public Map<String, String[]> params;
+    private String fileName;
+
+    private Date time;
+
+    private Long fileSize;
+
+    private Boolean convertStatus;
+
+    private Long pageCount;
+
+    private int status;
+
+    private String storekey;
+
+    //TODO getter的抛出异常和异常类的建立
 
     /**
-     * 通过params设置Id
-     * @return
-     * @throws PptIdNotFoundException
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-    public PptReader setId()  {
-        String id = params.get(PptJson.KEY_PPT_ID)[0];
-       // if (id==null) //throw pptNotFound Exeption;
-        this.id = Long.valueOf(id);
+    public PptReader setPptId(Long pptId)  {
+        this.id = pptId;
         return this;
     }
 
     /**
-     * 通过params设置userID
-     * @return
-     * @throws UserIdNotFoundException
-     * last modified Zijing Lee
+     * @throws PptIdErrorException
+     * last modified 黎伟杰
      */
-    public PptReader setUserId()  {
-        String userId = params.get(PptJson.KEY_PPT_USER_ID)[0];
-        //if (userId==null)// throw  new pptNotFoundException();
-        this.userId = Long.valueOf(userId);
+    public Long getPptId() throws PptIdErrorException {
+        if (id==null) throw new PptIdErrorException();
+        return id;
+    }
+
+    /**
+     * last modified 黎伟杰
+     */
+    public PptReader setUserId(Long userId)  {
+        this.userId = userId;
         return this;
     }
 
     /**
-     * 通过params设置fileName
-     * @return
-     * @throws fileNameNotFoundException
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-    public PptReader setFileName() {
-        String fileName = params.get(PptJson.KEY_PPT_FILENAME)[0];
-       // if (fileName==null)// throw  new FileNameNotFoundException();
+    public Long getUserId()  {
+        //if (userId==null) throw new UserId
+        return userId;
+    }
+
+    /**
+     * last modified 黎伟杰
+     */
+    public PptReader setFileName(String fileName) {
         this.fileName = fileName;
         return this;
     }
 
     /**
-     * 通过params设置fileSize
-     * @return
-     * @throws fileSizeNotFoundException
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-    public PptReader setFileSize()  {
-        String fileSize = params.get(PptJson.KEY_PPT_FILESIZE)[0];
-       // if (fileSize==null) //throw  fileSizeNotFoundException();
-        this.fileSize = Long.valueOf(fileSize);
+    public String getFileName() {
+        return fileName;
+    }
+
+    /**
+     * last modified 黎伟杰
+     */
+    public PptReader setFileSize(Long fileSize)  {
+        this.fileSize = fileSize;
         return this;
     }
 
     /**
-     * 通过params设置convertStatus
-     * @return
-     * @throws convertStatusNotFoundException
-     * last modified Zijing Lee
+     * last modified 黎伟杰
+     */
+    public Long getFileSize()  {
+        return fileSize;
+    }
+
+    /**
+     * last modified 黎伟杰
      */
     public PptReader setConvertStatus(Boolean convertStatus){
         //if (convertStatus==null) //throw  new DisplayNotFoundException();
@@ -110,23 +115,29 @@ public class PptReader {
     }
 
     /**
-     * 通过params设置pagecount
-     * @return
-     * @throws NewDisplayNotFoundException
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-    public PptReader setPageCount(){
-        String pageCount = params.get(PptJson.KEY_PPT_PAGECOUNT)[0];
-       // if (pageCount==null) //throw  new PageCountNotFoundException();
-        this.pageCount = Integer.valueOf(pageCount);
+    public Boolean getConvertStatus(){
+        return convertStatus;
+    }
+
+    /**
+     * last modified 黎伟杰
+     */
+    public PptReader setPageCount(Long pageCount){
+        this.pageCount = pageCount;
         return this;
+    }
+
+    /**
+     * last modified 黎伟杰
+     */
+    public Long getPageCount(){
+        return this.pageCount;
     }
 
 
     /**
-     * 通过params设置time
-     * @return
-     * @throws TimeNotFoundException
      * last modified 黎伟杰
      */
     public PptReader setTime(){
@@ -134,6 +145,12 @@ public class PptReader {
         return this;
     }
 
+    /**
+     * last modified 黎伟杰
+     */
+    public Date getTime(){
+        return time;
+    }
 
 }
 
