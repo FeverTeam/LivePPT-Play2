@@ -12,8 +12,6 @@ import play.mvc.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import views.html.*;
-
 /**
  * 用户接口
  * Author 黎伟杰, 黄梓财
@@ -23,7 +21,7 @@ public class UserController extends Controller {
     @Inject
     UserService userService;
 
-    public static String KEY_ID = "userId";
+    public static String KEY_USER_ID = "userId";
     public static String KEY_EMAIL = "email";
     public static String KEY_PASSWORD = "password";
     public static String KEY_NEW_PASSWORD = "newPassword";
@@ -54,10 +52,11 @@ public class UserController extends Controller {
             userReader.setDisplay(display);
             userReader = userService.regist(userReader);
             //组装Data域信息
-            Map<String,Object> keyValue = new HashMap<>();
+            Map<String,String> keyValue = new HashMap<>();
             keyValue.put(KEY_EMAIL,userReader.getEmail());
             keyValue.put(KEY_DISPLAY,userReader.getDisplay());
-            UserJson userJson = new UserJson(keyValue);
+            UserJson userJson = new UserJson();
+            userJson.setStringField(keyValue);
             //组装返回信息
             resultJson = new ResultJson(userJson);
         } catch (UserException e) {
@@ -96,7 +95,7 @@ public class UserController extends Controller {
             UserJson userJson = new UserJson();
             resultJson = new ResultJson(userJson);
             //传入session
-            session(KEY_ID, String.valueOf(userReader.getId()));
+            session(KEY_USER_ID, String.valueOf(userReader.getId()));
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
@@ -111,7 +110,7 @@ public class UserController extends Controller {
      * last modified 黎伟杰
      */
     public Result logout() {
-        session().remove(KEY_ID);
+        session().remove(KEY_USER_ID);
         return ok();
     }
 
@@ -126,7 +125,7 @@ public class UserController extends Controller {
         ResultJson resultJson = null;
         try {
             //从session里面得到id信息
-            String s_id = ctx().session().get(KEY_ID);
+            String s_id = ctx().session().get(KEY_USER_ID);
             if (s_id==null) throw new UserNoLoginException();
             Long id = Long.valueOf(s_id);
 
@@ -166,7 +165,7 @@ public class UserController extends Controller {
         ResultJson resultJson = null;
         try {
             //从session里面得到id信息
-            String s_id = ctx().session().get(KEY_ID);
+            String s_id = ctx().session().get(KEY_USER_ID);
             if (s_id==null) throw new UserNoLoginException();
             Long id = Long.valueOf(s_id);
 

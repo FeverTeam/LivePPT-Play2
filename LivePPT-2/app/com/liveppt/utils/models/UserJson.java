@@ -1,5 +1,6 @@
 package com.liveppt.utils.models;
 
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
@@ -16,11 +17,18 @@ public class UserJson extends ObjectNode{
         super(JsonNodeFactory.instance);
     }
 
-    public UserJson(Map<String, Object> keyValue) {
-        this();
+    public UserJson setStringField(Map<String, String> keyValue){
         for (String key:keyValue.keySet()){
             put(key,keyValue.get(key));
         }
+        return this;
+    }
+
+    public UserJson setJsonField(Map<String, JsonNode> keyValue){
+        for (String key:keyValue.keySet()){
+            put(key,keyValue.get(key));
+        }
+        return this;
     }
 
 //    /**
@@ -107,7 +115,7 @@ public class UserJson extends ObjectNode{
 //     * last modified 黎伟杰
 //     */
 //    public UserJson putId(Long id){
-//        this.put(KEY_ID,id);
+//        this.put(KEY_USER_ID,id);
 //        return this;
 //    }
 //
