@@ -3,6 +3,7 @@ package com.liveppt.models;
 import java.util.List;
 
 
+import com.fever.liveppt.models.Attender;
 import com.liveppt.utils.models.UserReader;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -34,6 +35,12 @@ public class User extends Model {
     
     @OneToMany(cascade = CascadeType.ALL)
 	public List<Ppt> ppts;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+    public List<Meeting> meetings;
+    
+    @OneToMany(cascade = CascadeType.ALL)
+	public List<Attender> attendents;
     
     public static Finder<Long, User> find = new Finder<Long, User>(Long.class,
             User.class);
