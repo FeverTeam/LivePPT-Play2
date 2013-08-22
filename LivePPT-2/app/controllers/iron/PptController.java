@@ -32,6 +32,15 @@ public class PptController extends Controller{
     @Inject
     PptService pptService;
 
+    public static String KEY_USER_ID = "userId";
+    public static String KEY_PPT_ID = "id";
+    public static String KEY_PPT_FILENAME = "fileName";
+    public static String KEY_PPT_TIME = "time";
+    public static String KEY_PPT_FILESIZE = "fileSize";
+    public static String KEY_PTT_CONVERT_STATUS = "convertStatus";
+    public static String KEY_PPT_PAGECOUNT = "pageCount";
+    public static String KEY_PPT_STOREKEY = "storeKey";
+
     /**
      * 上传ppt
      * @return
@@ -44,9 +53,9 @@ public class PptController extends Controller{
         ResultJson resultJson = null;
         try {
             //从session里面得到id信息
-            String id = ctx().session().get(UserJson.KEY_ID);
+            String id = ctx().session().get(KEY_USER_ID);
             if (id==null) throw new UserNoLoginException();
-            params.put(UserJson.KEY_ID,new String[]{id});
+            params.put(KEY_USER_ID,new String[]{id});
             //提取文件
             Http.MultipartFormData.FilePart filePart = request().body().asMultipartFormData().getFile("PptFile");
             if (filePart==null) throw new PptFileErrorException();
@@ -94,7 +103,7 @@ public class PptController extends Controller{
         ResultJson resultJson = null;
         try {
             //从session里面得到id信息
-            String s_id = ctx().session().get(UserJson.KEY_ID);
+            String s_id = ctx().session().get(KEY_USER_ID);
             if (s_id==null) throw new UserNoLoginException();
             Long id = Long.parseLong(s_id);
             Long pptId = Long.parseLong(request().getQueryString("pptId"));
@@ -135,7 +144,7 @@ public class PptController extends Controller{
         ResultJson resultJson = null;
         try {
             //从session里面得到id信息
-            String s_id = ctx().session().get(UserJson.KEY_ID);
+            String s_id = ctx().session().get(KEY_USER_ID);
             if (s_id==null) throw new UserNoLoginException();
             Long id = Long.parseLong(s_id);
             Long meetingId = Long.parseLong(request().getQueryString("meetingId"));
