@@ -8,9 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import models.PersonCard;
-
-import com.avaje.ebean.Expression;
 import com.liveppt.models.Ppt;
 import com.liveppt.utils.models.PptJson;
 import com.liveppt.utils.models.PptReader;
@@ -34,30 +31,19 @@ public class PptAccess {
     	//PPT内容不存在等的判断应该在存入S3的时候判断，此处只存储PPT信息
         //Ppt ppt = Ppt.find.where().eq("fileName",pptReader.fileName).eq("user_id", pptReader.userId).findUnique();
     	//Ppt ppt = Ppt.find.where().eq("fileName",pptReader.fileName).findUnique();
-        	if(params.containsKey(PptJson.KEY_PPT_FILESIZE))
-        	{
-        		pptReader.setFileSize();
-        	}
-        	if(params.containsKey(PptJson.KEY_PPT_ID))
-        	{
-        		pptReader.setId();
-        	}
-        	if(params.containsKey(PptJson.KEY_PPT_PAGECOUNT))
-        	{
-        		pptReader.setPageCount();
-        	}
-            Ppt ppt = new Ppt(pptReader);
-           // System.out.println("pptname:"+ppt.owner.email);
-            ppt.save();
-            pptReader.id = ppt.id;;
-            System.out.println(pptReader.time);
-            PptJson pptJson = genPptJson(pptReader);
-            return pptJson;
+        pptReader.setUserId().setFileName().setFileSize().setTime().setConvertStatus(false);
+        Ppt ppt = new Ppt(pptReader);
+        // System.out.println("pptname:"+ppt.owner.email);
+        ppt.save();
+        pptReader.id = ppt.id;;
+        System.out.println(pptReader.time);
+        PptJson pptJson = genPptJson(pptReader);
+        return pptJson;
     
     }
     /**
      * 产生PptJson
-     * @param PprReader
+     * @param
      * @return PptJson
      * last modified Zijing Lee
      */
@@ -72,7 +58,7 @@ public class PptAccess {
     }
     /**
      * 产生PptJson
-     * @param Ppt
+     * @param
      * @return PptJson
      * last modified Zijing Lee
      */
@@ -83,7 +69,7 @@ public class PptAccess {
     
     /**
      * 产生PptJson
-     * @param PprReader
+     * @param
      * @return PptJson
      * last modified Zijing Lee
      */

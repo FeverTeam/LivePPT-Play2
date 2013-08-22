@@ -1,6 +1,8 @@
 package com.liveppt.services.impl;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GetObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
@@ -11,10 +13,14 @@ import com.liveppt.utils.AwsConnGenerator;
 import com.liveppt.utils.exception.ppt.PptException;
 import com.liveppt.utils.exception.ppt.PptFileErrorException;
 import com.liveppt.utils.models.PptJson;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
+import play.cache.Cache;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
@@ -79,12 +85,73 @@ public class PptServiceImpl implements PptService{
         if (!isSuccess.equals(null) && isSuccess) {
             String storeKey = messageJson.findPath("storeKey").getTextValue();
             int pageCount = messageJson.findPath("pageCount").getIntValue();
-
-            List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey)
-                    .findList();
-            Ppt ppt = pptList.get(0);
             PptAccess.updatePptConvertedStatus(storeKey,true,pageCount);
         }
     }
 
+    @Override
+    public byte[] getPptPage(Long id,Long pptId, Long pageId) {
+        //TODO check 改id是否拥有该ppt
+
+        byte[] imgBytes = null;
+        //TODO 根据pptId从PptAccess得到storeKey
+        Ppt ppt = Ppt.find.byId(pptId);
+        String storeKey = ppt.storeKey;
+        String pageKey = storeKey + "p" + pageId;
+        // 若文件存在于Cache中，则直接返回
+        imgBytes = (byte[]) Cache.get(pageKey);
+        if (imgBytes != null) {
+            return imgBytes;
+        } else {
+            // 组装S3获取信息
+            AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
+
+            GetObjectRequest getObjectRequest = new GetObjectRequest(
+                    "pptstore", pageKey);
+            S3Object obj = s3.getObject(getObjectRequest);
+            // 转换为bytes
+            try {
+                imgBytes = IOUtils.toByteArray((InputStream) obj
+                        .getObjectContent());
+                Cache.set(pageKey, imgBytes);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return imgBytes;
+        }
+    }
+
+    public byte[] getPptPageFromMeeting(Long id, Long meetingId, Long pageId){
+
+        //TODO check 改id是否参与该meeting
+
+        byte[] imgBytes = null;
+        //TODO 根据meetingId从PptAccess得到storeKey
+        Ppt ppt = Ppt.find.byId(pptId);
+        String storeKey = ppt.storeKey;
+        String pageKey = storeKey + "p" + pageId;
+        // 若文件存在于Cache中，则直接返回
+        imgBytes = (byte[]) Cache.get(pageKey);
+        if (imgBytes != null) {
+            return imgBytes;
+        } else {
+            // 组装S3获取信息
+            AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
+
+            GetObjectRequest getObjectRequest = new GetObjectRequest(
+                    "pptstore", pageKey);
+            S3Object obj = s3.getObject(getObjectRequest);
+            // 转换为bytes
+            try {
+                imgBytes = IOUtils.toByteArray((InputStream) obj
+                        .getObjectContent());
+                Cache.set(pageKey, imgBytes);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return imgBytes;
+        }
+    }
 }

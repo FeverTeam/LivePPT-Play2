@@ -41,6 +41,8 @@ public class PptReader {
 	
 	public int status;
 
+    public String storekey;
+
     public Map<String, String[]> params;
 
     /**
@@ -101,10 +103,9 @@ public class PptReader {
      * @throws convertStatusNotFoundException
      * last modified Zijing Lee
      */
-    public PptReader setConvertStatus(){
-        String convertStatus = params.get(PptJson.KEY_PTT_CONVERT_STATUS)[0];
+    public PptReader setConvertStatus(Boolean convertStatus){
         //if (convertStatus==null) //throw  new DisplayNotFoundException();
-        this.convertStatus =Boolean.valueOf(convertStatus);
+        this.convertStatus =convertStatus;
         return this;
     }
 
@@ -120,28 +121,19 @@ public class PptReader {
         this.pageCount = Integer.valueOf(pageCount);
         return this;
     }
+
+
     /**
      * 通过params设置time
      * @return
      * @throws TimeNotFoundException
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-   /* public PptReader setTime(){
-        String time = params.get(PptJson.KEY_PPT_TIME)[0];
-       // if (time==null) throw  new timeNotFoundException();
-       // else
-        {
-        	DateFormat formatter;
-            Date date;
-            formatter = new SimpleDateFormat("dd--MMM-yy");
-            try {
-				this.time = formatter.parse(params.get(PptJson.KEY_PPT_TIME)[0]);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
+    public PptReader setTime(){
+        this.time = new Date();
         return this;
-    }*/
+    }
+
+
 }
 
