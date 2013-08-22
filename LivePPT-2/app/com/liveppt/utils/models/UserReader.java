@@ -19,8 +19,13 @@ public class UserReader {
      * @return
      * last modified 黎伟杰
      */
-    public UserReader(Map<String, String[]> params) {
-        this.params = params;
+    public UserReader() {
+        id =null;
+        email = null;
+        password = null;
+        newPassword = null;
+        display = null;
+        newDisplay = null;
     }
 
     public Long id;
@@ -38,20 +43,28 @@ public class UserReader {
     public Map<String, String[]> params;
 
     /**
-     * 通过params设置Id
-     * @return
-     * @throws UserIdNotFoundException
+     * 设置Id
+     * @return itself
      * last modified 黎伟杰
      */
-    public UserReader setId() throws UserIdNotFoundException {
-        String id = params.get(UserJson.KEY_ID)[0];
-        if (id==null) throw  new UserIdNotFoundException();
-        this.id = Long.valueOf(id);
+    public UserReader setId(Long id)  {
+        this.id = id;
         return this;
     }
 
     /**
-     * 通过params设置email
+     * 得到id
+     * @return id
+     * @throws UserIdNotFoundException
+     * last modified 黎伟杰
+     */
+    public Long getId() throws UserIdNotFoundException {
+        if (id==null) throw new UserIdNotFoundException();
+        return id;
+    }
+
+    /**
+     * 设置email
      * @return
      * @throws EmailNotFoundException
      * last modified 黎伟杰
