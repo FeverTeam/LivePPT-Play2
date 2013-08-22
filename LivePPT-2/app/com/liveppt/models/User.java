@@ -2,8 +2,9 @@ package com.liveppt.models;
 
 import java.util.List;
 
-
-import com.fever.liveppt.models.Attender;
+import com.liveppt.utils.exception.user.DisplayNotFoundException;
+import com.liveppt.utils.exception.user.EmailNotFoundException;
+import com.liveppt.utils.exception.user.PasswordNotFoundException;
 import com.liveppt.utils.models.UserReader;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
@@ -51,10 +52,10 @@ public class User extends Model {
         this.display = display;
     }
 
-    public User(UserReader userReader) {
-        this.email = userReader.email;
-        this.password = userReader.password;
-        this.display = userReader.display;
+    public User(UserReader userReader) throws EmailNotFoundException, PasswordNotFoundException, DisplayNotFoundException {
+        this.email = userReader.getEmail();
+        this.password = userReader.getPassword();
+        this.display = userReader.getDisplay();
     }
 
 }
