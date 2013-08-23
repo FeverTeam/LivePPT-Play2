@@ -32,6 +32,7 @@ public class PptReader {
     	this.pageCount = ppt.pagecount;
     	this.storekey = ppt.storeKey;
     	this.time = ppt.time;
+        this.convertStatus = ppt.isConverted;
     }
 
  	private Long id;

@@ -34,7 +34,7 @@ public class PptAccess {
     static public PptReader create(PptReader pptReader){
     	Ppt ppt = new Ppt(pptReader);
     	ppt.save();
-    	return pptReader;
+    	return pptReader.setPptId(ppt.id).setPageCount(ppt.pagecount);
     }
     /**
      * 判断用户是否能查阅
