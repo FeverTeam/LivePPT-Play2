@@ -4,12 +4,11 @@
  */
 package com.liveppt.models.dao;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
+import com.liveppt.models.Attender;
+import com.liveppt.models.Meeting;
 import com.liveppt.models.Ppt;
-import com.liveppt.utils.models.PptJson;
 import com.liveppt.utils.models.PptReader;
 
 
@@ -25,36 +24,92 @@ public class PptAccess {
      * @return pptJson
      * last modified Zijing Lee 
      */
-    static public PptJson create(Map<String, String[]> params)  {
-    	PptReader pptReader = new PptReader(params);
-    	//Ppt ppt = null;
-    	//PPT内容不存在等的判断应该在存入S3的时候判断，此处只存储PPT信息
-        //Ppt ppt = Ppt.find.where().eq("fileName",pptReader.fileName).eq("user_id", pptReader.userId).findUnique();
-    	//Ppt ppt = Ppt.find.where().eq("fileName",pptReader.fileName).findUnique();
-        pptReader.setUserId().setFileName().setFileSize().setTime().setConvertStatus(false);
-        Ppt ppt = new Ppt(pptReader);
-        // System.out.println("pptname:"+ppt.owner.email);
-        ppt.save();
-        pptReader.id = ppt.id;;
-        System.out.println(pptReader.time);
-        PptJson pptJson = genPptJson(pptReader);
-        return pptJson;
     
+    static public PptReader create(PptReader pptReader){
+    	Ppt ppt = new Ppt(pptReader);
+    	ppt.save();
+    	return pptReader;
     }
     /**
-     * 产生PptJson
-     * @param
-     * @return PptJson
+     * 判断用户是否能查阅
+     * @param userId,pptId
+     * @return storeKey
      * last modified Zijing Lee
      */
-    static public PptJson updatePptConvertedStatus(String storekey,boolean isConverted,int pageCount){
+    static public String ifReadByPptId(Long userId, Long pptId)
+    {
+    	Ppt ppt = Ppt.find.byId(pptId);
+    	if(ppt.owner.id == userId)
+    	{
+    		return ppt.storeKey;
+    	}
+    	else
+    	{   
+    		//根据user_id找出该user创建的meeting,检查这些meeting对应的ppt有否指定的ppt
+    		List<Meeting> meetingList = Meeting.find.where().eq("user_id", userId).findList();
+    		if(meetingList != null)
+    		{
+    			for(Meeting meeting : meetingList)
+    			{
+    				if(meeting.ppt.id == pptId)
+    					return ppt.storeKey;
+    			}
+    		}
+    		//根据ppt_id找出该ppt对应的meeting,检查直嘀咕user是否这些meeting的参与者
+    		meetingList = Meeting.find.where().eq("ppt_id",pptId).findList();
+    		for(Meeting meeting : meetingList)
+    		{
+    			List<Attender> attenderList = meeting.attenders;
+    			for(Attender attender :attenderList)
+    			{
+    				if(userId == attender.user.id)
+        			return meeting.ppt.storeKey;
+    			}
+    		}
+    		//都找不到 throw permission deny exception
+    		
+    	}
+		return ppt.storeKey;
+    }
+    /**
+     * 判断用户是否能查阅
+     * @param userId,meetingId
+     * @return storeKey
+     * last modified Zijing Lee
+     */
+    static public String ifReadByMeetingId(Long userId, Long meetingId)
+    {
+    	Meeting meeting = Meeting.find.byId(meetingId);
+    	if(userId == meeting.founder.id)
+    	{
+    		return meeting.ppt.storeKey;
+    	}
+    	else
+    	{
+    		List<Attender> attenderList = meeting.attenders;
+    		for(Attender attender :attenderList)
+    		{
+    			if(userId == attender.user.id)
+    				return meeting.ppt.storeKey;
+    		}
+    		//throw permission deny exception
+    		return meeting.ppt.storeKey;
+    	}
+    }
+    /**
+     * 更新PPT转换状态
+     * @param sotrekey,isConverted,pageCount
+     * @return PptReader
+     * last modified Zijing Lee
+     */
+    static public PptReader updatePptConvertedStatus(String storekey,boolean isConverted,int pageCount){
 		List<Ppt> pptList = Ppt.find.where().eq("storeKey", storekey).findList();
 		Ppt ppt = pptList.get(0);
 		ppt.isConverted = true;
 		ppt.pagecount = pageCount;
 		ppt.save();
-		PptJson pptJson = genPptJson(ppt);
-		return pptJson;
+		PptReader pptReader = new PptReader(ppt);
+		return pptReader;
     }
 
 }

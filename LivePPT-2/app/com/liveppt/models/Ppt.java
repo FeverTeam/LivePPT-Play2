@@ -22,7 +22,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.avaje.ebean.validation.NotNull;
-import com.fever.liveppt.models.Meeting;
 
 /**
  * @author Zijing Lee2013-8-16
@@ -59,7 +58,7 @@ public class Ppt extends Model{
 
 	@NotNull
 	@Constraints.Required
-	public int pagecount = 0;
+	public int pagecount ;
     
 	@OneToMany(cascade = CascadeType.ALL)
 	public List<Meeting> meetings;
@@ -80,13 +79,13 @@ public class Ppt extends Model{
    
 	public Ppt(PptReader pptReader)
 	{
-		User user = User.find.byId(pptReader.userId);
+		User user = User.find.byId(pptReader.getUserId());
 		this.owner = user;
-		this.fileName = pptReader.fileName;
-		this.time = pptReader.time;
-		this.fileSize = pptReader.fileSize;
+		this.fileName = pptReader.getFileName();
+		this.time = pptReader.getTime();
+		this.fileSize = pptReader.getFileSize();
 		this.isConverted = false;
-		this.pagecount = pptReader.pageCount;
+		this.pagecount = pptReader.getPageCount();
 	}
 	
 }

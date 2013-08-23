@@ -1,4 +1,5 @@
 package com.liveppt.utils.models;
+import com.liveppt.models.Ppt;
 import com.liveppt.utils.exception.ppt.PptIdErrorException;
 
 import java.util.Date;
@@ -21,6 +22,17 @@ public class PptReader {
      */
     public PptReader() {
     }
+    
+    public PptReader(Ppt ppt)
+    {
+    	this.id = ppt.id;
+    	this.userId = ppt.owner.id;
+    	this.fileName = ppt.fileName;
+    	this.fileSize = ppt.fileSize;
+    	this.pageCount = ppt.pagecount;
+    	this.storekey = ppt.storeKey;
+    	this.time = ppt.time;
+    }
 
  	private Long id;
 
@@ -34,7 +46,7 @@ public class PptReader {
 
     private Boolean convertStatus;
 
-    private Long pageCount;
+    private int pageCount;
 
     private int status;
 
@@ -132,7 +144,7 @@ public class PptReader {
     /**
      * last modified 黎伟杰
      */
-    public Long getPageCount(){
+    public int getPageCount(){
         return this.pageCount;
     }
 
