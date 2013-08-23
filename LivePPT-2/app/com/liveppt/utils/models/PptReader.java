@@ -48,8 +48,6 @@ public class PptReader {
 
     private int pageCount;
 
-    private int status;
-
     private String storekey;
 
     //TODO getter的抛出异常和异常类的建立
@@ -135,8 +133,9 @@ public class PptReader {
 
     /**
      * last modified 黎伟杰
+     * @param pageCount
      */
-    public PptReader setPageCount(Long pageCount){
+    public PptReader setPageCount(int pageCount){
         this.pageCount = pageCount;
         return this;
     }
@@ -162,6 +161,21 @@ public class PptReader {
      */
     public Date getTime(){
         return time;
+    }
+
+    /**
+     * last modified 黎伟杰
+     */
+    public PptReader setStoreKey(String storeKey){
+        this.storekey = storeKey;
+        return this;
+    }
+
+    /**
+     * last modified 黎伟杰
+     */
+    public Date getStoreKey(){
+        return this.getStoreKey();
     }
 
 }
