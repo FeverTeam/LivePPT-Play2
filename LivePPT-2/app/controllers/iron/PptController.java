@@ -13,6 +13,7 @@ import com.liveppt.utils.exception.ppt.PptPageIndexErrorException;
 import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.exception.user.UserNoLoginException;
 import com.liveppt.utils.models.PptJson;
+import com.liveppt.utils.models.PptReader;
 import com.liveppt.utils.models.UserJson;
 import org.codehaus.jackson.JsonNode;
 import play.libs.Json;
@@ -20,6 +21,7 @@ import play.mvc.*;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,13 +35,15 @@ public class PptController extends Controller{
     PptService pptService;
 
     public static String KEY_USER_ID = "userId";
-    public static String KEY_PPT_ID = "id";
+    public static String KEY_PPT_ID = "pptId";
     public static String KEY_PPT_FILENAME = "fileName";
     public static String KEY_PPT_TIME = "time";
     public static String KEY_PPT_FILESIZE = "fileSize";
     public static String KEY_PTT_CONVERT_STATUS = "convertStatus";
     public static String KEY_PPT_PAGECOUNT = "pageCount";
     public static String KEY_PPT_STOREKEY = "storeKey";
+    public static String KEY_PPT_PAGEINDEX = "pageIndex";
+    public static String KEY_MEETING_ID = "meetingId";
 
     /**
      * 上传ppt
@@ -53,16 +57,31 @@ public class PptController extends Controller{
         ResultJson resultJson = null;
         try {
             //从session里面得到id信息
-            String id = ctx().session().get(KEY_USER_ID);
-            if (id==null) throw new UserNoLoginException();
-            params.put(KEY_USER_ID,new String[]{id});
+            String s_id = ctx().session().get(KEY_USER_ID);
+            if (s_id==null) throw new UserNoLoginException();
+            Long id = Long.valueOf(s_id);
+            PptReader pptReader = new PptReader();
+            pptReader.setUserId(id);
+
             //提取文件
             Http.MultipartFormData.FilePart filePart = request().body().asMultipartFormData().getFile("PptFile");
             if (filePart==null) throw new PptFileErrorException();
             File file = filePart.getFile();
 
-            PptJson pptJson = pptService.uploadPpt(params,file);
+            pptReader = pptService.uploadPpt(pptReader,file);
 
+            //组装pptJson
+            PptJson pptJson = new PptJson();
+
+            Map<String,String> keyValue = new HashMap<>();
+            keyValue.put(KEY_PPT_FILENAME,pptReader.getFileName());
+            keyValue.put(KEY_PPT_FILESIZE, String.valueOf(pptReader.getFileSize()));
+            keyValue.put(KEY_PPT_TIME, String.valueOf(pptReader.getTime()));
+            keyValue.put(KEY_PTT_CONVERT_STATUS, String.valueOf(pptReader.getConvertStatus()));
+
+            pptJson.setStringField(keyValue);
+
+            resultJson = new ResultJson(pptJson);
         } catch (PptException e){
             e.printStackTrace();
             System.out.println(e.getMessage());
@@ -106,9 +125,9 @@ public class PptController extends Controller{
             String s_id = ctx().session().get(KEY_USER_ID);
             if (s_id==null) throw new UserNoLoginException();
             Long id = Long.parseLong(s_id);
-            Long pptId = Long.parseLong(request().getQueryString("pptId"));
+            Long pptId = Long.parseLong(request().getQueryString(KEY_PPT_ID));
             if (pptId==null) throw new PptIdErrorException();
-            Long pageId = Long.parseLong(request().getQueryString("pageIndex"));
+            Long pageId = Long.parseLong(request().getQueryString(KEY_PPT_PAGEINDEX));
             if (pageId==null) throw new PptPageIndexErrorException();
             //获取图片
             byte[] bytes = pptService.getPptPage(id,pptId, pageId);
@@ -147,9 +166,9 @@ public class PptController extends Controller{
             String s_id = ctx().session().get(KEY_USER_ID);
             if (s_id==null) throw new UserNoLoginException();
             Long id = Long.parseLong(s_id);
-            Long meetingId = Long.parseLong(request().getQueryString("meetingId"));
+            Long meetingId = Long.parseLong(request().getQueryString(KEY_MEETING_ID));
             if (meetingId==null) throw new MeetingIdErrorException();
-            Long pageId = Long.parseLong(request().getQueryString("pageIndex"));
+            Long pageId = Long.parseLong(request().getQueryString(KEY_PPT_PAGEINDEX));
             if (pageId==null) throw new PptPageIndexErrorException();
             //获取图片
             byte[] bytes = pptService.getPptPageFromMeeting(id, meetingId, pageId);
