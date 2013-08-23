@@ -150,9 +150,10 @@ public class PptReader {
 
     /**
      * last modified 黎伟杰
+     * @param time
      */
-    public PptReader setTime(){
-        this.time = new Date();
+    public PptReader setTime(Date time){
+        this.time = time;
         return this;
     }
 

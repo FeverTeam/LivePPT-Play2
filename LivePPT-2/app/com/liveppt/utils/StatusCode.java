@@ -41,8 +41,6 @@ public class StatusCode {
 	public final static int USER_EMAIL_EXISTED = 1300;
     //没有登录
     public final static int USER_NO_LOGIN = 1108;
-    //没权访问
-    public final static int USER_PERMISSION_DENY = 1109;
 
 	//****************PPT类型错误*****************
 	//PPT不存在
@@ -55,6 +53,9 @@ public class StatusCode {
 	public final static int PPT_PAGE_INDEX_ERROR = 2102;
 	//PPT列表为空
 	public final static int PPT_LIST_NULL = 2200;
+
+    //没权访问
+    public final static int PPT_PERMISSION_DENY = 2104;
 	
 	//****************MEETING类型错误**************
 	//meetingId字段错误
@@ -69,6 +70,9 @@ public class StatusCode {
 	public final static int MEETING_TOPIC_ERROR = 3300;	
 	//删除会议错误
 	public final static int MEETING_DELETE_MEETING_FAIL = 3400;
+
+    //没权访问
+    public final static int MEETING_PERMISSION_DENY = 3103;
 
     //**************其他****************************
     //待补充错误

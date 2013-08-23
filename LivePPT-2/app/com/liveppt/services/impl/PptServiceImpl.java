@@ -56,7 +56,7 @@ public class PptServiceImpl implements PptService{
         Logger.debug("StoreKey:" + storeKey);
 
         // 设置存入DB的ppt信息,设置filename,filesize,storekey
-        pptReader.setFileName(title2).setFileSize(filesize).setStoreKey(storeKey);
+        pptReader.setFileName(title2).setFileSize(filesize).setStoreKey(storeKey).setTime(new Date());
 
         //添加ppt信息
         pptReader = PptAccess.create(pptReader);

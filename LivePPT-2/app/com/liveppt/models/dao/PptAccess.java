@@ -4,11 +4,17 @@
  */
 package com.liveppt.models.dao;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.liveppt.models.Attender;
 import com.liveppt.models.Meeting;
 import com.liveppt.models.Ppt;
+import com.liveppt.models.User;
+import com.liveppt.utils.exception.ppt.PptException;
+import com.liveppt.utils.exception.ppt.PptIdErrorException;
+import com.liveppt.utils.exception.ppt.PptPermissionDenyException;
 import com.liveppt.utils.models.PptReader;
 
 
@@ -112,4 +118,36 @@ public class PptAccess {
 		return pptReader;
     }
 
+    public static PptReader getPptInfo(PptReader pptReader) throws PptException {
+        Ppt ppt = Ppt.find.byId(pptReader.getPptId());
+        //若此人非ppt拥有者，拒绝提供信息
+        if (pptReader.getUserId().equals( ppt.owner.id)){
+            pptReader.setFileName(ppt.fileName);
+            pptReader.setFileSize(ppt.fileSize);
+            pptReader.setPageCount(ppt.pagecount);
+            pptReader.setConvertStatus(ppt.isConverted);
+            pptReader.setTime(ppt.time);
+        }else {
+            throw new PptPermissionDenyException();
+        }
+        return pptReader;
+    }
+
+    public static Set<PptReader> getPptListInfo(PptReader pptReader) {
+        Set<PptReader> pptReaders = new HashSet<>();
+        User user = User.find.byId(pptReader.getUserId());
+        List<Ppt> ppts = user.ppts;
+        for (Ppt ppt:ppts){
+            pptReader = new PptReader();
+            pptReader.setPptId(ppt.id);
+            pptReader.setUserId(ppt.owner.id);
+            pptReader.setFileName(ppt.fileName);
+            pptReader.setFileSize(ppt.fileSize);
+            pptReader.setPageCount(ppt.pagecount);
+            pptReader.setConvertStatus(ppt.isConverted);
+            pptReader.setTime(ppt.time);
+            pptReaders.add(pptReader);
+        }
+        return pptReaders;
+    }
 }
