@@ -123,12 +123,15 @@ public class PptController extends Controller{
         try {
             //从session里面得到id信息
             String s_id = ctx().session().get(KEY_USER_ID);
+            String s_pptId = request().getQueryString(KEY_PPT_ID);
+            String s_pageId = request().getQueryString(KEY_PPT_PAGEINDEX);
             if (s_id==null) throw new UserNoLoginException();
+            if (s_pptId==null) throw new PptIdErrorException();
+            if (s_pageId==null) throw new PptPageIndexErrorException();
             Long id = Long.parseLong(s_id);
-            Long pptId = Long.parseLong(request().getQueryString(KEY_PPT_ID));
-            if (pptId==null) throw new PptIdErrorException();
-            Long pageId = Long.parseLong(request().getQueryString(KEY_PPT_PAGEINDEX));
-            if (pageId==null) throw new PptPageIndexErrorException();
+            Long pptId = Long.parseLong(s_pptId);
+            Long pageId = Long.parseLong(s_pageId);
+
             //获取图片
             byte[] bytes = pptService.getPptPage(id,pptId, pageId);
             // 设置ContentType为image/jpeg
@@ -164,12 +167,15 @@ public class PptController extends Controller{
         try {
             //从session里面得到id信息
             String s_id = ctx().session().get(KEY_USER_ID);
+            String s_meetingId = request().getQueryString(KEY_MEETING_ID);
+            String s_pageId = request().getQueryString(KEY_PPT_PAGEINDEX);
             if (s_id==null) throw new UserNoLoginException();
+            if (s_meetingId==null) throw new MeetingIdErrorException();
+            if (s_pageId==null) throw new PptPageIndexErrorException();
             Long id = Long.parseLong(s_id);
-            Long meetingId = Long.parseLong(request().getQueryString(KEY_MEETING_ID));
-            if (meetingId==null) throw new MeetingIdErrorException();
-            Long pageId = Long.parseLong(request().getQueryString(KEY_PPT_PAGEINDEX));
-            if (pageId==null) throw new PptPageIndexErrorException();
+            Long meetingId = Long.parseLong(s_meetingId);
+            Long pageId = Long.parseLong(s_pageId);
+
             //获取图片
             byte[] bytes = pptService.getPptPageFromMeeting(id, meetingId, pageId);
             // 设置ContentType为image/jpeg
