@@ -85,10 +85,8 @@ public class PptServiceImpl implements PptService{
 
     @Override
     public byte[] getPptPage(Long id,Long pptId, Long pageId) {
-        //TODO check 改id是否拥有该ppt
 
         byte[] imgBytes = null;
-        //TODO 根据pptId从PptAccess得到storeKey
         String storeKey = PptAccess.ifReadByPptId(id,pptId);
         String pageKey = storeKey + "p" + pageId;
         // 若文件存在于Cache中，则直接返回
@@ -117,10 +115,7 @@ public class PptServiceImpl implements PptService{
 
     public byte[] getPptPageFromMeeting(Long id, Long meetingId, Long pageId){
 
-        //TODO check 改id是否参与该meeting
-
         byte[] imgBytes = null;
-        //TODO 根据meetingId从PptAccess得到storeKey
         String storeKey = PptAccess.ifReadByMeetingId(id,meetingId);
         String pageKey = storeKey + "p" + pageId;
         // 若文件存在于Cache中，则直接返回
@@ -148,7 +143,15 @@ public class PptServiceImpl implements PptService{
     }
 
     @Override
-    public Set<PptReader> getPptList(PptReader pptReader, File file) throws PptException {
+    public PptReader getPptInfo(PptReader pptReader) throws PptException {
+        pptReader = PptAccess.getPptInfo(pptReader);
+        return pptReader;
+    }
+
+    @Override
+    public Set<PptReader> getPptListInfo(PptReader pptReader) throws PptException {
+        Set<PptReader> pptReaders;
+        pptReaders = PptAccess.getPptListInfo(pptReader);
         return null;
     }
 }

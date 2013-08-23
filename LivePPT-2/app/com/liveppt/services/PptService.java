@@ -25,5 +25,7 @@ public interface PptService {
 
     byte[] getPptPageFromMeeting(Long id, Long meetingId, Long pageId);
 
-    public Set<PptReader> getPptList(PptReader pptReader, File file) throws PptException;
+    public PptReader getPptInfo(PptReader pptReader) throws PptException;
+
+    public Set<PptReader> getPptListInfo(PptReader pptReader) throws PptException;
 }

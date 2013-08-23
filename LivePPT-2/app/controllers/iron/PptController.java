@@ -78,6 +78,7 @@ public class PptController extends Controller{
             keyValue.put(KEY_PPT_FILESIZE, String.valueOf(pptReader.getFileSize()));
             keyValue.put(KEY_PPT_TIME, String.valueOf(pptReader.getTime()));
             keyValue.put(KEY_PTT_CONVERT_STATUS, String.valueOf(pptReader.getConvertStatus()));
+            keyValue.put(KEY_PPT_ID, String.valueOf(pptReader.getPptId()));
 
             pptJson.setStringField(keyValue);
 
