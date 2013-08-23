@@ -13,6 +13,7 @@ import com.liveppt.utils.AwsConnGenerator;
 import com.liveppt.utils.exception.ppt.PptException;
 import com.liveppt.utils.exception.ppt.PptFileErrorException;
 import com.liveppt.utils.models.PptJson;
+import com.liveppt.utils.models.PptReader;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
 import play.Logger;
@@ -22,10 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Date: 13-8-18
@@ -38,7 +36,7 @@ public class PptServiceImpl implements PptService{
     private final static String QUEUE_NAME = "LivePPT-pptId-Bus";
 
     @Override
-    public PptJson uploadPpt(Map<String, String[]> params, File file) throws PptException {
+    public PptReader uploadPpt(PptReader pptReader, File file) throws PptException {
 
         String title = file.getName();
         Long filesize = file.length();
@@ -57,15 +55,11 @@ public class PptServiceImpl implements PptService{
 
         Logger.debug("StoreKey:" + storeKey);
 
-        //设置filename
-        params.put(PptJson.KEY_PPT_FILENAME,new String[]{title2});
-        //设置filesize
-        params.put(PptJson.KEY_PPT_FILESIZE,new String[]{String.valueOf(filesize)});
-        //设置storekey
-        params.put(PptJson.KEY_PPT_STOREKEY,new String[]{storeKey});
+        // 设置存入DB的ppt信息,设置filename,filesize,storekey
+        pptReader.setFileName(title2).setFileSize(filesize).setStoreKey(storeKey);
 
         //添加ppt信息
-        PptJson pptJson = PptAccess.create(params);
+        pptReader = PptAccess.create(pptReader);
 
         // 向SNS写入PPT的id，并告知win端进行转换
         AmazonSQS sqs = AwsConnGenerator.genTokyoSQS();
@@ -75,7 +69,7 @@ public class PptServiceImpl implements PptService{
                 .getQueueUrl();
         sqs.sendMessage(new SendMessageRequest(myQueueUrl, storeKey));
 
-        return pptJson;
+        return pptReader;
     }
 
     @Override
@@ -151,5 +145,10 @@ public class PptServiceImpl implements PptService{
             }
             return imgBytes;
         }
+    }
+
+    @Override
+    public Set<PptReader> getPptList(PptReader pptReader, File file) throws PptException {
+        return null;
     }
 }
