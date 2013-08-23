@@ -95,8 +95,7 @@ public class PptServiceImpl implements PptService{
 
         byte[] imgBytes = null;
         //TODO 根据pptId从PptAccess得到storeKey
-        Ppt ppt = Ppt.find.byId(pptId);
-        String storeKey = ppt.storeKey;
+        String storeKey = PptAccess.ifReadByPptId(id,pptId);
         String pageKey = storeKey + "p" + pageId;
         // 若文件存在于Cache中，则直接返回
         imgBytes = (byte[]) Cache.get(pageKey);
@@ -128,8 +127,7 @@ public class PptServiceImpl implements PptService{
 
         byte[] imgBytes = null;
         //TODO 根据meetingId从PptAccess得到storeKey
-        Ppt ppt = Ppt.find.byId(pptId);
-        String storeKey = ppt.storeKey;
+        String storeKey = PptAccess.ifReadByMeetingId(id,meetingId);
         String pageKey = storeKey + "p" + pageId;
         // 若文件存在于Cache中，则直接返回
         imgBytes = (byte[]) Cache.get(pageKey);

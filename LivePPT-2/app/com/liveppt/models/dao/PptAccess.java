@@ -20,7 +20,7 @@ import com.liveppt.utils.models.PptReader;
 public class PptAccess {
 	/**
      * 上传PPT后新建PPT信息
-     * @param params
+     * @param
      * @return pptJson
      * last modified Zijing Lee 
      */
@@ -98,14 +98,14 @@ public class PptAccess {
     }
     /**
      * 更新PPT转换状态
-     * @param sotrekey,isConverted,pageCount
+     * @param storekey,isConverted,pageCount
      * @return PptReader
      * last modified Zijing Lee
      */
     static public PptReader updatePptConvertedStatus(String storekey,boolean isConverted,int pageCount){
 		List<Ppt> pptList = Ppt.find.where().eq("storeKey", storekey).findList();
 		Ppt ppt = pptList.get(0);
-		ppt.isConverted = true;
+		ppt.isConverted = isConverted;
 		ppt.pagecount = pageCount;
 		ppt.save();
 		PptReader pptReader = new PptReader(ppt);
