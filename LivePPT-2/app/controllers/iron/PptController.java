@@ -72,8 +72,6 @@ public class PptController extends Controller{
      */
     public Result pptUpload(){
 
-        Map<String, String[]> params = request().body().asFormUrlEncoded();
-
         ResultJson resultJson = null;
         try {
             //从session里面得到id信息

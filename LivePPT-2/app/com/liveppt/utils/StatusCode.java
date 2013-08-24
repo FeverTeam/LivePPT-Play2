@@ -67,7 +67,7 @@ public class StatusCode {
 	//根据meetingID查询的meeting不存在
 	public final static int MEETING_NOT_EXISTED = 3200;	
 	//topic字段错误
-	public final static int MEETING_TOPIC_ERROR = 3300;	
+	public final static int MEETING_TOPIC_ERROR = 3300;
 	//删除会议错误
 	public final static int MEETING_DELETE_MEETING_FAIL = 3400;
 

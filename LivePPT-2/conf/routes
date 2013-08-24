@@ -17,7 +17,8 @@ GET 	/logout 				    @controllers.iron.UserController.logout()
 GET     /getPptPageFromPpt          @controllers.iron.PptController.getPptPage()
 GET     /getPptPageFromMeeting      @controllers.iron.PptController.getPptPageFromMeeting()
 GET     /getPptInfo                 @controllers.iron.PptController.getPptInfo()
-GET     /getPptListInfo                 @controllers.iron.PptController.getPptListInfo()
+GET     /getPptListInfo             @controllers.iron.PptController.getPptListInfo()
+
 
 #*写入接口***************************************************************************
 POST    /user/regist                @controllers.iron.UserController.regist()
@@ -25,6 +26,7 @@ POST    /user/updatePassword        @controllers.iron.UserController.updatePassw
 POST    /user/updateDisplay         @controllers.iron.UserController.updateDisplay()
 POST	/convertstatus				@controllers.PptController.convertstatus()
 POST	/pptupload					@controllers.PptController.pptUpload()
+POST    /foundNewMeeting            @controllers.iron.MeetingController.foundNewMeeting()
 
 #*测试接口***************************************************************************
 #GET     /user/test                  @controllers.iron.UserController.test()

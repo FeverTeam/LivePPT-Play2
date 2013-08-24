@@ -1,6 +1,12 @@
 package com.liveppt.services.impl;
 
+import com.liveppt.models.dao.MeetingAccess;
 import com.liveppt.services.MeetingService;
+import com.liveppt.utils.exception.meeting.MeetingException;
+import com.liveppt.utils.exception.meeting.MeetingPermissionDenyException;
+import com.liveppt.utils.models.MeetingReader;
+
+import java.util.List;
 
 /**
  * Date: 13-8-21
@@ -11,17 +17,21 @@ import com.liveppt.services.MeetingService;
 public class MeetingServiceImpl implements MeetingService {
     @Override
     public MeetingReader foundNewMeeting(MeetingReader meetingReader) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        meetingReader = MeetingAccess.foundNewMeeting(meetingReader);
+        return  meetingReader;
     }
 
     @Override
-    public MeetingReader deleteMeeting(MeetingReader meetingReader) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public MeetingReader deleteMeeting(MeetingReader meetingReader) throws MeetingException {
+        if ( MeetingAccess.deleteMeeting(meetingReader) ==false)
+            throw new MeetingPermissionDenyException();
+        return meetingReader;
     }
 
     @Override
-    public MeetingReader getMyFoundedMeetings(MeetingReader meetingReader) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List<MeetingReader> getMyFoundedMeetings(MeetingReader meetingReader) {
+        List<MeetingReader> meetingReaders = MeetingAccess.getMyFoundedMeetings(meetingReader.getUserId());
+        return meetingReaders;
     }
 
     @Override

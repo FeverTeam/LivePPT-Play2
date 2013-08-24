@@ -24,7 +24,7 @@ public class MeetingAccess {
 	
 	/**
      * 新建新会议
-     * @param MeetingReader
+     * @param meetingReader
      * @return MeetingReader
      * last modified Zijing Lee
      */
@@ -36,7 +36,7 @@ public class MeetingAccess {
 	
 	/**
      * 删除会议
-     * @param MeetingReader
+     * @param meetingReader
      * @return boolean
      * last modified Zijing Lee
      */
@@ -49,6 +49,7 @@ public class MeetingAccess {
 		}
 		else
 		{
+            //TODO 应该抛出异常
 			return false;
 		}
 		

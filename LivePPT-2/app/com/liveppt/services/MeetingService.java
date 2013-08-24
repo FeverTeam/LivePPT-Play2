@@ -1,11 +1,15 @@
 package com.liveppt.services;
 
+import com.liveppt.utils.exception.meeting.MeetingException;
+import com.liveppt.utils.exception.meeting.MeetingPermissionDenyException;
 import com.liveppt.utils.exception.ppt.PptException;
+import com.liveppt.utils.models.MeetingReader;
 import com.liveppt.utils.models.PptJson;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 
 import java.io.File;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,12 +30,12 @@ public interface MeetingService {
     /**
      * 删除会议
      */
-    public MeetingReader deleteMeeting(MeetingReader meetingReader);
+    public MeetingReader deleteMeeting(MeetingReader meetingReader) throws MeetingException;
 
     /**
      * 获取用户所有自己发起的会议
      */
-    public MeetingReader getMyFoundedMeetings(MeetingReader meetingReader);
+    public List<MeetingReader> getMyFoundedMeetings(MeetingReader meetingReader);
 
     /**
      * 获取用户观看的会议

@@ -9,7 +9,7 @@ import com.liveppt.utils.exception.ppt.PptException;
  *
  * @author 黎伟杰
  */
-public class MeetingPermissionDenyException extends PptException {
+public class MeetingPermissionDenyException extends MeetingException {
 
     public MeetingPermissionDenyException(){
         super(StatusCode.MEETING_PERMISSION_DENY);

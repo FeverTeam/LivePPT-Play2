@@ -13,7 +13,8 @@ import com.liveppt.models.Meeting;
  *
  */
 public class MeetingReader {
-	
+
+    //TODO 所有getter添加exception
    
 	//public Map<String,String[]> params;
 	
@@ -56,8 +57,6 @@ public class MeetingReader {
    }
    /**
     * 设置Id
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public MeetingReader setId(Long id) {
@@ -66,8 +65,6 @@ public class MeetingReader {
    }
    /**
     * 获取Id
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public Long getId()  {
@@ -76,8 +73,6 @@ public class MeetingReader {
    
    /**
     * 设置UserId
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public MeetingReader setUserId(Long userId) {
@@ -87,8 +82,6 @@ public class MeetingReader {
    
    /**
     * 获取UserId
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public Long getUserId() {
@@ -97,8 +90,6 @@ public class MeetingReader {
    
    /**
     * 设置PptId
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public MeetingReader setPptId(Long pptId) {
@@ -108,8 +99,6 @@ public class MeetingReader {
    
    /**
     * 获取Id
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public Long getPptId() {
@@ -118,8 +107,6 @@ public class MeetingReader {
    
    /**
     * 设置topic
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public MeetingReader setTopic(String topic) {
@@ -129,8 +116,6 @@ public class MeetingReader {
    
    /**
     * 获取topic
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public String getTopic() {
@@ -139,8 +124,6 @@ public class MeetingReader {
    
    /**
     * 设置currentPageIndex
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public MeetingReader setCurrentPageIndex(Long currentPageIndex) {
@@ -150,8 +133,6 @@ public class MeetingReader {
    
    /**
     * 获取currentPageIndex
-    * @return
-    * @throws 
     * last modified Zijing Lee
     */
    public Long getCurrentPageIndex() {
