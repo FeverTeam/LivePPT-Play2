@@ -41,7 +41,8 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingReader getMeetingInfo(MeetingReader meetingReader) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        meetingReader = MeetingAccess.getMeetingInfo(meetingReader);
+        return  meetingReader;
     }
 
     @Override

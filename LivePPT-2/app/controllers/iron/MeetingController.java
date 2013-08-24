@@ -8,13 +8,10 @@ import com.liveppt.utils.exception.meeting.MeetingException;
 import com.liveppt.utils.exception.meeting.MeetingIdErrorException;
 import com.liveppt.utils.exception.meeting.MeetingPageIndexErrorException;
 import com.liveppt.utils.exception.meeting.MeetingTopicErrorException;
-import com.liveppt.utils.exception.ppt.PptException;
 import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.exception.user.UserNoLoginException;
 import com.liveppt.utils.models.MeetingJson;
 import com.liveppt.utils.models.MeetingReader;
-import com.liveppt.utils.models.PptJson;
-import com.liveppt.utils.models.PptReader;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import play.mvc.*;
@@ -22,7 +19,6 @@ import play.mvc.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * 会议接口
@@ -285,6 +281,42 @@ public class MeetingController extends Controller {
             meetingReader = meetingService.setMeetingPageIndex(meetingReader);
 
             MeetingJson meetingJson = new MeetingJson();
+
+            resultJson = new ResultJson(meetingJson);
+        }  catch (MeetingException e) {
+            e.printStackTrace();
+            resultJson = new ResultJson(e);
+        }  catch (UserException e) {
+            e.printStackTrace();
+            resultJson = new ResultJson(e);
+        }
+
+        return ok(resultJson);
+    }
+
+    public Result getMeetingInfo() {
+
+        ResultJson resultJson = null;
+
+        try {
+            //从Session获取用户登录信息
+            String s_userId = ctx().session().get(KEY_USER_ID);
+            //从request里面获取参数
+            String s_meetingId = request().getQueryString(KEY_MEETING_ID);
+            //检查参数
+            if (s_userId==null)  throw new UserNoLoginException();
+            if (s_meetingId==null) throw new MeetingIdErrorException();
+            //转换参数
+            Long userId = Long.parseLong(s_userId);
+            Long meetingId = Long.parseLong(s_meetingId);
+
+            MeetingReader meetingReader = new MeetingReader();
+            meetingReader.setUserId(userId).setMeetingId(meetingId);
+
+            meetingReader = meetingService.getMeetingInfo(meetingReader);
+
+            MeetingJson meetingJson = new MeetingJson();
+            meetingJson.setStringField(meetingReaderToMap(meetingReader));
 
             resultJson = new ResultJson(meetingJson);
         }  catch (MeetingException e) {
