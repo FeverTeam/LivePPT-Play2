@@ -56,6 +56,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingReader quitMeeting(MeetingReader meetingReader) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        MeetingAccess.quitMeeting(meetingReader.getUserId(),meetingReader.getMeetingId());
+        return meetingReader;
     }
 }

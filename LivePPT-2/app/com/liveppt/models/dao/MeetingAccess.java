@@ -119,16 +119,17 @@ public class MeetingAccess {
      * @return MeetingReader
      * last modified Zijing Lee
      */
-    public MeetingReader quitMeeting(Long userId,Long meetingId) {
+    public static MeetingReader quitMeeting(Long userId, Long meetingId) {
 		User user = User.find.byId(userId);
 		Meeting meeting = Meeting.find.byId(meetingId);
-			for (Attender attender : user.attendents) {
-				if (attender.meeting.id.equals(meetingId))
-				{
-					attender.delete();
-					break;
-				}
-			}
+        for (Attender attender : user.attendents) {
+            if (attender.meeting.id.equals(meetingId))
+            {
+                attender.delete();
+                //TODO delete之后知否需要save？
+                break;
+            }
+        }
 		return new MeetingReader(meeting);
         
     }
