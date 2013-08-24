@@ -12,6 +12,8 @@ import com.liveppt.models.Attender;
 import com.liveppt.models.Meeting;
 import com.liveppt.models.Ppt;
 import com.liveppt.models.User;
+import com.liveppt.utils.exception.meeting.MeetingIdErrorException;
+import com.liveppt.utils.exception.meeting.MeetingPermissionDenyException;
 import com.liveppt.utils.models.MeetingReader;
 
 
@@ -37,22 +39,18 @@ public class MeetingAccess {
 	/**
      * 删除会议
      * @param meetingReader
-     * @return boolean
-     * last modified Zijing Lee
+     * last modified 黎伟杰
      */
-	static public boolean deleteMeeting(MeetingReader meetingReader){
+	static public void deleteMeeting(MeetingReader meetingReader) throws MeetingPermissionDenyException, MeetingIdErrorException {
 		Meeting meeting = Meeting .find.byId(meetingReader.getId());
 		if(meeting != null)
 		{
-			meeting.delete();
-			return true;
-		}
-		else
-		{
-            //TODO 应该抛出异常
-			return false;
-		}
-		
+            if (meeting.founder.id==meetingReader.getUserId())
+			    meeting.delete();
+			else throw new MeetingPermissionDenyException();
+		} else {
+            throw new MeetingIdErrorException();
+        }
 	}
 	
 	/**

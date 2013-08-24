@@ -27,6 +27,7 @@ POST    /user/updateDisplay         @controllers.iron.UserController.updateDispl
 POST	/convertstatus				@controllers.PptController.convertstatus()
 POST	/pptupload					@controllers.PptController.pptUpload()
 POST    /foundNewMeeting            @controllers.iron.MeetingController.foundNewMeeting()
+POST    /deleteMeeting              @controllers.iron.MeetingController.deleteMeeting()
 
 #*测试接口***************************************************************************
 #GET     /user/test                  @controllers.iron.UserController.test()

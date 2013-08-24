@@ -23,8 +23,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingReader deleteMeeting(MeetingReader meetingReader) throws MeetingException {
-        if ( MeetingAccess.deleteMeeting(meetingReader) ==false)
-            throw new MeetingPermissionDenyException();
+        MeetingAccess.deleteMeeting(meetingReader) ;
         return meetingReader;
     }
 

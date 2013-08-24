@@ -59,7 +59,7 @@ public class MeetingReader {
     * 设置Id
     * last modified Zijing Lee
     */
-   public MeetingReader setId(Long id) {
+   public MeetingReader setMeetingId(Long id) {
 	   this.id = id;
 	   return this;
    }
