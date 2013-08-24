@@ -36,6 +36,7 @@ POST    /foundNewMeeting            @controllers.iron.MeetingController.foundNew
 POST    /deleteMeeting              @controllers.iron.MeetingController.deleteMeeting()
 POST    /joinMeeting                @controllers.iron.MeetingController.joinMeeting()
 POST    /quitMeeting                @controllers.iron.MeetingController.quitMeeting()
+POST    /setMeetingPage             @controllers.iron.MeetingController.setMeetingPage()
 
 #*测试接口***************************************************************************
 #GET     /user/test                  @controllers.iron.UserController.test()

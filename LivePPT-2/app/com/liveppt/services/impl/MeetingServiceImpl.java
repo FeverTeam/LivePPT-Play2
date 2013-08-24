@@ -52,7 +52,8 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingReader setMeetingPageIndex(MeetingReader meetingReader) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        MeetingAccess.setMeetingPageIndex(meetingReader);
+        return meetingReader;
     }
 
     @Override
