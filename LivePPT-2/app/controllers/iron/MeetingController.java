@@ -294,7 +294,7 @@ public class MeetingController extends Controller {
         return ok(resultJson);
     }
 
-    public Result getMeetingInfo() {
+    public Result getMeetingInfoAsFounder() {
 
         ResultJson resultJson = null;
 
@@ -313,7 +313,43 @@ public class MeetingController extends Controller {
             MeetingReader meetingReader = new MeetingReader();
             meetingReader.setUserId(userId).setMeetingId(meetingId);
 
-            meetingReader = meetingService.getMeetingInfo(meetingReader);
+            meetingReader = meetingService.getMeetingInfoAsFounder(meetingReader);
+
+            MeetingJson meetingJson = new MeetingJson();
+            meetingJson.setStringField(meetingReaderToMap(meetingReader));
+
+            resultJson = new ResultJson(meetingJson);
+        }  catch (MeetingException e) {
+            e.printStackTrace();
+            resultJson = new ResultJson(e);
+        }  catch (UserException e) {
+            e.printStackTrace();
+            resultJson = new ResultJson(e);
+        }
+
+        return ok(resultJson);
+    }
+
+    public Result getMeetingInfoAsAttender() {
+
+        ResultJson resultJson = null;
+
+        try {
+            //从Session获取用户登录信息
+            String s_userId = ctx().session().get(KEY_USER_ID);
+            //从request里面获取参数
+            String s_meetingId = request().getQueryString(KEY_MEETING_ID);
+            //检查参数
+            if (s_userId==null)  throw new UserNoLoginException();
+            if (s_meetingId==null) throw new MeetingIdErrorException();
+            //转换参数
+            Long userId = Long.parseLong(s_userId);
+            Long meetingId = Long.parseLong(s_meetingId);
+
+            MeetingReader meetingReader = new MeetingReader();
+            meetingReader.setUserId(userId).setMeetingId(meetingId);
+
+            meetingReader = meetingService.getMeetingInfoAsAttender(meetingReader);
 
             MeetingJson meetingJson = new MeetingJson();
             meetingJson.setStringField(meetingReaderToMap(meetingReader));

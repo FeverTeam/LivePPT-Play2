@@ -45,7 +45,12 @@ public interface MeetingService {
     /**
      * 获取指定的会议的信息
      */
-    public MeetingReader getMeetingInfo(MeetingReader meetingReader);
+    public MeetingReader getMeetingInfoAsFounder(MeetingReader meetingReader)  throws MeetingPermissionDenyException;
+
+    /**
+     * 获取指定的会议的信息
+     */
+    public MeetingReader getMeetingInfoAsAttender(MeetingReader meetingReader)  throws MeetingPermissionDenyException;
 
     /**
      * 加入新的会议
@@ -55,7 +60,7 @@ public interface MeetingService {
     /**
      * 设置会议的直播PPT页码
      */
-    public MeetingReader setMeetingPageIndex(MeetingReader meetingReader);
+    public MeetingReader setMeetingPageIndex(MeetingReader meetingReader) throws MeetingPermissionDenyException;
 
     /**
      * 退出会议

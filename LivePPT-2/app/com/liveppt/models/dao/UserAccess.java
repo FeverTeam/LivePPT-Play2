@@ -41,7 +41,7 @@ public class UserAccess {
      */
     static public UserReader login(UserReader userReader) throws UserException {
         //根据email查找用户
-        User user = User.find.where().eq(UserJson.KEY_EMAIL,userReader.getEmail()).findUnique();
+        User user = User.find.where().eq("email",userReader.getEmail()).findUnique();
         if (user==null){
             //用户不存在
             throw new EmailNotExistedException();
@@ -65,7 +65,7 @@ public class UserAccess {
      * last modified 黎伟杰
      */
     static public boolean isEmailExist(String email) throws UserException {
-        User user = User.find.where().eq(UserJson.KEY_EMAIL, email).findUnique();
+        User user = User.find.where().eq("email", email).findUnique();
         if(user == null){
         // 用户不存在
         // 设置用户不存在状态码为1101

@@ -16,22 +16,23 @@ GET     /login                      controllers.cold.Application.login()
 GET     /user/login                 @controllers.iron.UserController.login()
 GET 	/logout 				    @controllers.iron.UserController.logout()
 
-GET     /getPptPageFromPpt          @controllers.iron.PptController.getPptPage()
+GET     /getPptPageFromPpt          @controllers.iron.PptController.getPptPageFromPpt()
 GET     /getPptPageFromMeeting      @controllers.iron.PptController.getPptPageFromMeeting()
 GET     /getPptInfo                 @controllers.iron.PptController.getPptInfo()
 GET     /getPptListInfo             @controllers.iron.PptController.getPptListInfo()
 
-GET     /getMyFoundedMeetings       @controllers.iron.MeetingtController.getMyFoundedMeetings()
-GET     /getMyAttendingMeetings     @controllers.iron.MeetingtController.getMyAttendingMeetings()
-GET     /getMeetingInfo             @controllers.iron.MeetingtController.getMeetingInfo()
+GET     /getMyFoundedMeetings       @controllers.iron.MeetingController.getMyFoundedMeetings()
+GET     /getMyAttendingMeetings     @controllers.iron.MeetingController.getMyAttendingMeetings()
+GET     /getMeetingInfoAsFounder    @controllers.iron.MeetingController.getMeetingInfoAsFounder()
+GET     /getMeetingInfoAsAttender   @controllers.iron.MeetingController.getMeetingInfoAsAttender()
 
 #*写入接口***************************************************************************
 POST    /user/regist                @controllers.iron.UserController.regist()
 POST    /user/updatePassword        @controllers.iron.UserController.updatePassword()
 POST    /user/updateDisplay         @controllers.iron.UserController.updateDisplay()
 
-POST	/convertstatus				@controllers.PptController.convertstatus()
-POST	/pptupload					@controllers.PptController.pptUpload()
+POST	/convertstatus				@controllers.iron.PptController.convertstatus()
+POST	/pptupload					@controllers.iron.PptController.pptUpload()
 
 POST    /foundNewMeeting            @controllers.iron.MeetingController.foundNewMeeting()
 POST    /deleteMeeting              @controllers.iron.MeetingController.deleteMeeting()

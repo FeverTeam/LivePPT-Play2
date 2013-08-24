@@ -56,7 +56,7 @@ public class ResultJson extends ObjectNode {
         this.put(KEY_DATA, bytes);
     }
 
-    public long getStatusCode() {
+    public Long getStatusCode() {
         return this.get(KEY_STATUS_CODE).asLong();
     }
 

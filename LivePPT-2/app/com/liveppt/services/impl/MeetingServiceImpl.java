@@ -40,11 +40,15 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MeetingReader getMeetingInfo(MeetingReader meetingReader) {
-        meetingReader = MeetingAccess.getMeetingInfo(meetingReader);
+    public MeetingReader getMeetingInfoAsFounder(MeetingReader meetingReader) throws MeetingPermissionDenyException {
+        meetingReader = MeetingAccess.getMeetingInfoByFounder(meetingReader);
         return  meetingReader;
     }
 
+    public MeetingReader getMeetingInfoAsAttender(MeetingReader meetingReader)  throws MeetingPermissionDenyException{
+        meetingReader = MeetingAccess.getMeetingInfoByAttender(meetingReader,meetingReader.getUserId());
+        return  meetingReader;
+    }
     @Override
     public MeetingReader joinMeeting(MeetingReader meetingReader) {
         MeetingAccess.joinMeeting(meetingReader.getUserId(),meetingReader.getMeetingId());
@@ -52,8 +56,8 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public MeetingReader setMeetingPageIndex(MeetingReader meetingReader) {
-        MeetingAccess.setMeetingPageIndex(meetingReader);
+    public MeetingReader setMeetingPageIndex(MeetingReader meetingReader) throws MeetingPermissionDenyException {
+        MeetingAccess.setMeetingPage(meetingReader);
         return meetingReader;
     }
 
