@@ -12,6 +12,7 @@ import com.liveppt.models.Attender;
 import com.liveppt.models.Meeting;
 import com.liveppt.models.Ppt;
 import com.liveppt.models.User;
+import com.liveppt.utils.exception.meeting.MeetingIdErrorException;
 import com.liveppt.utils.exception.ppt.PptException;
 import com.liveppt.utils.exception.ppt.PptIdErrorException;
 import com.liveppt.utils.exception.ppt.PptPermissionDenyException;
@@ -42,40 +43,40 @@ public class PptAccess {
      * @return storeKey
      * last modified Zijing Lee
      */
-    static public String ifReadByPptId(Long userId, Long pptId)
-    {
+    static public String ifReadByPptId(Long userId, Long pptId) throws PptIdErrorException, PptPermissionDenyException {
     	Ppt ppt = Ppt.find.byId(pptId);
+        if (ppt==null) throw new PptIdErrorException();
     	if(ppt.owner.id == userId)
     	{
     		return ppt.storeKey;
     	}
     	else
     	{   
-    		//根据user_id找出该user创建的meeting,检查这些meeting对应的ppt有否指定的ppt
-    		List<Meeting> meetingList = Meeting.find.where().eq("user_id", userId).findList();
-    		if(meetingList != null)
-    		{
-    			for(Meeting meeting : meetingList)
-    			{
-    				if(meeting.ppt.id == pptId)
-    					return ppt.storeKey;
-    			}
-    		}
-    		//根据ppt_id找出该ppt对应的meeting,检查直嘀咕user是否这些meeting的参与者
-    		meetingList = Meeting.find.where().eq("ppt_id",pptId).findList();
-    		for(Meeting meeting : meetingList)
-    		{
-    			List<Attender> attenderList = meeting.attenders;
-    			for(Attender attender :attenderList)
-    			{
-    				if(userId == attender.user.id)
-        			return meeting.ppt.storeKey;
-    			}
-    		}
-    		//都找不到 throw permission deny exception
+//    		//根据user_id找出该user创建的meeting,检查这些meeting对应的ppt有否指定的ppt
+//    		List<Meeting> meetingList = Meeting.find.where().eq("user_id", userId).findList();
+//    		if(meetingList != null)
+//    		{
+//    			for(Meeting meeting : meetingList)
+//    			{
+//    				if(meeting.ppt.id == pptId)
+//    					return ppt.storeKey;
+//    			}
+//    		}
+//    		//根据ppt_id找出该ppt对应的meeting,检查直嘀咕user是否这些meeting的参与者
+//    		meetingList = Meeting.find.where().eq("ppt_id",pptId).findList();
+//    		for(Meeting meeting : meetingList)
+//    		{
+//    			List<Attender> attenderList = meeting.attenders;
+//    			for(Attender attender :attenderList)
+//    			{
+//    				if(userId == attender.user.id)
+//        			return meeting.ppt.storeKey;
+//    			}
+//    		}
+            //
+            throw new PptPermissionDenyException();
     		
     	}
-		return ppt.storeKey;
     }
     /**
      * 判断用户是否能查阅
@@ -83,9 +84,9 @@ public class PptAccess {
      * @return storeKey
      * last modified Zijing Lee
      */
-    static public String ifReadByMeetingId(Long userId, Long meetingId)
-    {
+    static public String ifReadByMeetingId(Long userId, Long meetingId) throws PptException, MeetingIdErrorException {
     	Meeting meeting = Meeting.find.byId(meetingId);
+        if (meeting==null) throw new MeetingIdErrorException();
     	if(userId == meeting.founder.id)
     	{
     		return meeting.ppt.storeKey;
@@ -98,8 +99,8 @@ public class PptAccess {
     			if(userId == attender.user.id)
     				return meeting.ppt.storeKey;
     		}
-    		//throw permission deny exception
-    		return meeting.ppt.storeKey;
+    		throw new PptPermissionDenyException();
+//    		return meeting.ppt.storeKey;
     	}
     }
     /**

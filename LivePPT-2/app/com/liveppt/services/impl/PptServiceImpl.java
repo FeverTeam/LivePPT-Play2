@@ -10,8 +10,11 @@ import com.liveppt.models.Ppt;
 import com.liveppt.models.dao.PptAccess;
 import com.liveppt.services.PptService;
 import com.liveppt.utils.AwsConnGenerator;
+import com.liveppt.utils.exception.meeting.MeetingIdErrorException;
 import com.liveppt.utils.exception.ppt.PptException;
 import com.liveppt.utils.exception.ppt.PptFileErrorException;
+import com.liveppt.utils.exception.ppt.PptIdErrorException;
+import com.liveppt.utils.exception.ppt.PptPermissionDenyException;
 import com.liveppt.utils.models.PptJson;
 import com.liveppt.utils.models.PptReader;
 import org.apache.commons.io.IOUtils;
@@ -84,9 +87,10 @@ public class PptServiceImpl implements PptService{
     }
 
     @Override
-    public byte[] getPptPage(Long id,Long pptId, Long pageId) {
+    public byte[] getPptPage(Long id,Long pptId, Long pageId) throws PptIdErrorException, PptPermissionDenyException {
 
         byte[] imgBytes = null;
+        //申请获取
         String storeKey = PptAccess.ifReadByPptId(id,pptId);
         String pageKey = storeKey + "p" + pageId;
         // 若文件存在于Cache中，则直接返回
@@ -113,7 +117,7 @@ public class PptServiceImpl implements PptService{
         }
     }
 
-    public byte[] getPptPageFromMeeting(Long id, Long meetingId, Long pageId){
+    public byte[] getPptPageFromMeeting(Long id, Long meetingId, Long pageId) throws PptException, MeetingIdErrorException {
 
         byte[] imgBytes = null;
         String storeKey = PptAccess.ifReadByMeetingId(id,meetingId);
