@@ -7,14 +7,21 @@ import com.liveppt.utils.ResultJson;
 import com.liveppt.utils.exception.meeting.MeetingException;
 import com.liveppt.utils.exception.meeting.MeetingIdErrorException;
 import com.liveppt.utils.exception.meeting.MeetingTopicErrorException;
+import com.liveppt.utils.exception.ppt.PptException;
 import com.liveppt.utils.exception.user.UserException;
 import com.liveppt.utils.exception.user.UserNoLoginException;
 import com.liveppt.utils.models.MeetingJson;
 import com.liveppt.utils.models.MeetingReader;
+import com.liveppt.utils.models.PptJson;
+import com.liveppt.utils.models.PptReader;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
 import play.mvc.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 会议接口
@@ -162,7 +169,33 @@ public class MeetingController extends Controller {
     }
 
     public Result getMyFoundedMeetings() {
+        ResultJson resultJson = null;
+        try {
+            //从session里面得到id信息
+            String s_id = ctx().session().get(KEY_USER_ID);
+            if (s_id==null) throw new UserNoLoginException();
+            Long id = Long.valueOf(s_id);
+            MeetingReader meetingReader = new MeetingReader();
+            meetingReader.setUserId(id);
 
+            //提取信息
+            List<MeetingReader> meetingReaders = meetingService.getMyFoundedMeetings(meetingReader);
+
+            //将Set<PptReader>转换为Json格式
+            ArrayNode meetingJsons = new ArrayNode(JsonNodeFactory.instance);
+            for (MeetingReader meetingReader0:meetingReaders){
+                MeetingJson meetingJson = new MeetingJson();
+                meetingJson.setStringField(meetingReaderToMap(meetingReader0));
+                meetingJsons.add(meetingJson);
+            }
+
+            resultJson = new ResultJson(meetingJsons);
+        } catch (UserException e) {
+            e.printStackTrace();
+            resultJson = new ResultJson(e);
+        }
+
+        return ok(resultJson);
     }
 
     public Result setMeetingPage() {

@@ -12,20 +12,25 @@ GET     /login                      controllers.cold.Application.login()
 
 # API
 #*查询接口***************************************************************************
+
 GET     /user/login                 @controllers.iron.UserController.login()
 GET 	/logout 				    @controllers.iron.UserController.logout()
+
 GET     /getPptPageFromPpt          @controllers.iron.PptController.getPptPage()
 GET     /getPptPageFromMeeting      @controllers.iron.PptController.getPptPageFromMeeting()
 GET     /getPptInfo                 @controllers.iron.PptController.getPptInfo()
 GET     /getPptListInfo             @controllers.iron.PptController.getPptListInfo()
 
+GET     /getMyFoundedMeetings       @controllers.iron.MeetingtController.getMyFoundedMeetings()
 
 #*写入接口***************************************************************************
 POST    /user/regist                @controllers.iron.UserController.regist()
 POST    /user/updatePassword        @controllers.iron.UserController.updatePassword()
 POST    /user/updateDisplay         @controllers.iron.UserController.updateDisplay()
+
 POST	/convertstatus				@controllers.PptController.convertstatus()
 POST	/pptupload					@controllers.PptController.pptUpload()
+
 POST    /foundNewMeeting            @controllers.iron.MeetingController.foundNewMeeting()
 POST    /deleteMeeting              @controllers.iron.MeetingController.deleteMeeting()
 
