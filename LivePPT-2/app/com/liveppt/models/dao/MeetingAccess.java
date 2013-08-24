@@ -5,12 +5,10 @@
 package com.liveppt.models.dao;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.liveppt.models.Attender;
 import com.liveppt.models.Meeting;
-import com.liveppt.models.Ppt;
 import com.liveppt.models.User;
 import com.liveppt.utils.exception.meeting.MeetingIdErrorException;
 import com.liveppt.utils.exception.meeting.MeetingPermissionDenyException;
@@ -42,7 +40,7 @@ public class MeetingAccess {
      * last modified 黎伟杰
      */
 	static public void deleteMeeting(MeetingReader meetingReader) throws MeetingPermissionDenyException, MeetingIdErrorException {
-		Meeting meeting = Meeting .find.byId(meetingReader.getId());
+		Meeting meeting = Meeting .find.byId(meetingReader.getMeetingId());
 		if(meeting != null)
 		{
             if (meeting.founder.id==meetingReader.getUserId())

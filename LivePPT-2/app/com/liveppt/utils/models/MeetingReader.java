@@ -67,7 +67,7 @@ public class MeetingReader {
     * 获取Id
     * last modified Zijing Lee
     */
-   public Long getId()  {
+   public Long getMeetingId()  {
 	   return this.id;
    }
    
