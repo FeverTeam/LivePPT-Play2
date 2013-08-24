@@ -16,6 +16,8 @@ GET     /user/login                 @controllers.iron.UserController.login()
 GET 	/logout 				    @controllers.iron.UserController.logout()
 GET     /getPptPageFromPpt          @controllers.iron.PptController.getPptPage()
 GET     /getPptPageFromMeeting      @controllers.iron.PptController.getPptPageFromMeeting()
+GET     /getPptInfo                 @controllers.iron.PptController.getPptInfo()
+GET     /getPptListInfo                 @controllers.iron.PptController.getPptListInfo()
 
 #*写入接口***************************************************************************
 POST    /user/regist                @controllers.iron.UserController.regist()

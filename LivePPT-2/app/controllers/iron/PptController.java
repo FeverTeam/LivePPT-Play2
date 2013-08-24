@@ -1,5 +1,6 @@
 package controllers.iron;
 
+import com.amazonaws.util.json.JSONArray;
 import com.google.inject.Inject;
 import com.liveppt.services.PptService;
 
@@ -16,6 +17,8 @@ import com.liveppt.utils.models.PptJson;
 import com.liveppt.utils.models.PptReader;
 import com.liveppt.utils.models.UserJson;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
 import play.libs.Json;
 import play.mvc.*;
 
@@ -23,6 +26,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Date: 13-8-18
@@ -44,6 +48,22 @@ public class PptController extends Controller{
     public static String KEY_PPT_STOREKEY = "storeKey";
     public static String KEY_PPT_PAGEINDEX = "pageIndex";
     public static String KEY_MEETING_ID = "meetingId";
+
+    // tool
+
+    private Map<String,String> pptReaderToMap(PptReader pptReader) throws PptException {
+        Map<String,String> keyValue = new HashMap<>();
+        keyValue.put(KEY_PPT_FILENAME,pptReader.getFileName());
+        keyValue.put(KEY_PPT_FILESIZE, String.valueOf(pptReader.getFileSize()));
+        keyValue.put(KEY_PPT_TIME, String.valueOf(pptReader.getTime()));
+        keyValue.put(KEY_PTT_CONVERT_STATUS, String.valueOf(pptReader.getConvertStatus()));
+        keyValue.put(KEY_PPT_ID, String.valueOf(pptReader.getPptId()));
+        keyValue.put(KEY_PPT_PAGECOUNT, String.valueOf(pptReader.getPageCount()));
+        keyValue.put(KEY_USER_ID, String.valueOf(pptReader.getUserId()));
+        return  keyValue;
+    }
+
+    // API
 
     /**
      * 上传ppt
@@ -73,12 +93,7 @@ public class PptController extends Controller{
             //组装pptJson
             PptJson pptJson = new PptJson();
 
-            Map<String,String> keyValue = new HashMap<>();
-            keyValue.put(KEY_PPT_FILENAME,pptReader.getFileName());
-            keyValue.put(KEY_PPT_FILESIZE, String.valueOf(pptReader.getFileSize()));
-            keyValue.put(KEY_PPT_TIME, String.valueOf(pptReader.getTime()));
-            keyValue.put(KEY_PTT_CONVERT_STATUS, String.valueOf(pptReader.getConvertStatus()));
-            keyValue.put(KEY_PPT_ID, String.valueOf(pptReader.getPptId()));
+            Map<String,String> keyValue = pptReaderToMap(pptReader);
 
             pptJson.setStringField(keyValue);
 
@@ -198,6 +213,90 @@ public class PptController extends Controller{
             System.out.println(e.getMessage());
             resultJson = new ResultJson(e);
         }
+        return ok(resultJson);
+    }
+
+    /**
+     * 根据pptId获取pptInfo
+     * last modified 黎伟杰
+     */
+    public Result getPptInfo() {
+
+        ResultJson resultJson = null;
+        try {
+            //从session里面得到id信息
+            String s_id = ctx().session().get(KEY_USER_ID);
+            //获取要求查询的PPT_ID
+            String s_pptID = request().getQueryString(KEY_PPT_ID);
+            if (s_id==null) throw new UserNoLoginException();
+            if (s_pptID==null) throw new PptIdErrorException();
+            Long id = Long.valueOf(s_id);
+            Long pptId = Long.valueOf(s_pptID);
+            PptReader pptReader = new PptReader();
+            pptReader.setUserId(id).setPptId(pptId);
+
+            //提取信息
+            pptReader = pptService.getPptInfo(pptReader);
+
+            //组装pptJson
+            PptJson pptJson = new PptJson();
+
+            //获取ppt信息
+            Map<String,String> keyValue = pptReaderToMap(pptReader);
+
+            pptJson.setStringField(keyValue);
+
+            resultJson = new ResultJson(pptJson);
+        } catch (PptException e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            resultJson = new ResultJson(e);
+        } catch (UserException e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            resultJson = new ResultJson(e);
+        }
+
+        return ok(resultJson);
+    }
+
+    /**
+     * 根据userId获取pptInfo
+     * last modified 黎伟杰
+     */
+    public Result getPptListInfo() {
+
+        ResultJson resultJson = null;
+        try {
+            //从session里面得到id信息
+            String s_id = ctx().session().get(KEY_USER_ID);
+            if (s_id==null) throw new UserNoLoginException();
+            Long id = Long.valueOf(s_id);
+            PptReader pptReader = new PptReader();
+            pptReader.setUserId(id);
+
+            //提取信息
+            Set<PptReader> pptReaders = pptService.getPptListInfo(pptReader);
+
+            //将Set<PptReader>转换为Json格式
+            ArrayNode pptJsons = new ArrayNode(JsonNodeFactory.instance);
+            for (PptReader pptReader0:pptReaders){
+                PptJson pptJson = new PptJson();
+                pptJson.setStringField(pptReaderToMap(pptReader0));
+                pptJsons.add(pptJson);
+            }
+
+            resultJson = new ResultJson(pptJsons);
+        } catch (PptException e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            resultJson = new ResultJson(e);
+        } catch (UserException e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            resultJson = new ResultJson(e);
+        }
+
         return ok(resultJson);
     }
 }
