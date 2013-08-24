@@ -126,7 +126,7 @@ public class MeetingAccess {
             if (attender.meeting.id.equals(meetingId))
             {
                 attender.delete();
-                //TODO delete之后知否需要save？
+                //TODO delete之后是否需要save？
                 break;
             }
         }

@@ -40,7 +40,7 @@ public interface MeetingService {
     /**
      * 获取用户观看的会议
      */
-    public MeetingReader getMyAttendingMeetings(MeetingReader meetingReader);
+    public List<MeetingReader> getMyAttendingMeetings(MeetingReader meetingReader);
 
     /**
      * 获取指定的会议的信息

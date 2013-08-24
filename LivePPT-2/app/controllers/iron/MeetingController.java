@@ -229,6 +229,36 @@ public class MeetingController extends Controller {
         return ok(resultJson);
     }
 
+    public Result getMyAttendingMeetings() {
+        ResultJson resultJson = null;
+        try {
+            //从session里面得到id信息
+            String s_id = ctx().session().get(KEY_USER_ID);
+            if (s_id==null) throw new UserNoLoginException();
+            Long id = Long.valueOf(s_id);
+            MeetingReader meetingReader = new MeetingReader();
+            meetingReader.setUserId(id);
+
+            //提取信息
+            List<MeetingReader> meetingReaders = meetingService.getMyAttendingMeetings(meetingReader);
+
+            //将Set<PptReader>转换为Json格式
+            ArrayNode meetingJsons = new ArrayNode(JsonNodeFactory.instance);
+            for (MeetingReader meetingReader0:meetingReaders){
+                MeetingJson meetingJson = new MeetingJson();
+                meetingJson.setStringField(meetingReaderToMap(meetingReader0));
+                meetingJsons.add(meetingJson);
+            }
+
+            resultJson = new ResultJson(meetingJsons);
+        } catch (UserException e) {
+            e.printStackTrace();
+            resultJson = new ResultJson(e);
+        }
+
+        return ok(resultJson);
+    }
+
     public Result setMeetingPage() {
         return TODO;
     }

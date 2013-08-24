@@ -22,6 +22,7 @@ GET     /getPptInfo                 @controllers.iron.PptController.getPptInfo()
 GET     /getPptListInfo             @controllers.iron.PptController.getPptListInfo()
 
 GET     /getMyFoundedMeetings       @controllers.iron.MeetingtController.getMyFoundedMeetings()
+GET     /getMyAttendingMeetings     @controllers.iron.MeetingtController.getMyAttendingMeetings()
 
 #*写入接口***************************************************************************
 POST    /user/regist                @controllers.iron.UserController.regist()
