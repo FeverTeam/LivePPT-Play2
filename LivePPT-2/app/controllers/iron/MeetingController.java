@@ -13,6 +13,7 @@ import com.liveppt.utils.models.MeetingJson;
 import com.liveppt.utils.models.MeetingReader;
 import play.mvc.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,10 +25,27 @@ public class MeetingController extends Controller {
     @Inject
     MeetingService meetingService;
 
+    //KEY FIELD
+
     public static String KEY_USER_ID = "userId";
     public static String KEY_PPT_ID = "pptId";
     public static String KEY_MEETING_TOPIC = "meetingTopic";
     public static String KEY_MEETING_ID = "meetingId";
+    public static String KEY_MEETING_CURRENT_PAGE = "meetingCurrentPage";
+
+    //tool
+
+    private Map<String,String> meetingReaderToMap(MeetingReader meetingReader){
+        Map<String,String> keyValue = new HashMap<>();
+        keyValue.put(KEY_MEETING_ID, String.valueOf(meetingReader.getMeetingId()));
+        keyValue.put(KEY_USER_ID, String.valueOf(meetingReader.getUserId()));
+        keyValue.put(KEY_PPT_ID, String.valueOf(meetingReader.getPptId()));
+        keyValue.put(KEY_MEETING_TOPIC, meetingReader.getTopic());
+        keyValue.put(KEY_MEETING_CURRENT_PAGE, String.valueOf(meetingReader.getCurrentPageIndex()));
+        return  keyValue;
+    }
+
+    //API
 
     public Result foundNewMeeting() {
 
@@ -104,14 +122,6 @@ public class MeetingController extends Controller {
         return ok(resultJson);
     }
 
-    public Result quitMeeting() {
-        return TODO;
-    }
-
-    public Result setMeetingPage() {
-        return TODO;
-    }
-
     public Result joinMeeting() {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson = null;
@@ -145,6 +155,18 @@ public class MeetingController extends Controller {
         }
 
         return ok(resultJson);
+    }
+
+    public Result quitMeeting() {
+        return TODO;
+    }
+
+    public Result getMyFoundedMeetings() {
+
+    }
+
+    public Result setMeetingPage() {
+        return TODO;
     }
 
     public static WebSocket<String> viewWebsocket() {
