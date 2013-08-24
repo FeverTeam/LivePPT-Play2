@@ -1,8 +1,6 @@
 package com.liveppt.utils.models;
 
-import com.liveppt.utils.exception.user.EmailNotFoundException;
-import com.liveppt.utils.exception.user.PasswordNotFoundException;
-import com.liveppt.utils.exception.user.UserException;
+import com.liveppt.utils.exception.user.*;
 
 import java.util.Map;
 
@@ -12,55 +10,159 @@ import java.util.Map;
  */
 public class UserReader {
 
-    public static String KEY_EMAIL = "email";
-    public static String KEY_PASSWORD = "password";
-    public static String KEY_NEW_PASSWORD = "newPassword";
-    public static String KEY_DISPLAY = "display";
-    public static String KEY_NEW_DISPLAY = "newDisplay";
 
     //constructors
 
     /**
      * 产生UserReader类
-     * @param email 传入email
-     * @param password 传入password
+     * @param
      * @return
      * last modified 黎伟杰
      */
-    public UserReader(String email,String password){
-        this.email = email;
-        this.password = password;
+    public UserReader() {
+        id =null;
+        email = null;
+        password = null;
+        newPassword = null;
+        display = null;
+        newDisplay = null;
     }
 
-    //TODO 编写field的setter和getter ,和对应的抛出异常，构造函数中调用方法
+    private Long id;
+
+    private String email;
+
+    private String password;
+
+    private String newPassword;
+
+    private String display;
+
+    private String newDisplay;
 
     /**
-     * 产生UserReader类
-     * @param params
+     * 设置Id
+     * @return itself
+     * last modified 黎伟杰
+     */
+    public UserReader setId(Long id)  {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * 得到id
+     * @return id
+     * @throws UserIdNotFoundException
+     * last modified 黎伟杰
+     */
+    public Long getId() throws UserIdNotFoundException {
+        if (id==null) throw new UserIdNotFoundException();
+        return id;
+    }
+
+    /**
+     * 设置email
+     * @return 本身
+     * last modified 黎伟杰
+     */
+    public UserReader setEmail(String email)  {
+        this.email = email;
+        return this;
+    }
+
+    /**
+     * 得到email
+     * @return email
+     * @throws EmailNotFoundException
+     * last modified 黎伟杰
+     */
+    public String getEmail() throws EmailNotFoundException {
+        if (email==null) throw  new EmailNotFoundException();
+        return email;
+    }
+
+    /**
+     * 设置password
+     * @return itself
+     * last modified 黎伟杰
+     */
+    public UserReader setPassword(String password)  {
+        this.password = password;
+        return this;
+    }
+
+    /**
+     * 获得password
+     * @return password
+     * @throws PasswordNotFoundException
+     * last modified 黎伟杰
+     */
+    public String getPassword() throws PasswordNotFoundException {
+        if (this.password==null) throw new PasswordNotFoundException();
+        return password;
+    }
+
+    /**
+     * 设置newPassword
      * @return
      * last modified 黎伟杰
      */
-    public UserReader(Map<String, String[]> params) throws UserException {
-        System.out.println("genUserR");
-        if (params.get(KEY_EMAIL)[0]==null) throw  new EmailNotFoundException();
-        this.email = params.get(KEY_EMAIL)[0];
-        if (params.get(KEY_PASSWORD)[0]==null) throw  new PasswordNotFoundException();
-        this.password = params.get(KEY_PASSWORD)[0];
+    public UserReader setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+        return this;
     }
 
-    public Long id;
+    /**
+     * 获得newPassword
+     * @return
+     * @throws NewPasswordNotFoundException
+     * last modified 黎伟杰
+     */
+    public String getNewPassword() throws NewPasswordNotFoundException {
+        if (this.newPassword==null) throw new NewPasswordNotFoundException();
+        return this.newPassword ;
 
-    public String email;
+    }
 
-    public String password;
+    /**
+     * 设置display
+     * @return
+     * last modified 黎伟杰
+     */
+    public UserReader setDisplay(String display)  {
+        this.display = display;
+        return this;
+    }
 
-    public String newPassword;
+    /**
+     * 获得display
+     * @return
+     * @throws DisplayNotFoundException
+     * last modified 黎伟杰
+     */
+    public String getDisplay() throws DisplayNotFoundException  {
+        if (this.display==null) throw new DisplayNotFoundException();
+        return this.display ;
+    }
 
-    public String display;
+    /**
+     * 设置newPisplay
+     * last modified 黎伟杰
+     */
+    public UserReader setNewDisplay(String newDisplay) {
+        this.newDisplay = newDisplay;
+        return this;
+    }
 
-    public String newDisplay;
-
-    public int status;
-
-
+    /**
+     * 获得newPisplay
+     * @return
+     * @throws NewDisplayNotFoundException
+     * last modified 黎伟杰
+     */
+    public String getNewDisplay() throws NewDisplayNotFoundException {
+        if (newDisplay==null) throw  new NewDisplayNotFoundException();
+        return  this.newDisplay;
+    }
 }

@@ -3,16 +3,14 @@ package controllers.iron;
 import com.google.inject.Inject;
 import com.liveppt.services.UserService;
 import com.liveppt.utils.ResultJson;
-import com.liveppt.utils.exception.user.UserException;
-import com.liveppt.utils.exception.user.UserNoLoginException;
+import com.liveppt.utils.exception.user.*;
 import com.liveppt.utils.models.UserJson;
 
 import com.liveppt.utils.models.UserReader;
 import play.mvc.*;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import views.html.*;
 
 /**
  * 用户接口
@@ -22,6 +20,13 @@ import views.html.*;
 public class UserController extends Controller {
     @Inject
     UserService userService;
+
+    public static String KEY_USER_ID = "userId";
+    public static String KEY_EMAIL = "email";
+    public static String KEY_PASSWORD = "password";
+    public static String KEY_NEW_PASSWORD = "newPassword";
+    public static String KEY_DISPLAY = "display";
+    public static String KEY_NEW_DISPLAY = "newDisplay";
   
   	/**
   	 * 注册账号
@@ -32,8 +37,28 @@ public class UserController extends Controller {
 
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson = null;
+
         try {
-            resultJson = new ResultJson(userService.regist(params));
+            String email,password,display;
+            email = params.get(KEY_EMAIL)[0];
+            if (email==null) throw new EmailNotFoundException();
+            password = params.get(KEY_PASSWORD)[0];
+            if ( password==null) throw new PasswordNotFoundException();
+            display = params.get(KEY_DISPLAY)[0];
+            if (display ==null) throw new DisplayNotFoundException();
+            UserReader userReader = new UserReader();
+            userReader.setEmail(email);
+            userReader.setPassword(password);
+            userReader.setDisplay(display);
+            userReader = userService.regist(userReader);
+            //组装Data域信息
+            Map<String,String> keyValue = new HashMap<>();
+            keyValue.put(KEY_EMAIL,userReader.getEmail());
+            keyValue.put(KEY_DISPLAY,userReader.getDisplay());
+            UserJson userJson = new UserJson();
+            userJson.setStringField(keyValue);
+            //组装返回信息
+            resultJson = new ResultJson(userJson);
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
@@ -53,16 +78,29 @@ public class UserController extends Controller {
         Map<String, String[]> params = request().queryString();
         ResultJson resultJson = null;
         try {
-            resultJson = new ResultJson(userService.login(params));
-            //TODO 修改为登陆ID
-            session("email",params.get(UserJson.KEY_EMAIL)[0]);
-            session("password",params.get(UserJson.KEY_PASSWORD)[0]);
+            //获取传入信息
+            String email,password;
+            email = params.get(KEY_EMAIL)[0];
+            if (email==null) throw new EmailNotFoundException();
+            password = params.get(KEY_PASSWORD)[0];
+            if ( password==null) throw new PasswordNotFoundException();
+
+            //组装UserReader传递至Service
+            UserReader userReader = new UserReader();
+            userReader.setEmail(email).setPassword(password);
+            userReader = userService.login(userReader);
+
+            //组装返回结果中data域信息
+            //data域无信息包含
+            UserJson userJson = new UserJson();
+            resultJson = new ResultJson(userJson);
+            //传入session
+            session(KEY_USER_ID, String.valueOf(userReader.getId()));
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
             resultJson = new ResultJson(e);
         }
-        System.out.println(resultJson.toString());
         return ok(resultJson);
     }
 
@@ -72,8 +110,7 @@ public class UserController extends Controller {
      * last modified 黎伟杰
      */
     public Result logout() {
-        session().remove("email");
-        session().remove("password");
+        session().remove(KEY_USER_ID);
         return ok();
     }
 
@@ -87,21 +124,33 @@ public class UserController extends Controller {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson = null;
         try {
-            //从session里面得到email和password信息
-            String email = ctx().session().get("email");
-            if (email==null) throw new UserNoLoginException();
-            params.put("email",new String[]{email});
-            String password = ctx().session().get("password");
-            if (password==null) throw new UserNoLoginException();
-            params.put("password",new String[]{password});
+            //从session里面得到id信息
+            String s_id = ctx().session().get(KEY_USER_ID);
+            if (s_id==null) throw new UserNoLoginException();
+            Long id = Long.valueOf(s_id);
+
+            //获取传入信息
+            String password,newPassword;
+            password = params.get(KEY_PASSWORD)[0];
+            if ( password==null) throw new PasswordNotFoundException();
+            newPassword = params.get(KEY_NEW_PASSWORD)[0];
+            if ( newPassword==null) throw new NewPasswordNotFoundException();
+
+            //组装UserReader传递至Service
+            UserReader userReader = new UserReader();
+            userReader.setId(id).setPassword(password).setNewPassword(newPassword);
             //更新密码
-            resultJson =  new ResultJson(userService.updatePassword(params));
+            userReader = userService.updatePassword(userReader);
+
+            //组装返回结果中data域信息
+            //data域无信息包含
+            UserJson userJson = new UserJson();
+            resultJson = new ResultJson(userJson);
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
             resultJson = new ResultJson(e);
         }
-        System.out.println(resultJson.toString());
         return ok(resultJson);
     }
 
@@ -115,21 +164,33 @@ public class UserController extends Controller {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson = null;
         try {
-            //从session里面得到email和password信息
-            String email = ctx().session().get("email");
-            if (email==null) throw new UserNoLoginException();
-            params.put("email",new String[]{email});
-            String password = ctx().session().get("password");
-            if (password==null) throw new UserNoLoginException();
-            params.put("password",new String[]{password});
+            //从session里面得到id信息
+            String s_id = ctx().session().get(KEY_USER_ID);
+            if (s_id==null) throw new UserNoLoginException();
+            Long id = Long.valueOf(s_id);
+
+            //获取传入信息
+            String password,newDisplay;
+            password = params.get(KEY_PASSWORD)[0];
+            if ( password==null) throw new PasswordNotFoundException();
+            newDisplay = params.get(KEY_NEW_PASSWORD)[0];
+            if ( newDisplay==null) throw new NewDisplayNotFoundException();
+
+            //组装UserReader传递至Service
+            UserReader userReader = new UserReader();
+            userReader.setId(id).setPassword(password).setNewDisplay(newDisplay);
             //更新显示名
-            resultJson = new ResultJson(userService.updateDisplay(params));
+            userReader = userService.updateDisplay(userReader);
+
+            //组装返回结果中data域信息
+            //data域无信息包含
+            UserJson userJson = new UserJson();
+            resultJson = new ResultJson(userJson);
         } catch (UserException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             System.out.println(e.getMessage());
             resultJson = new ResultJson(e);
         }
-        System.out.println(resultJson.toString());
         return ok(resultJson);
     }
 

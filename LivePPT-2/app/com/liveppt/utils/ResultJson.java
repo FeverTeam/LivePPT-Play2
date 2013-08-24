@@ -28,6 +28,13 @@ public class ResultJson extends ObjectNode {
         this.putData(jsonNode);
     }
 
+    public ResultJson(byte[] bytes){
+        super(JsonNodeFactory.instance);
+        this.putStatus(StatusCode.ALL_IS_OK);
+        this.putMessage("All is ok!");
+        this.putData(bytes);
+    }
+
     public String getMessage() {
         return this.get(KEY_MESSAGE).getTextValue();
     }
@@ -45,7 +52,11 @@ public class ResultJson extends ObjectNode {
         this.put(KEY_DATA, data);
     }
 
-    public long getStatusCode() {
+    public void putData(byte[] bytes) {
+        this.put(KEY_DATA, bytes);
+    }
+
+    public Long getStatusCode() {
         return this.get(KEY_STATUS_CODE).asLong();
     }
 

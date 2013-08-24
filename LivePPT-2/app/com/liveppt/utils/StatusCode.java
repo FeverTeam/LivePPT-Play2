@@ -45,12 +45,17 @@ public class StatusCode {
 	//****************PPT类型错误*****************
 	//PPT不存在
 	public final static int PPT_NOT_EXISTED = 2100;
+    //PPT_FILE_ERROR
+    public final static int PPT_FILE_ERROR = 2103;
 	//pptId错误
 	public final static int PPT_ID_ERROR = 2101;
 	//ppt的pageIndex字段错误
-	public final static int PPT_PAGEINDEX_ERROR = 2102;
+	public final static int PPT_PAGE_INDEX_ERROR = 2102;
 	//PPT列表为空
 	public final static int PPT_LIST_NULL = 2200;
+
+    //没权访问
+    public final static int PPT_PERMISSION_DENY = 2104;
 	
 	//****************MEETING类型错误**************
 	//meetingId字段错误
@@ -62,9 +67,12 @@ public class StatusCode {
 	//根据meetingID查询的meeting不存在
 	public final static int MEETING_NOT_EXISTED = 3200;	
 	//topic字段错误
-	public final static int MEETING_TOPIC_ERROR = 3300;	
+	public final static int MEETING_TOPIC_ERROR = 3300;
 	//删除会议错误
 	public final static int MEETING_DELETE_MEETING_FAIL = 3400;
+
+    //没权访问
+    public final static int MEETING_PERMISSION_DENY = 3103;
 
     //**************其他****************************
     //待补充错误
