@@ -94,7 +94,7 @@ public class MeetingAccess {
      * @return MeetingReader
      * last modified Zijing Lee
      */
-    public MeetingReader joinMeeting(Long userId,Long meetingId) {
+    public static MeetingReader joinMeeting(Long userId,Long meetingId) {
 		Meeting meeting = Meeting.find.byId(meetingId);
 		User user = User.find.byId(userId);
 		List<Attender> attendings = user.attendents;

@@ -45,7 +45,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public MeetingReader joinMeeting(MeetingReader meetingReader) {
-        MeetingAccess.joinMeeting(meetingReader);
+        MeetingAccess.joinMeeting(meetingReader.getUserId(),meetingReader.getMeetingId());
         return meetingReader;
     }
 

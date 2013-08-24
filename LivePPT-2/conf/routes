@@ -33,6 +33,7 @@ POST	/pptupload					@controllers.PptController.pptUpload()
 
 POST    /foundNewMeeting            @controllers.iron.MeetingController.foundNewMeeting()
 POST    /deleteMeeting              @controllers.iron.MeetingController.deleteMeeting()
+POST    /joinMeeting                @controllers.iron.MeetingController.joinMeeting()
 
 #*测试接口***************************************************************************
 #GET     /user/test                  @controllers.iron.UserController.test()
