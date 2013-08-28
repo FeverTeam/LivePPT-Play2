@@ -4,6 +4,7 @@ body { padding-top: 60px; padding-bottom: 40px; }
 .sign-up { padding-bottom: 20px;}
 .page-header { margin-bottom: 0;}
 
+.minh-600 { min-height: 600px; }
 /* Sidenav for Docs
 -------------------------------------------------- */
 
