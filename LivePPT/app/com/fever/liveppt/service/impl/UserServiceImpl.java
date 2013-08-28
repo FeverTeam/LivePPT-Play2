@@ -88,8 +88,8 @@ public class UserServiceImpl implements UserService {
             String token = Md5Util.getMd5(email);
 
             Map<String,String> map = new HashMap<String,String>();
-            map.put("email",email);
-            map.put("displayName",displayName);
+            map.put("uemail",email);
+            map.put("displayname",displayName);
             map.put("password",password);
             map.put("token",token);
 

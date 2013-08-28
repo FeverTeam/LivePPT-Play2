@@ -72,9 +72,9 @@ public class App_UserController extends Controller {
         }
 		
 		// 获取参数		
-		String email = params.get("email")[0];
+		String email = params.get("uemail")[0];
 		String password = params.get("password")[0];
-		String displayName = params.get("displayName")[0];
+		String displayName = params.get("displayname")[0];
         String seed = params.get("seed")[0];
 		
 		//注册用户
@@ -92,7 +92,7 @@ public class App_UserController extends Controller {
 	 */
     ResultJson checkEmail(Map<String,String[]> params)
     {
-        if (!params.containsKey("email")){
+        if (!params.containsKey("uemail")){
             return new ResultJson( StatusCode.INVALID_PARAMS,null, "email字段缺失");
         }
         return new ResultJson(StatusCode.NONE,null,null) ;
@@ -136,7 +136,7 @@ public class App_UserController extends Controller {
 	 */
     ResultJson checkDisplayName(Map<String,String[]> params)
     {
-        if (!params.containsKey("displayName")){
+        if (!params.containsKey("displayname")){
             return new ResultJson( StatusCode.INVALID_PARAMS,null, "displayName字段缺失");
         }
         return new ResultJson(StatusCode.NONE,null,null) ;
