@@ -1,5 +1,7 @@
 package com.fever.liveppt.utils;
 
+import com.fever.liveppt.utils.exception.CommonException;
+import com.fever.liveppt.utils.exception.UserException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
@@ -23,6 +25,20 @@ public class ResultJson extends ObjectNode {
         this.setMessage(message);
     }
 
+
+    public ResultJson(CommonException commonException){
+        super(JsonNodeFactory.instance);
+        this.setStatusCode(commonException.getRetcode());
+        this.setMessage(commonException.getMessage());
+        this.setData(null);
+    }
+
+    public ResultJson(UserException userException){
+        super(JsonNodeFactory.instance);
+        this.setStatusCode(userException.getRetcode());
+        this.setMessage(userException.getMessage());
+        this.setData(null);
+    }
     //getter and setter
     public String getMessage(){
         return this.get(KEY_MESSAGE).getTextValue();

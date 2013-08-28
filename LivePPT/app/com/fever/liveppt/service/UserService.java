@@ -2,6 +2,9 @@ package com.fever.liveppt.service;
 
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.exception.CommonException;
+import com.fever.liveppt.utils.exception.UserException;
+import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
 
 public interface UserService {
 
@@ -21,6 +24,6 @@ public interface UserService {
      * @param seed
      * @return ResultJson
      */
-	public ResultJson register(String email, String password, String displayName,String seed);
+	public ResultJson register(String email, String password, String displayName,String seed) throws InvalidParamsException, CommonException, UserException;
 
 }

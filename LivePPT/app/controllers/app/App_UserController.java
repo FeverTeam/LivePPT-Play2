@@ -3,6 +3,9 @@ package controllers.app;
 import java.util.Map;
 
 import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.exception.CommonException;
+import com.fever.liveppt.utils.exception.UserException;
+import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -57,20 +60,45 @@ public class App_UserController extends Controller {
 	    ResultJson resultJson;
 		resultJson = checkEmail(params);
 		if (!resultJson.getStatusCode().equals(StatusCode.NONE)){
-			return ok(resultJson);
-            //TODO  改为throw InvailidParmException
+            try {
+                throw new InvalidParamsException("email字段为空") ;
+            } catch (InvalidParamsException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                resultJson = new ResultJson(e)    ;
+            }
+            return ok(resultJson);
         }
 		resultJson = checkPassword(params);
 		if (!resultJson.getStatusCode().equals(StatusCode.NONE)) {
+            try {
+                throw new InvalidParamsException("password字段为空") ;
+            } catch (InvalidParamsException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                resultJson = new ResultJson(e)    ;
+            }
             return ok(resultJson);
-            //TODO  改为throw InvailidParmException
         }
 		resultJson = checkDisplayName(params);
 		if (!resultJson.getStatusCode().equals(StatusCode.NONE)){
-			return ok(resultJson);
-            //TODO  改为throw InvailidParmException
+            try {
+                throw new InvalidParamsException("display字段为空") ;
+            } catch (InvalidParamsException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                resultJson = new ResultJson(e)    ;
+            }
+            return ok(resultJson);
         }
-		
+
+        resultJson = checkSeed(params);
+        if (!resultJson.getStatusCode().equals(StatusCode.NONE)){
+            try {
+                throw new InvalidParamsException("seed字段为空") ;
+            } catch (InvalidParamsException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                resultJson = new ResultJson(e)    ;
+            }
+            return ok(resultJson);
+        }
 		// 获取参数		
 		String email = params.get("uemail")[0];
 		String password = params.get("password")[0];
@@ -78,9 +106,17 @@ public class App_UserController extends Controller {
         String seed = params.get("seed")[0];
 		
 		//注册用户
-		resultJson = userService.register(email, password, displayName,seed);
-		
-		Logger.info(resultJson.toString());
+        try {
+            resultJson = userService.register(email, password, displayName,seed);
+        } catch (CommonException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            resultJson = new ResultJson(e);
+        } catch (UserException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            resultJson = new ResultJson(e);
+        }
+
+        Logger.info(resultJson.toString());
 		
 		return ok(resultJson);
 	}
@@ -121,13 +157,6 @@ public class App_UserController extends Controller {
         }
         return new ResultJson(StatusCode.NONE,null,null) ;
     }
-	/*JsonResult checkPassword(Map<String, String[]> params)
-	{
-		if (!params.containsKey("password")){
-			return new JsonResult(false, StatusCode.USER_PASSWORD_ERROR, "password字段错误");
-		}
-		return new JsonResult(true);
-	}     */
 	
 	/**
 	 * 检查displayName字段
@@ -141,13 +170,6 @@ public class App_UserController extends Controller {
         }
         return new ResultJson(StatusCode.NONE,null,null) ;
     }
-	/*JsonResult checkDisplayName(Map<String, String[]> params)
-	{
-		if (!params.containsKey("displayName")){
-			return new JsonResult(false, StatusCode.USER_DISPLAYNAME_ERROR, "displayName字段错误");
-		}
-		return new JsonResult(true);
-	} */
 
     /**
      *

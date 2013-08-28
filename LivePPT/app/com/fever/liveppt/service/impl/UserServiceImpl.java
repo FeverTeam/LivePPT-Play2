@@ -1,10 +1,15 @@
 package com.fever.liveppt.service.impl;
 
 import com.fever.liveppt.utils.*;
+import com.fever.liveppt.utils.exception.CommonException;
+import com.fever.liveppt.utils.exception.UserException;
+import com.fever.liveppt.utils.exception.user.UserExcistedException;
+import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.libs.Json;
 import static play.api.libs.Crypto.decryptAES;
+import static play.api.libs.Crypto.encryptAES;
 
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.UserService;
@@ -47,8 +52,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public  ResultJson register(String email,String password,String displayName,String seed)
-    {
+    public  ResultJson register(String email,String password,String displayName,String seed) throws CommonException,UserException {
 
         //如果displayName为空，设置其为email
         if(displayName == null)
@@ -56,24 +60,17 @@ public class UserServiceImpl implements UserService {
             displayName = email;
         }
         //解密password
-       // password = decryptAES(password,seed);
+       // password = encryptAES(password,seed)  ;
+        password = decryptAES(password,seed);
         // 查找是否已经有相同email的用户，若有则返回错误
         if (User.isExistedByEmail(email)) {
             //相同email的用户已存在，拒绝注册
-
-            JsonResult jsonResult = new JsonResult(false,StatusCode.USER_EXISTED,null,"User Existed");
-            ResultJson resultJson = new ResultJson(StatusCode.USER_EXISTED,null,"用户邮件已存在") ;
-           //TODO  改为throw UserExistedException
-            return resultJson;
+            throw new UserExcistedException("用户邮件已存在")  ;
         }
         else if(User.isEmailValid(email) == false)
         {
             //电邮格式不正确
-            //throw InvalidParamsException
-            JsonResult jsonResult = new JsonResult(false,StatusCode.USER_EXISTED,null,"电邮格式不正确。")  ;
-            ResultJson resultJson = new ResultJson(StatusCode.INVALID_PARAMS,null,"电邮格式不正确。") ;
-            //TODO  改为throw InvailidParmException
-            return resultJson;
+            throw new InvalidParamsException("电邮格式不正确");
         }
         else {
             //相同email的用户未存在，接受注册
@@ -97,10 +94,8 @@ public class UserServiceImpl implements UserService {
             DataJson dataJson = new DataJson();
             dataJson.setStringField(map);
             JsonResult results = new JsonResult(true,StatusCode.NONE,dataJson,"Sign up succefully")   ;
-            ResultJson resultJson = new ResultJson(StatusCode.NONE,dataJson,"Sign up succefully")   ;
+            ResultJson resultJson = new ResultJson(StatusCode.NONE,dataJson,"注册成功")   ;
 
-            System.out.println(results.getMessage());
-            System.out.println(results.getData().get("token")) ;
             // 更新session信息
             return resultJson;
         }
