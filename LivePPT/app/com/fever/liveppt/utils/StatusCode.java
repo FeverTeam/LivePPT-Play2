@@ -17,8 +17,20 @@ package com.fever.liveppt.utils;
  */
 public class StatusCode {
 	//一切正常
-	public final static int NONE = 9000;
+	public final static int NONE = 0;
+   // public final static int SUCCESS = 0;
+    //****************通用***********************
+    //缺少参数或参数格式有误
+    public final static int INVALID_PARAMS = 101;
+    //服务器内部错误
+    public final static int INTERNAL_ERROR = 102;
+    //Token 无效或过期
+    public final static int INVVALID_TOKEN = 103;
+    //未知错误
+    public final static int UNKONWN_ERROR = 999;
 	//****************用户类型错误*****************
+    //用户已存在
+    public final static int USER_EXISTED = 201;
 	//用户密码错误
 	public final static int USER_PASSWORD_ERROR = 1100;
 	//用户不存在
@@ -29,8 +41,7 @@ public class StatusCode {
 	public final static int USER_ID_ERROR = 1103;
 	//用户昵称错误
 	public final static int USER_DISPLAYNAME_ERROR = 1103;
-	//用户已存在
-	public final static int USER_EXISTED = 1300;
+
 
 	//****************PPT类型错误*****************
 	//PPT不存在
