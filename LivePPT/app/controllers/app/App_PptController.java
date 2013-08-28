@@ -31,7 +31,7 @@ public class App_PptController extends Controller {
 		//检查必须的参数是否存在
 		//检查userId
 		resultJson = checkUserId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 
 		//获取参数
@@ -52,7 +52,7 @@ public class App_PptController extends Controller {
 		Map<String, String[]> params = request().queryString();
 		JsonResult resultJson;
 		resultJson = checkPptId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		Long pptId = Long.valueOf(params.get("pptId")[0]);
 		resultJson = pptService.getPptInfo(pptId);
@@ -81,11 +81,11 @@ public class App_PptController extends Controller {
 		JsonResult resultJson;
 		//检查pptId
 		resultJson = checkPptId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		//检查pageIndex
 		resultJson = checkPageIndex(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		
 		//TODO

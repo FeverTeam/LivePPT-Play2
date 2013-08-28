@@ -11,25 +11,26 @@ public class CommonException extends Exception {
     int retcode;
     String message;
 
-    public CommonException(){};
+    public CommonException() {
+    }
 
-    public CommonException(int retcode)
-    {
+    ;
+
+    public CommonException(int retcode) {
         this.retcode = retcode;
     }
 
-    public CommonException(int retcode,String message)
-    {
+    public CommonException(int retcode, String message) {
         super(message);
         this.retcode = retcode;
         this.message = message;
     }
 
-    public int getRetcode(){
+    public int getRetcode() {
         return retcode;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
     }
 }

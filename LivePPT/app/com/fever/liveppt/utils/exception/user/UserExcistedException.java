@@ -15,22 +15,19 @@ public class UserExcistedException extends UserException {
     /**
      * 构造方法
      */
-    public UserExcistedException()  {
-        super(StatusCode.USER_EXISTED) ;
+    public UserExcistedException() {
+        super(StatusCode.USER_EXISTED);
     }
 
-    public UserExcistedException(int retcode)
-    {
+    public UserExcistedException(int retcode) {
         super(retcode);
     }
 
-    public UserExcistedException(String message)
-    {
-        super(StatusCode.INVALID_PARAMS,message);
+    public UserExcistedException(String message) {
+        super(StatusCode.INVALID_PARAMS, message);
     }
 
-    public UserExcistedException(int retcode,String message)
-    {
-        super(retcode,message);
+    public UserExcistedException(int retcode, String message) {
+        super(retcode, message);
     }
 }

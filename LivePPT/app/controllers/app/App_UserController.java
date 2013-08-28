@@ -2,6 +2,7 @@ package controllers.app;
 
 import java.util.Map;
 
+import com.fever.liveppt.utils.ControllerUtils;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.exception.CommonException;
 import com.fever.liveppt.utils.exception.UserException;
@@ -11,130 +12,131 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import com.fever.liveppt.service.UserService;
-import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.StatusCode;
 import com.google.inject.Inject;
 
 public class App_UserController extends Controller {
-	@Inject
-	UserService userService;
+    @Inject
+    UserService userService;
 
-	/**
-	 * 用户登录接口
-	 * @return
-	 */
-	public Result login() {
-		//获取get类型的参数
-		Map<String, String[]> params = request().queryString();
-		
-		//检查必须的参数是否存在
-		ResultJson resultJson;
-		resultJson = checkEmail(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
-			return ok(resultJson);
-		
-		resultJson = checkPassword(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
-			return ok(resultJson);
+    /**
+     * 用户登录接口
+     *
+     * @return
+     */
+    public Result login() {
+        //获取get类型的参数
+        Map<String, String[]> params = request().queryString();
 
-		// 获取参数		
-		String email = params.get("email")[0];
-		String password = params.get("password")[0];
-
-		//验证帐号密码是否匹配
-		//resultJson = userService.isPassworrdCorrect(email, password);
-		
-		Logger.info(resultJson.toString());
-
-		return ok(resultJson);
-	}
-	
-	/**
-	 * 用户注册接口
-	 * @return
-	 */
-	public Result register(){
-		Map<String, String[]> params = request().body().asFormUrlEncoded();
-        if (null==params){Logger.error("params null");}
-		//检查必须的参数是否存在
-	    ResultJson resultJson;
-		resultJson = checkEmail(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE)){
-            try {
-                throw new InvalidParamsException("email字段为空") ;
-            } catch (InvalidParamsException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                resultJson = new ResultJson(e)    ;
-            }
+        //检查必须的参数是否存在
+        ResultJson resultJson;
+        resultJson = checkEmail(params);
+        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
             return ok(resultJson);
-        }
-		resultJson = checkPassword(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE)) {
-            try {
-                throw new InvalidParamsException("password字段为空") ;
-            } catch (InvalidParamsException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                resultJson = new ResultJson(e)    ;
-            }
-            return ok(resultJson);
-        }
-		resultJson = checkDisplayName(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE)){
-            try {
-                throw new InvalidParamsException("display字段为空") ;
-            } catch (InvalidParamsException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                resultJson = new ResultJson(e)    ;
-            }
-            return ok(resultJson);
-        }
 
-        resultJson = checkSeed(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.NONE)){
-            try {
-                throw new InvalidParamsException("seed字段为空") ;
-            } catch (InvalidParamsException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                resultJson = new ResultJson(e)    ;
-            }
+        resultJson = checkPassword(params);
+        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
             return ok(resultJson);
-        }
-		// 获取参数		
-		String email = params.get("uemail")[0];
-		String password = params.get("password")[0];
-		String displayName = params.get("displayname")[0];
-        String seed = params.get("seed")[0];
-		
-		//注册用户
-        try {
-            resultJson = userService.register(email, password, displayName,seed);
-        } catch (CommonException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            resultJson = new ResultJson(e);
-        } catch (UserException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            resultJson = new ResultJson(e);
-        }
+
+        // 获取参数
+        String email = params.get("email")[0];
+        String password = params.get("password")[0];
+
+        //验证帐号密码是否匹配
+        //resultJson = userService.isPassworrdCorrect(email, password);
 
         Logger.info(resultJson.toString());
-		
-		return ok(resultJson);
-	}
-		
-	/**
-	 * 检查email字段
-	 * @param params
-	 * @return
-	 */
-    ResultJson checkEmail(Map<String,String[]> params)
-    {
-        if (!params.containsKey("uemail")){
-            return new ResultJson( StatusCode.INVALID_PARAMS,null, "email字段缺失");
-        }
-        return new ResultJson(StatusCode.NONE,null,null) ;
+
+        return ok(resultJson);
     }
-	/*JsonResult checkEmail(Map<String, String[]> params)
-	{
+
+    /**
+     * 用户注册接口
+     *
+     * @return
+     */
+    public Result register() {
+        //获取POST参数
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
+
+        //返回的JSON，初始化为null
+        ResultJson resultJson = null;
+        try {
+            if (null == params) {
+                throw new InvalidParamsException();
+            }
+
+            //检查必须的参数是否存在
+            //uemail
+            if (!ControllerUtils.isFieldExisted(params, "uemail")) {
+                throw new InvalidParamsException();
+            }
+
+            /*
+            //displayname
+
+            if (!ControllerUtils.isFieldExisted(params, "displayname")) {
+                throw new InvalidParamsException();
+            }
+            */
+
+            //password
+            if (!ControllerUtils.isFieldExisted(params, "password")) {
+                throw new InvalidParamsException();
+            }
+
+            //seed
+            if (!ControllerUtils.isFieldExisted(params, "seed") || params.get("seed")[0].length() != 16) {
+                throw new InvalidParamsException();
+            }
+
+
+            // 获取参数
+            String email = params.get("uemail")[0];
+            String encryptedPassword = params.get("password")[0];
+            String displayName = (ControllerUtils.isFieldExisted(params, "displayname")) ? params.get("displayname")[0] : "";
+            String seed = params.get("seed")[0];
+
+
+            //注册用户,写入新用户信息
+            resultJson = userService.register(email, encryptedPassword, displayName, seed);
+
+        } catch (InvalidParamsException e) {
+            //e.printStackTrace();
+            resultJson = new ResultJson(e);
+        } catch (UserException e) {
+            //e.printStackTrace();
+            resultJson = new ResultJson(e);
+        } catch (CommonException e) {
+            //e.printStackTrace();
+            resultJson = new ResultJson(e);
+        }
+
+        //若返回JSON为空，设为位置错误
+        resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
+
+
+        //返回JSON
+        return ok(resultJson);
+
+    }
+
+    //以下代码准备舍弃
+
+    /**
+     * 检查email字段
+     *
+     * @param params
+     * @return
+     */
+    ResultJson checkEmail(Map<String, String[]> params) {
+        if (!params.containsKey("uemail")) {
+            return new ResultJson(StatusCode.INVALID_PARAMS, null, "email字段缺失");
+        }
+        return new ResultJson(StatusCode.SUCCESS, null, null);
+    }
+    /*JsonResult checkEmail(Map<String, String[]> params)
+    {
 		if (!params.containsKey("email")){
 			return new JsonResult(false, StatusCode.USER_EMAIL_ERROR, "email字段错误");
 		}
@@ -142,45 +144,43 @@ public class App_UserController extends Controller {
 		//添加邮件格式检查
 	    /*if (! patternNumbers.matcher(params.get("email")[0]).matches())
 			return new JsonResult(false, StatusCode.USER_EMAIL_ERROR, "email字段错误");*/
-	/*	return new JsonResult(true);
-	}  */
-	
-	/**
-	 * 检查password字段
-	 * @param params
-	 * @return
-	 */
-    ResultJson checkPassword(Map<String,String[]> params)
-    {
-        if (!params.containsKey("password")){
-            return new ResultJson( StatusCode.INVALID_PARAMS,null, "password字段缺失");
-        }
-        return new ResultJson(StatusCode.NONE,null,null) ;
-    }
-	
-	/**
-	 * 检查displayName字段
-	 * @param params
-	 * @return
-	 */
-    ResultJson checkDisplayName(Map<String,String[]> params)
-    {
-        if (!params.containsKey("displayname")){
-            return new ResultJson( StatusCode.INVALID_PARAMS,null, "displayName字段缺失");
-        }
-        return new ResultJson(StatusCode.NONE,null,null) ;
-    }
+    /*	return new JsonResult(true);
+    }  */
 
     /**
+     * 检查password字段
      *
      * @param params
      * @return
      */
-    ResultJson checkSeed(Map<String,String[]> params)
-    {
-        if (!params.containsKey("seed")){
-            return new ResultJson( StatusCode.INVALID_PARAMS,null, "seed字段缺失");
+    ResultJson checkPassword(Map<String, String[]> params) {
+        if (!params.containsKey("password")) {
+            return new ResultJson(StatusCode.INVALID_PARAMS, null, "password字段缺失");
         }
-        return new ResultJson(StatusCode.NONE,null,null) ;
+        return new ResultJson(StatusCode.SUCCESS, null, null);
+    }
+
+    /**
+     * 检查displayName字段
+     *
+     * @param params
+     * @return
+     */
+    ResultJson checkDisplayName(Map<String, String[]> params) {
+        if (!params.containsKey("displayname")) {
+            return new ResultJson(StatusCode.INVALID_PARAMS, null, "displayName字段缺失");
+        }
+        return new ResultJson(StatusCode.SUCCESS, null, null);
+    }
+
+    /**
+     * @param params
+     * @return
+     */
+    ResultJson checkSeed(Map<String, String[]> params) {
+        if (!params.containsKey("seed")) {
+            return new ResultJson(StatusCode.INVALID_PARAMS, null, "seed字段缺失");
+        }
+        return new ResultJson(StatusCode.SUCCESS, null, null);
     }
 }

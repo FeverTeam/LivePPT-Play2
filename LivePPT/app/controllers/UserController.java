@@ -149,7 +149,7 @@ public class UserController extends Controller {
             //封装json格式的data数据
             DataJson dataJson = new DataJson();
             dataJson.setStringField(map);
-            JsonResult results = new JsonResult(true,StatusCode.NONE,dataJson,"Sign up succefully")   ;
+            JsonResult results = new JsonResult(true,StatusCode.SUCCESS,dataJson,"Sign up succefully")   ;
            // UserService ss = null;
             // JsonResult results = ss.register(email,password,displayname)  ;
             //词句不成

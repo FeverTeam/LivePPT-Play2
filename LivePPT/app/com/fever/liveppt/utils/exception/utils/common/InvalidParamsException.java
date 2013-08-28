@@ -15,22 +15,19 @@ public class InvalidParamsException extends CommonException {
     /**
      * 构造方法
      */
-    public InvalidParamsException()  {
-        super(StatusCode.INVALID_PARAMS) ;
+    public InvalidParamsException() {
+        super(StatusCode.INVALID_PARAMS, StatusCode.INVALID_PARAMS_MESSAGE);
     }
 
-    public InvalidParamsException(int retcode)
-    {
+    public InvalidParamsException(int retcode) {
         super(retcode);
     }
 
-    public InvalidParamsException(String message)
-    {
-        super(StatusCode.INVALID_PARAMS,message);
+    public InvalidParamsException(String message) {
+        super(StatusCode.INVALID_PARAMS, message);
     }
 
-    public InvalidParamsException(int retcode,String message)
-    {
-        super(retcode,message);
+    public InvalidParamsException(int retcode, String message) {
+        super(retcode, message);
     }
 }

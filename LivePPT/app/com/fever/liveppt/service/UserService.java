@@ -19,11 +19,11 @@ public interface UserService {
     /**
      * 用户注册
      * @param email
-     * @param password
+     * @param encryptedPassword
      * @param displayName
      * @param seed
      * @return ResultJson
      */
-	public ResultJson register(String email, String password, String displayName,String seed) throws InvalidParamsException, CommonException, UserException;
+	public ResultJson register(String email, String encryptedPassword, String displayName,String seed) throws InvalidParamsException, CommonException, UserException;
 
 }

@@ -6,8 +6,8 @@ import org.codehaus.jackson.node.ObjectNode;
 
 /**
  * 接口对外通用JSON格式封装类
- * @author 梁博文,黎伟杰
  *
+ * @author 梁博文, 黎伟杰
  */
 public class JsonResult extends ObjectNode {
 
@@ -19,60 +19,54 @@ public class JsonResult extends ObjectNode {
     //Constructors
 
     /**
-     *
      * @param isSuccess 是否执行成功
      */
-    public JsonResult(Boolean isSuccess){
-        this(isSuccess, StatusCode.NONE, null,"");
+    public JsonResult(Boolean isSuccess) {
+        this(isSuccess, StatusCode.SUCCESS, null, "");
     }
 
     /**
-     *
-     * @param isSuccess 是否执行成功
+     * @param isSuccess  是否执行成功
      * @param statusCode 状态码
      */
-    public JsonResult(Boolean isSuccess, Integer statusCode){
-        this(isSuccess, statusCode, null,"");
+    public JsonResult(Boolean isSuccess, Integer statusCode) {
+        this(isSuccess, statusCode, null, "");
     }
 
     /**
-     *
      * @param isSuccess 是否执行成功
-     * @param dataNode JsonNode类型的数据
+     * @param dataNode  JsonNode类型的数据
      */
-    public JsonResult(Boolean isSuccess, JsonNode dataNode){
-        this(isSuccess, StatusCode.NONE, dataNode,"");
+    public JsonResult(Boolean isSuccess, JsonNode dataNode) {
+        this(isSuccess, StatusCode.SUCCESS, dataNode, "");
     }
 
 
     /**
-     *
-     * @param isSuccess 是否执行成功
+     * @param isSuccess  是否执行成功
      * @param statusCode 状态码
-     * @param dataNode JsonNode类型的数据
+     * @param dataNode   JsonNode类型的数据
      */
-    public JsonResult(Boolean isSuccess, Integer statusCode, JsonNode dataNode){
+    public JsonResult(Boolean isSuccess, Integer statusCode, JsonNode dataNode) {
         this(isSuccess, statusCode, dataNode, "");
     }
 
     /**
-     *
-     * @param isSuccess 是否执行成功
+     * @param isSuccess  是否执行成功
      * @param statusCode 状态码
-     * @param message 附加信息
+     * @param message    附加信息
      */
-    public JsonResult(Boolean isSuccess, Integer statusCode,String message){
+    public JsonResult(Boolean isSuccess, Integer statusCode, String message) {
         this(isSuccess, statusCode, null, message);
     }
 
     /**
-     *
-     * @param isSuccess 是否执行成功
+     * @param isSuccess  是否执行成功
      * @param statusCode 状态码
-     * @param dataNode JsonNode类型的数据
-     * @param message 附加信息
+     * @param dataNode   JsonNode类型的数据
+     * @param message    附加信息
      */
-    public JsonResult(Boolean isSuccess, Integer statusCode, JsonNode dataNode,String message){
+    public JsonResult(Boolean isSuccess, Integer statusCode, JsonNode dataNode, String message) {
         super(JsonNodeFactory.instance);
 
         this.setIsSuccess(isSuccess);
@@ -84,40 +78,38 @@ public class JsonResult extends ObjectNode {
 
     //Getters and Setters
 
-    public Boolean getIsSuccess(){
+    public Boolean getIsSuccess() {
         return this.get(KEY_IS_SUCCESS).getValueAsBoolean();
     }
 
-    public void setIsSuccess(boolean isSuccess){
+    public void setIsSuccess(boolean isSuccess) {
         this.put(KEY_IS_SUCCESS, isSuccess);
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return this.get(KEY_MESSAGE).getTextValue();
     }
 
-    public JsonResult setMessage(String message){
+    public JsonResult setMessage(String message) {
         this.put(KEY_MESSAGE, message);
         return this;
 
     }
 
-    public ObjectNode getData(){
+    public ObjectNode getData() {
         return (ObjectNode) this.get(KEY_DATA);
     }
 
-    public void setData(JsonNode data){
+    public void setData(JsonNode data) {
         this.put(KEY_DATA, data);
     }
 
-    public Integer getStatusCode()
-    {
+    public Integer getStatusCode() {
         return this.get(KEY_STATUS_CODE).getValueAsInt();
     }
 
-    public void setStatusCode(Integer statusCode)
-    {
-        this.put(KEY_STATUS_CODE,statusCode);
+    public void setStatusCode(Integer statusCode) {
+        this.put(KEY_STATUS_CODE, statusCode);
     }
 
 
