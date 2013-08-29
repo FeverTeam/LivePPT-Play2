@@ -17,10 +17,10 @@ object ApplicationBuild extends Build {
     "mysql" % "mysql-connector-java" % "5.1.24",
 
     //Guice
-    "com.google.inject" % "guice" % "3.0",
+    "com.google.inject" % "guice" % "3.0"
 
     //Memcached
-    "com.github.mumoshu" %% "play2-memcached" % "0.3.0.2"
+    // "com.github.mumoshu" %% "play2-memcached" % "0.3.0.2"
   )
 
   
@@ -28,7 +28,7 @@ object ApplicationBuild extends Build {
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here
     // Memcached https://github.com/mumoshu/play2-memcached
-    resolvers += "Spy Repository" at "http://files.couchbase.com/maven2" // required to resolve `spymemcached`, the plugin's dependency.
+    //resolvers += "Spy Repository" at "http://files.couchbase.com/maven2" // required to resolve `spymemcached`, the plugin's dependency.
   )
 
 }

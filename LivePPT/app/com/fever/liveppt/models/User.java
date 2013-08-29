@@ -14,6 +14,9 @@ import play.db.ebean.Model;
 import play.libs.Json;
 import play.mvc.Http.Session;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * 用户类
  * 
@@ -66,6 +69,15 @@ public class User extends Model {
 		}
 	}
 
+    public static boolean isEmailValid(String email) {
+        Pattern p = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
+        Matcher m = p.matcher(email);
+        if(m.matches())
+            return true;
+        else
+            return false;
+
+    }
 	public static User isPasswordCorrect(String email, String password) {
 		User user = User.find.where().eq("email", email)
 				.eq("password", password).findUnique();
