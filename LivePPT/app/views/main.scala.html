@@ -1,80 +1,65 @@
 @(name: String, title: String)(css: Html)(content: Html)
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8">
     <title> @title - @Messages("gen_subtitle")</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <link rel="SHORTCUT ICON" href="/assets/images/liveppt-icon-favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="SHORTCUT ICON" href="/assets/images/liveppt-icon-favicon.png">
+
+    <!-- Le styles -->
     <link href="/assets/css/bootstrap-combined.min.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" type="text/css" href="/assets/css/uploadify.css" /> -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/uploadifive.css">
-    
-    <style type="text/css">
-      body {
-        padding-top: 20px;
-        padding-bottom: 40px;
-      }
-
-      /* Custom container */
-      .container-narrow {
-        margin: 0 auto;
-        max-width: 800px;
-      }
-      .container-narrow > hr {
-        margin: 30px 0;
-      }
-
-      /* Main marketing message and sign up button */
-      .jumbotron {
-        margin: 60px 0;
-        text-align: center;
-      }
-      .jumbotron h1 {
-        font-size: 72px;
-        line-height: 1;
-      }
-      .jumbotron .btn {
-        font-size: 21px;
-        padding: 14px 24px;
-      }
-    </style>
-
-    <style type="text/css">
-      @css
-    </style>
+    <link rel="stylesheet" href="/assets/css/style.css">
 
   </head>
 
   <body>
-    <div class="container-narrow">
-      <div class="masthead">
-        <ul class="nav nav-pills pull-right">
-          <li id="index"><a href="/"> @Messages("nav_tab_index") </a></li>
-          <li id="myppt"><a href="/myppt"> @Messages("nav_tab_myppt") </a></li>
-          <li id="mymeeting"><a href="/mymeeting"> @Messages("nav_tab_mymeeting") </a></li>
-          <li id="appDownload"><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
-          <li id="aboutUs"><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
-        </ul>
-
-        <h3 class="muted"><img src="/assets/images/liveppt-icon.png" class="img-rounded" width="30" height="20"/>&nbsp;LivePPT </h3>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">CloudSlides</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="/"> @Messages("nav_tab_index") </a></li>
+              <li><a href="/myppt"> @Messages("nav_tab_myppt") </a></li>
+              <li><a href="/mymeeting"> @Messages("nav_tab_mymeeting") </a></li>
+              <li><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
+              <li><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
+            </ul>
+            <form class="navbar-form pull-right">
+              <input class="span2" type="text" placeholder="账号" id="inputEmail">
+              <input class="span2" type="password" placeholder="密码" id="inputPassword">
+              <button type="submit" class="btn btn-login-submit"> @Messages("login_btn_login") </button>
+            </form>
+          </div><!--/.nav-collapse -->
+        </div>
       </div>
+    </div>
 
-
+    <div class="container">
+      @content
       <hr>
-    	@content
-      <hr>
+      <footer>
+        <p>&copy; Fever Team 2013 梁博文 叶江楠 何俊浩 黎俊良 子靖<a target="_blank" href="http://weibo.com/feverteam"></a></p>
+      </footer>
 
-      <div class="footer">
-        <p>&copy; Fever Team 2013 梁博文 黎伟杰 何俊浩<a target="_blank" href="http://weibo.com/feverteam"></a></p>
-      </div>
     </div> <!-- /container -->
 
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
     <script src="/assets/js/sea-2.0.0.js" data-config="/assets/js/main-config"></script>
     <script>
       seajs.use('@name');
     </script>
+
   </body>
 </html>
