@@ -100,7 +100,7 @@ public class MeetingServiceImpl implements MeetingService {
 		if (meeting==null){
 			resultJson = new JsonResult(false, StatusCode.MEETING_NOT_EXISTED, "没有该会议。");
 		} else {
-			resultJson = new JsonResult(true, StatusCode.NONE, meeting.toJson());
+			resultJson = new JsonResult(true, StatusCode.SUCCESS, meeting.toJson());
 		}
 		return resultJson;
 	}
