@@ -1,6 +1,10 @@
 package com.fever.liveppt.service;
 
 import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.exception.CommonException;
+import com.fever.liveppt.utils.exception.UserException;
+import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
 
 public interface UserService {
 
@@ -11,14 +15,15 @@ public interface UserService {
 	 * @return 返回JsonResult格式的信息
 	 */
 	public JsonResult isPassworrdCorrect(String email, String password);
-	
-	/**
-	 * 注册新用户
-	 * @param email
-	 * @param password
-	 * @param displayName
-	 * @return
-	 */
-	public JsonResult register(String email, String password, String displayName);
+
+    /**
+     * 用户注册
+     * @param email
+     * @param encryptedPassword
+     * @param displayName
+     * @param seed
+     * @return ResultJson
+     */
+	public ResultJson register(String email, String encryptedPassword, String displayName,String seed) throws InvalidParamsException, CommonException, UserException;
 
 }

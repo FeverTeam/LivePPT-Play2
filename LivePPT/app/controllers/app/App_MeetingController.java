@@ -30,7 +30,7 @@ public class App_MeetingController extends Controller {
 		
 		//检查userId
 		resultJson = checkUserId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);		
 		
 		//获取参数
@@ -54,15 +54,15 @@ public class App_MeetingController extends Controller {
 		JsonResult resultJson;
 		
 		resultJson = checkUserId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		
 		resultJson = checkPptId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		
 		resultJson = checkTopic(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		
 		String topic = params.get("topic")[0];
@@ -83,12 +83,12 @@ public class App_MeetingController extends Controller {
 		
 		//检查用户Id
 		resultJson = checkUserId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		
 		//检查meetingId
 		resultJson = checkMeetingId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 
 		Long meetingId = Long.parseLong(params.get("meetingId")[0]);
@@ -110,7 +110,7 @@ public class App_MeetingController extends Controller {
 		
 		//检查userId
 		resultJson = checkUserId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);		
 		
 		//获取参数
@@ -136,7 +136,7 @@ public class App_MeetingController extends Controller {
 		
 		//检查meetingId
 		resultJson = checkMeetingId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		
 		Long meetingId = Long.parseLong(params.get("meetingId")[0]);
@@ -159,11 +159,11 @@ public class App_MeetingController extends Controller {
 		JsonResult resultJson;
 		
 		resultJson = checkMeetingId(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		
 		resultJson = checkPageIndex(params);
-		if (!resultJson.getStatusCode().equals(StatusCode.NONE))
+		if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
 			return ok(resultJson);
 		
 		meetingId = Long.valueOf(params.get("meetingId")[0]);

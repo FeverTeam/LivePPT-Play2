@@ -1,6 +1,8 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
+#new route
+POST    /user/register              @controllers.app.App_UserController.register()
 
 # Page
 GET     /                           controllers.Frontend.index()
@@ -10,7 +12,6 @@ GET		/myppt						controllers.Frontend.myppt()
 GET		/mymeeting					controllers.Frontend.mymeeting()
 GET 	/appDownload 				controllers.Frontend.appDownload()
 GET 	/aboutUs 					controllers.Frontend.aboutUs()
-
 
 GET 	/pptListForMeeting			controllers.Frontend.pptListForMeeting()
 GET 	/foundNewMeeting/:pptid		controllers.Frontend.foundNewMeeting(pptid:Long)
