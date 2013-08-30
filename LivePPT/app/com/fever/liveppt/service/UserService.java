@@ -26,4 +26,12 @@ public interface UserService {
      */
 	public ResultJson register(String email, String encryptedPassword, String displayName,String seed) throws InvalidParamsException, CommonException, UserException;
 
+    /**
+     *
+     * @param email
+     * @return
+     * @throws UserException
+     */
+    public ResultJson isEmailExisted(String email) throws UserException;
+
 }

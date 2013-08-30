@@ -20,7 +20,39 @@ public class App_UserController extends Controller {
     @Inject
     UserService userService;
 
-    /**
+    /** 检验用户Email是否被占用
+     *
+     * @return
+     */
+    public Result checkEmail()
+    {
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
+        //返回的JSON，初始化为null
+        ResultJson resultJson = null;
+        try {
+            if (null == params) {
+                throw new InvalidParamsException();
+            }
+            //uemail
+            if (!ControllerUtils.isFieldExisted(params, "uemail")) {
+                throw new InvalidParamsException();
+            }
+
+            // 获取参数
+            String email = params.get("uemail")[0];
+
+            //验证用户Email是否被占用
+            resultJson = userService.isEmailExisted(email);
+    } catch (UserException e) {
+            resultJson = new ResultJson(e);
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        }
+
+        //返回JSON
+        return ok(resultJson);
+    }
+        /**
      * 用户登录接口
      *
      * @return
@@ -36,11 +68,9 @@ public class App_UserController extends Controller {
                 throw new InvalidParamsException();
             }
         //检查必须的参数是否存在
-              System.out.println(params.get("password")[0]) ;
             //检查必须的参数是否存在
             //uemail
             if (!ControllerUtils.isFieldExisted(params, "uemail")) {
-                System.out.println("hello");
                 throw new InvalidParamsException();
             }
 

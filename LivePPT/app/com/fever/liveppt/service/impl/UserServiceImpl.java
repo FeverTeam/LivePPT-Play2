@@ -21,8 +21,23 @@ import java.util.Map;
 
 public class UserServiceImpl implements UserService {
 
+    public ResultJson isEmailExisted(String email) throws UserException
+    {
+        ResultJson resultJson;
+        User user = User.find.where().eq("email", email).findUnique();
+        if (user != null) {
+            // 用户存在
+            // 封装返回信息,用户已注册
+            throw new UserExcistedException();
+        }
+        else
+        {
+            resultJson = new ResultJson(StatusCode.SUCCESS,null,"用户邮箱未被占用") ;
+        }
+        return resultJson;
+    }
+
     public ResultJson isPassworrdCorrect(String email, String encryptedPassword,String seed) throws UserException {
-        JsonResult jsonNode;
         ResultJson resultJson;
         //解密password
         String password = Crypto.decryptAES(encryptedPassword, seed);        // 验证用户是否存在

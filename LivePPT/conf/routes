@@ -4,6 +4,7 @@
 #new route
 POST    /user/register              @controllers.app.App_UserController.register()
 POST    /user/login                 @controllers.app.App_UserController.login()
+POST    /user/check_email           @controllers.app.App_UserController.checkEmail()
 
 # Page
 GET     /                           controllers.Frontend.index()
