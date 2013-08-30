@@ -3,6 +3,7 @@
 # ~~~~
 #new route
 POST    /user/register              @controllers.app.App_UserController.register()
+POST    /user/login                 @controllers.app.App_UserController.login()
 
 # Page
 GET     /                           controllers.Frontend.index()

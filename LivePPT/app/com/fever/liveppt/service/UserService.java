@@ -11,10 +11,10 @@ public interface UserService {
 	/**
 	 * 验证帐号密码
 	 * @param email
-	 * @param password
+	 * @param encryptedPassword
 	 * @return 返回JsonResult格式的信息
 	 */
-	public JsonResult isPassworrdCorrect(String email, String password);
+	public ResultJson isPassworrdCorrect(String email,  String encryptedPassword,String seed) throws UserException;
 
     /**
      * 用户注册
