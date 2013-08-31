@@ -1,31 +1,30 @@
 package controllers.app;
 
-import java.util.Map;
-
+import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.ControllerUtils;
 import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.exception.CommonException;
 import com.fever.liveppt.utils.exception.UserException;
 import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
+import com.google.inject.Inject;
 import play.Logger;
 import play.api.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import com.fever.liveppt.service.UserService;
-import com.fever.liveppt.utils.StatusCode;
-import com.google.inject.Inject;
+import java.util.Map;
 
 public class App_UserController extends Controller {
     @Inject
     UserService userService;
 
-    /** 检验用户Email是否被占用
+    /**
+     * 检验用户Email是否被占用
      *
      * @return
      */
-    public Result checkEmail()
-    {
+    public Result checkEmail() {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         //返回的JSON，初始化为null
         ResultJson resultJson = null;
@@ -43,7 +42,7 @@ public class App_UserController extends Controller {
 
             //验证用户Email是否被占用
             resultJson = userService.isEmailExisted(email);
-    } catch (UserException e) {
+        } catch (UserException e) {
             resultJson = new ResultJson(e);
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
@@ -52,14 +51,15 @@ public class App_UserController extends Controller {
         //返回JSON
         return ok(resultJson);
     }
-        /**
+
+    /**
      * 用户登录接口
      *
      * @return
      */
     public Result login() {
         //获取get类型的参数
-      //  Map<String, String[]> params = request().queryString();
+        //  Map<String, String[]> params = request().queryString();
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         //返回的JSON，初始化为null
         ResultJson resultJson = null;
@@ -67,7 +67,7 @@ public class App_UserController extends Controller {
             if (null == params) {
                 throw new InvalidParamsException();
             }
-        //检查必须的参数是否存在
+            //检查必须的参数是否存在
             //检查必须的参数是否存在
             //uemail
             if (!ControllerUtils.isFieldExisted(params, "uemail")) {
@@ -86,18 +86,18 @@ public class App_UserController extends Controller {
 
 
             // 获取参数
-        String email = params.get("uemail")[0];
-        String encryptedPassword = params.get("password")[0];
-        String seed = params.get("seed")[0] ;
+            String email = params.get("uemail")[0];
+            String encryptedPassword = params.get("password")[0];
+            String seed = params.get("seed")[0];
 
             //for test
-           // encryptedPassword =  Crypto.encryptAES(encryptedPassword,seed);
+            // encryptedPassword =  Crypto.encryptAES(encryptedPassword,seed);
 
-        //验证帐号密码是否匹配
-        resultJson = userService.isPassworrdCorrect(email, encryptedPassword,seed);
+            //验证帐号密码是否匹配
+            resultJson = userService.isPassworrdCorrect(email, encryptedPassword, seed);
 
-        Logger.info(resultJson.toString());
-    } catch (UserException e) {
+            Logger.info(resultJson.toString());
+        } catch (UserException e) {
             resultJson = new ResultJson(e);
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
@@ -110,7 +110,7 @@ public class App_UserController extends Controller {
         return ok(resultJson);
     }
 
-        /**
+    /**
      * 用户注册接口
      *
      * @return
@@ -153,11 +153,11 @@ public class App_UserController extends Controller {
 
             // 获取参数
             String email = params.get("uemail")[0];
-            String encryptedPassword =params.get("password")[0];
+            String encryptedPassword = params.get("password")[0];
             String displayName = (ControllerUtils.isFieldExisted(params, "displayname")) ? params.get("displayname")[0] : "";
             String seed = params.get("seed")[0];
             //for test
-            encryptedPassword =  Crypto.encryptAES(encryptedPassword,seed);
+            encryptedPassword = Crypto.encryptAES(encryptedPassword, seed);
 
 
             //注册用户,写入新用户信息
