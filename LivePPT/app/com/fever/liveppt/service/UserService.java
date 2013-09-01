@@ -14,7 +14,7 @@ public interface UserService {
 	 * @param encryptedPassword
 	 * @return 返回JsonResult格式的信息
 	 */
-	public ResultJson isPassworrdCorrect(String email,  String encryptedPassword,String seed) throws UserException;
+	public ResultJson isPassworrdCorrect(String email,  String encryptedPassword,String seed) throws UserException, CommonException;
 
     /**
      * 用户注册
@@ -32,6 +32,6 @@ public interface UserService {
      * @return
      * @throws UserException
      */
-    public ResultJson isEmailExisted(String email) throws UserException;
+    public ResultJson isEmailExisted(String email) throws UserException, CommonException;
 
 }

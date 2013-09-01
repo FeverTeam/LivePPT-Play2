@@ -21,9 +21,12 @@ import java.util.Map;
 
 public class UserServiceImpl implements UserService {
 
-    public ResultJson isEmailExisted(String email) throws UserException
+    public ResultJson isEmailExisted(String email) throws CommonException,UserException
     {
         ResultJson resultJson;
+        if (User.isEmailValid(email) == false) {
+            //电邮格式不正确
+            throw new InvalidParamsException();}
         User user = User.find.where().eq("email", email).findUnique();
         if (user != null) {
             // 用户存在
@@ -37,19 +40,23 @@ public class UserServiceImpl implements UserService {
         return resultJson;
     }
 
-    public ResultJson isPassworrdCorrect(String email, String encryptedPassword,String seed) throws UserException {
+    public ResultJson isPassworrdCorrect(String email, String encryptedPassword,String seed) throws CommonException,UserException {
         ResultJson resultJson;
         //解密password
-        String password = Crypto.decryptAES(encryptedPassword, seed);        // 验证用户是否存在
+       // String password = Crypto.decryptAES(encryptedPassword, seed);        // 验证用户是否存在
         User user = User.find.where().eq("email", email).findUnique();
+        String password = Crypto.sign(user.password,seed.getBytes());
         if (user == null) {
             // 用户不存在
             // 封装返回信息,用户不存在
             throw new EmailNotExistedException();
-        } else {
+        } else if (User.isEmailValid(email) == false) {
+            //电邮格式不正确
+            throw new InvalidParamsException();}
+        else {
             // 用户存在
             // 验证用户密码
-            if (user.password.equals(password)) {
+            if (encryptedPassword.equals(password)) {
                 // 密码验证成功
                 //生成token
                 String token = Crypto.sign(email);
@@ -62,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 DataJson dataJson = new DataJson(data);
 
                 // 封装返回信息
-                resultJson = new ResultJson(StatusCode.SUCCESS,dataJson,"登陆成功");
+                resultJson = new ResultJson(StatusCode.SUCCESS,dataJson,"success");
             } else {
                 throw new PasswordNotMatchException();
             }

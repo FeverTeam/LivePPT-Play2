@@ -47,6 +47,8 @@ public class App_UserController extends Controller {
             resultJson = new ResultJson(e);
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
         }
 
         //返回JSON
@@ -80,7 +82,7 @@ public class App_UserController extends Controller {
             }
 
             //seed
-            if (!ControllerUtils.isFieldExisted(params, "seed") || params.get("seed")[0].length() != 16) {
+            if (!ControllerUtils.isFieldExisted(params, "seed") ) {
                 throw new InvalidParamsException();
             }
 
@@ -90,16 +92,18 @@ public class App_UserController extends Controller {
         String encryptedPassword = params.get("password")[0];
         String seed = params.get("seed")[0] ;
 
-            //for test
-           // encryptedPassword =  Crypto.encryptAES(encryptedPassword,seed);
+        //for test
+        // encryptedPassword =   play.libs.Crypto.sign(encryptedPassword, seed.getBytes());
 
         //验证帐号密码是否匹配
         resultJson = userService.isPassworrdCorrect(email, encryptedPassword,seed);
 
         Logger.info(resultJson.toString());
-    } catch (UserException e) {
+    }     catch (UserException e) {
             resultJson = new ResultJson(e);
         } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (CommonException e) {
             resultJson = new ResultJson(e);
         }
 
