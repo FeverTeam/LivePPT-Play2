@@ -12,23 +12,19 @@ import com.fever.liveppt.utils.exception.UserException;
  */
 public class PasswordNotMatchException extends UserException {
 
-    public PasswordNotMatchException()
-    {
-        super(StatusCode.PASSWORD_NOT_MATCH,StatusCode.PASSWORD_NOT_MATCH_MESSAGE);
+    public PasswordNotMatchException() {
+        super(StatusCode.PASSWORD_NOT_MATCH, StatusCode.PASSWORD_NOT_MATCH_MESSAGE);
     }
 
-    public PasswordNotMatchException(int retcode)
-    {
+    public PasswordNotMatchException(int retcode) {
         super(retcode);
     }
 
-    public PasswordNotMatchException(String message)
-    {
-        super(StatusCode.PASSWORD_NOT_MATCH,message);
+    public PasswordNotMatchException(String message) {
+        super(StatusCode.PASSWORD_NOT_MATCH, message);
     }
 
-    public PasswordNotMatchException(int retcode ,String message)
-    {
-        super(retcode,message);
+    public PasswordNotMatchException(int retcode, String message) {
+        super(retcode, message);
     }
 }

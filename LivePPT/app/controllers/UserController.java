@@ -117,7 +117,7 @@ public class UserController extends Controller {
             result.put("message", "不好意思！<br>相同email地址用户已被注册啦。");
 
             return ok(result);
-        } else if (User.isEmailValid(email) == false) {
+        } else if (User.isEmailFormatValid(email) == false) {
             //电邮格式不正确
             //throw InvalidParamsException
             JsonResult results = new JsonResult(false, StatusCode.USER_EXISTED, null, "电邮格式不正确。");
