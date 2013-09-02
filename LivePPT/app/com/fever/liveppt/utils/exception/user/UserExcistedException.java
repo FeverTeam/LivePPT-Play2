@@ -16,7 +16,7 @@ public class UserExcistedException extends UserException {
      * 构造方法
      */
     public UserExcistedException() {
-        super(StatusCode.USER_EXISTED);
+        super(StatusCode.USER_EXISTED, StatusCode.USER_EXISTED_MESSAGE);
     }
 
     public UserExcistedException(int retcode) {

@@ -1,23 +1,58 @@
 package controllers.app;
 
-import java.util.Map;
-
+import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.ControllerUtils;
 import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.exception.CommonException;
 import com.fever.liveppt.utils.exception.UserException;
 import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
+import com.google.inject.Inject;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import com.fever.liveppt.service.UserService;
-import com.fever.liveppt.utils.StatusCode;
-import com.google.inject.Inject;
+import java.util.Map;
 
 public class App_UserController extends Controller {
     @Inject
     UserService userService;
+
+    /**
+     * 检验用户Email是否被占用
+     *
+     * @return
+     */
+    public Result checkEmail() {
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
+        //返回的JSON，初始化为null
+        ResultJson resultJson = null;
+        try {
+            if (null == params) {
+                throw new InvalidParamsException();
+            }
+            //uemail
+            if (!ControllerUtils.isFieldExisted(params, "uemail")) {
+                throw new InvalidParamsException();
+            }
+
+            // 获取参数
+            String email = params.get("uemail")[0];
+
+            //验证用户Email是否被占用
+            resultJson = userService.isEmailExisted(email);
+
+        } catch (UserException e) {
+            resultJson = new ResultJson(e);
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+        }
+
+        //返回JSON
+        return ok(resultJson);
+    }
 
     /**
      * 用户登录接口
@@ -25,28 +60,58 @@ public class App_UserController extends Controller {
      * @return
      */
     public Result login() {
-        //获取get类型的参数
-        Map<String, String[]> params = request().queryString();
 
-        //检查必须的参数是否存在
-        ResultJson resultJson;
-        resultJson = checkEmail(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
+        String pass = play.libs.Crypto.sign("simonlbw", "12345".getBytes());
+        Logger.info("pass-" + pass);
 
-        resultJson = checkPassword(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
+        //获取POST参数
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
 
-        // 获取参数
-        String email = params.get("email")[0];
-        String password = params.get("password")[0];
+        //返回的JSON，初始化为null
+        ResultJson resultJson = null;
+        try {
+            if (null == params) {
+                throw new InvalidParamsException();
+            }
 
-        //验证帐号密码是否匹配
-        //resultJson = userService.isPassworrdCorrect(email, password);
+            //检查必须的参数是否存在
+            //uemail
+            if (!ControllerUtils.isFieldExisted(params, "uemail")) {
+                throw new InvalidParamsException();
+            }
 
-        Logger.info(resultJson.toString());
+            //password
+            if (!ControllerUtils.isFieldExisted(params, "password")) {
+                throw new InvalidParamsException();
+            }
 
+            //seed
+            if (!ControllerUtils.isFieldExisted(params, "seed")) {
+                throw new InvalidParamsException();
+            }
+
+
+            // 获取参数
+            String email = params.get("uemail")[0];
+            String encryptedPassword = params.get("password")[0];
+            String seed = params.get("seed")[0];
+
+
+            //验证帐号密码是否匹配
+            resultJson = userService.isPassworrdCorrect(email, encryptedPassword, seed);
+
+        } catch (UserException e) {
+            resultJson = new ResultJson(e);
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+        }
+
+        //若返回JSON为空，设为位置错误
+        resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
+
+        //返回JSON
         return ok(resultJson);
     }
 
@@ -131,7 +196,7 @@ public class App_UserController extends Controller {
      */
     ResultJson checkEmail(Map<String, String[]> params) {
         if (!params.containsKey("uemail")) {
-            return new ResultJson(StatusCode.INVALID_PARAMS, null, "email字段缺失");
+            return new ResultJson(StatusCode.INVALID_PARAMS, "email字段缺失", null);
         }
         return new ResultJson(StatusCode.SUCCESS, null, null);
     }
@@ -155,7 +220,7 @@ public class App_UserController extends Controller {
      */
     ResultJson checkPassword(Map<String, String[]> params) {
         if (!params.containsKey("password")) {
-            return new ResultJson(StatusCode.INVALID_PARAMS, null, "password字段缺失");
+            return new ResultJson(StatusCode.INVALID_PARAMS, "password字段缺失", null);
         }
         return new ResultJson(StatusCode.SUCCESS, null, null);
     }
@@ -168,7 +233,7 @@ public class App_UserController extends Controller {
      */
     ResultJson checkDisplayName(Map<String, String[]> params) {
         if (!params.containsKey("displayname")) {
-            return new ResultJson(StatusCode.INVALID_PARAMS, null, "displayName字段缺失");
+            return new ResultJson(StatusCode.INVALID_PARAMS, "displayName字段缺失", null);
         }
         return new ResultJson(StatusCode.SUCCESS, null, null);
     }
@@ -179,7 +244,7 @@ public class App_UserController extends Controller {
      */
     ResultJson checkSeed(Map<String, String[]> params) {
         if (!params.containsKey("seed")) {
-            return new ResultJson(StatusCode.INVALID_PARAMS, null, "seed字段缺失");
+            return new ResultJson(StatusCode.INVALID_PARAMS, "seed字段缺失", null);
         }
         return new ResultJson(StatusCode.SUCCESS, null, null);
     }

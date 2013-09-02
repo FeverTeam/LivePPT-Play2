@@ -1,17 +1,17 @@
 package com.fever.liveppt.service.impl;
 
-import com.fever.liveppt.utils.*;
-import com.fever.liveppt.utils.exception.CommonException;
-import com.fever.liveppt.utils.exception.UserException;
-import com.fever.liveppt.utils.exception.user.UserExcistedException;
-import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
-import org.codehaus.jackson.node.ObjectNode;
-
-import play.libs.Crypto;
-import play.libs.Json;
-
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.UserService;
+import com.fever.liveppt.utils.DataJson;
+import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.StatusCode;
+import com.fever.liveppt.utils.exception.CommonException;
+import com.fever.liveppt.utils.exception.UserException;
+import com.fever.liveppt.utils.exception.user.EmailNotExistedException;
+import com.fever.liveppt.utils.exception.user.PasswordNotMatchException;
+import com.fever.liveppt.utils.exception.user.UserExcistedException;
+import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
+import play.libs.Crypto;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,54 +19,88 @@ import java.util.Map;
 
 public class UserServiceImpl implements UserService {
 
-    public JsonResult isPassworrdCorrect(String email, String password) {
-        JsonResult jsonNode;
+    @Override
+    public ResultJson isEmailExisted(String email) throws CommonException, UserException {
+        ResultJson resultJson;
+        if (!User.isEmailFormatValid(email)) {
+            //电邮格式不正确
+            throw new InvalidParamsException();
+        }
+        int userCount = User.find.where().eq("email", email).findRowCount();
+        if (userCount > 0) {
+            // 用户存在
+            // 封装返回信息,用户已注册
+            throw new UserExcistedException();
+        } else {
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+        }
+        return resultJson;
+    }
 
-        // 验证用户是否存在
+    @Override
+    public ResultJson isPassworrdCorrect(String email, String hashedPassword, String seed) throws CommonException, UserException {
+        if (email == null || seed == null || !User.isEmailFormatValid(email)) {
+            //电邮格式不正确
+            throw new InvalidParamsException();
+        }
+
+        ResultJson resultJson;
+        //解密password
+        // String password = Crypto.decryptAES(encryptedPassword, seed);        // 验证用户是否存在
         User user = User.find.where().eq("email", email).findUnique();
+
         if (user == null) {
             // 用户不存在
             // 封装返回信息,用户不存在
-            jsonNode = new JsonResult(false, StatusCode.USER_NOT_EXISTED, "用户不存在");
+            throw new EmailNotExistedException();
         } else {
             // 用户存在
+
+            //以用户密码生成hash以供比对
+            String userHashedPassword = Crypto.sign(user.password, seed.getBytes());
+
             // 验证用户密码
-            if (user.password.equals(password)) {
-                ObjectNode data = Json.newObject();
+            if (hashedPassword.equals(userHashedPassword)) {
                 // 密码验证成功
-                data.put("userId", user.id);
-                data.put("email", user.email);
-                data.put("displayName", user.displayname);
+                //生成token
+                String token = Crypto.sign(email);
+
+                Map<String, String> data = new HashMap();
+                data.put("token", token);
+                DataJson dataJson = new DataJson(data);
 
                 // 封装返回信息
-                jsonNode = new JsonResult(true, data);
+                resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, dataJson);
             } else {
-
-                // 封装返回信息
-                jsonNode = new JsonResult(false, StatusCode.USER_PASSWORD_ERROR, "密码错误");
+                throw new PasswordNotMatchException();
             }
         }
-        return jsonNode;
+        return resultJson;
     }
-
 
     @Override
     public ResultJson register(String email, String encryptedPassword, String displayName, String seed) throws CommonException, UserException {
+        if (email == null || encryptedPassword == null || displayName == null || seed == null || !User.isEmailFormatValid(email)) {
+            //参数不全或电邮格式不正确
+            throw new InvalidParamsException();
+        }
 
         //如果displayName为空，设置其为email
-        displayName = (displayName == null || displayName.length()==0) ? email : displayName;
+        displayName = (displayName == null || displayName.length() == 0) ? email : displayName;
 
-
-        //解密password
-        String password = Crypto.decryptAES(encryptedPassword, seed);
+        String password = "";
+        try {
+            //解密password
+            password = Crypto.decryptAES(encryptedPassword, seed);
+        } catch (Exception e) {
+            //解密失败
+            throw new InvalidParamsException();
+        }
 
         // 查找是否已经有相同email的用户，若有则返回错误
         if (User.isExistedByEmail(email)) {
             //相同email的用户已存在，拒绝注册
             throw new UserExcistedException(StatusCode.USER_EXISTED, StatusCode.USER_EXISTED_MESSAGE);
-        } else if (User.isEmailValid(email) == false) {
-            //电邮格式不正确
-            throw new InvalidParamsException();
         } else {
             //相同email的用户未存在，接受注册
 
@@ -79,14 +113,14 @@ public class UserServiceImpl implements UserService {
             //生成token
             String token = Crypto.sign(email);
 
-            Map<String, String> map = new HashMap<String, String>();
+            HashMap<String, String> map = new HashMap<String, String>();
             map.put("token", token);
 
             //封装json格式的data数据
             DataJson dataJson = new DataJson(map);
-            ResultJson resultJson = new ResultJson(StatusCode.SUCCESS, dataJson, "注册成功");
+            ResultJson resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, dataJson);
 
-            // 更新session信息
+            //返回
             return resultJson;
         }
     }

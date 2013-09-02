@@ -18,26 +18,20 @@ public class ResultJson extends ObjectNode {
     public final static String KEY_MESSAGE = "message";
     public final static String KEY_STATUS_CODE = "retcode";
 
-    public ResultJson(Integer retCode, JsonNode dataNode, String message) {
+    public ResultJson(Integer retCode, String message, JsonNode dataNode) {
         super(JsonNodeFactory.instance);
         this.setStatusCode(retCode);
-        this.setData(dataNode);
         this.setMessage(message);
+        this.setData(dataNode);
     }
 
 
     public ResultJson(CommonException commonException) {
-        super(JsonNodeFactory.instance);
-        this.setStatusCode(commonException.getRetcode());
-        this.setMessage(commonException.getMessage());
-        this.setData(null);
+        this(commonException.getRetcode(), commonException.getMessage(), null);
     }
 
     public ResultJson(UserException userException) {
-        super(JsonNodeFactory.instance);
-        this.setStatusCode(userException.getRetcode());
-        this.setMessage(userException.getMessage());
-        this.setData(null);
+        this(userException.getRetcode(), userException.getMessage(), null);
     }
 
     //getter and setter
@@ -45,10 +39,8 @@ public class ResultJson extends ObjectNode {
         return this.get(KEY_MESSAGE).getTextValue();
     }
 
-    public ResultJson setMessage(String message) {
+    public void setMessage(String message) {
         this.put(KEY_MESSAGE, message);
-        return this;
-
     }
 
     public ObjectNode getData() {
@@ -60,7 +52,7 @@ public class ResultJson extends ObjectNode {
     }
 
     public Integer getStatusCode() {
-        return this.get(KEY_STATUS_CODE).getValueAsInt();
+        return this.get(KEY_STATUS_CODE).getIntValue();
     }
 
     public void setStatusCode(Integer statusCode) {
