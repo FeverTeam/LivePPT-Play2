@@ -17,6 +17,7 @@ package com.fever.liveppt.utils;
 public class StatusCode {
     //一切正常
     public final static int SUCCESS = 0;
+    public final static String SUCCESS_MESSAGE = "success";
 
     //****************通用***********************
     //缺少参数或参数格式有误
@@ -32,6 +33,12 @@ public class StatusCode {
     //用户已存在
     public final static int USER_EXISTED = 201;
     public final static String USER_EXISTED_MESSAGE = "same user email existed";
+    //该email用户未注册
+    public final static int EMAIL_NOT_EXISTED = 202;
+    public final static String EMAIL_NOT_EXISTED_MESSAGE = "no such user email existed";
+    //用户的账号密码配对失败
+    public final static int PASSWORD_NOT_MATCH = 203;
+    public final static String PASSWORD_NOT_MATCH_MESSAGE = "user email and password not match";
     //用户密码错误
     public final static int USER_PASSWORD_ERROR = 1100;
     //用户不存在
