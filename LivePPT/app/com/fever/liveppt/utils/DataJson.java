@@ -12,7 +12,6 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class DataJson extends ObjectNode {
