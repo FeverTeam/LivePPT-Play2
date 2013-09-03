@@ -1,4 +1,4 @@
-@(name: String, title: String)(css: Html)(content: Html)
+@(name: String, title: String, username: String)(css: Html)(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -34,11 +34,18 @@
               <li><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
               <li><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
             </ul>
+            @if(username.isEmpty) {
             <form class="navbar-form pull-right">
               <input class="span2" type="text" placeholder="账号" id="inputEmail">
               <input class="span2" type="password" placeholder="密码" id="inputPassword">
               <button type="submit" class="btn btn-login-submit"> @Messages("login_btn_login") </button>
             </form>
+            } else {
+            <div class="pull-right info-box">
+              <span>@username</span>
+              <a href="/logout" class="btn">登出</a>
+            </div>
+            }
           </div><!--/.nav-collapse -->
         </div>
       </div>
