@@ -1,6 +1,6 @@
 @(user: com.fever.liveppt.models.User, myFoundedMeetingList: List[com.fever.liveppt.models.Meeting], myAttendingMeetingList: List[com.fever.liveppt.models.Meeting])
 
-@main(name="mymeeting", "我的PPT会议") {
+@main(name="mymeeting", "我的PPT会议", username= user.displayname) {
 
 }{
 	<p>hi, @user.displayname! <a href="/logout">@Messages("gen_logout_txt")</a></p>
