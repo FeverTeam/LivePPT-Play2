@@ -1,7 +1,8 @@
 package com.fever.liveppt.utils;
 
-import com.fever.liveppt.utils.exception.CommonException;
-import com.fever.liveppt.utils.exception.UserException;
+import com.fever.liveppt.exception.BasicException;
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.user.UserException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
@@ -26,12 +27,8 @@ public class ResultJson extends ObjectNode {
     }
 
 
-    public ResultJson(CommonException commonException) {
-        this(commonException.getRetcode(), commonException.getMessage(), null);
-    }
-
-    public ResultJson(UserException userException) {
-        this(userException.getRetcode(), userException.getMessage(), null);
+    public ResultJson(BasicException basicException) {
+        this(basicException.getRetcode(), basicException.getMessage(), null);
     }
 
     //getter and setter
