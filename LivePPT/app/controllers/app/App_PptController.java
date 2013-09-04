@@ -1,14 +1,21 @@
 package controllers.app;
 
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.common.TokenInvalidException;
+import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.JsonResult;
-import com.fever.liveppt.utils.StatusCode;
+import com.fever.liveppt.utils.*;
 import com.google.inject.Inject;
-import play.Logger;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -16,6 +23,44 @@ public class App_PptController extends Controller {
 
     @Inject
     PptService pptService;
+    //数字匹配器
+    Pattern patternNumbers = Pattern.compile("^[-\\+]?[\\d]*$");
+
+    /**
+     * 获取用户所有PPT的列表
+     *
+     * @return
+     */
+    public Result infoAll() {
+        ResultJson resultJson = null;
+        try {
+            //验证Token
+            String userEmail = TokenAgent.validateTokenFromHeader(request());
+            if (userEmail == null) {
+                //Token验证失败
+            }
+
+            //获取ppt
+            List<Ppt> pptList = pptService.getPptList(userEmail);
+
+            //组装PPT信息JSON数组
+            ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
+            for (Ppt ppt : pptList) {
+                pptInfoArraryNode.add(ppt.toJsonNode());
+            }
+
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
+
+            //Logger.info(resultJson.toString());
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (TokenInvalidException e) {
+            resultJson = new ResultJson(e);
+        }
+        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
+
+        return ok(resultJson);
+    }
 
     /**
      * 获取用户所有PPT的列表
@@ -23,47 +68,83 @@ public class App_PptController extends Controller {
      * @return
      */
     public Result getPptList() {
-        Map<String, String[]> params = request().queryString();
+        ResultJson resultJson = null;
+        try {
+            //验证Token并获取userEmail
+            String userEmail = TokenAgent.validateTokenFromHeader(request());
 
-        JsonResult resultJson;
-        //检查必须的参数是否存在
-        //检查userId
-        resultJson = checkUserId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
+            //获取ppt
+            List<Ppt> pptList = pptService.getPptList(userEmail);
 
-        //获取参数
-        Long userId = Long.parseLong(params.get("userId")[0]);
+            //组装PPT信息JSON数组
+            ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
+            for (Ppt ppt : pptList) {
+                pptInfoArraryNode.add(ppt.toJsonNode());
+            }
 
-        //获取ppt
-        resultJson = pptService.getPptList(userId);
-        Logger.info(resultJson.toString());
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
+
+            //Logger.info(resultJson.toString());
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (TokenInvalidException e) {
+            resultJson = new ResultJson(e);
+        }
+        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
+
         return ok(resultJson);
     }
 
     /**
      * 获取指定PPT的信息
      *
-     * @param pptId
      * @return
      */
     public Result getPptInfo() {
-        Map<String, String[]> params = request().queryString();
-        JsonResult resultJson;
-        resultJson = checkPptId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
+        ResultJson resultJson = null;
+        try {
+            //获取GET参数
+            Map<String, String[]> params = request().queryString();
+            if (params == null) {
+                throw new InvalidParamsException();
+            }
+
+            //检查字段参数
+            if (!ControllerUtils.isFieldNotNull(params, "pptId")) {
+                throw new InvalidParamsException();
+            }
+
+            //获取参数
+            Long pptId = Long.valueOf(params.get("pptId")[0]);
+            if (pptId == null) {
+                //长整型转换失败
+                throw new InvalidParamsException();
+            }
+
+            Ppt ppt = pptService.getSinglePptInfo(pptId);
+            if (ppt == null) {
+                //未找到指定pptId的PPT
+                throw new PptNotExistedException();
+            }
+            //组装成功返回信息
+            JsonNode data = ppt.toJsonNode();
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, data);
+
             return ok(resultJson);
-        Long pptId = Long.valueOf(params.get("pptId")[0]);
-        resultJson = pptService.getPptInfo(pptId);
-        Logger.info(resultJson.toString());
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (PptNotExistedException e) {
+            resultJson = new ResultJson(e);
+        }
+
+        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
+
         return ok(resultJson);
     }
 
     /**
      * 获取指定PPT和页码的图片
      *
-     * @param pptId
-     * @param pageIndex
      * @return
      */
     public Result getPptPage() {
@@ -88,7 +169,6 @@ public class App_PptController extends Controller {
         if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
             return ok(resultJson);
 
-        //TODO
         // getPptPage修改返回类型，添加对pageIndex的容错性
 
         // 设置ContentType为image/jpeg
@@ -99,9 +179,6 @@ public class App_PptController extends Controller {
 
         return ok(pptService.getPptPageAsBig(pptId, pageIndex));
     }
-
-    //数字匹配器
-    Pattern patternNumbers = Pattern.compile("^[-\\+]?[\\d]*$");
 
     /**
      * 检查userId字段

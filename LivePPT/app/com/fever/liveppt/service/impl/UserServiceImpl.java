@@ -1,16 +1,17 @@
 package com.fever.liveppt.service.impl;
 
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.user.PasswordNotMatchException;
+import com.fever.liveppt.exception.user.UserException;
+import com.fever.liveppt.exception.user.UserExistedException;
+import com.fever.liveppt.exception.user.UserNotExistedException;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.DataJson;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
-import com.fever.liveppt.utils.exception.CommonException;
-import com.fever.liveppt.utils.exception.UserException;
-import com.fever.liveppt.utils.exception.user.EmailNotExistedException;
-import com.fever.liveppt.utils.exception.user.PasswordNotMatchException;
-import com.fever.liveppt.utils.exception.user.UserExcistedException;
-import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
+import com.fever.liveppt.utils.TokenAgent;
 import play.libs.Crypto;
 
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
         if (userCount > 0) {
             // 用户存在
             // 封装返回信息,用户已注册
-            throw new UserExcistedException();
+            throw new UserExistedException();
         } else {
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
         }
@@ -52,7 +53,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             // 用户不存在
             // 封装返回信息,用户不存在
-            throw new EmailNotExistedException();
+            throw new UserNotExistedException();
         } else {
             // 用户存在
 
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
             if (hashedPassword.equals(userHashedPassword)) {
                 // 密码验证成功
                 //生成token
-                String token = Crypto.sign(email);
+                String token = TokenAgent.generateToken(email);
 
                 Map<String, String> data = new HashMap();
                 data.put("token", token);
@@ -100,7 +101,7 @@ public class UserServiceImpl implements UserService {
         // 查找是否已经有相同email的用户，若有则返回错误
         if (User.isExistedByEmail(email)) {
             //相同email的用户已存在，拒绝注册
-            throw new UserExcistedException(StatusCode.USER_EXISTED, StatusCode.USER_EXISTED_MESSAGE);
+            throw new UserExistedException(StatusCode.USER_EXISTED, StatusCode.USER_EXISTED_MESSAGE);
         } else {
             //相同email的用户未存在，接受注册
 
