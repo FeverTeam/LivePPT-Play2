@@ -3,6 +3,8 @@ package controllers.app;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
+import com.fever.liveppt.exception.common.UnknownErrorException;
+import com.fever.liveppt.exception.ppt.PptException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.service.PptService;
@@ -11,6 +13,7 @@ import com.google.inject.Inject;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -51,7 +54,6 @@ public class App_PptController extends Controller {
 
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
 
-            //Logger.info(resultJson.toString());
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
         } catch (TokenInvalidException e) {
@@ -84,7 +86,6 @@ public class App_PptController extends Controller {
 
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
 
-            //Logger.info(resultJson.toString());
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
         } catch (TokenInvalidException e) {
@@ -147,37 +148,67 @@ public class App_PptController extends Controller {
      *
      * @return
      */
-    public Result getPptPage() {
-
-
-        String[] ifModifiedSince = request().headers().get(
-                Controller.IF_MODIFIED_SINCE);
-        if (ifModifiedSince != null && ifModifiedSince.length > 0) {
+    public Result getPptPageImage() {
+        //如果含有IF_MODIFIED_SINCE报头则返回NOT_MODIFIED
+        String ifModifiedSince = request().getHeader(Controller.IF_MODIFIED_SINCE);
+        if (ifModifiedSince != null && ifModifiedSince.length() > 0) {
             return status(NOT_MODIFIED);
         }
 
-        Map<String, String[]> params = request().queryString();
-        Long pptId = Long.valueOf(params.get("pptId")[0]);
-        Long pageIndex = Long.valueOf(params.get("pageIndex")[0]);
-        JsonResult resultJson;
-        //检查pptId
-        resultJson = checkPptId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-        //检查pageIndex
-        resultJson = checkPageIndex(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
+        ResultJson resultJson = null;
+        try {
+            //获取GET参数
+            Map<String, String[]> params = request().queryString();
+            if (params == null || params.size() == 0) {
+                throw new InvalidParamsException();
+            }
 
-        // getPptPage修改返回类型，添加对pageIndex的容错性
+            //检查参数
+            //pptId
+            if (!ControllerUtils.isFieldNotNull(params, "pptId")) {
+                throw new InvalidParamsException();
+            }
+            //pageIndex
+            if (!ControllerUtils.isFieldNotNull(params, "page")) {
+                throw new InvalidParamsException();
+            }
 
-        // 设置ContentType为image/jpeg
-        response().setContentType("image/jpeg");
-        // 设置返回头LastModified
-        response().setHeader(Controller.LAST_MODIFIED,
-                "" + new Date().getTime());
+            //获取参数
+            Long pptId = Long.valueOf(params.get("pptId")[0]);
+            Long page = Long.valueOf(params.get("page")[0]);
 
-        return ok(pptService.getPptPageAsBig(pptId, pageIndex));
+
+            //尝试获取指定页码图像数据
+            byte[] imageByte = pptService.getPptPage(pptId, page);
+            if (imageByte.length > 0) {
+                //成功获取图像数据
+
+                // 设置ContentType为image/jpeg
+                response().setContentType("image/jpeg");
+                // 设置返回头LastModified
+                response().setHeader(Controller.LAST_MODIFIED,
+                        "" + new Date().getTime());
+                return ok(imageByte);
+
+            } else {
+                //没有获得数据
+                return ok();
+            }
+
+
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+        } catch (NumberFormatException e) {
+            //整数转换失败
+            resultJson = new ResultJson(new InvalidParamsException());
+        } catch (PptException e) {
+            resultJson = new ResultJson(e);
+        }
+
+        //若获取不成功返回JSON
+        resultJson = (this == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
+        return ok(resultJson);
+
     }
 
     /**
