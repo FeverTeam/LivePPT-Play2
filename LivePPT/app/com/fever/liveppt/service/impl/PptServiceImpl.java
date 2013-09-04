@@ -3,25 +3,24 @@ package com.fever.liveppt.service.impl;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import com.fever.liveppt.exception.common.InternalErrorException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.ppt.PptNotConvertedException;
+import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
 import com.fever.liveppt.utils.AwsConnGenerator;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.StatusCode;
-import com.fever.liveppt.exception.common.InvalidParamsException;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
-import org.imgscalr.Scalr;
+import play.Logger;
 import play.cache.Cache;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,38 +28,54 @@ import java.util.List;
 public class PptServiceImpl implements PptService {
 
     @Override
-    public byte[] getPptPage(Long pptId, Long pageId) {
-        // TODO Auto-generated method stub
-        byte[] imgBytes = null;
+    public byte[] getPptPage(Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException {
         Ppt ppt = Ppt.find.byId(pptId);
-        String storeKey = ppt.storeKey;
-        String pageKey = storeKey + "p" + pageId;
-        // 若文件存在于Cache中，则直接返回
-        imgBytes = (byte[]) Cache.get(pageKey);
-        if (imgBytes != null) {
-            return imgBytes;
-        } else {
-            // 组装S3获取信息
-            AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
+        if (ppt == null) {
+            throw new PptNotExistedException();
+        }
 
-            GetObjectRequest getObjectRequest = new GetObjectRequest(
-                    "pptstore", pageKey);
-            S3Object obj = s3.getObject(getObjectRequest);
-            // 转换为bytes
-            try {
+        //检查是否已转换
+        if (!ppt.isConverted) {
+            throw new PptNotConvertedException();
+        }
+
+        //检查页数是否超出范围
+        if (pageId < 0 || pageId > ppt.pagecount) {
+            Logger.info("2");
+            throw new PptPageOutOfRangeException();
+        }
+
+        try {
+            byte[] imgBytes = null;
+            String storeKey = ppt.storeKey;
+            String pageKey = storeKey + "p" + pageId;
+            // 若文件存在于Cache中，则直接返回
+            imgBytes = (byte[]) Cache.get(pageKey);
+            if (imgBytes != null) {
+                return imgBytes;
+            } else {
+                // 组装S3获取信息并获取页面图片
+                AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
+                GetObjectRequest getObjectRequest = new GetObjectRequest(
+                        "pptstore", pageKey);
+                S3Object obj = s3.getObject(getObjectRequest);
+
+                // 转换为bytes
                 imgBytes = IOUtils.toByteArray((InputStream) obj
                         .getObjectContent());
                 Cache.set(pageKey, imgBytes);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+
+                return imgBytes;
             }
-            return imgBytes;
+        } catch (Exception e) {
+            throw new InternalErrorException();
         }
+
     }
 
+    /*
     public byte[] getPptPageAsSmall(Long pptId, Long pageId) {
-        InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
+        InputStream input = new ByteArrayInputStream(getPptPageImage(pptId, pageId));
         try {
             BufferedImage img = ImageIO.read(input);
             img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
@@ -76,7 +91,7 @@ public class PptServiceImpl implements PptService {
     }
 
     public byte[] getPptPageAsMid(Long pptId, Long pageId) {
-        InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
+        InputStream input = new ByteArrayInputStream(getPptPageImage(pptId, pageId));
         try {
             BufferedImage img = ImageIO.read(input);
             img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
@@ -92,7 +107,7 @@ public class PptServiceImpl implements PptService {
     }
 
     public byte[] getPptPageAsBig(Long pptId, Long pageId) {
-        InputStream input = new ByteArrayInputStream(getPptPage(pptId, pageId));
+        InputStream input = new ByteArrayInputStream(getPptPageImage(pptId, pageId));
         try {
             BufferedImage img = ImageIO.read(input);
             img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
@@ -106,6 +121,7 @@ public class PptServiceImpl implements PptService {
         }
         return null;
     }
+    */
 
     @Override
     public void updatePptConvertedStatus(JsonNode messageJson) {
@@ -166,17 +182,16 @@ public class PptServiceImpl implements PptService {
 
         //获取用户PPT列表
         User user = User.find.where().eq("email", userEmail).findUnique();
-        if (user!=null)   {
+        if (user != null) {
             return user.ppts;
         } else {
             return new LinkedList<Ppt>();
         }
     }
 
-
     @Override
     public Ppt getSinglePptInfo(long pptId) {
-        if (pptId < 0){
+        if (pptId < 0) {
             return null;
         }
         Ppt ppt = Ppt.find.byId(pptId);
