@@ -26,9 +26,11 @@ public class StatusCode {
     //服务器内部错误
     public final static int INTERNAL_ERROR = 102;
     //Token 无效或过期
-    public final static int INVVALID_TOKEN = 103;
+    public final static int INVALID_TOKEN = 103;
+    public final static String INVALID_TOKEN_MESSAGE = "invalid token";
     //未知错误
     public final static int UNKONWN_ERROR = 999;
+    public final static String UNKONWN_ERROR_MESSAGE  = "unknown error";
     //****************用户类型错误*****************
     //用户已存在
     public final static int USER_EXISTED = 201;

@@ -9,6 +9,7 @@ import com.fever.liveppt.service.PptService;
 import com.fever.liveppt.utils.AwsConnGenerator;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.StatusCode;
+import com.fever.liveppt.exception.common.InvalidParamsException;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
@@ -22,6 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PptServiceImpl implements PptService {
@@ -125,7 +127,6 @@ public class PptServiceImpl implements PptService {
     @Override
     public JsonResult getPptList(Long UserId) {
         JsonResult resultJson;
-        // TODO Auto-generated method stub
         ArrayNode pptArrayNode = new ArrayNode(JsonNodeFactory.instance);
         User user = User.find.byId(UserId);
         if (user != null) {
@@ -154,6 +155,21 @@ public class PptServiceImpl implements PptService {
             return new JsonResult(false, StatusCode.PPT_NOT_EXISTED, "不存在该PPT");
         } else {
             return new JsonResult(true, ppt.toJsonNode());
+        }
+    }
+
+    @Override
+    public List<Ppt> getPptList(String userEmail) throws InvalidParamsException {
+        if (userEmail == null || userEmail.length() <= 0) {
+            throw new InvalidParamsException();
+        }
+
+        //获取用户PPT列表
+        User user = User.find.where().eq("email", userEmail).findUnique();
+        if (user!=null)   {
+            return user.ppts;
+        } else {
+            return new LinkedList<Ppt>();
         }
     }
 

@@ -5,12 +5,13 @@ import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.DataJson;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
-import com.fever.liveppt.utils.exception.CommonException;
-import com.fever.liveppt.utils.exception.UserException;
-import com.fever.liveppt.utils.exception.user.EmailNotExistedException;
-import com.fever.liveppt.utils.exception.user.PasswordNotMatchException;
-import com.fever.liveppt.utils.exception.user.UserExcistedException;
-import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
+import com.fever.liveppt.utils.TokenAgent;
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.user.UserException;
+import com.fever.liveppt.exception.user.EmailNotExistedException;
+import com.fever.liveppt.exception.user.PasswordNotMatchException;
+import com.fever.liveppt.exception.user.UserExcistedException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
 import play.libs.Crypto;
 
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
             if (hashedPassword.equals(userHashedPassword)) {
                 // 密码验证成功
                 //生成token
-                String token = Crypto.sign(email);
+                String token = TokenAgent.generateToken(email);
 
                 Map<String, String> data = new HashMap();
                 data.put("token", token);

@@ -1,9 +1,9 @@
 package com.fever.liveppt.service;
 
 import com.fever.liveppt.utils.ResultJson;
-import com.fever.liveppt.utils.exception.CommonException;
-import com.fever.liveppt.utils.exception.UserException;
-import com.fever.liveppt.utils.exception.utils.common.InvalidParamsException;
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.user.UserException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
 
 public interface UserService {
 
