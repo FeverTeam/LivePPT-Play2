@@ -10,7 +10,7 @@ import com.fever.liveppt.utils.StatusCode;
  * To change this template use File | Settings | File Templates.
  */
 public class UnknownErrorException extends CommonException {
-    public UnknownErrorException(){
+    public UnknownErrorException() {
         super(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE);
     }
 }

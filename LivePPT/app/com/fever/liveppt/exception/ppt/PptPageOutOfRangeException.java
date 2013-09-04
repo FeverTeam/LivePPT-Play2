@@ -1,7 +1,6 @@
 package com.fever.liveppt.exception.ppt;
 
 import com.fever.liveppt.utils.StatusCode;
-import play.Logger;
 
 /**
  * Created with IntelliJ IDEA.

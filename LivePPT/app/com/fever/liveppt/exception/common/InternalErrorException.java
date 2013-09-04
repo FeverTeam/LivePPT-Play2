@@ -10,7 +10,7 @@ import com.fever.liveppt.utils.StatusCode;
  * To change this template use File | Settings | File Templates.
  */
 public class InternalErrorException extends CommonException {
-    public InternalErrorException(){
+    public InternalErrorException() {
         super(StatusCode.INTERNAL_ERROR, StatusCode.INTERNAL_ERROR_MESSAGE);
     }
 }

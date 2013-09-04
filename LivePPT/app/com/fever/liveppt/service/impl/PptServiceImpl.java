@@ -41,7 +41,6 @@ public class PptServiceImpl implements PptService {
 
         //检查页数是否超出范围
         if (pageId < 0 || pageId > ppt.pagecount) {
-            Logger.info("2");
             throw new PptPageOutOfRangeException();
         }
 
