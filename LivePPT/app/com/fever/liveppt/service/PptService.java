@@ -36,13 +36,12 @@ public interface PptService {
 
     /**
      * 获取用户PPT信息列表
-     *
-     *
-     *
      * @param userEmail
      * @return JSON格式PPT信息列表
      */
     public List<Ppt> getPptList(String userEmail) throws InvalidParamsException;
+
+    public Ppt getSinglePptInfo(long pptId);
 
     public byte[] getPptPageAsMid(Long pptId, Long pageId);
 
