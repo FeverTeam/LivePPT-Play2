@@ -21,25 +21,25 @@ public class StatusCode {
 
     //****************通用***********************
     //缺少参数或参数格式有误
-    public final static int INVALID_PARAMS = 101;
+    public final static int INVALID_PARAMS = -101;
     public final static String INVALID_PARAMS_MESSAGE = "invalid params";
     //服务器内部错误
-    public final static int INTERNAL_ERROR = 102;
+    public final static int INTERNAL_ERROR = -102;
     //Token 无效或过期
-    public final static int INVALID_TOKEN = 103;
+    public final static int INVALID_TOKEN = -103;
     public final static String INVALID_TOKEN_MESSAGE = "invalid token";
     //未知错误
-    public final static int UNKONWN_ERROR = 999;
+    public final static int UNKONWN_ERROR = -999;
     public final static String UNKONWN_ERROR_MESSAGE  = "unknown error";
     //****************用户类型错误*****************
     //用户已存在
-    public final static int USER_EXISTED = 201;
+    public final static int USER_EXISTED = -201;
     public final static String USER_EXISTED_MESSAGE = "same user email existed";
     //该email用户未注册
-    public final static int USER_NOT_EXISTED = 202;
+    public final static int USER_NOT_EXISTED = -202;
     public final static String USER_NOT_EXISTED_MESSAGE = "no such user email existed";
     //用户的账号密码配对失败
-    public final static int PASSWORD_NOT_MATCH = 203;
+    public final static int PASSWORD_NOT_MATCH = -203;
     public final static String PASSWORD_NOT_MATCH_MESSAGE = "user email and password not match";
     //*******************PPT类型错误*****************
     public final static int PPT_NOT_EXISTED = -301;
