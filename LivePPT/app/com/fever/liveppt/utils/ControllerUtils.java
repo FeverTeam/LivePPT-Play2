@@ -18,7 +18,7 @@ public class ControllerUtils {
      * @param fieldName 字段名称
      * @return
      */
-    public static boolean isFieldExisted(Map<String, String[]> params, String fieldName) {
+    public static boolean isFieldNotNull(Map<String, String[]> params, String fieldName) {
         if (params == null || fieldName == null || fieldName.length() == 0) {
             return false;
         }

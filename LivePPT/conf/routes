@@ -2,9 +2,13 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 #new route
+#user
 POST    /user/register              @controllers.app.App_UserController.register()
 POST    /user/login                 @controllers.app.App_UserController.login()
 POST    /user/check_email           @controllers.app.App_UserController.checkEmail()
+
+#ppt
+GET     /ppt/info_all               @controllers.app.App_PptController.infoAll()
 
 # Page
 GET     /                           controllers.Frontend.index()
@@ -58,10 +62,10 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 ## 用户接口 ##
 
 #用户登录接口
-GET 	/app/login							@controllers.app.App_UserController.login()
+#GET 	/app/login							@controllers.app.App_UserController.login()
 
 #用户注册接口
-POST 	/app/register 						@controllers.app.App_UserController.register()
+#POST 	/app/register 						@controllers.app.App_UserController.register()
 
 ################################
 ## PPT接口 ##

@@ -1,7 +1,6 @@
-package com.fever.liveppt.utils.exception.user;
+package com.fever.liveppt.exception.user;
 
 import com.fever.liveppt.utils.StatusCode;
-import com.fever.liveppt.utils.exception.UserException;
 
 /**
  * Created with IntelliJ IDEA.
