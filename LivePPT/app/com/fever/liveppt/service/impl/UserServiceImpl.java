@@ -1,5 +1,6 @@
 package com.fever.liveppt.service.impl;
 
+import com.fever.liveppt.exception.user.UserNotExistedException;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.DataJson;
@@ -8,9 +9,7 @@ import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.TokenAgent;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.user.UserException;
-import com.fever.liveppt.exception.user.EmailNotExistedException;
 import com.fever.liveppt.exception.user.PasswordNotMatchException;
-import com.fever.liveppt.exception.user.UserExcistedException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import play.libs.Crypto;
 
@@ -53,7 +52,7 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             // 用户不存在
             // 封装返回信息,用户不存在
-            throw new EmailNotExistedException();
+            throw new UserNotExistedException();
         } else {
             // 用户存在
 

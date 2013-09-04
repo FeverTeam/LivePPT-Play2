@@ -36,15 +36,15 @@ public class StatusCode {
     public final static int USER_EXISTED = 201;
     public final static String USER_EXISTED_MESSAGE = "same user email existed";
     //该email用户未注册
-    public final static int EMAIL_NOT_EXISTED = 202;
-    public final static String EMAIL_NOT_EXISTED_MESSAGE = "no such user email existed";
+    public final static int USER_NOT_EXISTED = 202;
+    public final static String USER_NOT_EXISTED_MESSAGE = "no such user email existed";
     //用户的账号密码配对失败
     public final static int PASSWORD_NOT_MATCH = 203;
     public final static String PASSWORD_NOT_MATCH_MESSAGE = "user email and password not match";
     //用户密码错误
     public final static int USER_PASSWORD_ERROR = 1100;
     //用户不存在
-    public final static int USER_NOT_EXISTED = 1101;
+    //public final static int USER_NOT_EXISTED = 1101;
     //用户email字段错误
     public final static int USER_EMAIL_ERROR = 1102;
     //用户Id字段错误
