@@ -3,16 +3,14 @@ package controllers.app;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
+import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.JsonResult;
-import com.fever.liveppt.utils.ResultJson;
-import com.fever.liveppt.utils.StatusCode;
-import com.fever.liveppt.utils.TokenAgent;
+import com.fever.liveppt.utils.*;
 import com.google.inject.Inject;
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
-import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -103,14 +101,44 @@ public class App_PptController extends Controller {
      * @return
      */
     public Result getPptInfo() {
-        Map<String, String[]> params = request().queryString();
-        JsonResult resultJson;
-        resultJson = checkPptId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
+        ResultJson resultJson = null;
+        try {
+            //获取GET参数
+            Map<String, String[]> params = request().queryString();
+            if (params == null) {
+                throw new InvalidParamsException();
+            }
+
+            //检查字段参数
+            if (!ControllerUtils.isFieldNotNull(params, "pptId")) {
+                throw new InvalidParamsException();
+            }
+
+            //获取参数
+            Long pptId = Long.valueOf(params.get("pptId")[0]);
+            if (pptId == null) {
+                //长整型转换失败
+                throw new InvalidParamsException();
+            }
+
+            Ppt ppt = pptService.getSinglePptInfo(pptId);
+            if (ppt == null) {
+                //未找到指定pptId的PPT
+                throw new PptNotExistedException();
+            }
+            //组装成功返回信息
+            JsonNode data = ppt.toJsonNode();
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, data);
+
             return ok(resultJson);
-        Long pptId = Long.valueOf(params.get("pptId")[0]);
-        resultJson = pptService.getPptInfo(pptId);
-        Logger.info(resultJson.toString());
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (PptNotExistedException e) {
+            resultJson = new ResultJson(e);
+        }
+
+        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
+
         return ok(resultJson);
     }
 

@@ -173,4 +173,14 @@ public class PptServiceImpl implements PptService {
         }
     }
 
+
+    @Override
+    public Ppt getSinglePptInfo(long pptId) {
+        if (pptId < 0){
+            return null;
+        }
+        Ppt ppt = Ppt.find.byId(pptId);
+        return ppt;
+    }
+
 }

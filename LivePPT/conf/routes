@@ -9,6 +9,7 @@ POST    /user/check_email           @controllers.app.App_UserController.checkEma
 
 #ppt
 GET     /ppt/info_all               @controllers.app.App_PptController.infoAll()
+GET     /ppt/info                   @controllers.app.App_PptController.getPptInfo()
 
 # Page
 GET     /                           controllers.Frontend.index()
