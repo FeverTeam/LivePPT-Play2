@@ -36,8 +36,8 @@
             </ul>
             @if(username.isEmpty) {
             <form class="navbar-form pull-right">
-              <input class="span2" type="text" placeholder="账号" id="inputEmail">
-              <input class="span2" type="password" placeholder="密码" id="inputPassword">
+              <input class="span2" type="text" placeholder="账号" name="email">
+              <input class="span2" type="password" placeholder="密码" name="password">
               <button type="submit" class="btn btn-login-submit"> @Messages("login_btn_login") </button>
             </form>
             } else {
