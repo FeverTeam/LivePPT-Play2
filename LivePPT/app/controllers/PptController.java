@@ -114,11 +114,13 @@ public class PptController extends Controller {
         return ok();
     }
 
+
     /**
      * 获取某个PPT某页的JPG图像
      *
      * @return
      */
+    /*
     public Result getPptPage() {
         String[] ifModifiedSince = request().headers().get(
                 Controller.IF_MODIFIED_SINCE);
@@ -134,6 +136,7 @@ public class PptController extends Controller {
                 "" + new Date().getTime());
         return ok(pptService.getPptPage(pptId, pageId));
     }
+    */
 
     /**
      * 用于组装返回给fineUploader插件的json信息

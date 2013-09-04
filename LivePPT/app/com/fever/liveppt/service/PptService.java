@@ -1,5 +1,9 @@
 package com.fever.liveppt.service;
 
+import com.fever.liveppt.exception.common.InternalErrorException;
+import com.fever.liveppt.exception.ppt.PptNotConvertedException;
+import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.exception.common.InvalidParamsException;
@@ -14,7 +18,7 @@ import java.util.List;
  */
 public interface PptService {
 
-    public byte[] getPptPage(Long pptId, Long pageId);
+    public byte[] getPptPage(Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException;
 
     public void updatePptConvertedStatus(JsonNode messageJson);
 
@@ -43,10 +47,11 @@ public interface PptService {
 
     public Ppt getSinglePptInfo(long pptId);
 
+    /*
     public byte[] getPptPageAsMid(Long pptId, Long pageId);
 
     public byte[] getPptPageAsBig(Long pptId, Long pageId);
 
     public byte[] getPptPageAsSmall(Long pptId, Long pageId);
-
+    */
 }

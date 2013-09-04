@@ -10,6 +10,7 @@ POST    /user/check_email           @controllers.app.App_UserController.checkEma
 #ppt
 GET     /ppt/info_all               @controllers.app.App_PptController.infoAll()
 GET     /ppt/info                   @controllers.app.App_PptController.getPptInfo()
+GET     /ppt/pageImage              @controllers.app.App_PptController.getPptPageImage()
 
 # Page
 GET     /                           controllers.Frontend.index()
@@ -28,7 +29,7 @@ GET 	/viewMeeting/:meetingId		controllers.Frontend.viewMeeting(meetingId:Long)
 
 GET 	/viewWebsocket				controllers.MeetingController.viewWebsocket()
 
-GET		/getpptpage					@controllers.PptController.getPptPage()
+#GET		/getpptpage					@controllers.PptController.getPptPage()
 
 GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
 
@@ -75,10 +76,10 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 GET 	/app/getPptList						@controllers.app.App_PptController.getPptList()
 
 #获取指定PPT的信息
-GET 	/app/getPptInfo					@controllers.app.App_PptController.getPptInfo()
+#GET 	/app/getPptInfo					@controllers.app.App_PptController.getPptInfo()
 
 #获取指定PPT的指定页面的图片
-GET		/app/getPptPage					@controllers.app.App_PptController.getPptPage()
+#GET		/app/getPptPage					@getPptPageImage()
 
 ################################
 ## 会议接口 ##
