@@ -25,6 +25,7 @@ public class StatusCode {
     public final static String INVALID_PARAMS_MESSAGE = "invalid params";
     //服务器内部错误
     public final static int INTERNAL_ERROR = -102;
+    public final static String INTERNAL_ERROR_MESSAGE = "internal error";
     //Token 无效或过期
     public final static int INVALID_TOKEN = -103;
     public final static String INVALID_TOKEN_MESSAGE = "invalid token";
@@ -42,8 +43,15 @@ public class StatusCode {
     public final static int PASSWORD_NOT_MATCH = -203;
     public final static String PASSWORD_NOT_MATCH_MESSAGE = "user email and password not match";
     //*******************PPT类型错误*****************
+    //PPT不存在
     public final static int PPT_NOT_EXISTED = -301;
     public final static String PPT_NOT_EXISTED_MESSAGE = "no such ppt";
+    //PPT页码超出范围
+    public final static int PPT_PAGE_OUT_OF_RANGE = -302;
+    public final static String PPT_PAGE_OUT_OF_RANGE_MESSAGE = "page out of range";
+    //PPT未转换
+    public final static int PPT_NOT_CONVERTED = -303;
+    public final static String PPT_NOT_CONVERTED_MESSAGE = "ppt not converted";
 
 
     //用户密码错误
