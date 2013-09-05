@@ -7,7 +7,7 @@ import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.AwsConnGenerator;
+import com.fever.liveppt.utils.aws.AwsHelper;
 import com.google.inject.Inject;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -75,7 +75,7 @@ public class PptController extends Controller {
             Logger.info("not null" + title2 + file.length() + "-" + title);
 
             // 存入AmazonS3
-            AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
+            AmazonS3 s3 = AwsHelper.genTokyoS3();
             String storeKey = UUID.randomUUID().toString().replaceAll("-", "");
             s3.putObject("pptstore", storeKey, file);
 
@@ -87,7 +87,7 @@ public class PptController extends Controller {
             Logger.debug("StoreKey:" + storeKey);
 
             // 向SNS写入PPT的id，并告知win端进行转换
-            AmazonSQS sqs = AwsConnGenerator.genTokyoSQS();
+            AmazonSQS sqs = AwsHelper.genTokyoSQS();
             CreateQueueRequest createQueueRequest = new CreateQueueRequest(
                     QUEUE_NAME);
             String myQueueUrl = sqs.createQueue(createQueueRequest)
@@ -113,7 +113,6 @@ public class PptController extends Controller {
         pptService.updatePptConvertedStatus(messageJson);
         return ok();
     }
-
 
     /**
      * 获取某个PPT某页的JPG图像

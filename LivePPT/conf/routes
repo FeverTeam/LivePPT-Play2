@@ -11,6 +11,11 @@ POST    /user/check_email           @controllers.app.App_UserController.checkEma
 GET     /ppt/info_all               @controllers.app.App_PptController.infoAll()
 GET     /ppt/info                   @controllers.app.App_PptController.getPptInfo()
 GET     /ppt/pageImage              @controllers.app.App_PptController.getPptPageImage()
+POST    /ppt/upload                 @controllers.app.App_PptController.pptUpload()
+
+
+#下面的接口逐步废弃，请将有用的的接口移动上去（江楠注意一下）
+
 
 # Page
 GET     /                           controllers.Frontend.index()

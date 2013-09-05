@@ -1,14 +1,16 @@
 package com.fever.liveppt.service;
 
 import com.fever.liveppt.exception.common.InternalErrorException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.ppt.PptNotConvertedException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Ppt;
+import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.JsonResult;
-import com.fever.liveppt.exception.common.InvalidParamsException;
 import org.codehaus.jackson.JsonNode;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -40,12 +42,28 @@ public interface PptService {
 
     /**
      * 获取用户PPT信息列表
+     *
      * @param userEmail
      * @return JSON格式PPT信息列表
      */
     public List<Ppt> getPptList(String userEmail) throws InvalidParamsException;
 
-    public Ppt getSinglePptInfo(long pptId);
+    /**
+     * 根据指定ID获取PPT信息
+     *
+     * @param pptId
+     * @return
+     */
+    public Ppt getPpt(long pptId);
+
+    /**
+     * 上传PPT到S3并发送消息到SQS
+     * @param user
+     * @param file
+     * @param title
+     * @param filesize
+     */
+    public void uploadPptToS3(User user, File file, String title, long filesize) throws InternalErrorException;
 
     /*
     public byte[] getPptPageAsMid(Long pptId, Long pageId);

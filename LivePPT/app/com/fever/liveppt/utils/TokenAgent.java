@@ -1,9 +1,14 @@
 package com.fever.liveppt.utils;
 
+import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
+import com.fever.liveppt.exception.user.UserNotExistedException;
+import com.fever.liveppt.models.User;
+import com.fever.liveppt.service.UserService;
 import play.libs.Crypto;
 import play.mvc.Http;
+
 
 public class TokenAgent {
 
@@ -34,5 +39,15 @@ public class TokenAgent {
             //Token无效，抛出TokenInvalidException
             throw new TokenInvalidException();
         }
+    }
+
+    public static User validateTokenAndGetUser(UserService userService, Http.Request request) throws InvalidParamsException, TokenInvalidException, InternalErrorException, UserNotExistedException {
+        if (userService == null) {
+            throw new InternalErrorException();
+        }
+        String userEmail = validateTokenFromHeader(request);
+        User user = userService.getUser(userEmail);
+        return user;
+
     }
 }

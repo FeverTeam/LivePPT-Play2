@@ -3,6 +3,9 @@ package com.fever.liveppt.service.impl;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.model.CreateQueueRequest;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.ppt.PptNotConvertedException;
@@ -11,9 +14,9 @@ import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.AwsConnGenerator;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.StatusCode;
+import com.fever.liveppt.utils.aws.AwsHelper;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
@@ -21,11 +24,14 @@ import org.codehaus.jackson.node.JsonNodeFactory;
 import play.Logger;
 import play.cache.Cache;
 
+import java.io.File;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 public class PptServiceImpl implements PptService {
+
 
     @Override
     public byte[] getPptPage(Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException {
@@ -54,7 +60,7 @@ public class PptServiceImpl implements PptService {
                 return imgBytes;
             } else {
                 // 组装S3获取信息并获取页面图片
-                AmazonS3 s3 = AwsConnGenerator.genTokyoS3();
+                AmazonS3 s3 = AwsHelper.genTokyoS3();
                 GetObjectRequest getObjectRequest = new GetObjectRequest(
                         "pptstore", pageKey);
                 S3Object obj = s3.getObject(getObjectRequest);
@@ -189,12 +195,38 @@ public class PptServiceImpl implements PptService {
     }
 
     @Override
-    public Ppt getSinglePptInfo(long pptId) {
+    public Ppt getPpt(long pptId) {
         if (pptId < 0) {
             return null;
         }
         Ppt ppt = Ppt.find.byId(pptId);
         return ppt;
+    }
+
+    public void uploadPptToS3(User user, File file, String title, long filesize) throws InternalErrorException {
+        try {
+            // 存入AmazonS3
+            AmazonS3 s3 = AwsHelper.genTokyoS3();
+            String storeKey = AwsHelper.genRandomStoreKey();
+            s3.putObject(AwsHelper.STORE_NAME, storeKey, file);
+
+            // 存入文件与用户的所有权关系
+            Ppt newPpt = new Ppt(user.id, title, new Date(), storeKey, filesize);
+            newPpt.save();
+
+            Logger.debug("StoreKey:" + storeKey);
+
+            // 向SNS写入PPT的id，并告知win端进行转换
+            AmazonSQS sqs = AwsHelper.genTokyoSQS();
+            CreateQueueRequest createQueueRequest = new CreateQueueRequest(AwsHelper.QUEUE_NAME);
+            String myQueueUrl = sqs.createQueue(createQueueRequest) .getQueueUrl();
+            sqs.sendMessage(new SendMessageRequest(myQueueUrl, storeKey));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new InternalErrorException();
+        }
+
     }
 
 }
