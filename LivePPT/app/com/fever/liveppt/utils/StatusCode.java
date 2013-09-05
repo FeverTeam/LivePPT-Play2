@@ -52,7 +52,10 @@ public class StatusCode {
     //PPT未转换
     public final static int PPT_NOT_CONVERTED = -303;
     public final static String PPT_NOT_CONVERTED_MESSAGE = "ppt not converted";
-
+    //PPT文件类型不正确
+    // 文件并非PPT或PPTX（ContentType不是"application/vnd.ms-powerpoint"或” application/vnd.openxmlformats-officedocument.presentationml.presentation”），或文件名结尾并非以“.ppt”或“.pptx”结束
+    public final static int PPT_FILE_INVALID_TYPE = -304;
+    public final static String PPT_FILE_INVALID_TYPE_MESSAGE = "file not ppt or pptx";
 
     //用户密码错误
     public final static int USER_PASSWORD_ERROR = 1100;

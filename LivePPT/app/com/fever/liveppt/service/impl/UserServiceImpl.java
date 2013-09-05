@@ -126,4 +126,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public User getUser(String userEmail) throws UserNotExistedException {
+        if (userEmail == null) {
+            return null;
+        }
+        User user = User.find.where().eq("email", userEmail).findUnique();
+        if (user != null) {
+            return user;
+        } else {
+            throw new UserNotExistedException();
+        }
+
+    }
+
 }
