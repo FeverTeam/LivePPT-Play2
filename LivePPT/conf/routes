@@ -5,6 +5,8 @@
 
 #关于页面接口（请把有关页面的接口写到这里）
 
+# Page
+GET     /msg                        controllers.Frontend.msg()
 
 #关于数据操作的接口
 ###

@@ -15,8 +15,8 @@ define(function(require, exports, module) {
 			data: {
 /*				email: $('#inputEmail').val(),
 				password: $('#inputPassword').val()
-*/				email: $('.email').val(),
-				password: $('.password').val()
+*/				email: $('input[name=email]').val(),
+				password: $('input[name=password]').val()
 			},
 			success: function(res, status){
 				if (res.isSuccess){
