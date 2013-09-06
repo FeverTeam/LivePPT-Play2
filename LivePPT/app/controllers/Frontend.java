@@ -21,7 +21,12 @@ import java.util.List;
 public class Frontend extends Controller {
 
     public static Result index() {
-        return ok(index.render());
+        User user = (User) ctx().args.get(UserController.KEY_CTX_ARG_USER);
+        String username = "";
+        if(user != null)
+            username = user.displayname;
+
+        return ok(index.render(username));
     }
 
     @With(CheckLoginAction.class)
@@ -99,5 +104,9 @@ public class Frontend extends Controller {
 
     public static Result aboutUs() {
         return ok(aboutUs.render());
+    }
+
+    public static Result msg() {
+        return ok(msg.render());
     }
 }

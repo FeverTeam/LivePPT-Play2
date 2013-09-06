@@ -13,6 +13,8 @@ GET     /ppt/info                   @controllers.app.App_PptController.getPptInf
 GET     /ppt/pageImage              @controllers.app.App_PptController.getPptPageImage()
 POST    /ppt/upload                 @controllers.app.App_PptController.pptUpload()
 
+# Page
+GET     /msg                        controllers.Frontend.msg()
 
 #下面的接口逐步废弃，请将有用的的接口移动上去（江楠注意一下）
 
