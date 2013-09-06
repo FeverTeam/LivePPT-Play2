@@ -5,18 +5,26 @@ import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
 import com.fever.liveppt.exception.common.UnknownErrorException;
 import com.fever.liveppt.exception.ppt.PptException;
+import com.fever.liveppt.exception.ppt.PptFileInvalidTypeException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.exception.user.UserException;
 import com.fever.liveppt.models.Ppt;
+import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.*;
+import com.fever.liveppt.service.UserService;
+import com.fever.liveppt.utils.ControllerUtils;
+import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.StatusCode;
+import com.fever.liveppt.utils.TokenAgent;
 import com.google.inject.Inject;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
-import play.Logger;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,10 +32,16 @@ import java.util.regex.Pattern;
 
 public class App_PptController extends Controller {
 
+    //PPT和PPTX文件的ContentType
+    public static final String PPT_CONTENTTYPE = "application/vnd.ms-powerpoint";
+    public static final String PPTX_CONTENTTYPE = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    //.ppt或.pptx文件后缀
+    static Pattern pptTailPattern = Pattern.compile(".+\\.(ppt|pptx)");
+    //通过guice注入
+    @Inject
+    UserService userService;
     @Inject
     PptService pptService;
-    //数字匹配器
-    Pattern patternNumbers = Pattern.compile("^[-\\+]?[\\d]*$");
 
     /**
      * 获取用户所有PPT的列表
@@ -37,11 +51,8 @@ public class App_PptController extends Controller {
     public Result infoAll() {
         ResultJson resultJson = null;
         try {
-            //验证Token
+            //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
-            if (userEmail == null) {
-                //Token验证失败
-            }
 
             //获取ppt
             List<Ppt> pptList = pptService.getPptList(userEmail);
@@ -122,7 +133,7 @@ public class App_PptController extends Controller {
                 throw new InvalidParamsException();
             }
 
-            Ppt ppt = pptService.getSinglePptInfo(pptId);
+            Ppt ppt = pptService.getPpt(pptId);
             if (ppt == null) {
                 //未找到指定pptId的PPT
                 throw new PptNotExistedException();
@@ -195,7 +206,6 @@ public class App_PptController extends Controller {
                 return ok();
             }
 
-
         } catch (CommonException e) {
             resultJson = new ResultJson(e);
         } catch (NumberFormatException e) {
@@ -208,53 +218,54 @@ public class App_PptController extends Controller {
         //若获取不成功返回JSON
         resultJson = (this == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
         return ok(resultJson);
-
     }
 
-    /**
-     * 检查userId字段
-     *
-     * @param params
-     * @return
-     */
-    JsonResult checkUserId(Map<String, String[]> params) {
-        if (!params.containsKey("userId")) {
-            return new JsonResult(false, StatusCode.USER_ID_ERROR, "userId字段错误");
+    public Result pptUpload() {
+        ResultJson resultJson = null;
+        try {
+            //验证Token并提取userEmail
+            User user = TokenAgent.validateTokenAndGetUser(userService, request());
+
+            Http.MultipartFormData bodyData = request().body().asMultipartFormData();
+            Http.MultipartFormData.FilePart pptFilePart = bodyData.getFile("pptFile");
+            if (pptFilePart == null) {
+                //提取文件失败
+                throw new InvalidParamsException();
+            } else {
+                //成功提取FilePart
+
+                //获取ContentType和文件名
+                String contentType = pptFilePart.getContentType();
+                String pptFileName = pptFilePart.getFilename();
+                if (contentType == null || pptFileName == null) {
+                    throw new PptFileInvalidTypeException();
+                }
+
+                //验证文件类型
+                //验证contentType
+                if (!contentType.equals(PPT_CONTENTTYPE) && !contentType.equals(PPTX_CONTENTTYPE)) {
+                    throw new PptFileInvalidTypeException();
+                }
+                //验证文件名是否以".ppt"或".pptx"结尾
+                if (!pptTailPattern.matcher(pptFileName).matches()) {
+                    throw new PptFileInvalidTypeException();
+                }
+
+                //获取文件主体
+                File pptFile = pptFilePart.getFile();
+                long pptFileSize = pptFile.length();
+
+                pptService.uploadPptToS3(user, pptFile, pptFileName, pptFileSize);
+
+                return ok(new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null));
+            }
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+        } catch (PptException e) {
+            resultJson = new ResultJson(e);
+        } catch (UserException e) {
+            resultJson = new ResultJson(e);
         }
-
-        if (!patternNumbers.matcher(params.get("userId")[0]).matches())
-            return new JsonResult(false, StatusCode.USER_ID_ERROR, "userId字段错误");
-        return new JsonResult(true);
-    }
-
-    /**
-     * 检查pptId字段
-     *
-     * @param params
-     * @return
-     */
-    JsonResult checkPptId(Map<String, String[]> params) {
-        if (!params.containsKey("pptId")) {
-            return new JsonResult(false, StatusCode.PPT_ID_ERROR, "pptId错误");
-        }
-
-        if (!patternNumbers.matcher(params.get("pptId")[0]).matches())
-            return new JsonResult(false, StatusCode.PPT_ID_ERROR, "pptId错误");
-        return new JsonResult(true);
-    }
-
-    /**
-     * 检查pageIndex字段
-     *
-     * @param params
-     * @return
-     */
-    JsonResult checkPageIndex(Map<String, String[]> params) {
-        if (!params.containsKey("pageIndex")) {
-            return new JsonResult(false, StatusCode.PPT_PAGEINDEX_ERROR, "pageIndex字段错误");
-        }
-        if (!patternNumbers.matcher(params.get("pageIndex")[0]).matches())
-            return new JsonResult(false, StatusCode.PPT_PAGEINDEX_ERROR, "pageIndex字段错误");
-        return new JsonResult(true);
+        return ok(resultJson);
     }
 }
