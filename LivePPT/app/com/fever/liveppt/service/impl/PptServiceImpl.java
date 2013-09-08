@@ -10,7 +10,10 @@ import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.ppt.PptNotConvertedException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.exception.ppt.PptNotSelfOwnException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
+import com.fever.liveppt.models.Attender;
+import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
@@ -199,8 +202,7 @@ public class PptServiceImpl implements PptService {
         if (pptId < 0) {
             return null;
         }
-        Ppt ppt = Ppt.find.byId(pptId);
-        return ppt;
+        return Ppt.find.byId(pptId);
     }
 
     public void uploadPptToS3(User user, File file, String title, long filesize) throws InternalErrorException {
@@ -219,7 +221,7 @@ public class PptServiceImpl implements PptService {
             // 向SNS写入PPT的id，并告知win端进行转换
             AmazonSQS sqs = AwsHelper.genTokyoSQS();
             CreateQueueRequest createQueueRequest = new CreateQueueRequest(AwsHelper.QUEUE_NAME);
-            String myQueueUrl = sqs.createQueue(createQueueRequest) .getQueueUrl();
+            String myQueueUrl = sqs.createQueue(createQueueRequest).getQueueUrl();
             sqs.sendMessage(new SendMessageRequest(myQueueUrl, storeKey));
 
         } catch (Exception e) {
@@ -227,6 +229,46 @@ public class PptServiceImpl implements PptService {
             throw new InternalErrorException();
         }
 
+    }
+
+    public void deletePpt(User user, long pptId) throws InternalErrorException, PptNotSelfOwnException {
+        if (user == null) {
+            return;
+        }
+
+        //查找指定的PPT是否属于用户
+        Ppt targetPpt = null;
+        for (Ppt ppt : user.ppts) {
+            if (pptId == ppt.id) {
+                targetPpt = ppt;
+            }
+        }
+        if (targetPpt == null) {
+            //PPT不属于用户，抛出PptNotSelfOwnException
+            throw new PptNotSelfOwnException();
+        }
+
+        try {
+            //删除使用该PPT的Meeting
+            for (Meeting meeting : user.myFoundedMeeting) {
+                if (meeting.ppt.id.equals(targetPpt.id)) {
+                    //删除该meeting的参与关系
+                    for (Attender attender : meeting.attenders) {
+                        attender.delete();
+                    }
+
+                    //删除meeting
+                    meeting.delete();
+                }
+            }
+
+            //删除PPT
+            targetPpt.delete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new InternalErrorException();
+        }
     }
 
 }
