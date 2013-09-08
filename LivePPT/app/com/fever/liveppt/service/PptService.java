@@ -4,6 +4,7 @@ import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.ppt.PptNotConvertedException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.exception.ppt.PptNotSelfOwnException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
@@ -64,6 +65,13 @@ public interface PptService {
      * @param filesize
      */
     public void uploadPptToS3(User user, File file, String title, long filesize) throws InternalErrorException;
+
+    /**
+     * 删除PPT及其相关的会议和参与关系
+     * @param user
+     * @param pptId
+     */
+    public void deletePpt(User user, long pptId) throws InternalErrorException, PptNotSelfOwnException;
 
     /*
     public byte[] getPptPageAsMid(Long pptId, Long pageId);

@@ -20,6 +20,8 @@ import com.google.inject.Inject;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
+import play.Logger;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -266,6 +268,61 @@ public class App_PptController extends Controller {
         } catch (UserException e) {
             resultJson = new ResultJson(e);
         }
+        //若获取不成功返回JSON
+        resultJson = (this == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
         return ok(resultJson);
+    }
+
+    public Result pptDelete() {
+        ResultJson resultJson = null;
+        try {
+            //验证Token并提取userEmail
+            User user = TokenAgent.validateTokenAndGetUser(userService, request());
+
+            //获取GET参数
+            Map<String, String[]> params = request().body().asFormUrlEncoded();
+            if (params == null) {
+                throw new InvalidParamsException();
+            }
+
+            //检查字段参数
+            if (!ControllerUtils.isFieldNotNull(params, "pptId")) {
+                throw new InvalidParamsException();
+            }
+
+            //获取参数
+            Long pptId = Long.valueOf(params.get("pptId")[0]);
+            if (pptId == null) {
+                //长整型转换失败
+                throw new InvalidParamsException();
+            }
+
+            pptService.deletePpt(user, pptId);
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+
+
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+        } catch (PptException e) {
+            resultJson = new ResultJson(e);
+        } catch (UserException e) {
+            resultJson = new ResultJson(e);
+        }
+        //若获取不成功返回JSON
+        resultJson = (resultJson == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
+        return ok(resultJson);
+    }
+
+    /**
+     * 更新PPT转换的状态
+     *
+     * @return
+     */
+    public Result convertstatus() {
+        JsonNode json = Json.parse(request().body().asText());
+        JsonNode messageJson = Json.parse(json.findPath("Message")
+                .getTextValue());
+        pptService.updatePptConvertedStatus(messageJson);
+        return ok();
     }
 }
