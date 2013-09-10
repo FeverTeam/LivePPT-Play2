@@ -12,6 +12,9 @@ GET     /ppt/info_all               @controllers.app.App_PptController.infoAll()
 GET     /ppt/info                   @controllers.app.App_PptController.getPptInfo()
 GET     /ppt/pageImage              @controllers.app.App_PptController.getPptPageImage()
 POST    /ppt/upload                 @controllers.app.App_PptController.pptUpload()
+POST    /ppt/delete                 @controllers.app.App_PptController.pptDelete()
+#convertstatus为保留接口，用于接受SNS关于转换成功的通知
+POST	/convertstatus				@controllers.PptController.convertstatus()
 
 #meeting
 POST   /meeting/create              @controllers.app.App_MeetingController.createMeeting()
@@ -48,7 +51,7 @@ POST 	/signup						controllers.UserController.signup()
 POST	/login						controllers.UserController.login()
 GET 	/logout 					controllers.UserController.logout()
 
-POST	/convertstatus				@controllers.PptController.convertstatus()
+#POST	/convertstatus				@controllers.PptController.convertstatus()
 
 POST	/pptupload					controllers.PptController.pptUpload()
 

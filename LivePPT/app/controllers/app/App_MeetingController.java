@@ -446,7 +446,6 @@ public class App_MeetingController extends Controller {
         ArrayNode attendingMeetingsArrayNode = meetingService
                 .getMyAttendingMeetings(userId);
         resultJson = new JsonResult(true, attendingMeetingsArrayNode);
-        Logger.info(resultJson.toString());
         return ok(resultJson);
     }
 
@@ -529,7 +528,6 @@ public class App_MeetingController extends Controller {
         ArrayNode foundedMeetingsArrayNode = meetingService
                 .getMyFoundedMeetings(userId);
         resultJson = new JsonResult(true, foundedMeetingsArrayNode);
-        Logger.info(resultJson.toString());
         return ok(resultJson);
     }
 
@@ -551,7 +549,6 @@ public class App_MeetingController extends Controller {
 
         Long meetingId = Long.parseLong(params.get("meetingId")[0]);
         resultJson = meetingService.getMeetingInfo(meetingId);
-        Logger.info(resultJson.toString());
         return ok(resultJson);
     }
 
@@ -580,7 +577,6 @@ public class App_MeetingController extends Controller {
         pageIndex = Long.valueOf(params.get("pageIndex")[0]);
 
         resultJson = meetingService.setMeetingPageIndex(meetingId, pageIndex);
-        Logger.info(resultJson.toString());
         return ok(resultJson);
     }
 
