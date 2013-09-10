@@ -1,11 +1,16 @@
 package com.fever.liveppt.service.impl;
 
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
+import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
+import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
@@ -24,10 +29,28 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    public void deleteMeeting(String userEmail,Long meetingId) throws MeetingPermissionDenyException, MeetingNotExistedException {
+        // TODO Auto-generated method stub
+        Meeting meeting = Meeting.find.byId(meetingId);
+        String founder = meeting.founder.email;
+        if(meeting == null)
+        {
+            throw new MeetingNotExistedException();
+        }
+        if(!userEmail.equals(founder))
+        {
+            throw new MeetingPermissionDenyException();
+        }
+        else
+        {
+            meeting.delete();
+        }
+    }
+    @Override
     public JsonResult quitMeeting(Long userId, Long meetingId) {
         // TODO Auto-generated method stub
         JsonResult resultJson = new JsonResult(true);
-        User user = User.find.byId(userId);
+        User  user = User.find.byId(userId);
         Boolean isDeleted = false;
         if (user != null) {
             for (Attender attender : user.attendents) {
@@ -45,7 +68,24 @@ public class MeetingServiceImpl implements MeetingService {
         return resultJson;
     }
 
-
+    @Override
+    public ResultJson createMeeting(String userEmail, Long pptId, String topic) throws PptNotExistedException {
+        // TODO Auto-generated method stub
+        User founder = User.find.where().eq("email", userEmail).findUnique();
+        Ppt ppt = Ppt.find.byId(pptId);
+        if (ppt == null)
+        {
+            throw new PptNotExistedException();
+        }
+        //TODO check topic
+        Meeting meeting = new Meeting();
+        meeting.founder = founder;
+        meeting.ppt = ppt;
+        meeting.topic = topic;
+        meeting.save();
+        ResultJson resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+        return resultJson;
+    }
     @Override
     public JsonResult foundNewMeeting(Long founderId, Long pptId, String topic) {
         // TODO Auto-generated method stub
@@ -62,6 +102,24 @@ public class MeetingServiceImpl implements MeetingService {
         return new JsonResult(true);
     }
 
+    @Override
+    public ResultJson updateMeeting(String userEmail,Long meetingId,Long pptId,String topic) throws MeetingNotExistedException, PptNotExistedException {
+        Meeting meeting = Meeting.find.byId(meetingId);
+        if(meeting == null)
+        {
+            throw new MeetingNotExistedException();
+        }
+        Ppt ppt = Ppt.find.byId(pptId);
+        if(ppt == null)
+        {
+            throw new PptNotExistedException();
+        }
+        meeting.ppt = ppt;
+        meeting.topic = topic;
+        meeting.save();
+        ResultJson resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+        return resultJson;
+    }
     @Override
     public ArrayNode getMyAttendingMeetings(Long userId) {
         // TODO Auto-generated method stub

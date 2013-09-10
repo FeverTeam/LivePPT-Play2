@@ -1,6 +1,10 @@
 package com.fever.liveppt.service;
 
+import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
+import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
+import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.utils.ResultJson;
 import org.codehaus.jackson.node.ArrayNode;
 
 
@@ -19,14 +23,14 @@ public interface MeetingService {
      * @param topic
      */
     public JsonResult foundNewMeeting(Long founderId, Long pptId, String topic);
-
+    public ResultJson createMeeting(String userEmail,Long pptId,String topic) throws PptNotExistedException;
     /**
      * 删除会议
      *
      * @param meetingId
      */
     public void deleteMeeting(Long meetingId);
-
+    public void deleteMeeting(String userEmail,Long meetingId) throws MeetingPermissionDenyException, MeetingNotExistedException;
     /**
      * 获取用户所有自己发起的会议
      *
@@ -75,4 +79,16 @@ public interface MeetingService {
      * @return
      */
     public JsonResult quitMeeting(Long userId, Long meetingId);
+
+    /**
+     * 修改会议
+     * @param userEmail
+     * @param meetingId
+     * @param pptId
+     * @param topic
+     * @return
+     * @throws MeetingNotExistedException
+     * @throws PptNotExistedException
+     */
+    public ResultJson updateMeeting(String userEmail,Long meetingId,Long pptId,String topic) throws MeetingNotExistedException, PptNotExistedException;
 }

@@ -57,6 +57,14 @@ public class StatusCode {
     public final static int PPT_FILE_INVALID_TYPE = -304;
     public final static String PPT_FILE_INVALID_TYPE_MESSAGE = "file not ppt or pptx";
 
+    //*******************MEETING类型错误*****************
+    //Meeting不存在
+    public final static int MEETING_NOT_EXISTED = -401;
+    public final static String MEETING_NOT_EXISTED_MESSAGE ="no such meeting";
+
+    //该用户没有权限进行相关meeting操作
+    public final static int MEETING_PERMISSION_DENY = -402;
+    public final static String MEETING_PERMISSION_DENY_MESSAGE = "not have permission to operate the meeting";
     //用户密码错误
     public final static int USER_PASSWORD_ERROR = 1100;
     //用户不存在
@@ -87,7 +95,7 @@ public class StatusCode {
     //meeting的pageIndex字段错误
     public final static int MEETING_PAGEINDEX_ERROR = 3102;
     //根据meetingID查询的meeting不存在
-    public final static int MEETING_NOT_EXISTED = 3200;
+   // public final static int MEETING_NOT_EXISTED = 3200;
     //topic字段错误
     public final static int MEETING_TOPIC_ERROR = 3300;
     //删除会议错误
