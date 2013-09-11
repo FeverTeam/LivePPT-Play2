@@ -5,6 +5,7 @@ import play.db.ebean.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
@@ -24,10 +25,12 @@ public class Attender extends Model {
     public Long id;
 
     @NotNull
+    @JoinColumn(name = "meeting_id")
     @ManyToOne
     public Meeting meeting;
 
     @NotNull
+    @JoinColumn(name = "user_id")
     @ManyToOne
     public User user;
 
@@ -37,5 +40,8 @@ public class Attender extends Model {
     public Attender(Meeting meeting, User user) {
         this.meeting = meeting;
         this.user = user;
+    }
+    public Attender(){
+
     }
 }

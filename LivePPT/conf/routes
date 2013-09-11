@@ -20,6 +20,11 @@ POST	/convertstatus				@controllers.PptController.convertstatus()
 POST   /meeting/create              @controllers.app.App_MeetingController.createMeeting()
 POST   /meeting/delete              @controllers.app.App_MeetingController.deleteMeeting()
 POST   /meeting/update              @controllers.app.App_MeetingController.updateMeeting()
+POST   /meeting/join                @controllers.app.App_MeetingController.joinMeeting()
+
+GET    /meeting/myFoundedMeetings   @controllers.app.App_MeetingController.getMyFoundedMeetings()
+GET    /meeting/myAttendingMeetings @controllers.app.App_MeetingController.getMyAttendingMeeting()
+GET    /meeting/info                @controllers.app.App_MeetingController.getMeetingInfo()
 
 #下面的接口逐步废弃，请将有用的的接口移动上去（江楠注意一下）
 
@@ -56,7 +61,7 @@ GET 	/logout 					controllers.UserController.logout()
 POST	/pptupload					controllers.PptController.pptUpload()
 
 POST 	/foundNewMeeting			@controllers.MeetingController.foundNewMeeting()
-POST	/deleteMeeting				@controllers.MeetingController.deleteMeeting()
+#POST	/deleteMeeting				@controllers.MeetingController.deleteMeeting()
 POST	/quitMeeting				@controllers.MeetingController.quitMeeting()
 
 POST 	/setMeetingPage				@controllers.MeetingController.setMeetingPage()
@@ -97,19 +102,19 @@ GET 	/app/getPptList						@controllers.app.App_PptController.getPptList()
 ## 会议接口 ##
 
 #获取用户所有发起会议的列表
-GET 	/app/getMyFoundedMeetings 			@controllers.app.App_MeetingController.getMyFoundedMeetings()
+#GET 	/app/getMyFoundedMeetings 			@controllers.app.App_MeetingController.getMyFoundedMeetings()
 
 #获取用户所有观看会议的列表
-GET 	/app/getMyAttendingMeetings 		@controllers.app.App_MeetingController.getMyAttendingMeetings()
+#GET 	/app/getMyAttendingMeetings 		@controllers.app.App_MeetingController.getMyAttendingMeetings()
 
 #获取指定会议的信息
-GET 	/app/getMeetingInfo					@controllers.app.App_MeetingController.getMeetingInfo()
+#GET 	/app/getMeetingInfo					@controllers.app.App_MeetingController.getMeetingInfo()
 
 #设置会议直播PPT的页码
-POST 	/app/setMeetingPageIndex			@controllers.app.App_MeetingController.setMeetingPageIndex()
+#POST 	/app/setMeetingPageIndex			@controllers.app.App_MeetingController.setMeetingPageIndex()
 
 #建立新的会议
-POST 	/app/foundNewMeeting				@controllers.app.App_MeetingController.foundNewMeeting()
+#POST 	/app/foundNewMeeting				@controllers.app.App_MeetingController.foundNewMeeting()
 
 #加入新的会议
-POST 	/app/joinMeeting					@controllers.app.App_MeetingController.joinMeeting()
+#POST 	/app/joinMeeting					@controllers.app.App_MeetingController.joinMeeting()

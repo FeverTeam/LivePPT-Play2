@@ -1,11 +1,15 @@
 package com.fever.liveppt.service;
 
+import com.fever.liveppt.exception.meeting.AttendingExistedException;
 import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
 import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.ResultJson;
 import org.codehaus.jackson.node.ArrayNode;
+
+import java.util.List;
 
 
 /**
@@ -37,31 +41,31 @@ public interface MeetingService {
      * @param userId
      */
     public ArrayNode getMyFoundedMeetings(Long userId);
-
+    public List<Meeting> getMyFoundedMeetings(String userEmail);
     /**
      * 获取用户观看的会议
      *
      * @param userId
      */
     public ArrayNode getMyAttendingMeetings(Long userId);
-
+    public List<Meeting> getMyAttendingMeetings(String userEmail);
     /**
      * 获取指定的会议的信息
      *
      * @param meetingId
      * @return
      */
-    public JsonResult getMeetingInfo(Long meetingId);
-
+  // public JsonResult getMeetingInfo(Long meetingId) throws MeetingNotExistedException;
+    public ResultJson getMeetingInfo(Long meetingId) throws MeetingNotExistedException;
     /**
      * 加入新的会议
      *
-     * @param userId    用户Id
+     * @param userEmail   用户Id
      * @param meetingId 准备加入的会议号
      * @return [description]
      */
     public JsonResult joinMeeting(Long userId, Long meetingId);
-
+    public ResultJson joinMeeting(String userEmail,Long meetingId) throws MeetingNotExistedException, AttendingExistedException;
     /**
      * 设置会议的直播PPT页码
      *
@@ -70,6 +74,7 @@ public interface MeetingService {
      * @return
      */
     public JsonResult setMeetingPageIndex(Long meetingId, Long pageIndex);
+    public ResultJson setPage(String userEmail,Long meetingId, Long pageIndex) throws MeetingPermissionDenyException, MeetingNotExistedException;
 
     /**
      * 退出会议
@@ -79,7 +84,7 @@ public interface MeetingService {
      * @return
      */
     public JsonResult quitMeeting(Long userId, Long meetingId);
-
+    public ResultJson quitMeeting(String userEmail,Long meetingId) throws MeetingNotExistedException;
     /**
      * 修改会议
      * @param userEmail

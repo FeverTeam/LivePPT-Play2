@@ -68,6 +68,10 @@ public class StatusCode {
     //该用户没有权限进行相关meeting操作
     public final static int MEETING_PERMISSION_DENY = -402;
     public final static String MEETING_PERMISSION_DENY_MESSAGE = "not have permission to operate the meeting";
+
+    //该用户已参与相关会议
+    public final static int ATTENDING_EXISTED = -403;
+    public final static String ATTENDING_EXISTED_MESSAGE ="user has attended the meeting ";
     //用户密码错误
     public final static int USER_PASSWORD_ERROR = 1100;
     //用户不存在

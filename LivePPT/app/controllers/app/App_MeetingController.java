@@ -3,6 +3,7 @@ package controllers.app;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
+import com.fever.liveppt.exception.meeting.AttendingExistedException;
 import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
 import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
@@ -104,7 +105,7 @@ public class App_MeetingController extends Controller {
                 throw new InvalidParamsException();
             }
 
-            //创建新会议条目
+            //删除
              meetingService.deleteMeeting(userEmail,meetingId);
             resultJson = new ResultJson(StatusCode.SUCCESS,"success",null);
             //若返回JSON为空，设为位置错误
@@ -165,7 +166,7 @@ public class App_MeetingController extends Controller {
 
             String topic = params.get("topic")[0];
 
-            //创建新会议条目
+            //修改会议
             resultJson = meetingService.updateMeeting(userEmail, meetingId, pptId, topic);
 
             //若返回JSON为空，设为位置错误
@@ -194,7 +195,7 @@ public class App_MeetingController extends Controller {
         try{
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
-
+           // String userEmail = "bowen@gmail.com";
             //获取POST参数
             Map<String,String[]> params = request().body().asFormUrlEncoded();
 
@@ -219,8 +220,13 @@ public class App_MeetingController extends Controller {
             resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
 
         } catch (TokenInvalidException e) {
+           resultJson = new ResultJson(e);
+       }
+          catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
-        } catch (InvalidParamsException e) {
+        } catch (MeetingNotExistedException e) {
+            resultJson = new ResultJson(e);
+        } catch (AttendingExistedException e) {
             resultJson = new ResultJson(e);
         }
         return ok(resultJson);
@@ -230,12 +236,13 @@ public class App_MeetingController extends Controller {
      * 退出观看指定会议
      * @return
      */
-    public Result quitMeeting(){
+    public Result quitMeeting()
+    {
         ResultJson resultJson = null;
         try{
             //验证Token并提取userEmail
-            String userEmail = TokenAgent.validateTokenFromHeader(request());
-
+             String userEmail = TokenAgent.validateTokenFromHeader(request());
+           // String userEmail = "bowen@gmail.com";
             //获取POST参数
             Map<String,String[]> params = request().body().asFormUrlEncoded();
 
@@ -253,15 +260,18 @@ public class App_MeetingController extends Controller {
                 throw new InvalidParamsException();
             }
 
-            //创建新会议条目
+            //退出会议
             resultJson = meetingService.quitMeeting(userEmail, meetingId);
 
             //若返回JSON为空，设为位置错误
             resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
 
         } catch (TokenInvalidException e) {
+        resultJson = new ResultJson(e);
+         }
+        catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
-        } catch (InvalidParamsException e) {
+        } catch (MeetingNotExistedException e) {
             resultJson = new ResultJson(e);
         }
         return ok(resultJson);
@@ -271,12 +281,13 @@ public class App_MeetingController extends Controller {
      * 设置会议的PPT页码
      * @return
      */
-    public Result setPage() {
+    public Result setPage()
+    {
         ResultJson resultJson = null;
         try{
             //验证Token并提取userEmail
-            String userEmail = TokenAgent.validateTokenFromHeader(request());
-
+             String userEmail = TokenAgent.validateTokenFromHeader(request());
+           // String userEmail = "bowen@gmail.com";
             //获取POST参数
             Map<String,String[]> params = request().body().asFormUrlEncoded();
 
@@ -290,7 +301,6 @@ public class App_MeetingController extends Controller {
             {
                 throw new InvalidParamsException();
             }
-
             //获取参数
             Long meetingId = Long.valueOf(params.get("meetingId")[0]);
             if (meetingId == null) {
@@ -299,23 +309,34 @@ public class App_MeetingController extends Controller {
             }
 
             Long pageIndex = Long.valueOf(params.get("pageIndex")[0]);
-            if(pageIndex == null){
-                //长整形转换失败
+            if (pageIndex == null) {
+                //长整型转换失败
                 throw new InvalidParamsException();
             }
-            //创建新会议条目
-            resultJson = meetingService.meetingSetPage(userEmail, meetingId, pageIndex);
+            //设置会议页码
+            resultJson = meetingService.setPage(userEmail, meetingId, pageIndex);
 
             //若返回JSON为空，设为位置错误
             resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
 
         } catch (TokenInvalidException e) {
             resultJson = new ResultJson(e);
-        } catch (InvalidParamsException e) {
+        }
+        catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (MeetingNotExistedException e) {
+            resultJson = new ResultJson(e);
+        } catch (MeetingPermissionDenyException e) {
             resultJson = new ResultJson(e);
         }
+        // resultJson = new ResultJson(e);
+        // }
+
         return ok(resultJson);
     }
+    /////////////////////////////////////////////////
+    //GET
+    /////////////////////////////////////////////////
 
     /**
      * 获取用户所有自己发起的会议
@@ -325,14 +346,48 @@ public class App_MeetingController extends Controller {
         ResultJson resultJson = null;
         try{
             String userEmail = TokenAgent.validateTokenFromHeader(request());
-
+           // String userEmail = "weijie@gmail.com";
             //获取ppt
             List<Meeting> meetingList = meetingService.getMyFoundedMeetings(userEmail);
 
-            //组装PPT信息JSON数组
+            //组装MEETING信息JSON数组
             ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
             for (Meeting meeting : meetingList) {
-                pptInfoArraryNode.add(meeting.toJsonNode());
+                pptInfoArraryNode.add(meeting.toJson());
+            }
+
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
+
+            //若返回JSON为空，设为位置错误
+            resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
+
+        }
+         catch (TokenInvalidException e) {
+            resultJson = new ResultJson(e);
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        }
+        return ok(resultJson);
+    }
+
+
+    /**
+     * 获取用户所有观看的会议
+     * @return
+     */
+    public Result getMyAttendingMeeting()
+    {
+        ResultJson resultJson = null;
+        try{
+            String userEmail = TokenAgent.validateTokenFromHeader(request());
+           // String userEmail = "bowen@gmail.com";
+            //获取ppt
+            List<Meeting> meetingList = meetingService.getMyAttendingMeetings(userEmail);
+
+            //组装MEETING信息JSON数组
+            ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
+            for (Meeting meeting : meetingList) {
+                pptInfoArraryNode.add(meeting.toJson());
             }
 
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
@@ -349,37 +404,9 @@ public class App_MeetingController extends Controller {
     }
 
     /**
-     * 获取用户所有自己发起的会议
+     * 获取指定会议信息
      * @return
      */
-    public Result getMyAttendingMeeting()
-    {
-        ResultJson resultJson = null;
-        try{
-            String userEmail = TokenAgent.validateTokenFromHeader(request());
-
-            //获取ppt
-            List<Meeting> meetingList = meetingService.getMyAttendingMeetings(userEmail);
-
-            //组装PPT信息JSON数组
-            ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
-            for (Meeting meeting : meetingList) {
-                pptInfoArraryNode.add(meeting.toJsonNode());
-            }
-
-            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
-
-            //若返回JSON为空，设为位置错误
-            resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
-
-        } catch (TokenInvalidException e) {
-            resultJson = new ResultJson(e);
-        } catch (InvalidParamsException e) {
-            resultJson = new ResultJson(e);
-        }
-        return ok(resultJson);
-    }
-
     public Result getMeetingInfo()
     {
         ResultJson resultJson = null;
@@ -402,21 +429,13 @@ public class App_MeetingController extends Controller {
                 throw new InvalidParamsException();
             }
 
-            Meeting meeting = meetingService.getMeeting(meetingId);
-            if (meeting == null) {
-                //未找到指定pptId的PPT
-                throw new MeetingNotExistedException();
-            }
-            //组装成功返回信息
-            JsonNode data = meeting.toJsonNode();
-            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, data);
+           resultJson = meetingService.getMeetingInfo(meetingId);
+
 
             //若返回JSON为空，设为位置错误
             resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
 
-        } catch (TokenInvalidException e) {
-            resultJson = new ResultJson(e);
-        } catch (InvalidParamsException e) {
+        }  catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
         } catch (MeetingNotExistedException e) {
             resultJson = new ResultJson(e);
@@ -430,7 +449,7 @@ public class App_MeetingController extends Controller {
      * @param
      * @return
      */
-    public Result getMyAttendingMeetings() {
+   /* public Result getMyAttendingMeetings() {
         Map<String, String[]> params = request().queryString();
 
         JsonResult resultJson;
@@ -447,7 +466,7 @@ public class App_MeetingController extends Controller {
                 .getMyAttendingMeetings(userId);
         resultJson = new JsonResult(true, attendingMeetingsArrayNode);
         return ok(resultJson);
-    }
+    }    */
 
     /**
      * 建立新的meeting
@@ -484,7 +503,7 @@ public class App_MeetingController extends Controller {
      *
      * @return [description]
      */
-    public Result joinMeeting() {
+    /*public Result joinMeeting() {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         //check userId ,meetingId
         JsonResult resultJson;
@@ -505,14 +524,14 @@ public class App_MeetingController extends Controller {
         resultJson = meetingService.joinMeeting(userId, meetingId);
 
         return ok(resultJson);
-    }
+    }     */
 
     /**
      * 获取用户所有自己发起的会议的列表
      *
      * @return
      */
-    public Result getMyFoundedMeetings() {
+   /* public Result getMyFoundedMeetings() {
         Map<String, String[]> params = request().queryString();
 
         JsonResult resultJson;
@@ -529,7 +548,7 @@ public class App_MeetingController extends Controller {
                 .getMyFoundedMeetings(userId);
         resultJson = new JsonResult(true, foundedMeetingsArrayNode);
         return ok(resultJson);
-    }
+    }    */
 
 
     /**
@@ -537,7 +556,7 @@ public class App_MeetingController extends Controller {
      *
      * @return
      */
-    public Result getMeetingInfo() {
+   /* public Result getMeetingInfo() {
         Map<String, String[]> params = request().queryString();
 
         JsonResult resultJson;
@@ -550,7 +569,7 @@ public class App_MeetingController extends Controller {
         Long meetingId = Long.parseLong(params.get("meetingId")[0]);
         resultJson = meetingService.getMeetingInfo(meetingId);
         return ok(resultJson);
-    }
+    }       */
 
     /**
      * 设置会议的直播PPT页码
@@ -558,7 +577,7 @@ public class App_MeetingController extends Controller {
      * @param
      * @return
      */
-    public Result setMeetingPageIndex() {
+    /*public Result setMeetingPageIndex() {
         Long meetingId;
         Long pageIndex;
         // 获取POST参数
@@ -578,7 +597,7 @@ public class App_MeetingController extends Controller {
 
         resultJson = meetingService.setMeetingPageIndex(meetingId, pageIndex);
         return ok(resultJson);
-    }
+    }       */
 
     //数字匹配器
     Pattern patternNumbers = Pattern.compile("^[-\\+]?[\\d]*$");
