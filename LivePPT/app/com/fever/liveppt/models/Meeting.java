@@ -47,12 +47,22 @@ public class Meeting extends Model {
     public static Finder<Long, Meeting> find = new Finder<Long, Meeting>(
             Long.class, Meeting.class);
 
-    public ObjectNode toJson() {
+    public ObjectNode toMyMeetingJson() {
         ObjectNode resultJson = Json.newObject();
         resultJson.put("meetingId", this.id);
-        resultJson.put("ppt", this.ppt.toJsonNode());
-        resultJson.put("founder", this.founder.toJsonNode());
+        resultJson.put("pptId", this.ppt.id);
+        resultJson.put("founder", "null");
         resultJson.put("topic", this.topic);
         return resultJson;
     }
+
+    public ObjectNode toMeetingJson(){
+        ObjectNode resultJson = Json.newObject();
+        resultJson.put("meetingId", this.id);
+        resultJson.put("pptId", this.ppt.id);
+        resultJson.put("founder", this.founder.toJson());
+        resultJson.put("topic", this.topic);
+        return resultJson;
+    }
+
 }

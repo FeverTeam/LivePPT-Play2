@@ -25,12 +25,10 @@ public class Attender extends Model {
     public Long id;
 
     @NotNull
-    @JoinColumn(name = "meeting_id")
     @ManyToOne
     public Meeting meeting;
 
     @NotNull
-    @JoinColumn(name = "user_id")
     @ManyToOne
     public User user;
 

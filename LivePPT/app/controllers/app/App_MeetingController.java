@@ -7,6 +7,7 @@ import com.fever.liveppt.exception.meeting.AttendingExistedException;
 import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
 import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.service.MeetingService;
@@ -179,7 +180,9 @@ public class App_MeetingController extends Controller {
             resultJson = new ResultJson(e);
         } catch (MeetingNotExistedException e) {
             resultJson = new ResultJson(e);
-        } catch (PptNotExistedException e) {
+        }  catch (MeetingPermissionDenyException e) {
+            resultJson = new ResultJson(e);
+        }catch (PptNotExistedException e) {
             resultJson = new ResultJson(e);
         }
         return ok(resultJson);
@@ -326,7 +329,11 @@ public class App_MeetingController extends Controller {
             resultJson = new ResultJson(e);
         } catch (MeetingNotExistedException e) {
             resultJson = new ResultJson(e);
-        } catch (MeetingPermissionDenyException e) {
+        }
+        catch (PptPageOutOfRangeException e) {
+            resultJson = new ResultJson(e);
+        }
+        catch (MeetingPermissionDenyException e) {
             resultJson = new ResultJson(e);
         }
         // resultJson = new ResultJson(e);
@@ -353,7 +360,7 @@ public class App_MeetingController extends Controller {
             //组装MEETING信息JSON数组
             ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
             for (Meeting meeting : meetingList) {
-                pptInfoArraryNode.add(meeting.toJson());
+                pptInfoArraryNode.add(meeting.toMyMeetingJson());
             }
 
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
@@ -387,7 +394,7 @@ public class App_MeetingController extends Controller {
             //组装MEETING信息JSON数组
             ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
             for (Meeting meeting : meetingList) {
-                pptInfoArraryNode.add(meeting.toJson());
+                pptInfoArraryNode.add(meeting.toMeetingJson());
             }
 
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);

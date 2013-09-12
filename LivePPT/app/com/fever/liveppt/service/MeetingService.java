@@ -4,6 +4,7 @@ import com.fever.liveppt.exception.meeting.AttendingExistedException;
 import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
 import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.ResultJson;
@@ -74,7 +75,7 @@ public interface MeetingService {
      * @return
      */
     public JsonResult setMeetingPageIndex(Long meetingId, Long pageIndex);
-    public ResultJson setPage(String userEmail,Long meetingId, Long pageIndex) throws MeetingPermissionDenyException, MeetingNotExistedException;
+    public ResultJson setPage(String userEmail,Long meetingId, Long pageIndex) throws MeetingPermissionDenyException, MeetingNotExistedException, PptPageOutOfRangeException;
 
     /**
      * 退出会议
@@ -95,5 +96,5 @@ public interface MeetingService {
      * @throws MeetingNotExistedException
      * @throws PptNotExistedException
      */
-    public ResultJson updateMeeting(String userEmail,Long meetingId,Long pptId,String topic) throws MeetingNotExistedException, PptNotExistedException;
+    public ResultJson updateMeeting(String userEmail,Long meetingId,Long pptId,String topic) throws MeetingNotExistedException, PptNotExistedException, MeetingPermissionDenyException;
 }

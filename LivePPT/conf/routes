@@ -21,6 +21,8 @@ POST   /meeting/create              @controllers.app.App_MeetingController.creat
 POST   /meeting/delete              @controllers.app.App_MeetingController.deleteMeeting()
 POST   /meeting/update              @controllers.app.App_MeetingController.updateMeeting()
 POST   /meeting/join                @controllers.app.App_MeetingController.joinMeeting()
+POST   /meeting/quit                @controllers.app.App_MeetingController.quitMeeting()
+POST   /meeting/setPage             @controllers.app.App_MeetingController.setPage()
 
 GET    /meeting/myFoundedMeetings   @controllers.app.App_MeetingController.getMyFoundedMeetings()
 GET    /meeting/myAttendingMeetings @controllers.app.App_MeetingController.getMyAttendingMeeting()
