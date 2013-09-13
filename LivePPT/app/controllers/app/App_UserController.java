@@ -1,12 +1,12 @@
 package controllers.app;
 
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.user.UserException;
 import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.ControllerUtils;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
-import com.fever.liveppt.exception.common.CommonException;
-import com.fever.liveppt.exception.user.UserException;
-import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.google.inject.Inject;
 import play.Logger;
 import play.libs.Crypto;

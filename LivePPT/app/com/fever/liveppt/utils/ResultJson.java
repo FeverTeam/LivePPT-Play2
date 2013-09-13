@@ -1,8 +1,6 @@
 package com.fever.liveppt.utils;
 
 import com.fever.liveppt.exception.BasicException;
-import com.fever.liveppt.exception.common.CommonException;
-import com.fever.liveppt.exception.user.UserException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;

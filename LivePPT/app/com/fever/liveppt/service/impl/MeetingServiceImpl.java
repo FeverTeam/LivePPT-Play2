@@ -1,6 +1,5 @@
 package com.fever.liveppt.service.impl;
 
-import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.meeting.AttendingExistedException;
 import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
 import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
@@ -25,24 +24,19 @@ import java.util.List;
 public class MeetingServiceImpl implements MeetingService {
 
     @Override
-    public void deleteMeeting(String userEmail,Long meetingId) throws MeetingPermissionDenyException, MeetingNotExistedException {
+    public void deleteMeeting(String userEmail, Long meetingId) throws MeetingPermissionDenyException, MeetingNotExistedException {
         // TODO Auto-generated method stub
         Meeting meeting = Meeting.find.byId(meetingId);
 
-        if(meeting == null)
-        {
+        if (meeting == null) {
             throw new MeetingNotExistedException();
         }
         String founder = meeting.founder.email;
-        if(!userEmail.equals(founder))
-        {
+        if (!userEmail.equals(founder)) {
             throw new MeetingPermissionDenyException();
-        }
-        else
-        {
-            List<Attender> attendings = Attender.find.where().eq("meeting_id",meetingId).findList();
-            for(Attender attend : attendings)
-            {
+        } else {
+            List<Attender> attendings = Attender.find.where().eq("meeting_id", meetingId).findList();
+            for (Attender attend : attendings) {
                 attend.delete();
             }
             meeting.delete();
@@ -50,30 +44,27 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public ResultJson quitMeeting(String userEmail,Long meetingId) throws MeetingNotExistedException {
+    public ResultJson quitMeeting(String userEmail, Long meetingId) throws MeetingNotExistedException {
         ResultJson resultJson;
 
         Meeting meeting = Meeting.find.byId(meetingId);
-        if(meeting == null){
+        if (meeting == null) {
             throw new MeetingNotExistedException();
         }
 
-        User user =  User.find.where().eq("email", userEmail).findUnique();
+        User user = User.find.where().eq("email", userEmail).findUnique();
         /*if(user.attendents == null)
         {
             throw
         } */
-        for(Attender attender : user.attendents)
-        {
-             if(attender.meeting.id == meetingId)
-             {
-                 attender.delete();
-             }
+        for (Attender attender : user.attendents) {
+            if (attender.meeting.id == meetingId) {
+                attender.delete();
+            }
         }
-        resultJson = new ResultJson(StatusCode.SUCCESS,"success",null);
+        resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
         return resultJson;
     }
-
 
 
     @Override
@@ -81,8 +72,7 @@ public class MeetingServiceImpl implements MeetingService {
         // TODO Auto-generated method stub
         User founder = User.find.where().eq("email", userEmail).findUnique();
         Ppt ppt = Ppt.find.byId(pptId);
-        if (ppt == null)
-        {
+        if (ppt == null) {
             throw new PptNotExistedException();
         }
         //TODO check topic
@@ -91,7 +81,7 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.ppt = ppt;
         meeting.topic = topic;
         meeting.save();
-        Attender newAttending = new Attender(meeting,founder);
+        Attender newAttending = new Attender(meeting, founder);
         newAttending.save();
         ResultJson resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
         return resultJson;
@@ -99,20 +89,17 @@ public class MeetingServiceImpl implements MeetingService {
 
 
     @Override
-    public ResultJson updateMeeting(String userEmail,Long meetingId,Long pptId,String topic) throws MeetingNotExistedException, PptNotExistedException, MeetingPermissionDenyException {
+    public ResultJson updateMeeting(String userEmail, Long meetingId, Long pptId, String topic) throws MeetingNotExistedException, PptNotExistedException, MeetingPermissionDenyException {
         Meeting meeting = Meeting.find.byId(meetingId);
-        if(meeting == null)
-        {
+        if (meeting == null) {
             throw new MeetingNotExistedException();
         }
         String founder = meeting.founder.email;
-        if(!userEmail.equals(founder))
-        {
+        if (!userEmail.equals(founder)) {
             throw new MeetingPermissionDenyException();
         }
         Ppt ppt = Ppt.find.byId(pptId);
-        if(ppt == null)
-        {
+        if (ppt == null) {
             throw new PptNotExistedException();
         }
         meeting.ppt = ppt;
@@ -125,23 +112,24 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<Meeting> getMyAttendingMeetings(String userEmail) {
-           List<Meeting> meetings = new ArrayList<Meeting>();
+        List<Meeting> meetings = new ArrayList<Meeting>();
         ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
-        User user = User.find.where().eq("email",userEmail).findUnique();
-        for(Attender attender : user.attendents){
+        User user = User.find.where().eq("email", userEmail).findUnique();
+        for (Attender attender : user.attendents) {
             meetings.add(attender.meeting);
         }
-         return meetings;
+        return meetings;
     }
+
     @Override
     public List<Meeting> getMyFoundedMeetings(String userEmail) {
         List<Meeting> meetings = new ArrayList<Meeting>();
         ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
-        User user = User.find.where().eq("email",userEmail).findUnique();
-            for (Meeting meeting : user.myFoundedMeeting) {
-                meetings.add(meeting);
-            }
-       return meetings;
+        User user = User.find.where().eq("email", userEmail).findUnique();
+        for (Meeting meeting : user.myFoundedMeeting) {
+            meetings.add(meeting);
+        }
+        return meetings;
     }
 
 
@@ -153,79 +141,74 @@ public class MeetingServiceImpl implements MeetingService {
         if (meeting == null) {
             throw new MeetingNotExistedException();
         } else {
-            resultJson = new ResultJson(StatusCode.SUCCESS,"success",meeting.toMeetingJson());
-        return resultJson;
-    }
-    }
-     @Override
-    public ResultJson joinMeeting(String userEmail,Long meetingId) throws MeetingNotExistedException, AttendingExistedException {
-            ResultJson resultJson = null;
-            boolean isAttended = false;
-
-            Meeting meeting = Meeting.find.byId(meetingId);
-            if(meeting == null){
-                throw new MeetingNotExistedException();
-            }
-
-            User user =  User.find.where().eq("email", userEmail).findUnique();
-
-            List<Attender> attendents = null;
-            if(!user.attendents.isEmpty())
-            {
-                attendents  = user.attendents;
-            }
-
-
-            if( attendents != null)
-            {
-                for(Attender attending : attendents){
-                    //已经加入
-                    if(attending.meeting.id == meeting.id)
-                    {
-                        resultJson = new ResultJson(StatusCode.SUCCESS,"success",null);
-                        isAttended = true;
-                        break;
-                    }
-
-                }
-            }
-            if(!isAttended)
-            {
-                Attender newAttending = new Attender(meeting,user);
-                newAttending.save();
-                resultJson = new ResultJson(StatusCode.SUCCESS,"success",null);
-            }
-
+            resultJson = new ResultJson(StatusCode.SUCCESS, "success", meeting.toMeetingJson());
             return resultJson;
         }
+    }
 
     @Override
-    public ResultJson setPage(String userEmail,Long meetingId, Long pageIndex) throws MeetingPermissionDenyException, MeetingNotExistedException, PptPageOutOfRangeException {
-        ResultJson resultJson;
+    public ResultJson joinMeeting(String userEmail, Long meetingId) throws MeetingNotExistedException, AttendingExistedException {
+        ResultJson resultJson = null;
+        boolean isAttended = false;
+
         Meeting meeting = Meeting.find.byId(meetingId);
-        if(meeting == null)
-        {
+        if (meeting == null) {
             throw new MeetingNotExistedException();
         }
 
-        User user = User.find.where().eq("email",userEmail).findUnique();
+        User user = User.find.where().eq("email", userEmail).findUnique();
 
-        if(meeting.founder.id != user.id)
-        {
+        List<Attender> attendents = null;
+        if (!user.attendents.isEmpty()) {
+            attendents = user.attendents;
+        }
+
+
+        if (attendents != null) {
+            for (Attender attending : attendents) {
+                //已经加入
+                if (attending.meeting.id == meeting.id) {
+                    resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
+                    isAttended = true;
+                    break;
+                }
+
+            }
+        }
+        if (!isAttended) {
+            Attender newAttending = new Attender(meeting, user);
+            newAttending.save();
+            resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
+        }
+
+        return resultJson;
+    }
+
+    @Override
+    public ResultJson setPage(String userEmail, Long meetingId, Long pageIndex) throws MeetingPermissionDenyException, MeetingNotExistedException, PptPageOutOfRangeException {
+        ResultJson resultJson;
+        Meeting meeting = Meeting.find.byId(meetingId);
+        if (meeting == null) {
+            throw new MeetingNotExistedException();
+        }
+
+        User user = User.find.where().eq("email", userEmail).findUnique();
+
+        if (meeting.founder.id != user.id) {
             throw new MeetingPermissionDenyException();
         }
 
-        if(pageIndex > meeting.ppt.pagecount)
-        {
+        if (pageIndex > meeting.ppt.pagecount) {
             throw new PptPageOutOfRangeException();
         }
 
         meeting.currentPageIndex = pageIndex;
         meeting.save();
-        resultJson = new ResultJson(StatusCode.SUCCESS,"success",null);
+        resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
         return resultJson;
     }
-   ////////////////////////////////////////////////////////////////旧方法///////////////////////////////////////j
+
+    ////////////////////////////////////////////////////////////////旧方法///////////////////////////////////////j
     /*@Override
     public JsonResult getMeetingInfo(Long meetingId) {
         // TODO Auto-generated method stub
@@ -238,18 +221,18 @@ public class MeetingServiceImpl implements MeetingService {
         }
         return resultJson;
     } */
-   @Override
-   public ArrayNode getMyAttendingMeetings(Long userId) {
-       // TODO Auto-generated method stub
-       ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
-       User user = User.find.byId(userId);
-       if (user != null) {
-           for (Attender attender : user.attendents) {
-               resultJson.add(attender.meeting.toMeetingJson());
-           }
-       }
-       return resultJson;
-   }
+    @Override
+    public ArrayNode getMyAttendingMeetings(Long userId) {
+        // TODO Auto-generated method stub
+        ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
+        User user = User.find.byId(userId);
+        if (user != null) {
+            for (Attender attender : user.attendents) {
+                resultJson.add(attender.meeting.toMeetingJson());
+            }
+        }
+        return resultJson;
+    }
 
     @Override
     public ArrayNode getMyFoundedMeetings(Long userId) {
@@ -263,6 +246,7 @@ public class MeetingServiceImpl implements MeetingService {
         }
         return resultJson;
     }
+
     @Override
     public JsonResult setMeetingPageIndex(Long meetingId, Long pageIndex) {
         // TODO Auto-generated method stub
@@ -309,7 +293,7 @@ public class MeetingServiceImpl implements MeetingService {
     public JsonResult quitMeeting(Long userId, Long meetingId) {
         // TODO Auto-generated method stub
         JsonResult resultJson = new JsonResult(true);
-        User  user = User.find.byId(userId);
+        User user = User.find.byId(userId);
         Boolean isDeleted = false;
         if (user != null) {
             for (Attender attender : user.attendents) {
@@ -344,9 +328,9 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public void deleteMeeting(Long meetingId)  {
+    public void deleteMeeting(Long meetingId) {
         Meeting meeting = Meeting.find.byId(meetingId);
-        if(meeting!=null)
+        if (meeting != null)
             meeting.delete();
     }
 

@@ -1,11 +1,11 @@
 package com.fever.liveppt.service;
 
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.user.UserException;
 import com.fever.liveppt.exception.user.UserNotExistedException;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.ResultJson;
-import com.fever.liveppt.exception.common.CommonException;
-import com.fever.liveppt.exception.user.UserException;
-import com.fever.liveppt.exception.common.InvalidParamsException;
 
 public interface UserService {
 
@@ -38,6 +38,7 @@ public interface UserService {
 
     /**
      * 根据userEmail来获取对应的User对象
+     *
      * @param userEmail
      * @return
      */

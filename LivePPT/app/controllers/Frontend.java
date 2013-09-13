@@ -7,7 +7,6 @@ import com.fever.liveppt.models.User;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
-import views.html.*;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -56,7 +56,7 @@ public class Meeting extends Model {
         return resultJson;
     }
 
-    public ObjectNode toMeetingJson(){
+    public ObjectNode toMeetingJson() {
         ObjectNode resultJson = Json.newObject();
         resultJson.put("meetingId", this.id);
         resultJson.put("pptId", this.ppt.id);

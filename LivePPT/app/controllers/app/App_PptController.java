@@ -20,7 +20,6 @@ import com.google.inject.Inject;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
-import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;

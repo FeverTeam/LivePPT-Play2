@@ -1,34 +1,68 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-#new route
-#user
+#当前版本的接口
+
+#关于页面接口（请把有关页面的接口写到这里）
+
+
+#关于数据操作的接口
+###
+#用户方向接口
+
+#用户注册
 POST    /user/register              @controllers.app.App_UserController.register()
+#用户登录
 POST    /user/login                 @controllers.app.App_UserController.login()
+#验证用户Email是否被占用
 POST    /user/check_email           @controllers.app.App_UserController.checkEmail()
 
-#ppt
+###
+#PPT方向接口
+
+#获取用户自己所有PPT信息
 GET     /ppt/info_all               @controllers.app.App_PptController.infoAll()
+#获取指定PPT的信息
 GET     /ppt/info                   @controllers.app.App_PptController.getPptInfo()
+#获取指定PPT的指定页码图像
 GET     /ppt/pageImage              @controllers.app.App_PptController.getPptPageImage()
+#PPT上传
 POST    /ppt/upload                 @controllers.app.App_PptController.pptUpload()
+#PPT删除
 POST    /ppt/delete                 @controllers.app.App_PptController.pptDelete()
-#convertstatus为保留接口，用于接受SNS关于转换成功的通知
-POST	/convertstatus				@controllers.PptController.convertstatus()
+#（convertstatus为保留接口，用于接受SNS关于转换成功的通知）
+POST	/convertstatus				@controllers.app.App_PptController.convertstatus()
 
-#meeting
+###
+#会议方向接口
+
+#发起会议
 POST   /meeting/create              @controllers.app.App_MeetingController.createMeeting()
+#删除会议
 POST   /meeting/delete              @controllers.app.App_MeetingController.deleteMeeting()
+#更新会议信息
 POST   /meeting/update              @controllers.app.App_MeetingController.updateMeeting()
+#加入观看会议
 POST   /meeting/join                @controllers.app.App_MeetingController.joinMeeting()
+#退出观看会议
 POST   /meeting/quit                @controllers.app.App_MeetingController.quitMeeting()
+#设置会议的PPT页码
 POST   /meeting/setPage             @controllers.app.App_MeetingController.setPage()
-
+#获取用户自己发起的所有会议信息
 GET    /meeting/myFoundedMeetings   @controllers.app.App_MeetingController.getMyFoundedMeetings()
+#获取用户观看的所有会议信息
 GET    /meeting/myAttendingMeetings @controllers.app.App_MeetingController.getMyAttendingMeeting()
+#获取指定会议信息
 GET    /meeting/info                @controllers.app.App_MeetingController.getMeetingInfo()
+#会议同步显示页码的WebSocket
+GET 	/viewWebsocket				controllers.app.App_MeetingController.viewWebsocket()
 
+
+
+#######################################################
 #下面的接口逐步废弃，请将有用的的接口移动上去（江楠注意一下）
+#######################################################
+
 
 
 # Page
@@ -46,77 +80,8 @@ GET 	/controlMeeting/:meetingId	controllers.Frontend.controlMeeting(meetingId:Lo
 GET 	/joinMeeting				controllers.Frontend.joinMeeting()
 GET 	/viewMeeting/:meetingId		controllers.Frontend.viewMeeting(meetingId:Long)
 
-GET 	/viewWebsocket				controllers.MeetingController.viewWebsocket()
-
-#GET		/getpptpage					@controllers.PptController.getPptPage()
 
 GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
 
-
-# Data
-POST 	/signup						controllers.UserController.signup()
-POST	/login						controllers.UserController.login()
-GET 	/logout 					controllers.UserController.logout()
-
-#POST	/convertstatus				@controllers.PptController.convertstatus()
-
-POST	/pptupload					controllers.PptController.pptUpload()
-
-POST 	/foundNewMeeting			@controllers.MeetingController.foundNewMeeting()
-#POST	/deleteMeeting				@controllers.MeetingController.deleteMeeting()
-POST	/quitMeeting				@controllers.MeetingController.quitMeeting()
-
-POST 	/setMeetingPage				@controllers.MeetingController.setMeetingPage()
-
-POST 	/joinMeeting				controllers.MeetingController.joinMeeting()
-
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
-
-
-
-
-######
-# For App
-
-################################
-## 用户接口 ##
-
-#用户登录接口
-#GET 	/app/login							@controllers.app.App_UserController.login()
-
-#用户注册接口
-#POST 	/app/register 						@controllers.app.App_UserController.register()
-
-################################
-## PPT接口 ##
-
-#获取用户所有PPT的列表
-GET 	/app/getPptList						@controllers.app.App_PptController.getPptList()
-
-#获取指定PPT的信息
-#GET 	/app/getPptInfo					@controllers.app.App_PptController.getPptInfo()
-
-#获取指定PPT的指定页面的图片
-#GET		/app/getPptPage					@getPptPageImage()
-
-################################
-## 会议接口 ##
-
-#获取用户所有发起会议的列表
-#GET 	/app/getMyFoundedMeetings 			@controllers.app.App_MeetingController.getMyFoundedMeetings()
-
-#获取用户所有观看会议的列表
-#GET 	/app/getMyAttendingMeetings 		@controllers.app.App_MeetingController.getMyAttendingMeetings()
-
-#获取指定会议的信息
-#GET 	/app/getMeetingInfo					@controllers.app.App_MeetingController.getMeetingInfo()
-
-#设置会议直播PPT的页码
-#POST 	/app/setMeetingPageIndex			@controllers.app.App_MeetingController.setMeetingPageIndex()
-
-#建立新的会议
-#POST 	/app/foundNewMeeting				@controllers.app.App_MeetingController.foundNewMeeting()
-
-#加入新的会议
-#POST 	/app/joinMeeting					@controllers.app.App_MeetingController.joinMeeting()

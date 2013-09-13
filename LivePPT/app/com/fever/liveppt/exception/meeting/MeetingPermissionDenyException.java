@@ -9,9 +9,8 @@ import com.fever.liveppt.utils.StatusCode;
  * Time: 上午11:09
  * To change this template use File | Settings | File Templates.
  */
-public class MeetingPermissionDenyException extends MeetingException{
-    public MeetingPermissionDenyException()
-    {
-        super(StatusCode.MEETING_PERMISSION_DENY,StatusCode.MEETING_PERMISSION_DENY_MESSAGE);
+public class MeetingPermissionDenyException extends MeetingException {
+    public MeetingPermissionDenyException() {
+        super(StatusCode.MEETING_PERMISSION_DENY, StatusCode.MEETING_PERMISSION_DENY_MESSAGE);
     }
 }

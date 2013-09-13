@@ -10,7 +10,7 @@ import com.fever.liveppt.utils.StatusCode;
  * To change this template use File | Settings | File Templates.
  */
 public class AttendingExistedException extends MeetingException {
-    public AttendingExistedException(){
-        super(StatusCode.ATTENDING_EXISTED,StatusCode.ATTENDING_EXISTED_MESSAGE);
+    public AttendingExistedException() {
+        super(StatusCode.ATTENDING_EXISTED, StatusCode.ATTENDING_EXISTED_MESSAGE);
     }
 }

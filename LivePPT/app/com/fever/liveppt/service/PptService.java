@@ -59,6 +59,7 @@ public interface PptService {
 
     /**
      * 上传PPT到S3并发送消息到SQS
+     *
      * @param user
      * @param file
      * @param title
@@ -68,6 +69,7 @@ public interface PptService {
 
     /**
      * 删除PPT及其相关的会议和参与关系
+     *
      * @param user
      * @param pptId
      */
