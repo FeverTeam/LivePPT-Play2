@@ -30,11 +30,11 @@ public interface UserService {
     public ResultJson register(String email, String encryptedPassword, String displayName, String seed) throws InvalidParamsException, CommonException, UserException;
 
     /**
-     * @param email
+     * @param userEmail
      * @return
      * @throws UserException
      */
-    public ResultJson isEmailExisted(String email) throws UserException, CommonException;
+    public ResultJson isEmailExisted(String userEmail) throws UserException, CommonException;
 
     /**
      * 根据userEmail来获取对应的User对象
