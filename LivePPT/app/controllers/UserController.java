@@ -1,4 +1,4 @@
-package controllers.app;
+package controllers;
 
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
@@ -15,7 +15,7 @@ import play.mvc.Result;
 
 import java.util.Map;
 
-public class App_UserController extends Controller {
+public class UserController extends Controller {
     @Inject
     UserService userService;
 

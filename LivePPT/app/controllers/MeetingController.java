@@ -1,4 +1,4 @@
-package controllers.app;
+package controllers;
 
 import akka.actor.Cancellable;
 import com.fever.liveppt.exception.common.CommonException;
@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-public class App_MeetingController extends Controller {
+public class MeetingController extends Controller {
     @Inject
     MeetingService meetingService;
 

@@ -11,51 +11,51 @@
 #用户方向接口
 
 #用户注册
-POST    /user/register              @controllers.app.App_UserController.register()
+POST    /user/register              @controllers.UserController.register()
 #用户登录
-POST    /user/login                 @controllers.app.App_UserController.login()
+POST    /user/login                 @controllers.UserController.login()
 #验证用户Email是否被占用
-POST    /user/check_email           @controllers.app.App_UserController.checkEmail()
+POST    /user/check_email           @controllers.UserController.checkEmail()
 
 ###
 #PPT方向接口
 
 #获取用户自己所有PPT信息
-GET     /ppt/info_all               @controllers.app.App_PptController.infoAll()
+GET     /ppt/info_all               @controllers.PptController.infoAll()
 #获取指定PPT的信息
-GET     /ppt/info                   @controllers.app.App_PptController.getPptInfo()
+GET     /ppt/info                   @controllers.PptController.getPptInfo()
 #获取指定PPT的指定页码图像
-GET     /ppt/pageImage              @controllers.app.App_PptController.getPptPageImage()
+GET     /ppt/pageImage              @controllers.PptController.getPptPageImage()
 #PPT上传
-POST    /ppt/upload                 @controllers.app.App_PptController.pptUpload()
+POST    /ppt/upload                 @controllers.PptController.pptUpload()
 #PPT删除
-POST    /ppt/delete                 @controllers.app.App_PptController.pptDelete()
+POST    /ppt/delete                 @controllers.PptController.pptDelete()
 #（convertstatus为保留接口，用于接受SNS关于转换成功的通知）
-POST	/convertstatus				@controllers.app.App_PptController.convertstatus()
+POST	/convertstatus				@controllers.PptController.convertstatus()
 
 ###
 #会议方向接口
 
 #发起会议
-POST   /meeting/create              @controllers.app.App_MeetingController.createMeeting()
+POST   /meeting/create              @controllers.MeetingController.createMeeting()
 #删除会议
-POST   /meeting/delete              @controllers.app.App_MeetingController.deleteMeeting()
+POST   /meeting/delete              @controllers.MeetingController.deleteMeeting()
 #更新会议信息
-POST   /meeting/update              @controllers.app.App_MeetingController.updateMeeting()
+POST   /meeting/update              @controllers.MeetingController.updateMeeting()
 #加入观看会议
-POST   /meeting/join                @controllers.app.App_MeetingController.joinMeeting()
+POST   /meeting/join                @controllers.MeetingController.joinMeeting()
 #退出观看会议
-POST   /meeting/quit                @controllers.app.App_MeetingController.quitMeeting()
+POST   /meeting/quit                @controllers.MeetingController.quitMeeting()
 #设置会议的PPT页码
-POST   /meeting/setPage             @controllers.app.App_MeetingController.setPage()
+POST   /meeting/setPage             @controllers.MeetingController.setPage()
 #获取用户自己发起的所有会议信息
-GET    /meeting/myFoundedMeetings   @controllers.app.App_MeetingController.getMyFoundedMeetings()
+GET    /meeting/myFoundedMeetings   @controllers.MeetingController.getMyFoundedMeetings()
 #获取用户观看的所有会议信息
-GET    /meeting/myAttendingMeetings @controllers.app.App_MeetingController.getMyAttendingMeeting()
+GET    /meeting/myAttendingMeetings @controllers.MeetingController.getMyAttendingMeeting()
 #获取指定会议信息
-GET    /meeting/info                @controllers.app.App_MeetingController.getMeetingInfo()
+GET    /meeting/info                @controllers.MeetingController.getMeetingInfo()
 #会议同步显示页码的WebSocket
-GET 	/viewWebsocket				controllers.app.App_MeetingController.viewWebsocket()
+GET 	/viewWebsocket				controllers.MeetingController.viewWebsocket()
 
 
 

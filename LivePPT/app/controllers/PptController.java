@@ -1,4 +1,4 @@
-package controllers.app;
+package controllers;
 
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class App_PptController extends Controller {
+public class PptController extends Controller {
 
     //PPT和PPTX文件的ContentType
     public static final String PPT_CONTENTTYPE = "application/vnd.ms-powerpoint";
