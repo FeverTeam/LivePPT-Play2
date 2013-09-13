@@ -3,6 +3,7 @@ package controllers;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.user.UserException;
+import com.fever.liveppt.exception.user.UserExistedException;
 import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.ControllerUtils;
 import com.fever.liveppt.utils.ResultJson;
@@ -41,7 +42,12 @@ public class UserController extends Controller {
             String email = params.get("uemail")[0];
 
             //验证用户Email是否被占用
-            resultJson = userService.isEmailExisted(email);
+            boolean isExisted = userService.isEmailExisted(email);
+            if (!isExisted) {
+                resultJson = ResultJson.simpleSuccess();
+            } else {
+                throw new UserExistedException();
+            }
 
         } catch (UserException e) {
             resultJson = new ResultJson(e);
@@ -185,66 +191,4 @@ public class UserController extends Controller {
 
     }
 
-    //以下代码准备舍弃
-
-    /**
-     * 检查email字段
-     *
-     * @param params
-     * @return
-     */
-    ResultJson checkEmail(Map<String, String[]> params) {
-        if (!params.containsKey("uemail")) {
-            return new ResultJson(StatusCode.INVALID_PARAMS, "email字段缺失", null);
-        }
-        return new ResultJson(StatusCode.SUCCESS, null, null);
-    }
-    /*JsonResult checkEmail(Map<String, String[]> params)
-    {
-		if (!params.containsKey("email")){
-			return new JsonResult(false, StatusCode.USER_EMAIL_ERROR, "email字段错误");
-		}
-		//TODO
-		//添加邮件格式检查
-	    /*if (! patternNumbers.matcher(params.get("email")[0]).matches())
-			return new JsonResult(false, StatusCode.USER_EMAIL_ERROR, "email字段错误");*/
-    /*	return new JsonResult(true);
-    }  */
-
-    /**
-     * 检查password字段
-     *
-     * @param params
-     * @return
-     */
-    ResultJson checkPassword(Map<String, String[]> params) {
-        if (!params.containsKey("password")) {
-            return new ResultJson(StatusCode.INVALID_PARAMS, "password字段缺失", null);
-        }
-        return new ResultJson(StatusCode.SUCCESS, null, null);
-    }
-
-    /**
-     * 检查displayName字段
-     *
-     * @param params
-     * @return
-     */
-    ResultJson checkDisplayName(Map<String, String[]> params) {
-        if (!params.containsKey("displayname")) {
-            return new ResultJson(StatusCode.INVALID_PARAMS, "displayName字段缺失", null);
-        }
-        return new ResultJson(StatusCode.SUCCESS, null, null);
-    }
-
-    /**
-     * @param params
-     * @return
-     */
-    ResultJson checkSeed(Map<String, String[]> params) {
-        if (!params.containsKey("seed")) {
-            return new ResultJson(StatusCode.INVALID_PARAMS, "seed字段缺失", null);
-        }
-        return new ResultJson(StatusCode.SUCCESS, null, null);
-    }
 }

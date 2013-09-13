@@ -21,21 +21,19 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 
     @Override
-    public ResultJson isEmailExisted(String userEmail) throws CommonException, UserException {
-        ResultJson resultJson;
+    public boolean isEmailExisted(String userEmail) throws CommonException, UserException {
         if (!User.isEmailFormatValid(userEmail)) {
             //电邮格式不正确
             throw new InvalidParamsException();
         }
         int userCount = User.find.where().eq("email", userEmail).findRowCount();
         if (userCount > 0) {
-            // 用户存在
-            // 封装返回信息,用户已注册
-            throw new UserExistedException();
+            // 相同用户Email已存在
+            return true;
         } else {
-            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+            //未存在
+            return false;
         }
-        return resultJson;
     }
 
     @Override

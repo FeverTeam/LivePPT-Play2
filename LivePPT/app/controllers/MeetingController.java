@@ -11,7 +11,10 @@ import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.service.MeetingService;
-import com.fever.liveppt.utils.*;
+import com.fever.liveppt.utils.ControllerUtils;
+import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.StatusCode;
+import com.fever.liveppt.utils.TokenAgent;
 import com.google.inject.Inject;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
@@ -28,11 +31,80 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
 public class MeetingController extends Controller {
     @Inject
     MeetingService meetingService;
+
+    public static WebSocket<String> viewWebsocket() {
+        return new WebSocket<String>() {
+
+            String WS_TEMP_ID_KEY;
+
+            @Override
+            public void onReady(WebSocket.In<String> in,
+                                final WebSocket.Out<String> out) {
+                // For each event received on the socket,
+
+                //WebSocket响应
+                in.onMessage(new F.Callback<String>() {
+                    @Override
+                    public void invoke(String meetingIdStr) {
+                        WS_TEMP_ID_KEY = UUID.randomUUID().toString();
+                        Long meetingId = Long.parseLong(meetingIdStr);
+                        Logger.info("WebSocket Started by meetingId="
+                                + meetingIdStr);
+                        final Long pptId = Meeting.find.byId(meetingId).ppt.id;
+                        final String cacheKey = Long.toString(meetingId);
+
+                        Cancellable cancellable = Akka
+                                .system()
+                                .scheduler()
+                                .schedule(
+                                        Duration.Zero(),
+                                        Duration.create(10,
+                                                TimeUnit.MILLISECONDS),
+                                        new Runnable() {
+                                            Long currentIndex;
+                                            Long temp = (long) -1;
+
+                                            @Override
+                                            public void run() {
+                                                // TODO Auto-generated method
+                                                // stub
+                                                currentIndex = (Long) Cache
+                                                        .get(cacheKey);
+                                                if (currentIndex == null) {
+                                                    currentIndex = (long) 1;
+                                                }
+                                                if (!temp.equals(currentIndex)) {
+                                                    temp = currentIndex;
+                                                    Logger.info(pptId + "-"
+                                                            + currentIndex);
+                                                    out.write(pptId + "-"
+                                                            + currentIndex);
+                                                }
+                                            }
+                                        }, Akka.system().dispatcher());
+                        //将该WebSocket连接对应的Akka Cancellable存入Cache，用于终止连接时停止定时任务
+                        Cache.set(WS_TEMP_ID_KEY, cancellable);
+                    }
+                });//onMesaage
+
+                //WebSocket关闭
+                in.onClose(new F.Callback0() {
+                    @Override
+                    public void invoke() {
+                        //从Cache获取该WebSocket连接对应的Akka Cancellable
+                        Cancellable cancellable = (Cancellable) Cache
+                                .get(WS_TEMP_ID_KEY);
+                        //停止定时任务，释放资源
+                        cancellable.cancel();
+                    }
+                });//onClose
+            }
+        };
+    }
 
     /**
      * 发起新会议
@@ -111,7 +183,7 @@ public class MeetingController extends Controller {
 
             //删除
             meetingService.deleteMeeting(userEmail, meetingId);
-            resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
+            resultJson = ResultJson.simpleSuccess();
             //若返回JSON为空，设为位置错误
             // resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
 
@@ -275,6 +347,9 @@ public class MeetingController extends Controller {
         }
         return ok(resultJson);
     }
+    /////////////////////////////////////////////////
+    //GET
+    /////////////////////////////////////////////////
 
     /**
      * 设置会议的PPT页码
@@ -332,9 +407,6 @@ public class MeetingController extends Controller {
 
         return ok(resultJson);
     }
-    /////////////////////////////////////////////////
-    //GET
-    /////////////////////////////////////////////////
 
     /**
      * 获取用户所有自己发起的会议
@@ -367,7 +439,6 @@ public class MeetingController extends Controller {
         }
         return ok(resultJson);
     }
-
 
     /**
      * 获取用户所有观看的会议
@@ -439,310 +510,5 @@ public class MeetingController extends Controller {
             resultJson = new ResultJson(e);
         }
         return ok(resultJson);
-    }
-    //**************************************************************************************************************
-    /**
-     * 获取用户所有观看的会议的列表
-     *
-     * @param
-     * @return
-     */
-   /* public Result getMyAttendingMeetings() {
-        Map<String, String[]> params = request().queryString();
-
-        JsonResult resultJson;
-
-        //检查userId
-        resultJson = checkUserId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        //获取参数
-        Long userId = Long.parseLong(params.get("userId")[0]);
-
-        ArrayNode attendingMeetingsArrayNode = meetingService
-                .getMyAttendingMeetings(userId);
-        resultJson = new JsonResult(true, attendingMeetingsArrayNode);
-        return ok(resultJson);
-    }    */
-
-    /**
-     * 建立新的meeting
-     *
-     * @return
-     */
-    public Result foundNewMeeting() {
-        Map<String, String[]> params = request().body().asFormUrlEncoded();
-
-        //check userId ,pptId,topic
-        JsonResult resultJson;
-
-        resultJson = checkUserId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        resultJson = checkPptId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        resultJson = checkTopic(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        String topic = params.get("topic")[0];
-        Long pptId = Long.parseLong(params.get("pptId")[0]);
-        Long userId = Long.parseLong(params.get("userId")[0]);
-        resultJson = meetingService.foundNewMeeting(userId, pptId, topic);
-        return ok(resultJson);
-    }
-
-    /**
-     * 加入新的会议
-     *
-     * @return [description]
-     */
-    /*public Result joinMeeting() {
-        Map<String, String[]> params = request().body().asFormUrlEncoded();
-        //check userId ,meetingId
-        JsonResult resultJson;
-
-        //检查用户Id
-        resultJson = checkUserId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        //检查meetingId
-        resultJson = checkMeetingId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        Long meetingId = Long.parseLong(params.get("meetingId")[0]);
-        Long userId = Long.parseLong(params.get("userId")[0]);
-
-        resultJson = meetingService.joinMeeting(userId, meetingId);
-
-        return ok(resultJson);
-    }     */
-
-    /**
-     * 获取用户所有自己发起的会议的列表
-     *
-     * @return
-     */
-   /* public Result getMyFoundedMeetings() {
-        Map<String, String[]> params = request().queryString();
-
-        JsonResult resultJson;
-
-        //检查userId
-        resultJson = checkUserId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        //获取参数
-        Long userId = Long.parseLong(params.get("userId")[0]);
-
-        ArrayNode foundedMeetingsArrayNode = meetingService
-                .getMyFoundedMeetings(userId);
-        resultJson = new JsonResult(true, foundedMeetingsArrayNode);
-        return ok(resultJson);
-    }    */
-
-
-    /**
-     * 获取指定会议的信息
-     *
-     * @return
-     */
-   /* public Result getMeetingInfo() {
-        Map<String, String[]> params = request().queryString();
-
-        JsonResult resultJson;
-
-        //检查meetingId
-        resultJson = checkMeetingId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        Long meetingId = Long.parseLong(params.get("meetingId")[0]);
-        resultJson = meetingService.getMeetingInfo(meetingId);
-        return ok(resultJson);
-    }       */
-
-    /**
-     * 设置会议的直播PPT页码
-     *
-     * @param
-     * @return
-     */
-    /*public Result setMeetingPageIndex() {
-        Long meetingId;
-        Long pageIndex;
-        // 获取POST参数
-        Map<String, String[]> params = request().body().asFormUrlEncoded();
-        JsonResult resultJson;
-
-        resultJson = checkMeetingId(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        resultJson = checkPageIndex(params);
-        if (!resultJson.getStatusCode().equals(StatusCode.SUCCESS))
-            return ok(resultJson);
-
-        meetingId = Long.valueOf(params.get("meetingId")[0]);
-        pageIndex = Long.valueOf(params.get("pageIndex")[0]);
-
-        resultJson = meetingService.setMeetingPageIndex(meetingId, pageIndex);
-        return ok(resultJson);
-    }       */
-
-    //数字匹配器
-    Pattern patternNumbers = Pattern.compile("^[-\\+]?[\\d]*$");
-
-    /**
-     * 检查userId字段
-     *
-     * @param params
-     * @return
-     */
-    JsonResult checkUserId(Map<String, String[]> params) {
-        if (!params.containsKey("userId")) {
-            return new JsonResult(false, StatusCode.USER_ID_ERROR, "userId字段错误");
-        }
-
-        if (!patternNumbers.matcher(params.get("userId")[0]).matches())
-            return new JsonResult(false, StatusCode.USER_ID_ERROR, "userId字段错误");
-        return new JsonResult(true);
-    }
-
-    /**
-     * 检查meetingId字段
-     *
-     * @param params
-     * @return
-     */
-    JsonResult checkMeetingId(Map<String, String[]> params) {
-        if (!params.containsKey("meetingId")) {
-            return new JsonResult(false, StatusCode.MEETING_ID_ERROR, "meetingId字段错误");
-        }
-        if (!patternNumbers.matcher(params.get("meetingId")[0]).matches())
-            return new JsonResult(false, StatusCode.MEETING_ID_ERROR, "meetingId字段错误");
-        return new JsonResult(true);
-    }
-
-    /**
-     * 检查pageIndex字段
-     *
-     * @param params
-     * @return
-     */
-    JsonResult checkPageIndex(Map<String, String[]> params) {
-        if (!params.containsKey("pageIndex")) {
-            return new JsonResult(false, StatusCode.MEETING_PAGEINDEX_ERROR, "pageIndex字段错误");
-        }
-        if (!patternNumbers.matcher(params.get("pageIndex")[0]).matches())
-            return new JsonResult(false, StatusCode.MEETING_PAGEINDEX_ERROR, "pageIndex字段错误");
-        return new JsonResult(true);
-    }
-
-    /**
-     * 检查pptId字段
-     *
-     * @param params
-     * @return
-     */
-    JsonResult checkPptId(Map<String, String[]> params) {
-        if (!params.containsKey("pptId")) {
-            return new JsonResult(false, StatusCode.PPT_ID_ERROR, "pptId错误");
-        }
-
-        if (!patternNumbers.matcher(params.get("pptId")[0]).matches())
-            return new JsonResult(false, StatusCode.PPT_ID_ERROR, "pptId错误");
-        return new JsonResult(true);
-    }
-
-    /**
-     * 检查topic字段
-     *
-     * @param params
-     * @return
-     */
-    JsonResult checkTopic(Map<String, String[]> params) {
-        if (!params.containsKey("topic")) {
-            return new JsonResult(false, StatusCode.MEETING_TOPIC_ERROR, "topic错误");
-        }
-        return new JsonResult(true);
-    }
-
-
-    public static WebSocket<String> viewWebsocket() {
-        return new WebSocket<String>() {
-
-            String WS_TEMP_ID_KEY;
-
-            @Override
-            public void onReady(WebSocket.In<String> in,
-                                final WebSocket.Out<String> out) {
-                // For each event received on the socket,
-
-                //WebSocket响应
-                in.onMessage(new F.Callback<String>() {
-                    @Override
-                    public void invoke(String meetingIdStr) {
-                        WS_TEMP_ID_KEY = UUID.randomUUID().toString();
-                        Long meetingId = Long.parseLong(meetingIdStr);
-                        Logger.info("WebSocket Started by meetingId="
-                                + meetingIdStr);
-                        final Long pptId = Meeting.find.byId(meetingId).ppt.id;
-                        final String cacheKey = Long.toString(meetingId);
-
-                        Cancellable cancellable = Akka
-                                .system()
-                                .scheduler()
-                                .schedule(
-                                        Duration.Zero(),
-                                        Duration.create(10,
-                                                TimeUnit.MILLISECONDS),
-                                        new Runnable() {
-                                            Long currentIndex;
-                                            Long temp = (long) -1;
-
-                                            @Override
-                                            public void run() {
-                                                // TODO Auto-generated method
-                                                // stub
-                                                currentIndex = (Long) Cache
-                                                        .get(cacheKey);
-                                                if (currentIndex == null) {
-                                                    currentIndex = (long) 1;
-                                                }
-                                                if (!temp.equals(currentIndex)) {
-                                                    temp = currentIndex;
-                                                    Logger.info(pptId + "-"
-                                                            + currentIndex);
-                                                    out.write(pptId + "-"
-                                                            + currentIndex);
-                                                }
-                                            }
-                                        }, Akka.system().dispatcher());
-                        //将该WebSocket连接对应的Akka Cancellable存入Cache，用于终止连接时停止定时任务
-                        Cache.set(WS_TEMP_ID_KEY, cancellable);
-                    }
-                });//onMesaage
-
-                //WebSocket关闭
-                in.onClose(new F.Callback0() {
-                    @Override
-                    public void invoke() {
-                        //从Cache获取该WebSocket连接对应的Akka Cancellable
-                        Cancellable cancellable = (Cancellable) Cache
-                                .get(WS_TEMP_ID_KEY);
-                        //停止定时任务，释放资源
-                        cancellable.cancel();
-                    }
-                });//onClose
-            }
-        };
     }
 }

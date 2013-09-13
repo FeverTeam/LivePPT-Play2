@@ -258,7 +258,7 @@ public class PptController extends Controller {
 
                 pptService.uploadPptToS3(user, pptFile, pptFileName, pptFileSize);
 
-                return ok(new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null));
+                return ok(ResultJson.simpleSuccess());
             }
         } catch (CommonException e) {
             resultJson = new ResultJson(e);
@@ -297,7 +297,7 @@ public class PptController extends Controller {
             }
 
             pptService.deletePpt(user, pptId);
-            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+            resultJson = ResultJson.simpleSuccess();
 
 
         } catch (CommonException e) {

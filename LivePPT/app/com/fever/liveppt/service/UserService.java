@@ -34,7 +34,7 @@ public interface UserService {
      * @return
      * @throws UserException
      */
-    public ResultJson isEmailExisted(String userEmail) throws UserException, CommonException;
+    public boolean isEmailExisted(String userEmail) throws UserException, CommonException;
 
     /**
      * 根据userEmail来获取对应的User对象

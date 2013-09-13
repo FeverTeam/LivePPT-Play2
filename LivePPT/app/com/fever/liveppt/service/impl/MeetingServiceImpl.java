@@ -62,7 +62,7 @@ public class MeetingServiceImpl implements MeetingService {
                 attender.delete();
             }
         }
-        resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
+        resultJson = ResultJson.simpleSuccess();
         return resultJson;
     }
 
@@ -83,7 +83,7 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.save();
         Attender newAttending = new Attender(meeting, founder);
         newAttending.save();
-        ResultJson resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+        ResultJson resultJson = ResultJson.simpleSuccess();
         return resultJson;
     }
 
@@ -105,7 +105,7 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.ppt = ppt;
         meeting.topic = topic;
         meeting.save();
-        ResultJson resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+        ResultJson resultJson = ResultJson.simpleSuccess();
         return resultJson;
     }
 
@@ -141,7 +141,7 @@ public class MeetingServiceImpl implements MeetingService {
         if (meeting == null) {
             throw new MeetingNotExistedException();
         } else {
-            resultJson = new ResultJson(StatusCode.SUCCESS, "success", meeting.toMeetingJson());
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, meeting.toMeetingJson());
             return resultJson;
         }
     }
@@ -168,7 +168,7 @@ public class MeetingServiceImpl implements MeetingService {
             for (Attender attending : attendents) {
                 //已经加入
                 if (attending.meeting.id == meeting.id) {
-                    resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
+                    resultJson = ResultJson.simpleSuccess();
                     isAttended = true;
                     break;
                 }
@@ -178,7 +178,7 @@ public class MeetingServiceImpl implements MeetingService {
         if (!isAttended) {
             Attender newAttending = new Attender(meeting, user);
             newAttending.save();
-            resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
+            resultJson = ResultJson.simpleSuccess();
         }
 
         return resultJson;
@@ -204,23 +204,11 @@ public class MeetingServiceImpl implements MeetingService {
 
         meeting.currentPageIndex = pageIndex;
         meeting.save();
-        resultJson = new ResultJson(StatusCode.SUCCESS, "success", null);
+        resultJson = ResultJson.simpleSuccess();
         return resultJson;
     }
 
-    ////////////////////////////////////////////////////////////////旧方法///////////////////////////////////////j
-    /*@Override
-    public JsonResult getMeetingInfo(Long meetingId) {
-        // TODO Auto-generated method stub
-        JsonResult resultJson;
-        Meeting meeting = Meeting.find.byId(meetingId);
-        if (meeting == null) {
-            resultJson = new JsonResult(false, StatusCode.MEETING_NOT_EXISTED, "没有该会议。");
-        } else {
-            resultJson = new JsonResult(true, StatusCode.SUCCESS, meeting.toJson());
-        }
-        return resultJson;
-    } */
+    ////////////////////////////////////////////////////////////////旧方法///////////////////////////////////////
     @Override
     public ArrayNode getMyAttendingMeetings(Long userId) {
         // TODO Auto-generated method stub
