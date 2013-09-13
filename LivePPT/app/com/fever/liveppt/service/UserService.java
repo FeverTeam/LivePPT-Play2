@@ -1,11 +1,11 @@
 package com.fever.liveppt.service;
 
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.user.UserException;
 import com.fever.liveppt.exception.user.UserNotExistedException;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.ResultJson;
-import com.fever.liveppt.exception.common.CommonException;
-import com.fever.liveppt.exception.user.UserException;
-import com.fever.liveppt.exception.common.InvalidParamsException;
 
 public interface UserService {
 
@@ -30,14 +30,15 @@ public interface UserService {
     public ResultJson register(String email, String encryptedPassword, String displayName, String seed) throws InvalidParamsException, CommonException, UserException;
 
     /**
-     * @param email
+     * @param userEmail
      * @return
      * @throws UserException
      */
-    public ResultJson isEmailExisted(String email) throws UserException, CommonException;
+    public boolean isEmailExisted(String userEmail) throws UserException, CommonException;
 
     /**
      * 根据userEmail来获取对应的User对象
+     *
      * @param userEmail
      * @return
      */

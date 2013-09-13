@@ -38,4 +38,8 @@ public class Attender extends Model {
         this.meeting = meeting;
         this.user = user;
     }
+
+    public Attender() {
+
+    }
 }

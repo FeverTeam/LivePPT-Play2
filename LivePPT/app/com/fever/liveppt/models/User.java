@@ -102,4 +102,11 @@ public class User extends Model {
         return resultJson;
     }
 
+    public ObjectNode toJson() {
+        ObjectNode resultJson = Json.newObject();
+        resultJson.put("displayName", this.displayname);
+        resultJson.put("email", this.email);
+        return resultJson;
+    }
+
 }
