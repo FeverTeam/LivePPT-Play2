@@ -1,18 +1,12 @@
 package com.fever.liveppt.utils;
 
 import com.fever.liveppt.exception.BasicException;
-import com.fever.liveppt.exception.common.CommonException;
-import com.fever.liveppt.exception.user.UserException;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Administrator
- * Date: 13-8-28
- * Time: 上午12:01
- * To change this template use File | Settings | File Templates.
+ * 封装数据方向接口的自定义JSON格式
  */
 public class ResultJson extends ObjectNode {
     public final static String KEY_DATA = "data";
@@ -29,6 +23,10 @@ public class ResultJson extends ObjectNode {
 
     public ResultJson(BasicException basicException) {
         this(basicException.getRetcode(), basicException.getMessage(), null);
+    }
+
+    public static ResultJson simpleSuccess() {
+        return new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
     }
 
     //getter and setter

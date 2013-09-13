@@ -21,8 +21,36 @@ import java.util.List;
  */
 public interface PptService {
 
+    /*
+    @Deprecated
+    public byte[] getPptPageAsMid(Long pptId, Long pageId);
+    @Deprecated
+    public byte[] getPptPageAsBig(Long pptId, Long pageId);
+    @Deprecated
+    public byte[] getPptPageAsSmall(Long pptId, Long pageId);
+    */
+
+    @Deprecated
+    public JsonResult getPptList(Long userId);
+
+    /**
+     * 获取PPT指定页面的图像
+     *
+     * @param pptId
+     * @param pageId
+     * @return
+     * @throws PptNotExistedException
+     * @throws PptNotConvertedException
+     * @throws PptPageOutOfRangeException
+     * @throws InternalErrorException
+     */
     public byte[] getPptPage(Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException;
 
+    /**
+     * 更新PPT转换状态
+     *
+     * @param messageJson SNS发来的JSON
+     */
     public void updatePptConvertedStatus(JsonNode messageJson);
 
     /**
@@ -32,14 +60,6 @@ public interface PptService {
      * @return
      */
     public JsonResult getPptInfo(Long pptId);
-
-    /**
-     * 获取用户PPT信息列表
-     *
-     * @param userId
-     * @return JSON格式PPT信息列表
-     */
-    public JsonResult getPptList(Long userId);
 
     /**
      * 获取用户PPT信息列表
@@ -59,6 +79,7 @@ public interface PptService {
 
     /**
      * 上传PPT到S3并发送消息到SQS
+     *
      * @param user
      * @param file
      * @param title
@@ -68,16 +89,11 @@ public interface PptService {
 
     /**
      * 删除PPT及其相关的会议和参与关系
+     *
      * @param user
      * @param pptId
      */
     public void deletePpt(User user, long pptId) throws InternalErrorException, PptNotSelfOwnException;
 
-    /*
-    public byte[] getPptPageAsMid(Long pptId, Long pageId);
 
-    public byte[] getPptPageAsBig(Long pptId, Long pageId);
-
-    public byte[] getPptPageAsSmall(Long pptId, Long pageId);
-    */
 }

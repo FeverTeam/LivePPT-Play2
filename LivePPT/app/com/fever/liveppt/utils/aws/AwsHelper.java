@@ -63,6 +63,7 @@ public class AwsHelper {
 
     /**
      * 生成随机的storeKey用于表示S3上PPT文件的唯一标识符
+     *
      * @return
      */
     public static String genRandomStoreKey() {

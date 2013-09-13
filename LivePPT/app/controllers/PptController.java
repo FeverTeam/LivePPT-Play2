@@ -1,104 +1,315 @@
 package controllers;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.sqs.AmazonSQS;
-import com.amazonaws.services.sqs.model.CreateQueueRequest;
-import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.common.TokenInvalidException;
+import com.fever.liveppt.exception.common.UnknownErrorException;
+import com.fever.liveppt.exception.ppt.PptException;
+import com.fever.liveppt.exception.ppt.PptFileInvalidTypeException;
+import com.fever.liveppt.exception.ppt.PptNotExistedException;
+import com.fever.liveppt.exception.user.UserException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.aws.AwsHelper;
+import com.fever.liveppt.service.UserService;
+import com.fever.liveppt.utils.ControllerUtils;
+import com.fever.liveppt.utils.ResultJson;
+import com.fever.liveppt.utils.StatusCode;
+import com.fever.liveppt.utils.TokenAgent;
 import com.google.inject.Inject;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ObjectNode;
-import play.Logger;
+import org.codehaus.jackson.node.ArrayNode;
+import org.codehaus.jackson.node.JsonNodeFactory;
 import play.libs.Json;
 import play.mvc.Controller;
-import play.mvc.Http.MultipartFormData;
-import play.mvc.Http.MultipartFormData.FilePart;
-import play.mvc.Http.RequestBody;
-import play.mvc.Http.Session;
+import play.mvc.Http;
 import play.mvc.Result;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
-/**
- * 有关PPT的数据接口
- *
- * @author 梁博文
- */
 public class PptController extends Controller {
-    private final static String FILE_PARAM = "Filedata";
 
-    private final static String QUEUE_NAME = "LivePPT-pptId-Bus";
-
-    // private final static String TOPIC_ARN =
-    // "arn:aws:sns:ap-northeast-1:206956461838:liveppt-sns";
-
+    //PPT和PPTX文件的ContentType
+    public static final String PPT_CONTENTTYPE = "application/vnd.ms-powerpoint";
+    public static final String PPTX_CONTENTTYPE = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    //.ppt或.pptx文件后缀
+    static Pattern pptTailPattern = Pattern.compile(".+\\.(ppt|pptx)");
+    //通过guice注入
+    @Inject
+    UserService userService;
     @Inject
     PptService pptService;
 
     /**
-     * 用于处理ppt上传的请求
+     * 获取用户所有PPT的列表
      *
      * @return
-     * @throws UnsupportedEncodingException
      */
-    public static Result pptUpload() throws UnsupportedEncodingException {
-        // 取出请求体
-        RequestBody body = request().body();
-        Session sess = ctx().session();
+    public Result infoAll() {
+        ResultJson resultJson = null;
+        try {
+            //验证Token并提取userEmail
+            String userEmail = TokenAgent.validateTokenFromHeader(request());
 
-        // 提取有效userId
-        User user = User.genUserFromSession(sess);
-        if (user == null) {
-            Logger.info("无法提取有效id");
-            return ok(resultJson(false, "无法提取有效id"));
+            //获取ppt
+            List<Ppt> pptList = pptService.getPptList(userEmail);
+
+            //组装PPT信息JSON数组
+            ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
+            for (Ppt ppt : pptList) {
+                pptInfoArraryNode.add(ppt.toJsonNode());
+            }
+
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
+
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (TokenInvalidException e) {
+            resultJson = new ResultJson(e);
+        }
+        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
+
+        return ok(resultJson);
+    }
+
+    /**
+     * 获取用户所有PPT的列表
+     *
+     * @return
+     */
+    public Result getPptList() {
+        ResultJson resultJson = null;
+        try {
+            //验证Token并获取userEmail
+            String userEmail = TokenAgent.validateTokenFromHeader(request());
+
+            //获取ppt
+            List<Ppt> pptList = pptService.getPptList(userEmail);
+
+            //组装PPT信息JSON数组
+            ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
+            for (Ppt ppt : pptList) {
+                pptInfoArraryNode.add(ppt.toJsonNode());
+            }
+
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
+
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (TokenInvalidException e) {
+            resultJson = new ResultJson(e);
+        }
+        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
+
+        return ok(resultJson);
+    }
+
+    /**
+     * 获取指定PPT的信息
+     *
+     * @return
+     */
+    public Result getPptInfo() {
+        ResultJson resultJson = null;
+        try {
+            //获取GET参数
+            Map<String, String[]> params = request().queryString();
+            if (params == null) {
+                throw new InvalidParamsException();
+            }
+
+            //检查字段参数
+            if (!ControllerUtils.isFieldNotNull(params, "pptId")) {
+                throw new InvalidParamsException();
+            }
+
+            //获取参数
+            Long pptId = Long.valueOf(params.get("pptId")[0]);
+            if (pptId == null) {
+                //长整型转换失败
+                throw new InvalidParamsException();
+            }
+
+            Ppt ppt = pptService.getPpt(pptId);
+            if (ppt == null) {
+                //未找到指定pptId的PPT
+                throw new PptNotExistedException();
+            }
+            //组装成功返回信息
+            JsonNode data = ppt.toJsonNode();
+            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, data);
+
+            return ok(resultJson);
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (PptNotExistedException e) {
+            resultJson = new ResultJson(e);
         }
 
-        // 将request body转换为MultipartFromData
-        MultipartFormData multipartData = body.asMultipartFormData();
-        // 将MultipartFromData转换为formUrlEncoded用于参数提取
-        // Map<String, String[]> formData = multipartData.asFormUrlEncoded();
+        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
 
-        // 取出文件部分
-        FilePart filePart = multipartData.getFile(FILE_PARAM);
-        if (filePart != null) {
-            // 提取文件、文件名、文件大小
-            String title = filePart.getFilename();
-            File file = filePart.getFile();
-            Long filesize = file.length();
-            String title2 = new String(title.getBytes("gbk"), "utf-8");
-            Logger.info("not null" + title2 + file.length() + "-" + title);
+        return ok(resultJson);
+    }
 
-            // 存入AmazonS3
-            AmazonS3 s3 = AwsHelper.genTokyoS3();
-            String storeKey = UUID.randomUUID().toString().replaceAll("-", "");
-            s3.putObject("pptstore", storeKey, file);
-
-            // 存入文件与用户的所有权关系
-            Ppt ownership = new Ppt(user.id, title, new Date(), storeKey,
-                    filesize);
-            ownership.save();
-
-            Logger.debug("StoreKey:" + storeKey);
-
-            // 向SNS写入PPT的id，并告知win端进行转换
-            AmazonSQS sqs = AwsHelper.genTokyoSQS();
-            CreateQueueRequest createQueueRequest = new CreateQueueRequest(
-                    QUEUE_NAME);
-            String myQueueUrl = sqs.createQueue(createQueueRequest)
-                    .getQueueUrl();
-            sqs.sendMessage(new SendMessageRequest(myQueueUrl, storeKey));
-
-            return ok(resultJson(true, null));
-        } else {
-            // filePart为空
-            return ok(resultJson(false, "无法获取文件。"));
+    /**
+     * 获取指定PPT和页码的图片
+     *
+     * @return
+     */
+    public Result getPptPageImage() {
+        //如果含有IF_MODIFIED_SINCE报头则返回NOT_MODIFIED
+        String ifModifiedSince = request().getHeader(Controller.IF_MODIFIED_SINCE);
+        if (ifModifiedSince != null && ifModifiedSince.length() > 0) {
+            return status(NOT_MODIFIED);
         }
+
+        ResultJson resultJson = null;
+        try {
+            //获取GET参数
+            Map<String, String[]> params = request().queryString();
+            if (params == null || params.size() == 0) {
+                throw new InvalidParamsException();
+            }
+
+            //检查参数
+            //pptId
+            if (!ControllerUtils.isFieldNotNull(params, "pptId")) {
+                throw new InvalidParamsException();
+            }
+            //pageIndex
+            if (!ControllerUtils.isFieldNotNull(params, "page")) {
+                throw new InvalidParamsException();
+            }
+
+            //获取参数
+            Long pptId = Long.valueOf(params.get("pptId")[0]);
+            Long page = Long.valueOf(params.get("page")[0]);
+
+
+            //尝试获取指定页码图像数据
+            byte[] imageByte = pptService.getPptPage(pptId, page);
+            if (imageByte.length > 0) {
+                //成功获取图像数据
+
+                // 设置ContentType为image/jpeg
+                response().setContentType("image/jpeg");
+                // 设置返回头LastModified
+                response().setHeader(Controller.LAST_MODIFIED,
+                        "" + new Date().getTime());
+                return ok(imageByte);
+
+            } else {
+                //没有获得数据
+                return ok();
+            }
+
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+        } catch (NumberFormatException e) {
+            //整数转换失败
+            resultJson = new ResultJson(new InvalidParamsException());
+        } catch (PptException e) {
+            resultJson = new ResultJson(e);
+        }
+
+        //若获取不成功返回JSON
+        resultJson = (this == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
+        return ok(resultJson);
+    }
+
+    public Result pptUpload() {
+        ResultJson resultJson = null;
+        try {
+            //验证Token并提取userEmail
+            User user = TokenAgent.validateTokenAndGetUser(userService, request());
+
+            Http.MultipartFormData bodyData = request().body().asMultipartFormData();
+            Http.MultipartFormData.FilePart pptFilePart = bodyData.getFile("pptFile");
+            if (pptFilePart == null) {
+                //提取文件失败
+                throw new InvalidParamsException();
+            } else {
+                //成功提取FilePart
+
+                //获取ContentType和文件名
+                String contentType = pptFilePart.getContentType();
+                String pptFileName = pptFilePart.getFilename();
+                if (contentType == null || pptFileName == null) {
+                    throw new PptFileInvalidTypeException();
+                }
+
+                //验证文件类型
+                //验证contentType
+                if (!contentType.equals(PPT_CONTENTTYPE) && !contentType.equals(PPTX_CONTENTTYPE)) {
+                    throw new PptFileInvalidTypeException();
+                }
+                //验证文件名是否以".ppt"或".pptx"结尾
+                if (!pptTailPattern.matcher(pptFileName).matches()) {
+                    throw new PptFileInvalidTypeException();
+                }
+
+                //获取文件主体
+                File pptFile = pptFilePart.getFile();
+                long pptFileSize = pptFile.length();
+
+                pptService.uploadPptToS3(user, pptFile, pptFileName, pptFileSize);
+
+                return ok(ResultJson.simpleSuccess());
+            }
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+        } catch (PptException e) {
+            resultJson = new ResultJson(e);
+        } catch (UserException e) {
+            resultJson = new ResultJson(e);
+        }
+        //若获取不成功返回JSON
+        resultJson = (this == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
+        return ok(resultJson);
+    }
+
+    public Result pptDelete() {
+        ResultJson resultJson = null;
+        try {
+            //验证Token并提取userEmail
+            User user = TokenAgent.validateTokenAndGetUser(userService, request());
+
+            //获取GET参数
+            Map<String, String[]> params = request().body().asFormUrlEncoded();
+            if (params == null) {
+                throw new InvalidParamsException();
+            }
+
+            //检查字段参数
+            if (!ControllerUtils.isFieldNotNull(params, "pptId")) {
+                throw new InvalidParamsException();
+            }
+
+            //获取参数
+            Long pptId = Long.valueOf(params.get("pptId")[0]);
+            if (pptId == null) {
+                //长整型转换失败
+                throw new InvalidParamsException();
+            }
+
+            pptService.deletePpt(user, pptId);
+            resultJson = ResultJson.simpleSuccess();
+
+
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+        } catch (PptException e) {
+            resultJson = new ResultJson(e);
+        } catch (UserException e) {
+            resultJson = new ResultJson(e);
+        }
+        //若获取不成功返回JSON
+        resultJson = (resultJson == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
+        return ok(resultJson);
     }
 
     /**
@@ -112,47 +323,5 @@ public class PptController extends Controller {
                 .getTextValue());
         pptService.updatePptConvertedStatus(messageJson);
         return ok();
-    }
-
-    /**
-     * 获取某个PPT某页的JPG图像
-     *
-     * @return
-     */
-    /*
-    public Result getPptPage() {
-        String[] ifModifiedSince = request().headers().get(
-                Controller.IF_MODIFIED_SINCE);
-        if (ifModifiedSince != null && ifModifiedSince.length > 0) {
-            return status(NOT_MODIFIED);
-        }
-        Long pptId = Long.parseLong(request().getQueryString("pptid"));
-        Long pageId = Long.parseLong(request().getQueryString("pageid"));
-        // 设置ContentType为image/jpeg
-        response().setContentType("image/jpeg");
-        // 设置返回头LastModified
-        response().setHeader(Controller.LAST_MODIFIED,
-                "" + new Date().getTime());
-        return ok(pptService.getPptPage(pptId, pageId));
-    }
-    */
-
-    /**
-     * 用于组装返回给fineUploader插件的json信息
-     *
-     * @param isSuccess  是否成功处理
-     * @param errMessage 错误信息
-     * @return
-     */
-    public static ObjectNode resultJson(boolean isSuccess, String errMessage) {
-        ObjectNode jsonNode = Json.newObject();
-        if (isSuccess) {
-            jsonNode.put("success", true);
-        } else {
-            jsonNode.put("success", false);
-            jsonNode.put("error", errMessage);
-            jsonNode.put("preventRetry", true);
-        }
-        return jsonNode;
     }
 }
