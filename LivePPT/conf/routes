@@ -59,8 +59,6 @@ GET    /meeting/info                @controllers.MeetingController.getMeetingInf
 #会议同步显示页码的WebSocket
 GET 	/viewWebsocket				controllers.MeetingController.viewWebsocket()
 
-
-
 #######################################################
 #下面的接口逐步废弃，请将有用的的接口移动上去（江楠注意一下）
 #######################################################
@@ -86,4 +84,8 @@ GET 	/viewMeeting/:meetingId		controllers.Frontend.viewMeeting(meetingId:Long)
 GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
 
 # Map static resources from the /public folder to the /assets URL path
+<<<<<<< HEAD
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+=======
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+>>>>>>> origin/dev
