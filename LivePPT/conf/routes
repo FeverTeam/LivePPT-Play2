@@ -84,8 +84,5 @@ GET 	/viewMeeting/:meetingId		controllers.Frontend.viewMeeting(meetingId:Long)
 GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
 
 # Map static resources from the /public folder to the /assets URL path
-<<<<<<< HEAD
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
-=======
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
->>>>>>> origin/dev
+
