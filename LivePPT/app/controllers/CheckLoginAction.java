@@ -4,73 +4,84 @@ import com.fever.liveppt.models.User;
 import play.Logger;
 import play.mvc.Action;
 import play.mvc.Http;
-import play.mvc.Http.Session;
 import play.mvc.Result;
 
 /**
  * 用于检查用户是否已登录的Action
  *
- * @author 叶江楠
+ * @author 梁博文
  */
 public class CheckLoginAction extends Action.Simple {
-    private static String URL_MYPPT = controllers.routes.Frontend.myppt().url();
-    private static String URL_LOGIN = controllers.routes.Frontend.login().url();
-    private static String URL_MSG = controllers.routes.Frontend.msg().url();
-    private static String URL_SIGNUP = controllers.routes.Frontend.signup()
-            .url();
-    // private static String URL_MYMEETING =
-    // controllers.routes.Frontend.mymeeting().url();
 
     public static String KEY_CTX_ARG_USER = "user";
-
-    public Result call(Http.Context ctx) throws Throwable {
-
-        // 判断是否已经登陆
-        User user = getUser(ctx);
-        String requestUrl = ctx.request().uri();
-        if (user != null) {
-            // 将User放入ctx
-            ctx.args.put(KEY_CTX_ARG_USER, user);
-
-            if (requestUrl.equals(URL_LOGIN)) {
-                return redirect(URL_MYPPT);
-            } else {
-                return delegate.call(ctx);
-            }
-
-        } else {
-            // 未登录，则继续页面请求
-
-            if (requestUrl.equals(URL_LOGIN) || requestUrl.equals(URL_SIGNUP)) {
-                // 请求login和signup
-                return delegate.call(ctx);
-            } else {
-                // 指向login页面，引导用户登录
-                return redirect(URL_MSG);
-            }
-        }
-    }
+    public static String KEY_CTX_ARG_TOKEN = "token";
 
     /**
-     * 判断是否已经登陆
+     * 从cookie获取用户对象
      *
      * @param ctx 传入Http.Context
      * @return
      */
-    public static User getUser(Http.Context ctx) {
-        // 获取session
-        Session sess = ctx.session();
-
-        // 从Session中提取email字段
-        String email = sess.get("email");
-
-        // 若字段不存在则判定为未登录，否则为已登录
-        if (email == null || email.equals("")) {
-            Logger.info("Not logined!");
-            return null;
-        } else {
-            Logger.info("Logined " + email);
-            return User.find.where().eq("email", email).findUnique();
-        }
+    public static User getUser(Http.Context ctx){
+        return (User) ctx.args.get(UserController.KEY_CTX_ARG_USER);
     }
+
+    /**
+     * 获取token
+     *
+     * @param ctx 传入Http.Context
+     * @return
+     */
+    public static String getToken(Http.Context ctx){
+        return ctx.args.get(UserController.KEY_CTX_ARG_USER).toString();
+    }
+
+
+    @Override
+    public Result call(Http.Context ctx) throws Throwable {
+
+        // 判断是否已经登陆
+        User user = getUserFromCookie(ctx);
+        String token  = getTokenFromCookie(ctx);
+        ctx.args.put(KEY_CTX_ARG_USER, user);
+        ctx.args.put(KEY_CTX_ARG_TOKEN, token);
+
+        return delegate.call(ctx);
+    }
+
+    /**
+     * 从cookie获取用户对象
+     *
+     * @param ctx 传入Http.Context
+     * @return
+     */
+    private static User getUserFromCookie(Http.Context ctx) {
+        Http.Cookie cookie = ctx.request().cookie("uemail");
+        if (cookie==null || cookie.value()==null){
+            return null;
+        }
+
+        String uemail = cookie.value();
+        User user = User.find.where().eq("email", uemail).findUnique();
+        if (user != null){
+            user.password = null;
+        }
+        return user;
+    }
+
+    /**
+     * 获取token
+     *
+     * @param ctx 传入Http.Context
+     * @return
+     */
+    private static String getTokenFromCookie(Http.Context ctx) {
+        Http.Cookie cookie = ctx.request().cookie("token");
+        if (cookie==null || cookie.value()==null){
+            return null;
+        }
+        String token = cookie.value();
+        return token;
+    }
+
 }

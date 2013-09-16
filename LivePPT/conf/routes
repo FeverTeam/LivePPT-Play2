@@ -5,6 +5,14 @@
 
 #关于页面接口（请把有关页面的接口写到这里）
 
+# Page
+GET     /msg                        controllers.Frontend.msg()
+
+#用于将用户信息写入Cookie
+GET    /loginSuccess               controllers.Frontend.loginSuccess()
+#登出，清除Cookie内信息
+GET    /logout                     controllers.Frontend.logout()
+
 
 #关于数据操作的接口
 ###
@@ -83,3 +91,4 @@ GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
