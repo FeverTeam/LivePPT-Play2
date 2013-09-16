@@ -21,31 +21,28 @@ public class Meeting extends Model {
      *
      */
     private static final long serialVersionUID = -8840227542777988716L;
-
+    
     @Id
     public Long id;
-
     @ManyToOne
     @Constraints.Required
     public Ppt ppt;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     @Constraints.Required
     public User founder;
-
     @NotNull
     @Constraints.Required
     public String topic = "";
-
     @NotNull
     public Long currentPageIndex = (long) 1;
-
     @OneToMany
     public List<Attender> attenders;
 
     public static Finder<Long, Meeting> find = new Finder<Long, Meeting>(
             Long.class, Meeting.class);
+
+
 
     public ObjectNode toMyMeetingJson() {
         ObjectNode resultJson = Json.newObject();
@@ -56,6 +53,7 @@ public class Meeting extends Model {
         return resultJson;
     }
 
+
     public ObjectNode toMeetingJson() {
         ObjectNode resultJson = Json.newObject();
         resultJson.put("meetingId", this.id);
@@ -64,5 +62,4 @@ public class Meeting extends Model {
         resultJson.put("topic", this.topic);
         return resultJson;
     }
-
 }

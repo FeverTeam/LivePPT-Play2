@@ -20,58 +20,8 @@ public class UserController extends Controller {
     @Inject
     UserService userService;
 
-<<<<<<< HEAD
-    public static String KEY_CTX_ARG_USER = "user";
-    /**
-     * 获取User
-     *
-     * @param ctx 传入Http.Context
-     * @return
-     */
-    public static User getUser(Http.Context ctx) {
-        // 获取session
-        Session sess = ctx.session();
-        User user = getUser(ctx);
-
-        // 从Session中提取email字段
-        String email = sess.get("email");
-
-        // 若字段不存在则判定为未登录，否则为已登录
-        if (email == null || email.equals("")) {
-            Logger.info("Not logined!");
-            user = null;
-        } else {
-            Logger.info("Logined " + email);
-            user = User.find.where().eq("email", email).findUnique();
-        }
-        ctx.args.put(KEY_CTX_ARG_USER, user);
-        return user;
-    }
-
-    public static Result login() {
-        ObjectNode result = Json.newObject();
-
-        // 获取POST参数
-        Map<String, String[]> postData = request().body().asFormUrlEncoded();
-        String email = postData.get("email")[0];
-        String password = postData.get("password")[0];
-
-        User user = User.isPasswordCorrect(email, password);
-        if (user != null) {
-            //用户验证成功
-            result.put("isSuccess", true);
-
-            Logger.info(user.email);
-            Logger.info(user.displayname);
-
-            // 更新session信息
-            session("email", user.email);
-            session("displayname", user.displayname);
-        } else {
-            //用户验证失败
-            result.put("isSuccess", false);
-            result.put("message", "用户名/密码不正确，或未注册。");
-=======
+    public static String KEY_CTX_ARG_USER="user";
+    
     /**
      * 检验用户Email是否被占用
      *
@@ -107,7 +57,6 @@ public class UserController extends Controller {
             resultJson = new ResultJson(e);
         } catch (CommonException e) {
             resultJson = new ResultJson(e);
->>>>>>> 37aaac0dc47379d6ab701ebfec39995ba15d6a00
         }
 
         //返回JSON
