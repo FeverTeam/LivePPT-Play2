@@ -1,30 +1,26 @@
 package controllers;
 
-import com.fever.liveppt.models.User;
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.user.UserException;
+import com.fever.liveppt.exception.user.UserExistedException;
 import com.fever.liveppt.service.UserService;
-import com.fever.liveppt.utils.DataJson;
-import com.fever.liveppt.utils.JsonResult;
-import com.fever.liveppt.utils.Md5Util;
+import com.fever.liveppt.utils.ControllerUtils;
+import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
-import org.codehaus.jackson.node.ObjectNode;
-import play.mvc.Http;
-import play.mvc.Http.Session;
+import com.google.inject.Inject;
 import play.Logger;
-import play.libs.Json;
+import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import java.util.HashMap;
 import java.util.Map;
 
-/**
- * 有关用户的数据接口
- *
- * @author 梁博文
- */
 public class UserController extends Controller {
+    @Inject
     UserService userService;
 
+<<<<<<< HEAD
     public static String KEY_CTX_ARG_USER = "user";
     /**
      * 获取User
@@ -75,121 +71,177 @@ public class UserController extends Controller {
             //用户验证失败
             result.put("isSuccess", false);
             result.put("message", "用户名/密码不正确，或未注册。");
+=======
+    /**
+     * 检验用户Email是否被占用
+     *
+     * @return
+     */
+    public Result checkEmail() {
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
+        //返回的JSON，初始化为null
+        ResultJson resultJson = null;
+        try {
+            if (null == params) {
+                throw new InvalidParamsException();
+            }
+            //uemail
+            if (!ControllerUtils.isFieldNotNull(params, "uemail")) {
+                throw new InvalidParamsException();
+            }
+
+            // 获取参数
+            String email = params.get("uemail")[0];
+
+            //验证用户Email是否被占用
+            boolean isExisted = userService.isEmailExisted(email);
+            if (!isExisted) {
+                resultJson = ResultJson.simpleSuccess();
+            } else {
+                throw new UserExistedException();
+            }
+
+        } catch (UserException e) {
+            resultJson = new ResultJson(e);
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
+>>>>>>> 37aaac0dc47379d6ab701ebfec39995ba15d6a00
         }
 
-        return ok(result);
+        //返回JSON
+        return ok(resultJson);
     }
 
-    public static Result signup2() {
-        ObjectNode result = Json.newObject();
-        Map<String, String[]> postData = request().body().asFormUrlEncoded();
+    /**
+     * 用户登录接口
+     *
+     * @return
+     */
+    public Result login() {
+        Logger.debug(Crypto.sign("simonlbw", "1234567890123456".getBytes()));
 
-        if (postData == null) {
-            return ok("null");
+        //获取POST参数
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
+
+        //返回的JSON，初始化为null
+        ResultJson resultJson = null;
+        try {
+            if (null == params) {
+                throw new InvalidParamsException();
+            }
+
+            //检查必须的参数是否存在
+            //uemail
+            if (!ControllerUtils.isFieldNotNull(params, "uemail")) {
+                throw new InvalidParamsException();
+            }
+
+            //password
+            if (!ControllerUtils.isFieldNotNull(params, "password")) {
+                throw new InvalidParamsException();
+            }
+
+            //seed
+            if (!ControllerUtils.isFieldNotNull(params, "seed")) {
+                throw new InvalidParamsException();
+            }
+
+
+            // 获取参数
+            String email = params.get("uemail")[0];
+            String hashedPassword = params.get("password")[0];
+            String seed = params.get("seed")[0];
+
+
+            //验证帐号密码是否匹配
+            resultJson = userService.isPassworrdCorrect(email, hashedPassword, seed);
+
+        } catch (UserException e) {
+            resultJson = new ResultJson(e);
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        } catch (CommonException e) {
+            resultJson = new ResultJson(e);
         }
 
-        // 获取POST参数
-        String email = postData.get("email")[0];
-        String password = postData.get("password")[0];
-        String displayname = postData.get("displayname")[0];
+        //若返回JSON为空，设为位置错误
+        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
 
-        // 查找是否已经有相同email的用户，若有则返回错误
-        if (User.isExistedByEmail(email)) {
-            //相同email的用户已存在，拒绝注册
-
-            result.put("isSuccess", false);
-            result.put("message", "不好意思！<br>相同email地址用户已被注册啦。");
-
-            return ok(result);
-        } else {
-            //相同email的用户未存在，接受注册
-
-            // 组装新用户信息
-            User user = new User(email, password, displayname);
-
-            // 将用户存入表中
-            user.save();
-
-            result.put("isSuccess", true);
-
-            // 更新session信息
-            session("email", email);
-            session("displayname", displayname);
-
-            return ok(result);
-        }
+        //返回JSON
+        return ok(resultJson);
     }
 
-    //必须要static方法
-    public static Result signup() {
-        ObjectNode result = Json.newObject();
-        Map<String, String[]> postData = request().body().asFormUrlEncoded();
+    /**
+     * 用户注册接口
+     *
+     * @return
+     */
+    public Result register() {
+        //获取POST参数
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
 
-        if (postData == null) {
-            return ok("null");
+        //返回的JSON，初始化为null
+        ResultJson resultJson = null;
+        try {
+            if (null == params) {
+                throw new InvalidParamsException();
+            }
+
+            //检查必须的参数是否存在
+            //uemail
+            if (!ControllerUtils.isFieldNotNull(params, "uemail")) {
+                throw new InvalidParamsException();
+            }
+
+            /*
+            //displayname
+
+            if (!ControllerUtils.isFieldNotNull(params, "displayname")) {
+                throw new InvalidParamsException();
+            }
+            */
+
+            //password
+            if (!ControllerUtils.isFieldNotNull(params, "password")) {
+                throw new InvalidParamsException();
+            }
+
+            //seed
+            if (!ControllerUtils.isFieldNotNull(params, "seed") || params.get("seed")[0].length() != 16) {
+                throw new InvalidParamsException();
+            }
+
+
+            // 获取参数
+            String email = params.get("uemail")[0];
+            String encryptedPassword = params.get("password")[0];
+            String displayName = (ControllerUtils.isFieldNotNull(params, "displayname")) ? params.get("displayname")[0] : "";
+            String seed = params.get("seed")[0];
+
+
+            //注册用户,写入新用户信息
+            resultJson = userService.register(email, encryptedPassword, displayName, seed);
+
+        } catch (InvalidParamsException e) {
+            //e.printStackTrace();
+            resultJson = new ResultJson(e);
+        } catch (UserException e) {
+            //e.printStackTrace();
+            resultJson = new ResultJson(e);
+        } catch (CommonException e) {
+            //e.printStackTrace();
+            resultJson = new ResultJson(e);
         }
 
-        // 获取POST参数
-        String email = postData.get("email")[0];
-        String password = postData.get("password")[0];
-        String displayname = postData.get("displayname")[0];
-        if (displayname == null) {
-            displayname = email;
-        }
-        //解密password
-        // password = decryptAES(password,email); 此句又有问题
-        // 查找是否已经有相同email的用户，若有则返回错误
-        if (User.isExistedByEmail(email)) {
-            //相同email的用户已存在，拒绝注册
+        //若返回JSON为空，设为位置错误
+        resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
 
-            result.put("isSuccess", false);
-            result.put("message", "不好意思！<br>相同email地址用户已被注册啦。");
 
-            return ok(result);
-        } else if (User.isEmailFormatValid(email) == false) {
-            //电邮格式不正确
-            //throw InvalidParamsException
-            JsonResult results = new JsonResult(false, StatusCode.USER_EXISTED, null, "电邮格式不正确。");
+        //返回JSON
+        return ok(resultJson);
 
-            return ok(results);
-        } else {
-            //相同email的用户未存在，接受注册
-
-            // 组装新用户信息
-            User user = new User(email, password, displayname);
-
-            // 将用户存入表中
-            user.save();
-
-            //生成token
-            String token = Md5Util.getMd5(email);
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("email", email);
-            map.put("displayName", displayname);
-            map.put("password", password);
-            map.put("token", token);
-
-            //封装json格式的data数据
-            DataJson dataJson = new DataJson();
-            dataJson.setStringField(map);
-            JsonResult results = new JsonResult(true, StatusCode.SUCCESS, dataJson, "Sign up succefully");
-            // UserService ss = null;
-            // JsonResult results = ss.register(email,password,displayname)  ;
-            //词句不成
-
-            System.out.println(results.getMessage());
-            System.out.println(results.getData().get("token"));
-            // 更新session信息
-            session("email", email);
-            session("displayname", displayname);
-
-            return ok(results);
-        }
     }
 
-
-    public static Result logout() {
-        session().remove("email");
-        return Controller.redirect(controllers.routes.Frontend.index());
-    }
 }
