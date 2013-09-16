@@ -13,8 +13,10 @@ define(function(require, exports, module) {
 			type: 'post',
 			dataType: 'json',
 			data: {
-				email: $('#inputEmail').val(),
+/*				email: $('#inputEmail').val(),
 				password: $('#inputPassword').val()
+*/				email: $('input[name=email]').val(),
+				password: $('input[name=password]').val()
 			},
 			success: function(res, status){
 				if (res.isSuccess){

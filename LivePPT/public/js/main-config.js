@@ -6,9 +6,10 @@ seajs.config({
 		'fineuploader': '/assets/js/fineuploader/jquery.fineuploader-3.4.1.min.js',
 		'uploadify': '/assets/js/jquery.uploadify.min.js',
 		'uploadifive': '/assets/js/jquery.uploadifive.min.js',
-		'jquery-knob': '/assets/js/jquery.knob.js'
+		'jquery-knob': '/assets/js/jquery.knob.js',
+		'login': '/assets/js/login.js'
 	},
 
-	preload: ['jquery','bootstrap']
+	preload: ['jquery','bootstrap', 'login']
 
 });
