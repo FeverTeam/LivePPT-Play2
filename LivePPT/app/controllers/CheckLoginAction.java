@@ -10,11 +10,12 @@ import play.mvc.Result;
 /**
  * 用于检查用户是否已登录的Action
  *
- * @author 梁博文
+ * @author 叶江楠
  */
 public class CheckLoginAction extends Action.Simple {
     private static String URL_MYPPT = controllers.routes.Frontend.myppt().url();
     private static String URL_LOGIN = controllers.routes.Frontend.login().url();
+    private static String URL_MSG = controllers.routes.Frontend.msg().url();
     private static String URL_SIGNUP = controllers.routes.Frontend.signup()
             .url();
     // private static String URL_MYMEETING =
@@ -45,7 +46,7 @@ public class CheckLoginAction extends Action.Simple {
                 return delegate.call(ctx);
             } else {
                 // 指向login页面，引导用户登录
-                return redirect(URL_LOGIN);
+                return redirect(URL_MSG);
             }
         }
     }
