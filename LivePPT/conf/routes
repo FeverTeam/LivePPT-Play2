@@ -11,7 +11,7 @@ GET     /msg                        controllers.Frontend.msg()
 #用于将用户信息写入Cookie
 GET    /loginSuccess               controllers.Frontend.loginSuccess()
 #登出，清除Cookie内信息
-GET    /logout                     controllers.Frontend.logout()
+/GET    /logout                     controllers.Frontend.logout()
 
 
 #关于数据操作的接口
