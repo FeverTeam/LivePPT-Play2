@@ -1,6 +1,7 @@
 package com.fever.liveppt.service.impl;
 
 import com.fever.liveppt.exception.meeting.AttendingExistedException;
+import com.fever.liveppt.exception.meeting.MeetingNotAttendedException;
 import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
 import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
@@ -44,36 +45,52 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
-    public ResultJson quitMeeting(String userEmail, Long meetingId) throws MeetingNotExistedException {
+    public ResultJson quitMeeting(String userEmail, Long meetingId) throws MeetingNotExistedException, MeetingNotAttendedException {
         ResultJson resultJson;
 
+        boolean isAttended = false;
         Meeting meeting = Meeting.find.byId(meetingId);
         if (meeting == null) {
             throw new MeetingNotExistedException();
         }
 
         User user = User.find.where().eq("email", userEmail).findUnique();
-        /*if(user.attendents == null)
+        if(user.attendents == null)
         {
-            throw
-        } */
+            throw new MeetingNotAttendedException();
+        }
         for (Attender attender : user.attendents) {
             if (attender.meeting.id == meetingId) {
                 attender.delete();
+                isAttended = true ;
+                break;
             }
         }
-        resultJson = ResultJson.simpleSuccess();
-        return resultJson;
+        if(isAttended)
+        {
+            resultJson = ResultJson.simpleSuccess();
+            return resultJson;
+        }
+        else
+        {
+            throw new MeetingNotAttendedException();
+        }
+
+
     }
 
 
     @Override
-    public ResultJson createMeeting(String userEmail, Long pptId, String topic) throws PptNotExistedException {
+    public ResultJson createMeeting(String userEmail, Long pptId, String topic) throws PptNotExistedException, MeetingPermissionDenyException {
         // TODO Auto-generated method stub
         User founder = User.find.where().eq("email", userEmail).findUnique();
         Ppt ppt = Ppt.find.byId(pptId);
         if (ppt == null) {
             throw new PptNotExistedException();
+        }
+        if(ppt.owner.id != founder.id)
+        {
+            throw new MeetingPermissionDenyException();
         }
         //TODO check topic
         Meeting meeting = new Meeting();

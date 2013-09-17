@@ -72,6 +72,10 @@ public class StatusCode {
     //该用户已参与相关会议
     public final static int ATTENDING_EXISTED = -403;
     public final static String ATTENDING_EXISTED_MESSAGE = "user has attended the meeting ";
+
+    //该用户没有参与该会议
+    public final static int NOT_ATTENDED = -404;
+    public final static String NOT_ATTENDED_MESSAGE = "user has not attended the meeting";
     //用户密码错误
     public final static int USER_PASSWORD_ERROR = 1100;
     //用户不存在
