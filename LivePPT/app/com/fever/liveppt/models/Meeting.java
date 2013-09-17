@@ -39,6 +39,10 @@ public class Meeting extends Model {
     @OneToMany
     public List<Attender> attenders;
 
+    public Meeting(){
+
+    }
+
     public static Finder<Long, Meeting> find = new Finder<Long, Meeting>(
             Long.class, Meeting.class);
 
