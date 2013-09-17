@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotExistedException();
         } else {
             // 用户存在
-
+           // hashedPassword = Crypto.sign(hashedPassword,seed.getBytes());
             //以用户密码生成hash以供比对
             String userHashedPassword = Crypto.sign(user.password, seed.getBytes());
 

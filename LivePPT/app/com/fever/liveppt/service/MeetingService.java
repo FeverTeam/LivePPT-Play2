@@ -1,6 +1,7 @@
 package com.fever.liveppt.service;
 
 import com.fever.liveppt.exception.meeting.AttendingExistedException;
+import com.fever.liveppt.exception.meeting.MeetingNotAttendedException;
 import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
 import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
@@ -50,7 +51,7 @@ public interface MeetingService {
      * @return
      * @throws PptNotExistedException
      */
-    public ResultJson createMeeting(String userEmail, Long pptId, String topic) throws PptNotExistedException;
+    public ResultJson createMeeting(String userEmail, Long pptId, String topic) throws PptNotExistedException, MeetingPermissionDenyException;
 
     /**
      * 删除会议
@@ -118,7 +119,7 @@ public interface MeetingService {
      * @return
      * @throws MeetingNotExistedException
      */
-    public ResultJson quitMeeting(String userEmail, Long meetingId) throws MeetingNotExistedException;
+    public ResultJson quitMeeting(String userEmail, Long meetingId) throws MeetingNotExistedException, MeetingNotAttendedException;
 
     /**
      * 修改会议信息
