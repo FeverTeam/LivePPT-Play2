@@ -4,9 +4,7 @@ import akka.actor.Cancellable;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
-import com.fever.liveppt.exception.meeting.AttendingExistedException;
-import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
-import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
+import com.fever.liveppt.exception.meeting.*;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Meeting;
@@ -149,6 +147,8 @@ public class MeetingController extends Controller {
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
         } catch (PptNotExistedException e) {
+            resultJson = new ResultJson(e);
+        } catch (MeetingPermissionDenyException e) {
             resultJson = new ResultJson(e);
         }
         return ok(resultJson);
@@ -342,7 +342,7 @@ public class MeetingController extends Controller {
             resultJson = new ResultJson(e);
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
-        } catch (MeetingNotExistedException e) {
+        } catch (MeetingException e) {
             resultJson = new ResultJson(e);
         }
         return ok(resultJson);
