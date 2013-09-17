@@ -4,6 +4,7 @@ import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
@@ -11,6 +12,7 @@ import play.mvc.With;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import views.html.*;
 
@@ -21,12 +23,49 @@ import views.html.*;
  */
 public class Frontend extends Controller {
 
-    public static Result index() {
-        User user = (User) ctx().args.get(UserController.KEY_CTX_ARG_USER);
-        String username = "";
-        if(user != null)
-            username = user.displayname;
+    /**
+     * 登录之后访问这个Action，用于将用于信息写入cookie
+     * 必须提供以下参数
+     * callbackUrl 需要重定向的位置
+     * uemail 用户的email地址，作为用户ID
+     * token 用户的token，用于调用其他接口
+     *
+     * @return
+     */
+    public static Result loginSuccess() {
+        Logger.info("loginsu");
 
+        Map<String, String[]> params = request().queryString();
+
+        String callbackUrl = (params.containsKey("callbackUrl")) ?  params.get("callbackUrl")[0] : "/";
+        String uemail = (params.containsKey("uemail")) ?  params.get("uemail")[0] : null;
+        String token = (params.containsKey("token")) ? params.get("token")[0] : null;
+
+        if (uemail != null && !uemail.equals("") && token != null && !uemail.equals("")) {
+            response().setCookie("uemail", uemail);
+            response().setCookie("token", token);
+        }
+
+        //重定向到目的地址
+        return redirect(callbackUrl);
+    }
+
+    /**
+     * 用于登出，清除Cookie内的用户信息和token
+     * @return
+     */
+    public static Result logout(){
+        response().setCookie("uemail", "");
+        response().setCookie("token", "");
+        return redirect("/");
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result index() {
+        User user = CheckLoginAction.getUser(ctx());
+        String token = CheckLoginAction.getToken(ctx());
+
+        String username = (user==null)?"hehe":user.displayname;
         return ok(index.render(username));
     }
 
@@ -39,7 +78,6 @@ public class Frontend extends Controller {
     public static Result signup() {
         return ok(signup.render());
     }
-
 
     @With(CheckLoginAction.class)
     public static Result myppt() {
