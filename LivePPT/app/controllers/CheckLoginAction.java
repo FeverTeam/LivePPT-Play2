@@ -33,7 +33,13 @@ public class CheckLoginAction extends Action.Simple {
      * @return
      */
     public static String getToken(Http.Context ctx){
-        return ctx.args.get(UserController.KEY_CTX_ARG_USER).toString();
+        Object token = ctx.args.get(UserController.KEY_CTX_ARG_USER);
+        if (token != null){
+            return token.toString();
+        } else {
+            return null;
+        }
+
     }
 
 

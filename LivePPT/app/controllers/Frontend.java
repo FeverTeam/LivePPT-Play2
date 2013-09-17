@@ -33,7 +33,6 @@ public class Frontend extends Controller {
      * @return
      */
     public static Result loginSuccess() {
-        Logger.info("loginsu");
 
         Map<String, String[]> params = request().queryString();
 
