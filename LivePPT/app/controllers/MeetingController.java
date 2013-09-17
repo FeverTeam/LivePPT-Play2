@@ -150,6 +150,8 @@ public class MeetingController extends Controller {
             resultJson = new ResultJson(e);
         } catch (PptNotExistedException e) {
             resultJson = new ResultJson(e);
+        } catch (MeetingPermissionDenyException e) {
+            resultJson = new ResultJson(e);
         }
         return ok(resultJson);
     }
