@@ -1,116 +1,154 @@
 package controllers;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import play.mvc.Controller;
-import play.mvc.Result;
-import play.mvc.With;
-import views.html.aboutUs;
-import views.html.appDownload;
-import views.html.controlMeeting;
-import views.html.foundNewMeeting;
-import views.html.index;
-import views.html.joinMeeting;
-import views.html.login;
-import views.html.mymeeting;
-import views.html.myppt;
-import views.html.pptListForMeeting;
-import views.html.pptplainshow;
-import views.html.signup;
-import views.html.viewMeeting;
-
 import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
+import play.Logger;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.With;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import views.html.*;
 
 /**
  * 页面Action
- * @author 梁博文
  *
+ * @author 梁博文
  */
 public class Frontend extends Controller {
 
-	public static Result index() {
-		return ok(index.render());
-	}
+    /**
+     * 登录之后访问这个Action，用于将用于信息写入cookie
+     * 必须提供以下参数
+     * callbackUrl 需要重定向的位置
+     * uemail 用户的email地址，作为用户ID
+     * token 用户的token，用于调用其他接口
+     *
+     * @return
+     */
+    public static Result loginSuccess() {
 
-	@With(CheckLoginAction.class)
-	public static Result login() {
-		return ok(login.render());
-	}
-	
-	@With(CheckLoginAction.class)
-	public static Result signup(){
-		return ok(signup.render());
-	}
-	
-	
-	@With(CheckLoginAction.class)
-	public static Result myppt(){
-		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-		return ok(myppt.render(user));
-	}
-	
-	@With(CheckLoginAction.class)
-	public static Result mymeeting(){
-		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);		
-		List<Meeting> myFoundedMeetingList = user.myFoundedMeeting;
-		List<Meeting> myAttendingMeetingList = new LinkedList<Meeting>();
-		List<Attender> attendents = user.attendents;
-		for (Attender attendding : attendents){
-			myAttendingMeetingList.add(attendding.meeting);
-		}
-		return ok(mymeeting.render(user, myFoundedMeetingList, myAttendingMeetingList));
-	}
-	
-	@With(CheckLoginAction.class)
-	public static Result pptListForMeeting(){
-		User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-		List<Ppt> ppts = user.ppts;
-		List<Ppt> converted = new ArrayList<Ppt>();
-		for (Ppt ppt : ppts){
-			if (ppt.isConverted){
-				converted.add(ppt);
-			}			
-		}
-		return ok(pptListForMeeting.render(converted));
-	}
-	
-	public static Result foundNewMeeting(Long pptId){
-		Ppt ppt = Ppt.find.byId(pptId);
-		return ok(foundNewMeeting.render(ppt));
-	}
-	
-	@With(CheckLoginAction.class)
-	public static Result pptplainshow(Long pptid){
-		Ppt ppt = Ppt.find.byId(pptid);
-		return ok(pptplainshow.render(ppt));
-	}
-	
-	@With(CheckLoginAction.class)
-	public static Result controlMeeting(Long meetingId){
-		Meeting meeting = Meeting.find.byId(meetingId);
-		return ok(controlMeeting.render(meeting));
-	}
-	
-	public static Result joinMeeting(){
-		return ok(joinMeeting.render());
-	}
-	
-	@With(CheckLoginAction.class)
-	public static Result viewMeeting(Long meetingId){
-		Meeting meeting = Meeting.find.byId(meetingId);
-		return ok(viewMeeting.render(meeting));
-	}	
-	
-	public static Result appDownload(){
-		return ok(appDownload.render());
-	}
-	
-	public static Result aboutUs(){
-		return ok(aboutUs.render());
-	}
+        Map<String, String[]> params = request().queryString();
+
+        String callbackUrl = (params.containsKey("callbackUrl")) ?  params.get("callbackUrl")[0] : "/";
+        String uemail = (params.containsKey("uemail")) ?  params.get("uemail")[0] : null;
+        String token = (params.containsKey("token")) ? params.get("token")[0] : null;
+
+        if (uemail != null && !uemail.equals("") && token != null && !uemail.equals("")) {
+            response().setCookie("uemail", uemail);
+            response().setCookie("token", token);
+        }
+
+        //重定向到目的地址
+        return redirect(callbackUrl);
+    }
+
+    /**
+     * 用于登出，清除Cookie内的用户信息和token
+     * @return
+     */
+    public static Result logout(){
+        response().setCookie("uemail", "");
+        response().setCookie("token", "");
+        return redirect("/");
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result index() {
+        User user = CheckLoginAction.getUser(ctx());
+        String token = CheckLoginAction.getToken(ctx());
+
+        String username = (user==null)?"hehe":user.displayname;
+        return ok(index.render(username));
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result login() {
+        return ok(login.render());
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result signup() {
+        return ok(signup.render());
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result myppt() {
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        return ok(myppt.render(user));
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result mymeeting() {
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        List<Meeting> myFoundedMeetingList = user.myFoundedMeeting;
+        List<Meeting> myAttendingMeetingList = new LinkedList<Meeting>();
+        List<Attender> attendents = user.attendents;
+        for (Attender attendding : attendents) {
+            myAttendingMeetingList.add(attendding.meeting);
+        }
+        return ok(mymeeting.render(user, myFoundedMeetingList, myAttendingMeetingList));
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result pptListForMeeting() {
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        List<Ppt> ppts = user.ppts;
+        List<Ppt> converted = new ArrayList<Ppt>();
+        for (Ppt ppt : ppts) {
+            if (ppt.isConverted) {
+                converted.add(ppt);
+            }
+        }
+        return ok(pptListForMeeting.render(converted));
+    }
+
+    public static Result foundNewMeeting(Long pptId) {
+        Ppt ppt = Ppt.find.byId(pptId);
+        return ok(foundNewMeeting.render(ppt));
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result pptplainshow(Long pptid) {
+        Ppt ppt = Ppt.find.byId(pptid);
+        return ok(pptplainshow.render(ppt));
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result controlMeeting(Long meetingId) {
+        Meeting meeting = Meeting.find.byId(meetingId);
+        return ok(controlMeeting.render(meeting));
+    }
+
+    public static Result joinMeeting() {
+        return ok(joinMeeting.render());
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result viewMeeting(Long meetingId) {
+        Meeting meeting = Meeting.find.byId(meetingId);
+        return ok(viewMeeting.render(meeting));
+    }
+
+    public static Result appDownload() {
+        return ok(appDownload.render());
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result aboutUs() {
+        String token = CheckLoginAction.getToken(ctx());
+        User user = CheckLoginAction.getUser(ctx());
+        Logger.info(token+user.displayname);
+        return ok(aboutUs.render());
+    }
+
+    public static Result msg() {
+        return ok(msg.render());
+    }
 }

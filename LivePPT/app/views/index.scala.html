@@ -1,70 +1,46 @@
-@main(name="index", "欢迎使用"){
+@(username: String)
+@main(name="index", title="欢迎使用", username){
   @** Extra CSS **@
-
-  /* Supporting marketing content */
-  .marketing {
-    margin: 40px 0;
-  }
-  .marketing p + h4 {
-    margin-top: 25px;
-  }
-
-  .platforms div{
-    text-align: center;
-  }
-
-
-}{ 
-  <div class="jumbotron">
-    <h1>@Messages("index_main_title")</h1>
-    <p class="lead">
-      @Messages("index_sub_title_1")
-      <br><br>      
-      @Messages("index_sub_title_2")
-    </p>
-    <a class="btn btn-large btn-success" href="/signup">@Messages("index_btn_signup")</a>
-    <br><br>
-    <a href="/login">@Messages("index_txt_login")</a>
+}{
+<!-- Main hero unit for a primary marketing message or call to action -->
+<div class="hero-unit">
+  <h1>@Messages("index_main_title")!</h1>
+  <p class="info">@Messages("index_sub_title_1")<br>@Messages("index_sub_title_2")</p>
+  <p class="sign-up">
+    <a href="/signup" class="btn btn-success btn-large">@Messages("index_btn_signup")</a>
+  </p>
+  <ul class="inline">
+    <li>
+      <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_web")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/web-small-logo.png">Web</a>
+    </li>
+    <li>
+      <a href="https://chrome.google.com/webstore/detail/liveppt/pnpaagoieoljcnaehfomfabajfocmalo" data-toggle="tooltip" title="" onmouseover="$(this).tooltip('show');" data-original-title="@Messages("index_tooltip_chrome")"><img src="/assets/images/chrome-small-logo.png">Chrome</a>
+    </li>
+    <li>
+      <a href="https://play.google.com/store/apps/details?id=com.app.liveppt" data-toggle="tooltip" title="@Messages("index_tooltip_android")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/android-small-logo.png">Android</a>
+    </li>
+    <li>
+      <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_ios")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/iphone-small-logo.png">Iphone</a>
+    </li>
+  </ul>
+</div>
+<!-- Example row of columns -->
+<div class="row-fluid">
+  <div class="span3">
+    <h3>@Messages("index_block1_txt")</h3>
+    <p>@Messages("index_block1_sub")</p>
   </div>
-
-  <div class="row-fluid span10 platforms">
-    <div class="span2 offset2">
-      <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_web")" onmouseover="$(this).tooltip('show');">
-        <img src="/assets/images/web-small-logo.png"/>
-      &nbsp;Web</a>
-    </div>
-    <div class="span2">
-      <a href="https://chrome.google.com/webstore/detail/liveppt/pnpaagoieoljcnaehfomfabajfocmalo" data-toggle="tooltip" title="@Messages("index_tooltip_chrome")" onmouseover="$(this).tooltip('show');">
-        <img src="/assets/images/chrome-small-logo.png"/>&nbsp;Chrome
-      </a>
-      </div>
-    <div class="span2">
-      <a href="https://play.google.com/store/apps/details?id=com.app.liveppt" data-toggle="tooltip" title="@Messages("index_tooltip_android")" onmouseover="$(this).tooltip('show');">
-        <img src="/assets/images/android-small-logo.png"/></div>
-      </a>
-    <div class="span2">
-      <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_ios")" onmouseover="$(this).tooltip('show');">
-        <img src="/assets/images/iphone-small-logo.png"/></div>
-      </a>
+  <div class="span3">
+    <h3>@Messages("index_block4_txt")</h3>
+    <p>@Messages("index_block4_sub")</p>
   </div>
-
-  <br>
-
-  <div class="row-fluid marketing">
-    <div class="span5 offset1">
-      <h4>@Messages("index_block1_txt")</h4>
-      <p>@Messages("index_block1_sub")</p>
-
-      <h4>@Messages("index_block2_txt")</h4>
-      <p>@Messages("index_block2_sub")</p>
-    </div>
-
-    <div class="span5 offset1">
-      <h4>@Messages("index_block3_txt")</h4>
-      <p>@Messages("index_block3_sub")</p>
-
-      <h4>@Messages("index_block4_txt")</h4>
-      <p>@Messages("index_block4_sub")</p>
-    </div>
+  <div class="span3">
+    <h3>@Messages("index_block3_txt")</h3>
+    <p>@Messages("index_block3_sub")</p>
   </div>
+  <div class="span3">
+    <h3>@Messages("index_block2_txt")</h3>
+    <p>@Messages("index_block2_sub")</p>
+  </div>
+</div>
 }

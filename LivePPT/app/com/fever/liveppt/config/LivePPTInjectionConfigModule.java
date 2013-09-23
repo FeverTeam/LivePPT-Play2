@@ -10,12 +10,12 @@ import com.google.inject.AbstractModule;
 
 public class LivePPTInjectionConfigModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		// TODO Auto-generated method stub
-		bind(UserService.class).to(UserServiceImpl.class);
-		bind(PptService.class).to(PptServiceImpl.class);
-		bind(MeetingService.class).to(MeetingServiceImpl.class);
-	}
-	
+    @Override
+    protected void configure() {
+        //绑定依赖注入关系
+        bind(UserService.class).to(UserServiceImpl.class);
+        bind(PptService.class).to(PptServiceImpl.class);
+        bind(MeetingService.class).to(MeetingServiceImpl.class);
+    }
+
 }
