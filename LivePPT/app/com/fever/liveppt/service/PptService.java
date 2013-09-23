@@ -8,7 +8,6 @@ import com.fever.liveppt.exception.ppt.PptNotSelfOwnException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
-import com.fever.liveppt.utils.JsonResult;
 import org.codehaus.jackson.JsonNode;
 
 import java.io.File;
@@ -20,18 +19,6 @@ import java.util.List;
  * @author 梁博文
  */
 public interface PptService {
-
-    /*
-    @Deprecated
-    public byte[] getPptPageAsMid(Long pptId, Long pageId);
-    @Deprecated
-    public byte[] getPptPageAsBig(Long pptId, Long pageId);
-    @Deprecated
-    public byte[] getPptPageAsSmall(Long pptId, Long pageId);
-    */
-
-    @Deprecated
-    public JsonResult getPptList(Long userId);
 
     /**
      * 获取PPT指定页面的图像
@@ -52,14 +39,6 @@ public interface PptService {
      * @param messageJson SNS发来的JSON
      */
     public void updatePptConvertedStatus(JsonNode messageJson);
-
-    /**
-     * 获取指定PPT信息
-     *
-     * @param pptId
-     * @return
-     */
-    public JsonResult getPptInfo(Long pptId);
 
     /**
      * 获取用户PPT信息列表

@@ -50,7 +50,7 @@ public class PptController extends Controller {
      * @return
      */
     public Result infoAll() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
@@ -71,39 +71,6 @@ public class PptController extends Controller {
         } catch (TokenInvalidException e) {
             resultJson = new ResultJson(e);
         }
-        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
-
-        return ok(resultJson);
-    }
-
-    /**
-     * 获取用户所有PPT的列表
-     *
-     * @return
-     */
-    public Result getPptList() {
-        ResultJson resultJson = null;
-        try {
-            //验证Token并获取userEmail
-            String userEmail = TokenAgent.validateTokenFromHeader(request());
-
-            //获取ppt
-            List<Ppt> pptList = pptService.getPptList(userEmail);
-
-            //组装PPT信息JSON数组
-            ArrayNode pptInfoArraryNode = new ArrayNode(JsonNodeFactory.instance);
-            for (Ppt ppt : pptList) {
-                pptInfoArraryNode.add(ppt.toJsonNode());
-            }
-
-            resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
-
-        } catch (InvalidParamsException e) {
-            resultJson = new ResultJson(e);
-        } catch (TokenInvalidException e) {
-            resultJson = new ResultJson(e);
-        }
-        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
 
         return ok(resultJson);
     }
@@ -114,7 +81,7 @@ public class PptController extends Controller {
      * @return
      */
     public Result getPptInfo() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //获取GET参数
             Map<String, String[]> params = request().queryString();
@@ -150,8 +117,6 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
-
         return ok(resultJson);
     }
 
@@ -167,7 +132,7 @@ public class PptController extends Controller {
             return status(NOT_MODIFIED);
         }
 
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //获取GET参数
             Map<String, String[]> params = request().queryString();
@@ -216,13 +181,11 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        //若获取不成功返回JSON
-        resultJson = (this == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
         return ok(resultJson);
     }
 
     public Result pptUpload() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             User user = TokenAgent.validateTokenAndGetUser(userService, request());
@@ -267,13 +230,12 @@ public class PptController extends Controller {
         } catch (UserException e) {
             resultJson = new ResultJson(e);
         }
-        //若获取不成功返回JSON
-        resultJson = (this == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
+
         return ok(resultJson);
     }
 
     public Result pptDelete() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             User user = TokenAgent.validateTokenAndGetUser(userService, request());

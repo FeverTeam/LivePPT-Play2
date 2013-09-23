@@ -7,9 +7,7 @@ import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Meeting;
-import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.ResultJson;
-import org.codehaus.jackson.node.ArrayNode;
 
 import java.util.List;
 
@@ -20,27 +18,6 @@ import java.util.List;
  * @author 梁博文
  */
 public interface MeetingService {
-
-    @Deprecated
-    public ArrayNode getMyAttendingMeetings(Long userId);
-
-    @Deprecated
-    public JsonResult foundNewMeeting(Long founderId, Long pptId, String topic);
-
-    @Deprecated
-    public void deleteMeeting(Long meetingId);
-
-    @Deprecated
-    public ArrayNode getMyFoundedMeetings(Long userId);
-
-    @Deprecated
-    public JsonResult joinMeeting(Long userId, Long meetingId);
-
-    @Deprecated
-    public JsonResult setMeetingPageIndex(Long meetingId, Long pageIndex);
-
-    @Deprecated
-    public JsonResult quitMeeting(Long userId, Long meetingId);
 
     /**
      * 发起会议
