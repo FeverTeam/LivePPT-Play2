@@ -23,7 +23,7 @@ public class CheckLoginAction extends Action.Simple {
      * @return
      */
     public static User getUser(Http.Context ctx){
-        return (User) ctx.args.get(UserController.KEY_CTX_ARG_USER);
+        return (User) ctx.args.get(KEY_CTX_ARG_USER);
     }
 
     /**
@@ -33,7 +33,7 @@ public class CheckLoginAction extends Action.Simple {
      * @return
      */
     public static String getToken(Http.Context ctx){
-        Object token = ctx.args.get(UserController.KEY_CTX_ARG_USER);
+        Object token = ctx.args.get(KEY_CTX_ARG_TOKEN);
         if (token != null){
             return token.toString();
         } else {
