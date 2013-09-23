@@ -1,7 +1,6 @@
 package controllers;
 
 import com.fever.liveppt.models.User;
-import play.Logger;
 import play.mvc.Action;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -22,7 +21,7 @@ public class CheckLoginAction extends Action.Simple {
      * @param ctx 传入Http.Context
      * @return
      */
-    public static User getUser(Http.Context ctx){
+    public static User getUser(Http.Context ctx) {
         return (User) ctx.args.get(KEY_CTX_ARG_USER);
     }
 
@@ -32,27 +31,14 @@ public class CheckLoginAction extends Action.Simple {
      * @param ctx 传入Http.Context
      * @return
      */
-    public static String getToken(Http.Context ctx){
+    public static String getToken(Http.Context ctx) {
         Object token = ctx.args.get(KEY_CTX_ARG_TOKEN);
-        if (token != null){
+        if (token != null) {
             return token.toString();
         } else {
             return null;
         }
 
-    }
-
-
-    @Override
-    public Result call(Http.Context ctx) throws Throwable {
-
-        // 判断是否已经登陆
-        User user = getUserFromCookie(ctx);
-        String token  = getTokenFromCookie(ctx);
-        ctx.args.put(KEY_CTX_ARG_USER, user);
-        ctx.args.put(KEY_CTX_ARG_TOKEN, token);
-
-        return delegate.call(ctx);
     }
 
     /**
@@ -63,13 +49,13 @@ public class CheckLoginAction extends Action.Simple {
      */
     private static User getUserFromCookie(Http.Context ctx) {
         Http.Cookie cookie = ctx.request().cookie("uemail");
-        if (cookie==null || cookie.value()==null){
+        if (cookie == null || cookie.value() == null) {
             return null;
         }
 
         String uemail = cookie.value();
         User user = User.find.where().eq("email", uemail).findUnique();
-        if (user != null){
+        if (user != null) {
             user.password = null;
         }
         return user;
@@ -83,11 +69,23 @@ public class CheckLoginAction extends Action.Simple {
      */
     private static String getTokenFromCookie(Http.Context ctx) {
         Http.Cookie cookie = ctx.request().cookie("token");
-        if (cookie==null || cookie.value()==null){
+        if (cookie == null || cookie.value() == null) {
             return null;
         }
         String token = cookie.value();
         return token;
+    }
+
+    @Override
+    public Result call(Http.Context ctx) throws Throwable {
+
+        // 判断是否已经登陆
+        User user = getUserFromCookie(ctx);
+        String token = getTokenFromCookie(ctx);
+        ctx.args.put(KEY_CTX_ARG_USER, user);
+        ctx.args.put(KEY_CTX_ARG_TOKEN, token);
+
+        return delegate.call(ctx);
     }
 
 }

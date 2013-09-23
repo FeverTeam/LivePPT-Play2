@@ -55,18 +55,16 @@ public class PptServiceImpl implements PptService {
             String pageKey = storeKey + "p" + pageId;
             // 若文件存在于Cache中，则直接返回
             imgBytes = (byte[]) Cache.get(pageKey);
-            if (imgBytes != null) {
+            if (imgBytes != null && imgBytes.length > 0) {
                 return imgBytes;
             } else {
                 // 组装S3获取信息并获取页面图片
                 AmazonS3 s3 = AwsHelper.genTokyoS3();
-                GetObjectRequest getObjectRequest = new GetObjectRequest(
-                        "pptstore", pageKey);
+                GetObjectRequest getObjectRequest = new GetObjectRequest(AwsHelper.STORE_NAME, pageKey);
                 S3Object obj = s3.getObject(getObjectRequest);
 
                 // 转换为bytes
-                imgBytes = IOUtils.toByteArray((InputStream) obj
-                        .getObjectContent());
+                imgBytes = IOUtils.toByteArray((InputStream) obj.getObjectContent());
                 Cache.set(pageKey, imgBytes);
 
                 return imgBytes;
@@ -80,12 +78,11 @@ public class PptServiceImpl implements PptService {
     @Override
     public void updatePptConvertedStatus(JsonNode messageJson) {
         Boolean isSuccess = messageJson.findPath("isSuccess").getBooleanValue();
-        if (!isSuccess.equals(null) && isSuccess) {
+        if (isSuccess != null && isSuccess) {
             String storeKey = messageJson.findPath("storeKey").getTextValue();
             int pageCount = messageJson.findPath("pageCount").getIntValue();
 
-            List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey)
-                    .findList();
+            List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey).findList();
             Ppt ppt = pptList.get(0);
             ppt.isConverted = true;
             ppt.pagecount = pageCount;
@@ -104,7 +101,7 @@ public class PptServiceImpl implements PptService {
         if (user != null) {
             return user.ppts;
         } else {
-            return new LinkedList<Ppt>();
+            return new LinkedList<>();
         }
     }
 
