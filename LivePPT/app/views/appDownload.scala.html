@@ -1,9 +1,10 @@
-@main(name="appDownload", "应用下载", ""){
+@(username: String)
+@main(name="appDownload", "应用下载", username){
   @** Extra CSS **@  
 }{ 
 
   <div class="page-header">
-    <h1>应用下载</h1>
+    <h1>应用下载 @username</h1>
   </div>
   <div class="row-fluid">
     <div class="span6">

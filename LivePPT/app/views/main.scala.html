@@ -28,11 +28,11 @@
           <a class="brand" href="#">CloudSlides</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/"> @Messages("nav_tab_index") </a></li>
-              <li><a href="/myppt"> @Messages("nav_tab_myppt") </a></li>
-              <li><a href="/mymeeting"> @Messages("nav_tab_mymeeting") </a></li>
-              <li><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
-              <li><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
+              <li id="index"><a href="/"> @Messages("nav_tab_index") </a></li>
+              <li id="myppt"><a href="/myppt"> @Messages("nav_tab_myppt") </a></li>
+              <li id="mymeeting"><a href="/mymeeting"> @Messages("nav_tab_mymeeting") </a></li>
+              <li id="appDownload"><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
+              <li id="aboutUs"><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
             </ul>
             @if(username.isEmpty) {
             <form class="navbar-form pull-right">

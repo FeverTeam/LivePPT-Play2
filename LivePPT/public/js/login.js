@@ -3,34 +3,24 @@ define(function(require, exports, module) {
 	console.log("login.js");
 
 	var alertBox = $("#alertBox");
-
 	$('.btn-login-submit').on('click', function(e){
 		e.preventDefault();
-		
-
+		var psw = $('input[name=password]').val();
+		var hash = CryptoJS.HmacSHA1(psw, "Message");
 		$.ajax({
-			url: '/login',
+			url: '/user/login',
 			type: 'post',
-			dataType: 'json',
 			data: {
-/*				email: $('#inputEmail').val(),
-				password: $('#inputPassword').val()
-*/				email: $('input[name=email]').val(),
-				password: $('input[name=password]').val()
+				uemail: $('input[name=email]').val(),
+				password: hash.toString(),
+				seed: "Message"
 			},
 			success: function(res, status){
-				if (res.isSuccess){
-					//注册成功，跳转页面
-					window.location.href = '/myppt';
-				} else {
-					//注册不成功，显示错误信息
-					$("#alertBox span").html(res.message);
-					alertBox.show();
-				}
+				console.log('登陆成功');
+				location.href = '/loginSuccess?uemail='+$('input[name=email]').val()+'&token='+res.data.token+'&callbackUrl='+window.location.href;
 			},
 			error: function(res, status){
-				$("#alertBox span").html("网络错误？");
-				alertBox.show();
+				alert('网络错误')
 			}
 		});
 	});
