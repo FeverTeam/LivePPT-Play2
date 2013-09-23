@@ -17,13 +17,9 @@ import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
-import com.fever.liveppt.utils.JsonResult;
-import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.aws.AwsHelper;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
 import play.Logger;
 import play.cache.Cache;
 
@@ -59,18 +55,16 @@ public class PptServiceImpl implements PptService {
             String pageKey = storeKey + "p" + pageId;
             // 若文件存在于Cache中，则直接返回
             imgBytes = (byte[]) Cache.get(pageKey);
-            if (imgBytes != null) {
+            if (imgBytes != null && imgBytes.length > 0) {
                 return imgBytes;
             } else {
                 // 组装S3获取信息并获取页面图片
                 AmazonS3 s3 = AwsHelper.genTokyoS3();
-                GetObjectRequest getObjectRequest = new GetObjectRequest(
-                        "pptstore", pageKey);
+                GetObjectRequest getObjectRequest = new GetObjectRequest(AwsHelper.STORE_NAME, pageKey);
                 S3Object obj = s3.getObject(getObjectRequest);
 
                 // 转换为bytes
-                imgBytes = IOUtils.toByteArray((InputStream) obj
-                        .getObjectContent());
+                imgBytes = IOUtils.toByteArray((InputStream) obj.getObjectContent());
                 Cache.set(pageKey, imgBytes);
 
                 return imgBytes;
@@ -81,104 +75,18 @@ public class PptServiceImpl implements PptService {
 
     }
 
-    /*
-    public byte[] getPptPageAsSmall(Long pptId, Long pageId) {
-        InputStream input = new ByteArrayInputStream(getPptPageImage(pptId, pageId));
-        try {
-            BufferedImage img = ImageIO.read(input);
-            img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
-                    Scalr.Mode.FIT_TO_WIDTH, 300, 100, Scalr.OP_ANTIALIAS);
-            ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-            ImageIO.write(img, "jpg", bStream);
-            return bStream.toByteArray();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public byte[] getPptPageAsMid(Long pptId, Long pageId) {
-        InputStream input = new ByteArrayInputStream(getPptPageImage(pptId, pageId));
-        try {
-            BufferedImage img = ImageIO.read(input);
-            img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
-                    Scalr.Mode.FIT_TO_WIDTH, 500, 100, Scalr.OP_ANTIALIAS);
-            ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-            ImageIO.write(img, "jpg", bStream);
-            return bStream.toByteArray();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public byte[] getPptPageAsBig(Long pptId, Long pageId) {
-        InputStream input = new ByteArrayInputStream(getPptPageImage(pptId, pageId));
-        try {
-            BufferedImage img = ImageIO.read(input);
-            img = Scalr.resize(img, Scalr.Method.AUTOMATIC,
-                    Scalr.Mode.FIT_TO_WIDTH, 800, 100, Scalr.OP_ANTIALIAS);
-            ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-            ImageIO.write(img, "jpg", bStream);
-            return bStream.toByteArray();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
-    */
-
     @Override
     public void updatePptConvertedStatus(JsonNode messageJson) {
-        // TODO Auto-generated method stub
         Boolean isSuccess = messageJson.findPath("isSuccess").getBooleanValue();
-        if (!isSuccess.equals(null) && isSuccess) {
+        if (isSuccess != null && isSuccess) {
             String storeKey = messageJson.findPath("storeKey").getTextValue();
             int pageCount = messageJson.findPath("pageCount").getIntValue();
 
-            List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey)
-                    .findList();
+            List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey).findList();
             Ppt ppt = pptList.get(0);
             ppt.isConverted = true;
             ppt.pagecount = pageCount;
             ppt.save();
-        }
-    }
-
-    @Override
-    public JsonResult getPptList(Long UserId) {
-        JsonResult resultJson;
-        ArrayNode pptArrayNode = new ArrayNode(JsonNodeFactory.instance);
-        User user = User.find.byId(UserId);
-        if (user != null) {
-            List<Ppt> ppts = user.ppts;
-            if (ppts.size() == 0) {
-                resultJson = new JsonResult(false, StatusCode.PPT_LIST_NULL);
-            } else {
-                for (Ppt ppt : ppts) {
-                    pptArrayNode.add(ppt.toJsonNode());
-                }
-                resultJson = new JsonResult(true, pptArrayNode);
-            }
-
-        } else {
-            resultJson = new JsonResult(false, StatusCode.USER_NOT_EXISTED,
-                    "用户ID不存在");
-        }
-        return resultJson;
-    }
-
-    @Override
-    public JsonResult getPptInfo(Long pptId) {
-        // TODO Auto-generated method stub
-        Ppt ppt = Ppt.find.byId(pptId);
-        if (ppt == null) {
-            return new JsonResult(false, StatusCode.PPT_NOT_EXISTED, "不存在该PPT");
-        } else {
-            return new JsonResult(true, ppt.toJsonNode());
         }
     }
 
@@ -193,7 +101,7 @@ public class PptServiceImpl implements PptService {
         if (user != null) {
             return user.ppts;
         } else {
-            return new LinkedList<Ppt>();
+            return new LinkedList<>();
         }
     }
 
@@ -205,6 +113,7 @@ public class PptServiceImpl implements PptService {
         return Ppt.find.byId(pptId);
     }
 
+    @Override
     public void uploadPptToS3(User user, File file, String title, long filesize) throws InternalErrorException {
         try {
             // 存入AmazonS3
@@ -231,6 +140,7 @@ public class PptServiceImpl implements PptService {
 
     }
 
+    @Override
     public void deletePpt(User user, long pptId) throws InternalErrorException, PptNotSelfOwnException {
         if (user == null) {
             return;

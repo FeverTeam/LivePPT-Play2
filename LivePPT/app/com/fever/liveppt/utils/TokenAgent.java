@@ -46,8 +46,7 @@ public class TokenAgent {
             throw new InternalErrorException();
         }
         String userEmail = validateTokenFromHeader(request);
-        User user = userService.getUser(userEmail);
-        return user;
+        return userService.getUser(userEmail);
 
     }
 }

@@ -31,7 +31,7 @@ public class Attender extends Model {
     @ManyToOne
     public User user;
 
-    public static Finder<Long, Attender> find = new Finder<Long, Attender>(Long.class,
+    public static Finder<Long, Attender> find = new Finder<>(Long.class,
             Attender.class);
 
     public Attender(Meeting meeting, User user) {
@@ -39,7 +39,4 @@ public class Attender extends Model {
         this.user = user;
     }
 
-    public Attender() {
-
-    }
 }

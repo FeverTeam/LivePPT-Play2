@@ -68,7 +68,6 @@ public class MeetingController extends Controller {
 
                                             @Override
                                             public void run() {
-                                                // TODO Auto-generated method
                                                 // stub
                                                 currentIndex = (Long) Cache
                                                         .get(cacheKey);
@@ -110,7 +109,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result createMeeting() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
@@ -160,7 +159,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result deleteMeeting() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
@@ -205,7 +204,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result updateMeeting() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
@@ -266,7 +265,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result joinMeeting() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
@@ -311,7 +310,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result quitMeeting() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
@@ -347,9 +346,6 @@ public class MeetingController extends Controller {
         }
         return ok(resultJson);
     }
-    /////////////////////////////////////////////////
-    //GET
-    /////////////////////////////////////////////////
 
     /**
      * 设置会议的PPT页码
@@ -357,7 +353,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result setPage() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
@@ -414,7 +410,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result getMyFoundedMeetings() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             String userEmail = TokenAgent.validateTokenFromHeader(request());
             // String userEmail = "weijie@gmail.com";
@@ -428,9 +424,6 @@ public class MeetingController extends Controller {
             }
 
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
-
-            //若返回JSON为空，设为位置错误
-            resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
 
         } catch (TokenInvalidException e) {
             resultJson = new ResultJson(e);
@@ -446,7 +439,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result getMyAttendingMeeting() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             String userEmail = TokenAgent.validateTokenFromHeader(request());
             // String userEmail = "bowen@gmail.com";
@@ -461,14 +454,12 @@ public class MeetingController extends Controller {
 
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, pptInfoArraryNode);
 
-            //若返回JSON为空，设为位置错误
-            resultJson = (resultJson == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, "unknown error")) : resultJson;
-
         } catch (TokenInvalidException e) {
             resultJson = new ResultJson(e);
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
         }
+
         return ok(resultJson);
     }
 
@@ -478,7 +469,7 @@ public class MeetingController extends Controller {
      * @return
      */
     public Result getMeetingInfo() {
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             //获取GET参数
             Map<String, String[]> params = request().queryString();

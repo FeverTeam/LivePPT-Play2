@@ -51,7 +51,7 @@ public class Meeting extends Model {
     public ObjectNode toMyMeetingJson() {
         ObjectNode resultJson = Json.newObject();
         resultJson.put("meetingId", this.id);
-        resultJson.put("pptId", this.ppt.id);
+        resultJson.put("ppt",this.ppt.toJsonNode());
         resultJson.put("founder", "null");
         resultJson.put("topic", this.topic);
         return resultJson;
@@ -61,7 +61,7 @@ public class Meeting extends Model {
     public ObjectNode toMeetingJson() {
         ObjectNode resultJson = Json.newObject();
         resultJson.put("meetingId", this.id);
-        resultJson.put("pptId", this.ppt.id);
+        resultJson.put("ppt", this.ppt.toJsonNode());
         resultJson.put("founder", this.founder.toJson());
         resultJson.put("topic", this.topic);
         return resultJson;

@@ -14,7 +14,10 @@ public interface UserService {
      *
      * @param email
      * @param hashedPassword
-     * @return 返回JsonResult格式的信息
+     * @param seed
+     * @return
+     * @throws UserException
+     * @throws CommonException
      */
     public ResultJson isPassworrdCorrect(String email, String hashedPassword, String seed) throws UserException, CommonException;
 
@@ -25,11 +28,16 @@ public interface UserService {
      * @param encryptedPassword
      * @param displayName
      * @param seed
-     * @return ResultJson
+     * @return
+     * @throws InvalidParamsException
+     * @throws CommonException
+     * @throws UserException
      */
-    public ResultJson register(String email, String encryptedPassword, String displayName, String seed) throws InvalidParamsException, CommonException, UserException;
+    public ResultJson register(String email, String encryptedPassword, String displayName, String seed) throws CommonException, UserException;
 
     /**
+     * 用户邮箱是否已存在
+     *
      * @param userEmail
      * @return
      * @throws UserException
@@ -41,6 +49,7 @@ public interface UserService {
      *
      * @param userEmail
      * @return
+     * @throws UserNotExistedException
      */
     public User getUser(String userEmail) throws UserNotExistedException;
 
