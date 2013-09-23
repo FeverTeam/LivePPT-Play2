@@ -14,7 +14,7 @@ object ApplicationBuild extends Build {
     javaEbean,
 
     //MySql Connector for Java
-    "mysql" % "mysql-connector-java" % "5.1.24",
+    "mysql" % "mysql-connector-java" % "5.1.26",
 
     //Guice
     "com.google.inject" % "guice" % "3.0"
