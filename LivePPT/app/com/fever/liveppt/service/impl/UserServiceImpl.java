@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
         ResultJson resultJson;
         //解密password
-        // String password = Crypto.decryptAES(encryptedPassword, seed);        // 验证用户是否存在
+       //  String password = Crypto.decryptAES(hashedPassword, seed);        // 验证用户是否存在
         User user = User.find.where().eq("email", email).findUnique();
 
         if (user == null) {
@@ -58,6 +58,7 @@ public class UserServiceImpl implements UserService {
             //以用户密码生成hash以供比对
             String userHashedPassword = Crypto.sign(user.password, seed.getBytes());
 
+
             // 验证用户密码
             if (hashedPassword.equals(userHashedPassword)) {
                 // 密码验证成功
@@ -66,6 +67,7 @@ public class UserServiceImpl implements UserService {
 
                 Map<String, String> data = new HashMap();
                 data.put("token", token);
+                data.put("displayName",user.displayname);
                 DataJson dataJson = new DataJson(data);
 
                 // 封装返回信息
@@ -90,6 +92,7 @@ public class UserServiceImpl implements UserService {
         String password = "";
         try {
             //解密password
+           // encryptedPassword = Crypto.encryptAES(encryptedPassword,seed);
             password = Crypto.decryptAES(encryptedPassword, seed);
         } catch (Exception e) {
             //解密失败
