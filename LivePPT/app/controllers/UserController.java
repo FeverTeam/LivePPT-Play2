@@ -20,8 +20,6 @@ public class UserController extends Controller {
     @Inject
     UserService userService;
 
-    public static String KEY_CTX_ARG_USER="user";
-    
     /**
      * 检验用户Email是否被占用
      *

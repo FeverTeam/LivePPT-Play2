@@ -140,7 +140,11 @@ public class Frontend extends Controller {
         return ok(appDownload.render());
     }
 
+    @With(CheckLoginAction.class)
     public static Result aboutUs() {
+        String token = CheckLoginAction.getToken(ctx());
+        User user = CheckLoginAction.getUser(ctx());
+        Logger.info(token+user.displayname);
         return ok(aboutUs.render());
     }
 
