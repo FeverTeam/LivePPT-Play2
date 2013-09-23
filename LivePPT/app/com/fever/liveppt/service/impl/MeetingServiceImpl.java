@@ -11,13 +11,8 @@ import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
-import com.fever.liveppt.utils.JsonResult;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import play.Logger;
-import play.cache.Cache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +21,6 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public void deleteMeeting(String userEmail, Long meetingId) throws MeetingPermissionDenyException, MeetingNotExistedException {
-        // TODO Auto-generated method stub
         Meeting meeting = Meeting.find.byId(meetingId);
 
         if (meeting == null) {
@@ -55,44 +49,36 @@ public class MeetingServiceImpl implements MeetingService {
         }
 
         User user = User.find.where().eq("email", userEmail).findUnique();
-        if(user.attendents == null)
-        {
+        if (user.attendents == null) {
             throw new MeetingNotAttendedException();
         }
         for (Attender attender : user.attendents) {
             if (attender.meeting.id == meetingId) {
                 attender.delete();
-                isAttended = true ;
+                isAttended = true;
                 break;
             }
         }
-        if(isAttended)
-        {
+        if (isAttended) {
             resultJson = ResultJson.simpleSuccess();
             return resultJson;
-        }
-        else
-        {
+        } else {
             throw new MeetingNotAttendedException();
         }
 
 
     }
 
-
     @Override
     public ResultJson createMeeting(String userEmail, Long pptId, String topic) throws PptNotExistedException, MeetingPermissionDenyException {
-        // TODO Auto-generated method stub
         User founder = User.find.where().eq("email", userEmail).findUnique();
         Ppt ppt = Ppt.find.byId(pptId);
         if (ppt == null) {
             throw new PptNotExistedException();
         }
-        if(ppt.owner.id != founder.id)
-        {
+        if (ppt.owner.id != founder.id) {
             throw new MeetingPermissionDenyException();
         }
-        //TODO check topic
         Meeting meeting = new Meeting();
         meeting.founder = founder;
         meeting.ppt = ppt;
@@ -100,10 +86,9 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.save();
         Attender newAttending = new Attender(meeting, founder);
         newAttending.save();
-        ResultJson resultJson = ResultJson.simpleSuccess();
-        return resultJson;
-    }
 
+        return ResultJson.simpleSuccess();
+    }
 
     @Override
     public ResultJson updateMeeting(String userEmail, Long meetingId, Long pptId, String topic) throws MeetingNotExistedException, PptNotExistedException, MeetingPermissionDenyException {
@@ -122,15 +107,13 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.ppt = ppt;
         meeting.topic = topic;
         meeting.save();
-        ResultJson resultJson = ResultJson.simpleSuccess();
-        return resultJson;
-    }
 
+        return ResultJson.simpleSuccess();
+    }
 
     @Override
     public List<Meeting> getMyAttendingMeetings(String userEmail) {
         List<Meeting> meetings = new ArrayList<Meeting>();
-        ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
         User user = User.find.where().eq("email", userEmail).findUnique();
         for (Attender attender : user.attendents) {
             meetings.add(attender.meeting);
@@ -141,7 +124,6 @@ public class MeetingServiceImpl implements MeetingService {
     @Override
     public List<Meeting> getMyFoundedMeetings(String userEmail) {
         List<Meeting> meetings = new ArrayList<Meeting>();
-        ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
         User user = User.find.where().eq("email", userEmail).findUnique();
         for (Meeting meeting : user.myFoundedMeeting) {
             meetings.add(meeting);
@@ -149,10 +131,8 @@ public class MeetingServiceImpl implements MeetingService {
         return meetings;
     }
 
-
     @Override
     public ResultJson getMeetingInfo(Long meetingId) throws MeetingNotExistedException {
-        // TODO Auto-generated method stub
         ResultJson resultJson;
         Meeting meeting = Meeting.find.byId(meetingId);
         if (meeting == null) {
@@ -223,120 +203,6 @@ public class MeetingServiceImpl implements MeetingService {
         meeting.save();
         resultJson = ResultJson.simpleSuccess();
         return resultJson;
-    }
-
-    ////////////////////////////////////////////////////////////////旧方法///////////////////////////////////////
-    @Override
-    public ArrayNode getMyAttendingMeetings(Long userId) {
-        // TODO Auto-generated method stub
-        ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
-        User user = User.find.byId(userId);
-        if (user != null) {
-            for (Attender attender : user.attendents) {
-                resultJson.add(attender.meeting.toMeetingJson());
-            }
-        }
-        return resultJson;
-    }
-
-    @Override
-    public ArrayNode getMyFoundedMeetings(Long userId) {
-        // TODO Auto-generated method stub
-        ArrayNode resultJson = new ArrayNode(JsonNodeFactory.instance);
-        User user = User.find.byId(userId);
-        if (user != null) {
-            for (Meeting meeting : user.myFoundedMeeting) {
-                resultJson.add(meeting.toMyMeetingJson());
-            }
-        }
-        return resultJson;
-    }
-
-    @Override
-    public JsonResult setMeetingPageIndex(Long meetingId, Long pageIndex) {
-        // TODO Auto-generated method stub
-        String cacheKey = meetingId.toString();
-        Logger.info(meetingId + "-" + pageIndex);
-        Cache.set(cacheKey, pageIndex);
-        JsonResult resultJson = new JsonResult(true);
-        return resultJson;
-    }
-
-    @Override
-    public JsonResult joinMeeting(Long userId, Long meetingId) {
-        JsonResult resultJson;
-
-        Meeting meeting = Meeting.find.byId(meetingId);
-        if (meeting == null) {
-            resultJson = new JsonResult(false, StatusCode.MEETING_NOT_EXISTED);
-            return resultJson;
-        }
-        User user = User.find.byId(userId);
-        if (user == null) {
-            resultJson = new JsonResult(false, StatusCode.MEETING_USER_NOT_EXIST);
-            return resultJson;
-        }
-
-        List<Attender> attendings = user.attendents;
-        boolean isAttended = false;
-        for (Attender attending : attendings) {
-            if (attending.meeting.id.equals(meeting.id)) {
-                isAttended = true;
-                break;
-            }
-        }
-
-        if (!isAttended) {
-            Attender newAttending = new Attender(meeting, user);
-            newAttending.save();
-        }
-        resultJson = new JsonResult(true);
-        return resultJson;
-    }
-
-    @Override
-    public JsonResult quitMeeting(Long userId, Long meetingId) {
-        // TODO Auto-generated method stub
-        JsonResult resultJson = new JsonResult(true);
-        User user = User.find.byId(userId);
-        Boolean isDeleted = false;
-        if (user != null) {
-            for (Attender attender : user.attendents) {
-                if (attender.meeting.id.equals(meetingId)) {
-                    attender.delete();
-                    isDeleted = true;
-                    break;
-                }
-            }
-        } else {
-            resultJson = new JsonResult(false, StatusCode.MEETING_NOT_EXISTED);
-        }
-        if (isDeleted == false)
-            resultJson = new JsonResult(false, StatusCode.MEETING_DELETE_MEETING_FAIL);
-        return resultJson;
-    }
-
-    @Override
-    public JsonResult foundNewMeeting(Long founderId, Long pptId, String topic) {
-        // TODO Auto-generated method stub
-        User founder = User.find.byId(founderId);
-        Ppt ppt = Ppt.find.byId(pptId);
-        if (ppt == null)
-            return new JsonResult(false, StatusCode.PPT_NOT_EXISTED);
-
-        Meeting meeting = new Meeting();
-        meeting.founder = founder;
-        meeting.ppt = ppt;
-        meeting.topic = topic;
-        meeting.save();
-        return new JsonResult(true);
-    }
-
-    @Override
-    public void deleteMeeting(Long meetingId) {
-        Meeting meeting = Meeting.find.byId(meetingId);
-        if (meeting != null)
-            meeting.delete();
     }
 
 }

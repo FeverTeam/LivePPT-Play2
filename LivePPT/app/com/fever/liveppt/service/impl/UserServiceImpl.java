@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
         ResultJson resultJson;
         //解密password
-       //  String password = Crypto.decryptAES(hashedPassword, seed);        // 验证用户是否存在
+        //  String password = Crypto.decryptAES(hashedPassword, seed);        // 验证用户是否存在
         User user = User.find.where().eq("email", email).findUnique();
 
         if (user == null) {
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
             throw new UserNotExistedException();
         } else {
             // 用户存在
-           // hashedPassword = Crypto.sign(hashedPassword,seed.getBytes());
+            // hashedPassword = Crypto.sign(hashedPassword,seed.getBytes());
             //以用户密码生成hash以供比对
             String userHashedPassword = Crypto.sign(user.password, seed.getBytes());
 
@@ -65,9 +65,9 @@ public class UserServiceImpl implements UserService {
                 //生成token
                 String token = TokenAgent.generateToken(email);
 
-                Map<String, String> data = new HashMap();
+                Map<String, String> data = new HashMap<String, String>();
                 data.put("token", token);
-                data.put("displayName",user.displayname);
+                data.put("displayName", user.displayname);
                 DataJson dataJson = new DataJson(data);
 
                 // 封装返回信息
@@ -89,10 +89,10 @@ public class UserServiceImpl implements UserService {
         //如果displayName为空，设置其为email
         displayName = (displayName == null || displayName.length() == 0) ? email : displayName;
 
-        String password = "";
+        String password;
         try {
             //解密password
-           // encryptedPassword = Crypto.encryptAES(encryptedPassword,seed);
+            // encryptedPassword = Crypto.encryptAES(encryptedPassword,seed);
             password = Crypto.decryptAES(encryptedPassword, seed);
         } catch (Exception e) {
             //解密失败
@@ -120,10 +120,9 @@ public class UserServiceImpl implements UserService {
 
             //封装json格式的data数据
             DataJson dataJson = new DataJson(map);
-            ResultJson resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, dataJson);
 
             //返回
-            return resultJson;
+            return new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, dataJson);
         }
     }
 
