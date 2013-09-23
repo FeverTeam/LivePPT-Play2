@@ -8,7 +8,6 @@ import com.fever.liveppt.exception.ppt.PptNotSelfOwnException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
-import com.fever.liveppt.utils.JsonResult;
 import org.codehaus.jackson.JsonNode;
 
 import java.io.File;
