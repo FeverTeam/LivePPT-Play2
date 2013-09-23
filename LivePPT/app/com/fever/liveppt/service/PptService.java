@@ -21,18 +21,6 @@ import java.util.List;
  */
 public interface PptService {
 
-    /*
-    @Deprecated
-    public byte[] getPptPageAsMid(Long pptId, Long pageId);
-    @Deprecated
-    public byte[] getPptPageAsBig(Long pptId, Long pageId);
-    @Deprecated
-    public byte[] getPptPageAsSmall(Long pptId, Long pageId);
-    */
-
-    @Deprecated
-    public JsonResult getPptList(Long userId);
-
     /**
      * 获取PPT指定页面的图像
      *
@@ -52,14 +40,6 @@ public interface PptService {
      * @param messageJson SNS发来的JSON
      */
     public void updatePptConvertedStatus(JsonNode messageJson);
-
-    /**
-     * 获取指定PPT信息
-     *
-     * @param pptId
-     * @return
-     */
-    public JsonResult getPptInfo(Long pptId);
 
     /**
      * 获取用户PPT信息列表
