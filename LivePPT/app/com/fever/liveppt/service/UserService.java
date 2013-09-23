@@ -1,24 +1,56 @@
 package com.fever.liveppt.service;
 
-import com.fever.liveppt.utils.JsonResult;
+import com.fever.liveppt.exception.common.CommonException;
+import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.user.UserException;
+import com.fever.liveppt.exception.user.UserNotExistedException;
+import com.fever.liveppt.models.User;
+import com.fever.liveppt.utils.ResultJson;
 
 public interface UserService {
 
-	/**
-	 * 验证帐号密码
-	 * @param email
-	 * @param password
-	 * @return 返回JsonResult格式的信息
-	 */
-	public JsonResult isPassworrdCorrect(String email, String password);
-	
-	/**
-	 * 注册新用户
-	 * @param email
-	 * @param password
-	 * @param displayName
-	 * @return
-	 */
-	public JsonResult register(String email, String password, String displayName);
+    /**
+     * 验证帐号密码
+     *
+     * @param email
+     * @param hashedPassword
+     * @param seed
+     * @return
+     * @throws UserException
+     * @throws CommonException
+     */
+    public ResultJson isPassworrdCorrect(String email, String hashedPassword, String seed) throws UserException, CommonException;
+
+    /**
+     * 用户注册
+     *
+     * @param email
+     * @param encryptedPassword
+     * @param displayName
+     * @param seed
+     * @return
+     * @throws InvalidParamsException
+     * @throws CommonException
+     * @throws UserException
+     */
+    public ResultJson register(String email, String encryptedPassword, String displayName, String seed) throws CommonException, UserException;
+
+    /**
+     * 用户邮箱是否已存在
+     *
+     * @param userEmail
+     * @return
+     * @throws UserException
+     */
+    public boolean isEmailExisted(String userEmail) throws UserException, CommonException;
+
+    /**
+     * 根据userEmail来获取对应的User对象
+     *
+     * @param userEmail
+     * @return
+     * @throws UserNotExistedException
+     */
+    public User getUser(String userEmail) throws UserNotExistedException;
 
 }

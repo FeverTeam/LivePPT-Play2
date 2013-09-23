@@ -15,10 +15,10 @@ nav_tab_aboutus = 关于我们
 
 #首页index
 
-index_main_title = 欢迎使用LivePPT!
+index_main_title = 欢迎使用CloudSlides!
 index_sub_title_1 = 跨平台PPT云直播应用，就在你的眼前。
 index_sub_title_2 = 随时随地PPT直播，让你的想法更有力。
-index_btn_signup = 马上注册LivePPT账号
+index_btn_signup = 马上注册CloudSlides账号
 index_txt_login = 已经有账号了? 快来登录吧。
 
 index_tooltip_web = 你就在这里！请尽情享用吧！Alpha测试阶段
@@ -40,6 +40,8 @@ index_block4_sub =几乎无需学习，LivePPT一切皆如你所愿。
 
 login_title = 登入LivePPT
 login_btn_login = 登录
+login_input_username = 账号
+login_input_password = 密码
 login_jump_to_signup = 还没有LivePPT账号？马上注册吧！
 
 

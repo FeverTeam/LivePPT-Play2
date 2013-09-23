@@ -1,20 +1,30 @@
-@main(name="appDownload", "应用下载"){
+@main(name="appDownload", "应用下载", ""){
   @** Extra CSS **@  
 }{ 
 
-<h1>iOS</h1>
-<p>@Messages("appdownload_ios")</p>
-<br><br>
-<a href="#">
-	<img src="/assets/images/available-on-the-app-store.png" style="width: 200px; height: 73px;"/>
-</a>
-<hr>
-
-<h1>Android</h1>
-<p>@Messages("appdownload_android")</p>
-<br><br>
-<a href="https://play.google.com/store/apps/details?id=com.app.liveppt" target="_blank">
-	<img src="/assets/images/availible-on-play.png" style="width: 200px; height: 73px;"/>
-</a>
-
+  <div class="page-header">
+    <h1>应用下载</h1>
+  </div>
+  <div class="row-fluid">
+    <div class="span6">
+      <h2>IOS</h2>
+      <p>Oops...iOS应用正在闯关AppStore审批的路上。快到了！</p>
+      <a href="#"><img src="/assets/images/available-on-the-app-store.png" alt="#" width="200px;"></a>
+    </div>
+    <div class="span6">
+      <h2>Android</h2>
+      <p>Android应用已发布到Play市场！点击即可进入下载</p>
+      <a href="#"><img src="/assets/images/availible-on-play.png" alt="" width="200px;"></a>
+    </div>
+  </div>
+  <div class="row-fluid">
+    <div class="span6">
+      <h2>Web</h2>
+      <p>无需下载，还等什么？直接使用！！</p>
+    </div>
+    <div class="span6">
+      <h2>More</h2>
+      <p>未完待续……</p>
+    </div>
+  </div>
 }

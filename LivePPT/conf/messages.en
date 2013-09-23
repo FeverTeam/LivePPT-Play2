@@ -38,6 +38,8 @@ index_block4_sub = So easy to get started without any burden.
 
 login_title = Sign In
 login_btn_login = Sign in
+login_input_username = Username
+login_input_password = Password
 login_jump_to_signup = Havent LivePPT Account? Sign up now!
 
 #注册signup
