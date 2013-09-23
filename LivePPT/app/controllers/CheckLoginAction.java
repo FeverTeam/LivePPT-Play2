@@ -82,6 +82,7 @@ public class CheckLoginAction extends Action.Simple {
         // 判断是否已经登陆
         User user = getUserFromCookie(ctx);
         String token = getTokenFromCookie(ctx);
+
         ctx.args.put(KEY_CTX_ARG_USER, user);
         ctx.args.put(KEY_CTX_ARG_TOKEN, token);
 

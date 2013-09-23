@@ -346,9 +346,6 @@ public class MeetingController extends Controller {
         }
         return ok(resultJson);
     }
-    /////////////////////////////////////////////////
-    //GET
-    /////////////////////////////////////////////////
 
     /**
      * 设置会议的PPT页码

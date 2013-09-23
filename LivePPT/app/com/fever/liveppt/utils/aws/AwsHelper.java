@@ -46,8 +46,6 @@ public class AwsHelper {
         return S3Client;
     }
 
-    ;
-
     /**
      * 组装东京SQSclient
      *
