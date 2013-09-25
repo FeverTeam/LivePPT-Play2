@@ -144,12 +144,12 @@ public class Frontend extends Controller {
         return ok(appDownload.render(username));
     }
 
+    @With(CheckLoginAction.class)
     public static Result aboutUs() {
-        User user = CheckLoginAction.getUser(ctx());
         String token = CheckLoginAction.getToken(ctx());
-        String username = (user==null)?"":user.displayname;
-
-        return ok(aboutUs.render(username));
+        User user = CheckLoginAction.getUser(ctx());
+        Logger.info(token+user.displayname);
+        return ok(aboutUs.render());
     }
 
     public static Result msg() {

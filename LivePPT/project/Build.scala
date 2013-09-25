@@ -14,13 +14,13 @@ object ApplicationBuild extends Build {
     javaEbean,
 
     //MySql Connector for Java
-    "mysql" % "mysql-connector-java" % "5.1.24",
+    "mysql" % "mysql-connector-java" % "5.1.26",
 
     //Guice
-    "com.google.inject" % "guice" % "3.0",
+    "com.google.inject" % "guice" % "3.0"
 
     //Memcached
-    "com.github.mumoshu" %% "play2-memcached" % "0.3.0.2"
+    //"com.github.mumoshu" %% "play2-memcached" % "0.3.0.2"
   )
 
   

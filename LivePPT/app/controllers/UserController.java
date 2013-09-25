@@ -20,8 +20,6 @@ public class UserController extends Controller {
     @Inject
     UserService userService;
 
-    public static String KEY_CTX_ARG_USER="user";
-    
     /**
      * 检验用户Email是否被占用
      *
@@ -30,7 +28,7 @@ public class UserController extends Controller {
     public Result checkEmail() {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         //返回的JSON，初始化为null
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             if (null == params) {
                 throw new InvalidParamsException();
@@ -75,7 +73,7 @@ public class UserController extends Controller {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
 
         //返回的JSON，初始化为null
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             if (null == params) {
                 throw new InvalidParamsException();
@@ -115,9 +113,6 @@ public class UserController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        //若返回JSON为空，设为位置错误
-        resultJson = (this == null) ? new ResultJson(new CommonException(StatusCode.UNKONWN_ERROR, StatusCode.UNKONWN_ERROR_MESSAGE)) : resultJson;
-
         //返回JSON
         return ok(resultJson);
     }
@@ -132,7 +127,7 @@ public class UserController extends Controller {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
 
         //返回的JSON，初始化为null
-        ResultJson resultJson = null;
+        ResultJson resultJson;
         try {
             if (null == params) {
                 throw new InvalidParamsException();
