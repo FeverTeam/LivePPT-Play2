@@ -67,8 +67,6 @@ public class UserController extends Controller {
      * @return
      */
     public Result login() {
-        Logger.debug(Crypto.sign("simonlbw", "1234567890123456".getBytes()));
-
         //获取POST参数
         Map<String, String[]> params = request().body().asFormUrlEncoded();
 
