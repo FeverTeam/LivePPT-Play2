@@ -79,13 +79,9 @@ public class MeetingServiceImpl implements MeetingService {
         if (ppt.owner.id != founder.id) {
             throw new MeetingPermissionDenyException();
         }
-        Meeting meeting = new Meeting();
-        meeting.founder = founder;
-        meeting.ppt = ppt;
-        meeting.topic = topic;
+        //新建发起的会议,并存入数据库
+        Meeting meeting = new Meeting(founder, ppt, topic);
         meeting.save();
-        Attender newAttending = new Attender(meeting, founder);
-        newAttending.save();
 
         return ResultJson.simpleSuccess();
     }
