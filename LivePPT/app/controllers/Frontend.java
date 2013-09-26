@@ -37,7 +37,7 @@ public class Frontend extends Controller {
         Map<String, String[]> params = request().queryString();
 
         String callbackUrl = (params.containsKey("callbackUrl")) ?  params.get("callbackUrl")[0] : "/";
-        String uemail = (params.containsKey("uemail")) ?  params.get("uemail")[0] : null;
+        String uemail = (params.containsKey("uemail")) ?  params.get("uemail")[0].toLowerCase() : null;
         String token = (params.containsKey("token")) ? params.get("token")[0] : null;
 
         if (uemail != null && !uemail.equals("") && token != null && !uemail.equals("")) {

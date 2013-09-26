@@ -11,8 +11,11 @@ import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
+import com.fever.liveppt.utils.CacheAgent;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
+import play.Logger;
+import play.cache.Cache;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,13 +82,9 @@ public class MeetingServiceImpl implements MeetingService {
         if (ppt.owner.id != founder.id) {
             throw new MeetingPermissionDenyException();
         }
-        Meeting meeting = new Meeting();
-        meeting.founder = founder;
-        meeting.ppt = ppt;
-        meeting.topic = topic;
+        //新建发起的会议,并存入数据库
+        Meeting meeting = new Meeting(founder, ppt, topic);
         meeting.save();
-        Attender newAttending = new Attender(meeting, founder);
-        newAttending.save();
 
         return ResultJson.simpleSuccess();
     }
@@ -183,7 +182,6 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public ResultJson setPage(String userEmail, Long meetingId, Long pageIndex) throws MeetingPermissionDenyException, MeetingNotExistedException, PptPageOutOfRangeException {
-        ResultJson resultJson;
         Meeting meeting = Meeting.find.byId(meetingId);
         if (meeting == null) {
             throw new MeetingNotExistedException();
@@ -195,14 +193,19 @@ public class MeetingServiceImpl implements MeetingService {
             throw new MeetingPermissionDenyException();
         }
 
-        if (pageIndex > meeting.ppt.pagecount) {
+        if (pageIndex < 1 || pageIndex > meeting.ppt.pagecount) {
             throw new PptPageOutOfRangeException();
         }
 
+        //更新Cache中的页码
+        String meetingCacheKey = CacheAgent.generateMeetingCacheKey(meetingId);
+        Cache.set(meetingCacheKey, pageIndex);
+        Logger.debug("setpage meetingid:"+meetingId+" page:"+pageIndex);
+
         meeting.currentPageIndex = pageIndex;
         meeting.save();
-        resultJson = ResultJson.simpleSuccess();
-        return resultJson;
+
+        return ResultJson.simpleSuccess();
     }
 
 }
