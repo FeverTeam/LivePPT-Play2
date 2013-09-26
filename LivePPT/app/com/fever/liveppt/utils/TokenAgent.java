@@ -25,7 +25,7 @@ public class TokenAgent {
         }
 
         //从Header中获取参数
-        String userEmail = request.getHeader("uemail");
+        String userEmail = request.getHeader("uemail").toLowerCase();
         String inputToken = request.getHeader("token");
         if (userEmail == null || userEmail.length() == 0 || inputToken == null || inputToken.length() == 0) {
             throw new InvalidParamsException();

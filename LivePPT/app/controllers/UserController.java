@@ -39,7 +39,7 @@ public class UserController extends Controller {
             }
 
             // 获取参数
-            String email = params.get("uemail")[0];
+            String email = params.get("uemail")[0].toLowerCase();
 
             //验证用户Email是否被占用
             boolean isExisted = userService.isEmailExisted(email);
@@ -97,7 +97,7 @@ public class UserController extends Controller {
 
 
             // 获取参数
-            String email = params.get("uemail")[0];
+            String email = params.get("uemail")[0].toLowerCase();
             String hashedPassword = params.get("password")[0];
             String seed = params.get("seed")[0];
 
@@ -159,7 +159,7 @@ public class UserController extends Controller {
 
 
             // 获取参数
-            String email = params.get("uemail")[0];
+            String email = params.get("uemail")[0].toLowerCase();
             String encryptedPassword = params.get("password")[0];
             String displayName = (ControllerUtils.isFieldNotNull(params, "displayname")) ? params.get("displayname")[0] : "";
             String seed = params.get("seed")[0];
