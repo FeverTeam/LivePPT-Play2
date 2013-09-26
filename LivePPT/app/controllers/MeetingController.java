@@ -4,7 +4,10 @@ import akka.actor.Cancellable;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
-import com.fever.liveppt.exception.meeting.*;
+import com.fever.liveppt.exception.meeting.AttendingExistedException;
+import com.fever.liveppt.exception.meeting.MeetingException;
+import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
+import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Meeting;
@@ -35,6 +38,9 @@ public class MeetingController extends Controller {
         return new WebSocket<String>() {
 
             String WS_TEMP_ID_KEY;
+            Long meetingId;
+            Long pptId;
+            String cacheKey;
 
             @Override
             public void onReady(WebSocket.In<String> in,
@@ -46,39 +52,46 @@ public class MeetingController extends Controller {
                     @Override
                     public void invoke(String meetingIdStr) {
                         WS_TEMP_ID_KEY = UUID.randomUUID().toString();
-                        Long meetingId = Long.parseLong(meetingIdStr);
-                        Logger.info("WebSocket Started by meetingId="
-                                + meetingIdStr);
-                        final Long pptId = Meeting.find.byId(meetingId).ppt.id;
-                        final String cacheKey = CacheAgent.generateMeetingCacheKey(meetingId);
+                        meetingId = Long.parseLong(meetingIdStr);
+                        Logger.info("WebSocket with meetingId:" + meetingIdStr);
+                        pptId = Meeting.find.byId(meetingId).ppt.id;
+                        cacheKey = CacheAgent.generateMeetingCacheKey(meetingId);
 
-                        Cancellable cancellable = Akka
-                                .system()
-                                .scheduler()
-                                .schedule(
-                                        Duration.Zero(),
-                                        Duration.create(10,
-                                                TimeUnit.MILLISECONDS),
-                                        new Runnable() {
-                                            Long currentIndex;
-                                            Long temp = (long) -1;
+                        Cancellable cancellable = Akka.system().scheduler().schedule(
+                                Duration.Zero(),
+                                Duration.create(10,
+                                        TimeUnit.MILLISECONDS),
+                                new Runnable() {
+                                    Long currentPageIndex = (long) -1;
+                                    Long lastPageIndex = (long) -1;
 
-                                            @Override
-                                            public void run() {
-                                                // stub
-                                                currentIndex = (Long) Cache
-                                                        .get(cacheKey);
-                                                if (currentIndex == null) {
-                                                    currentIndex = (long) 1;
-                                                }
-                                                if (!temp.equals(currentIndex)) {
-                                                    temp = currentIndex;
-                                                    Logger.debug("websocket meetingId:"+cacheKey+" page:"+currentIndex);
-                                                    out.write(pptId + "-"
-                                                            + currentIndex);
-                                                }
+                                    @Override
+                                    public void run() {
+                                        if (currentPageIndex == -1) {
+                                            //第一次进入websocket,从数据库中获取当前页码
+                                            Meeting meeting = Meeting.find.byId(meetingId);
+                                            if (meeting != null && meeting.currentPageIndex > 0) {
+                                                currentPageIndex = meeting.currentPageIndex;
+                                            } else {
+                                                currentPageIndex = (long) 1;
                                             }
-                                        }, Akka.system().dispatcher());
+                                            lastPageIndex = currentPageIndex;
+                                            Logger.debug("websocket meetingId:" + meetingId + " page:" + currentPageIndex);
+                                            out.write(pptId + "-" + currentPageIndex);
+                                        } else {
+                                            // stub
+                                            currentPageIndex = (Long) Cache.get(cacheKey);
+                                            if (currentPageIndex == null) {
+                                                currentPageIndex = (long) 1;
+                                            }
+                                            if (!lastPageIndex.equals(currentPageIndex)) {
+                                                lastPageIndex = currentPageIndex;
+                                                Logger.debug("websocket meetingId:" + meetingId + " page:" + currentPageIndex);
+                                                out.write(pptId + "-" + currentPageIndex);
+                                            }
+                                        }
+                                    }
+                                }, Akka.system().dispatcher());
                         //将该WebSocket连接对应的Akka Cancellable存入Cache，用于终止连接时停止定时任务
                         Cache.set(WS_TEMP_ID_KEY, cancellable);
                     }
@@ -89,8 +102,7 @@ public class MeetingController extends Controller {
                     @Override
                     public void invoke() {
                         //从Cache获取该WebSocket连接对应的Akka Cancellable
-                        Cancellable cancellable = (Cancellable) Cache
-                                .get(WS_TEMP_ID_KEY);
+                        Cancellable cancellable = (Cancellable) Cache.get(WS_TEMP_ID_KEY);
                         //停止定时任务，释放资源
                         cancellable.cancel();
                     }
