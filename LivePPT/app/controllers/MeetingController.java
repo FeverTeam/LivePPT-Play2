@@ -9,10 +9,7 @@ import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.service.MeetingService;
-import com.fever.liveppt.utils.ControllerUtils;
-import com.fever.liveppt.utils.ResultJson;
-import com.fever.liveppt.utils.StatusCode;
-import com.fever.liveppt.utils.TokenAgent;
+import com.fever.liveppt.utils.*;
 import com.google.inject.Inject;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
@@ -53,7 +50,7 @@ public class MeetingController extends Controller {
                         Logger.info("WebSocket Started by meetingId="
                                 + meetingIdStr);
                         final Long pptId = Meeting.find.byId(meetingId).ppt.id;
-                        final String cacheKey = Long.toString(meetingId);
+                        final String cacheKey = CacheAgent.generateMeetingCacheKey(meetingId);
 
                         Cancellable cancellable = Akka
                                 .system()
@@ -76,8 +73,7 @@ public class MeetingController extends Controller {
                                                 }
                                                 if (!temp.equals(currentIndex)) {
                                                     temp = currentIndex;
-                                                    Logger.info(pptId + "-"
-                                                            + currentIndex);
+                                                    Logger.debug("websocket meetingId:"+cacheKey+" page:"+currentIndex);
                                                     out.write(pptId + "-"
                                                             + currentIndex);
                                                 }
