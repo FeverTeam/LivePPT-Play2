@@ -65,35 +65,6 @@ public class User extends Model {
         }
     }
 
-    public static boolean isEmailFormatValid(String email) {
-        Pattern emailPattern = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
-        Matcher m = emailPattern.matcher(email);
-        if (m.matches()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public static User isPasswordCorrect(String email, String password) {
-        User user = User.find.where().eq("email", email)
-                .eq("password", password).findUnique();
-        if (user != null) {
-            return user;
-        } else {
-            return null;
-        }
-    }
-
-    public static User genUserFromSession(Session sess) {
-        String email = sess.get("email");
-        User user = User.find.where().eq("email", email).findUnique();
-        if (user != null) {
-            return user;
-        }
-        return null;
-    }
-
     public ObjectNode toJsonNode() {
         ObjectNode resultJson = Json.newObject();
         resultJson.put("userId", this.id);
