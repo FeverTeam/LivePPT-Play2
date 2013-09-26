@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
             user.save();
 
             //生成token
-            String token = Crypto.sign(email);
+            String token = TokenAgent.generateToken(user.email);
 
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("token", token);

@@ -66,8 +66,8 @@ public class User extends Model {
     }
 
     public static boolean isEmailFormatValid(String email) {
-        Pattern p = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
-        Matcher m = p.matcher(email);
+        Pattern emailPattern = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
+        Matcher m = emailPattern.matcher(email);
         if (m.matches()) {
             return true;
         } else {
