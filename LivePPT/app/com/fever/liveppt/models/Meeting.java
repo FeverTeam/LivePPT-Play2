@@ -43,6 +43,12 @@ public class Meeting extends Model {
 
     }
 
+    public Meeting(User founder, Ppt ppt, String topic) {
+        this.founder = founder;
+        this.ppt = ppt;
+        this.topic = topic;
+    }
+
     public static Finder<Long, Meeting> find = new Finder<Long, Meeting>(
             Long.class, Meeting.class);
 
