@@ -29,8 +29,8 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li id="index"><a href="/"> @Messages("nav_tab_index") </a></li>
-              <li id="myppt"><a href="/myppt"> @Messages("nav_tab_myppt") </a></li>
-              <li id="mymeeting"><a href="/mymeeting"> @Messages("nav_tab_mymeeting") </a></li>
+              <li id="myppt"><a href="/myppt" @if(username.isEmpty){ onclick="alert('请先登陆'); return false;"}> @Messages("nav_tab_myppt") </a></li>
+              <li id="mymeeting"><a href="/mymeeting" @if(username.isEmpty){ onclick="alert('请先登陆'); return false;"}> @Messages("nav_tab_mymeeting") </a></li>
               <li id="appDownload"><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
               <li id="aboutUs"><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
             </ul>

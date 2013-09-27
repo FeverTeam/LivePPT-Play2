@@ -1,5 +1,5 @@
 seajs.config({
-
+	
 	alias: {
 		'jquery': {src:'/assets/js/jquery-1.9.1.min.js', exports:'$'},
 		'bootstrap': '/assets/js/bootstrap.min.js',

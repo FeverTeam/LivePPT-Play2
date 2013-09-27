@@ -136,9 +136,10 @@ public class Frontend extends Controller {
         return ok(viewMeeting.render(meeting));
     }
 
+    @With(CheckLoginAction.class)
     public static Result appDownload() {
-        User user = CheckLoginAction.getUser(ctx());
         String token = CheckLoginAction.getToken(ctx());
+        User user = CheckLoginAction.getUser(ctx());
         String username = (user==null)?"":user.displayname;
 
         return ok(appDownload.render(username));
@@ -148,8 +149,8 @@ public class Frontend extends Controller {
     public static Result aboutUs() {
         String token = CheckLoginAction.getToken(ctx());
         User user = CheckLoginAction.getUser(ctx());
-        Logger.info(token+user.displayname);
-        return ok(aboutUs.render());
+        String username = (user==null)?"":user.displayname;
+        return ok(aboutUs.render(username));
     }
 
     public static Result msg() {

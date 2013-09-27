@@ -1,15 +1,13 @@
 @(user: com.fever.liveppt.models.User)
-
-
-
 @main(name="myppt", "我的PPT", username= user.displayname) {
 
 }{
   @defining(user.ppts){ppts=>
-    <p>hi, @user.displayname! <a href="/logout">登出Logout</a></p>
+    <div class="page-header">
+      <h1>我的PPT</h1>
+    </div>
+    <p>你有@ppts.size个PPT<p>
     <br>
-      <p>你有@ppts.size个PPT<p>
-      <br>
     <input type="file" name="file_upload" id="file_upload" />
 
     <br>

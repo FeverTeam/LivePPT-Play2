@@ -3,8 +3,9 @@
 @main(name="mymeeting", "我的PPT会议", username= user.displayname) {
 
 }{
-	<p>hi, @user.displayname! <a href="/logout">@Messages("gen_logout_txt")</a></p>
-	<br>
+  	<div class="page-header">
+    	<h1>会议列表</h1>
+  	</div>
 	<h2>
 		@Messages("mymeeting_tbl_caption_myfoundedmeetings")
 		<span class="badge badge-info">@Messages("mymeeting_tbl_toggle_count", myFoundedMeetingList.size())</span>

@@ -16,11 +16,15 @@ define(function(require, exports, module) {
 				seed: "Message"
 			},
 			success: function(res, status){
-				console.log('登陆成功');
-				location.href = '/loginSuccess?uemail='+$('input[name=email]').val()+'&token='+res.data.token+'&callbackUrl='+window.location.href;
+				console.log(res);
+				if (res.retcode == 0)
+					location.href = '/loginSuccess?uemail='+$('input[name=email]').val()+'&token='+res.data.token+'&callbackUrl='+window.location.href;
+				else if (res.retcode == -202) alert('此用户不存在');
+				else if (res.retcode == -203) alert('账号或密码错误');
+				else alert('登陆失败');
 			},
 			error: function(res, status){
-				alert('网络错误')
+				alert('网络错误');
 			}
 		});
 	});
