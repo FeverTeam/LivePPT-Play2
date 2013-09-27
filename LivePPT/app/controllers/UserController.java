@@ -1,3 +1,9 @@
+/**
+ * @author
+ * @version : v1.00
+ * @Description : User controller 提供给前端以及手机端用户操作的接口
+ *
+ */
 package controllers;
 
 import com.fever.liveppt.exception.common.CommonException;
@@ -21,9 +27,10 @@ public class UserController extends Controller {
     UserService userService;
 
     /**
-     * 检验用户Email是否被占用
-     *
+     * 检查用户Email是否被占用
      * @return
+     * @exception InvalidParamsException
+     * @exception UserException
      */
     public Result checkEmail() {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
@@ -63,8 +70,9 @@ public class UserController extends Controller {
 
     /**
      * 用户登录接口
-     *
      * @return
+     * @exception InvalidParamsException
+     * @exception UserException
      */
     public Result login() {
         //获取POST参数
@@ -117,8 +125,9 @@ public class UserController extends Controller {
 
     /**
      * 用户注册接口
-     *
      * @return
+     * @exception InvalidParamsException
+     * @exception UserException
      */
     public Result register() {
         //获取POST参数

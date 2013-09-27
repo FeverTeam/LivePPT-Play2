@@ -1,3 +1,4 @@
+
 package com.fever.liveppt.service.impl;
 
 import com.fever.liveppt.exception.meeting.AttendingExistedException;
@@ -20,6 +21,12 @@ import play.cache.Cache;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author
+ * @version : v1.00
+ * @Description : 会议操作接口实现 ，提供给service层调用
+ *
+ */
 public class MeetingServiceImpl implements MeetingService {
 
     @Override

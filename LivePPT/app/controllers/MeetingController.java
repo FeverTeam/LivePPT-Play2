@@ -1,3 +1,4 @@
+
 package controllers;
 
 import akka.actor.Cancellable;
@@ -29,11 +30,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * @author
+ * @version : v1.00
+ * @Description : 会议controller 提供给前端以及手机端会议操作的接口
+ *
+ */
 public class MeetingController extends Controller {
     @Inject
     MeetingService meetingService;
 
+    /**
+     * 会议同步PPT
+     * @return
+     */
     public static WebSocket<String> viewWebsocket() {
         return new WebSocket<String>() {
 
@@ -113,8 +123,11 @@ public class MeetingController extends Controller {
 
     /**
      * 发起新会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception PptNotExistedException
+     * @exception MeetingPermissionDenyException
      */
     public Result createMeeting() {
         ResultJson resultJson;
@@ -163,8 +176,11 @@ public class MeetingController extends Controller {
 
     /**
      * 删除用户自己发起的会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception MeetingNotExistedException
+     * @exception MeetingPermissionDenyException
      */
     public Result deleteMeeting() {
         ResultJson resultJson;
@@ -208,7 +224,10 @@ public class MeetingController extends Controller {
 
     /**
      * 修改用户自己发起的会议
-     *
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception MeetingNotExistedException
+     * @exception MeetingPermissionDenyException
      * @return
      */
     public Result updateMeeting() {
@@ -269,8 +288,9 @@ public class MeetingController extends Controller {
 
     /**
      * 加入观看指定会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception
      */
     public Result joinMeeting() {
         ResultJson resultJson;
@@ -314,8 +334,10 @@ public class MeetingController extends Controller {
 
     /**
      * 退出观看指定会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception MeetingException
      */
     public Result quitMeeting() {
         ResultJson resultJson;
@@ -357,8 +379,12 @@ public class MeetingController extends Controller {
 
     /**
      * 设置会议的PPT页码
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception MeetingNotExistedException
+     * @exception PptPageOutOfRangeException
+     * @exception MeetingPermissionDenyException
      */
     public Result setPage() {
         ResultJson resultJson;
@@ -414,8 +440,9 @@ public class MeetingController extends Controller {
 
     /**
      * 获取用户所有自己发起的会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
      */
     public Result getMyFoundedMeetings() {
         ResultJson resultJson;
@@ -443,8 +470,9 @@ public class MeetingController extends Controller {
 
     /**
      * 获取用户所有观看的会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
      */
     public Result getMyAttendingMeeting() {
         ResultJson resultJson;
@@ -473,8 +501,9 @@ public class MeetingController extends Controller {
 
     /**
      * 获取指定会议信息
-     *
      * @return
+     * @exception InvalidParamsException
+     * @exception MeetingNotExistedException
      */
     public Result getMeetingInfo() {
         ResultJson resultJson;

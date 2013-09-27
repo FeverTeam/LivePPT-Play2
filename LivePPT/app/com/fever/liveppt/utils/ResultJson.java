@@ -6,7 +6,11 @@ import org.codehaus.jackson.node.JsonNodeFactory;
 import org.codehaus.jackson.node.ObjectNode;
 
 /**
- * 封装数据方向接口的自定义JSON格式
+ * Created with IntelliJ IDEA.
+ * User: Zijing Lee
+ * Date: 13-9-27
+ * Time: 上午10:42
+ * Description:  封装数据方向接口的自定义JSON格式，即接口返回数据的JSON格式
  */
 public class ResultJson extends ObjectNode {
     public final static String KEY_DATA = "data";

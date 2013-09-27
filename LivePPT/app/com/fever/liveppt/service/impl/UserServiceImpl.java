@@ -17,7 +17,12 @@ import play.libs.Crypto;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * @author
+ * @version : v1.00
+ * @Description : 用户操作接口实现 ，提供给service层调用
+ *
+ */
 public class UserServiceImpl implements UserService {
 
     @Override
