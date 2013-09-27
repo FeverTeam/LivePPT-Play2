@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isEmailExisted(String userEmail) throws CommonException, UserException {
-        if (!User.isEmailFormatValid(userEmail)) {
+        if (!TokenAgent.isEmailFormatValid(userEmail)) {
             //电邮格式不正确
             throw new InvalidParamsException();
         }
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultJson isPassworrdCorrect(String email, String hashedPassword, String seed) throws CommonException, UserException {
-        if (email == null || seed == null || !User.isEmailFormatValid(email)) {
+        if (email == null || seed == null || !TokenAgent.isEmailFormatValid(email)) {
             //电邮格式不正确
             throw new InvalidParamsException();
         }
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResultJson register(String email, String encryptedPassword, String displayName, String seed) throws CommonException, UserException {
-        if (email == null || encryptedPassword == null || displayName == null || seed == null || !User.isEmailFormatValid(email)) {
+        if (email == null || encryptedPassword == null || displayName == null || seed == null || !TokenAgent.isEmailFormatValid(email)) {
             //参数不全或电邮格式不正确
             throw new InvalidParamsException();
         }
@@ -92,7 +92,6 @@ public class UserServiceImpl implements UserService {
         String password;
         try {
             //解密password
-            // encryptedPassword = Crypto.encryptAES(encryptedPassword,seed);
             password = Crypto.decryptAES(encryptedPassword, seed);
         } catch (Exception e) {
             //解密失败
@@ -113,7 +112,7 @@ public class UserServiceImpl implements UserService {
             user.save();
 
             //生成token
-            String token = Crypto.sign(email);
+            String token = TokenAgent.generateToken(user.email);
 
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("token", token);
