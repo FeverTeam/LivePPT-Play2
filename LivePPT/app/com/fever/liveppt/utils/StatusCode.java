@@ -1,5 +1,11 @@
 package com.fever.liveppt.utils;
-
+/**
+ * Created with IntelliJ IDEA.
+ * User: Zijing Lee
+ * Date: 13-9-27
+ * Time: 上午12:43
+ * Description:  异常状态码以及异常返回信息静态变量定义
+ */
 public class StatusCode {
     //一切正常
     public final static int SUCCESS = 0;

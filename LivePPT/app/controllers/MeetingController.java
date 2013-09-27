@@ -1,18 +1,19 @@
+
 package controllers;
 
 import akka.actor.Cancellable;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
-import com.fever.liveppt.exception.meeting.*;
+import com.fever.liveppt.exception.meeting.AttendingExistedException;
+import com.fever.liveppt.exception.meeting.MeetingException;
+import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
+import com.fever.liveppt.exception.meeting.MeetingPermissionDenyException;
 import com.fever.liveppt.exception.ppt.PptNotExistedException;
 import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.service.MeetingService;
-import com.fever.liveppt.utils.ControllerUtils;
-import com.fever.liveppt.utils.ResultJson;
-import com.fever.liveppt.utils.StatusCode;
-import com.fever.liveppt.utils.TokenAgent;
+import com.fever.liveppt.utils.*;
 import com.google.inject.Inject;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.JsonNodeFactory;
@@ -29,15 +30,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
+/**
+ * @author
+ * @version : v1.00
+ * @Description : 会议controller 提供给前端以及手机端会议操作的接口
+ *
+ */
 public class MeetingController extends Controller {
     @Inject
     MeetingService meetingService;
 
+    /**
+     * 会议同步PPT
+     * @return
+     */
     public static WebSocket<String> viewWebsocket() {
         return new WebSocket<String>() {
 
             String WS_TEMP_ID_KEY;
+            Long meetingId;
+            Long pptId;
+            String cacheKey;
 
             @Override
             public void onReady(WebSocket.In<String> in,
@@ -49,40 +62,46 @@ public class MeetingController extends Controller {
                     @Override
                     public void invoke(String meetingIdStr) {
                         WS_TEMP_ID_KEY = UUID.randomUUID().toString();
-                        Long meetingId = Long.parseLong(meetingIdStr);
-                        Logger.info("WebSocket Started by meetingId="
-                                + meetingIdStr);
-                        final Long pptId = Meeting.find.byId(meetingId).ppt.id;
-                        final String cacheKey = Long.toString(meetingId);
+                        meetingId = Long.parseLong(meetingIdStr);
+                        Logger.info("WebSocket with meetingId:" + meetingIdStr);
+                        pptId = Meeting.find.byId(meetingId).ppt.id;
+                        cacheKey = CacheAgent.generateMeetingCacheKey(meetingId);
 
-                        Cancellable cancellable = Akka
-                                .system()
-                                .scheduler()
-                                .schedule(
-                                        Duration.Zero(),
-                                        Duration.create(10,
-                                                TimeUnit.MILLISECONDS),
-                                        new Runnable() {
-                                            Long currentIndex;
-                                            Long temp = (long) -1;
+                        Cancellable cancellable = Akka.system().scheduler().schedule(
+                                Duration.Zero(),
+                                Duration.create(10,
+                                        TimeUnit.MILLISECONDS),
+                                new Runnable() {
+                                    Long currentPageIndex = (long) -1;
+                                    Long lastPageIndex = (long) -1;
 
-                                            @Override
-                                            public void run() {
-                                                // stub
-                                                currentIndex = (Long) Cache
-                                                        .get(cacheKey);
-                                                if (currentIndex == null) {
-                                                    currentIndex = (long) 1;
-                                                }
-                                                if (!temp.equals(currentIndex)) {
-                                                    temp = currentIndex;
-                                                    Logger.info(pptId + "-"
-                                                            + currentIndex);
-                                                    out.write(pptId + "-"
-                                                            + currentIndex);
-                                                }
+                                    @Override
+                                    public void run() {
+                                        if (currentPageIndex == -1) {
+                                            //第一次进入websocket,从数据库中获取当前页码
+                                            Meeting meeting = Meeting.find.byId(meetingId);
+                                            if (meeting != null && meeting.currentPageIndex > 0) {
+                                                currentPageIndex = meeting.currentPageIndex;
+                                            } else {
+                                                currentPageIndex = (long) 1;
                                             }
-                                        }, Akka.system().dispatcher());
+                                            lastPageIndex = currentPageIndex;
+                                            Logger.debug("websocket meetingId:" + meetingId + " page:" + currentPageIndex);
+                                            out.write(pptId + "-" + currentPageIndex);
+                                        } else {
+                                            // stub
+                                            currentPageIndex = (Long) Cache.get(cacheKey);
+                                            if (currentPageIndex == null) {
+                                                currentPageIndex = (long) 1;
+                                            }
+                                            if (!lastPageIndex.equals(currentPageIndex)) {
+                                                lastPageIndex = currentPageIndex;
+                                                Logger.debug("websocket meetingId:" + meetingId + " page:" + currentPageIndex);
+                                                out.write(pptId + "-" + currentPageIndex);
+                                            }
+                                        }
+                                    }
+                                }, Akka.system().dispatcher());
                         //将该WebSocket连接对应的Akka Cancellable存入Cache，用于终止连接时停止定时任务
                         Cache.set(WS_TEMP_ID_KEY, cancellable);
                     }
@@ -93,8 +112,7 @@ public class MeetingController extends Controller {
                     @Override
                     public void invoke() {
                         //从Cache获取该WebSocket连接对应的Akka Cancellable
-                        Cancellable cancellable = (Cancellable) Cache
-                                .get(WS_TEMP_ID_KEY);
+                        Cancellable cancellable = (Cancellable) Cache.get(WS_TEMP_ID_KEY);
                         //停止定时任务，释放资源
                         cancellable.cancel();
                     }
@@ -105,8 +123,11 @@ public class MeetingController extends Controller {
 
     /**
      * 发起新会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception PptNotExistedException
+     * @exception MeetingPermissionDenyException
      */
     public Result createMeeting() {
         ResultJson resultJson;
@@ -155,8 +176,11 @@ public class MeetingController extends Controller {
 
     /**
      * 删除用户自己发起的会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception MeetingNotExistedException
+     * @exception MeetingPermissionDenyException
      */
     public Result deleteMeeting() {
         ResultJson resultJson;
@@ -200,7 +224,10 @@ public class MeetingController extends Controller {
 
     /**
      * 修改用户自己发起的会议
-     *
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception MeetingNotExistedException
+     * @exception MeetingPermissionDenyException
      * @return
      */
     public Result updateMeeting() {
@@ -261,8 +288,9 @@ public class MeetingController extends Controller {
 
     /**
      * 加入观看指定会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception
      */
     public Result joinMeeting() {
         ResultJson resultJson;
@@ -306,8 +334,10 @@ public class MeetingController extends Controller {
 
     /**
      * 退出观看指定会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception MeetingException
      */
     public Result quitMeeting() {
         ResultJson resultJson;
@@ -349,8 +379,12 @@ public class MeetingController extends Controller {
 
     /**
      * 设置会议的PPT页码
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
+     * @exception MeetingNotExistedException
+     * @exception PptPageOutOfRangeException
+     * @exception MeetingPermissionDenyException
      */
     public Result setPage() {
         ResultJson resultJson;
@@ -406,8 +440,9 @@ public class MeetingController extends Controller {
 
     /**
      * 获取用户所有自己发起的会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
      */
     public Result getMyFoundedMeetings() {
         ResultJson resultJson;
@@ -435,8 +470,9 @@ public class MeetingController extends Controller {
 
     /**
      * 获取用户所有观看的会议
-     *
      * @return
+     * @exception TokenInvalidException
+     * @exception InvalidParamsException
      */
     public Result getMyAttendingMeeting() {
         ResultJson resultJson;
@@ -465,8 +501,9 @@ public class MeetingController extends Controller {
 
     /**
      * 获取指定会议信息
-     *
      * @return
+     * @exception InvalidParamsException
+     * @exception MeetingNotExistedException
      */
     public Result getMeetingInfo() {
         ResultJson resultJson;

@@ -7,6 +7,12 @@ import com.fever.liveppt.exception.user.UserNotExistedException;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.ResultJson;
 
+/**
+ * @author
+ * @version : v1.00
+ * @Description : 用户操作接口 ，提供给controller层调用
+ *
+ */
 public interface UserService {
 
     /**

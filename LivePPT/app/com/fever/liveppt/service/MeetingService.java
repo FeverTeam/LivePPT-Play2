@@ -13,9 +13,10 @@ import java.util.List;
 
 
 /**
- * 会议服务
+ * @author
+ * @version : v1.00
+ * @Description : 会议操作接口 ，提供给controller层调用
  *
- * @author 梁博文
  */
 public interface MeetingService {
 

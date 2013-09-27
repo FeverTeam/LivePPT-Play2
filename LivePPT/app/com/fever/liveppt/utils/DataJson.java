@@ -5,7 +5,7 @@ package com.fever.liveppt.utils;
  * User: Zijing Lee
  * Date: 13-8-27
  * Time: 上午10:42
- * To change this template use File | Settings | File Templates.
+ * Description: 封装Json格式的数据
  */
 
 import org.codehaus.jackson.JsonNode;
