@@ -29,6 +29,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * @author
+ * @version : v1.00
+ * @Description : PPT操作接口实现 ，提供给service层调用
+ *
+ */
 public class PptServiceImpl implements PptService {
 
 

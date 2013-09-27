@@ -14,9 +14,10 @@ import java.io.File;
 import java.util.List;
 
 /**
- * PPT服务
+ * @author
+ * @version : v1.00
+ * @Description : PPT操作接口 ，提供给controller层调用
  *
- * @author 梁博文
  */
 public interface PptService {
 
