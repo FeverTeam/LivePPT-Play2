@@ -6,64 +6,74 @@
   	<div class="page-header">
     	<h1>会议列表</h1>
   	</div>
-	<h2>
-		@Messages("mymeeting_tbl_caption_myfoundedmeetings")
-		<span class="badge badge-info">@Messages("mymeeting_tbl_toggle_count", myFoundedMeetingList.size())</span>
-	</h2>
-	<button class="btn" id="btn-found-new-meeting">@Messages("mymeeting_btn_launchmeeting")</button>
-	<br><br>
-	<table class="table">
-		<thead>
-	      <tr>
-	        <th>@Messages("mymeeting_tbl_meetingid")</th>
-	        <th>@Messages("mymeeting_tbl_meetingtopic")</th>
-	        <th>@Messages("mymeeting_tbl_targetppt")</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-    	@for(m <- myFoundedMeetingList) {
-			<tr>
-				<td>@m.id</td>
-				<td>@m.topic</td>
-				<td>@(m.ppt.title)(#@(m.ppt.id))</td>
-				<td><button class="btn enter-control-meeting" meetingId="@m.id">进入会议</button></td>
-				<td><button class="btn delete-meeting" meetingId="@m.id">删除会议</button></td>
-			</tr>
-		}
-		</tbody>
-	</table>
-	<br>
-
-
-
-
-	<h2>
-		@Messages("mymeeting_tbl_caption_myattendingmeetings")
-		<span class="badge badge-info">@Messages("mymeeting_tbl_toggle_count", myAttendingMeetingList.size())</span>
-	</h2>
-	<button class="btn" id="btn-showpage-join-meeting">@Messages("mymeeting_btn_joinmeeting")</button>
-	<br><br>
-	<table class="table">
-		<thead>
-	      <tr>
-	        <th>@Messages("mymeeting_tbl_meetingid")</th>
-	        <th>@Messages("mymeeting_tbl_meetingtopic")</th>
-	        <th>@Messages("mymeeting_tbl_meetingfounder")</th>
-	      </tr>
-	    </thead>
-	    <tbody>
-    	@for(m <- myAttendingMeetingList) {
-			<tr>
-				<td>@m.id</td>
-				<td>@m.topic</td>
-				<td>@m.founder.displayname</td>
-				<td><button class="btn view-meeting" meetingId="@m.id">进入会议</button></td>
-				<td><button class="btn quit-meeting" meetingId="@m.id" userId="@user.id">退出会议</button></td>
-			</tr>
-		}
-		</tbody>
-	</table>
-	<br>
+	<ul class="nav nav-tabs info" id="myTab">
+	  	<li class="active"><a href="#originate">我发起的会议</a></li>
+	  	<li><a href="#join">我观看的会议</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="originate">
+			<h3>
+				@Messages("mymeeting_tbl_caption_myfoundedmeetings")
+				<span class="badge badge-info">@Messages("mymeeting_tbl_toggle_count", myFoundedMeetingList.size())</span>
+			</h3>
+			<button class="btn" id="btn-found-new-meeting">@Messages("mymeeting_btn_launchmeeting")</button>
+			<br><br>
+			<table class="table">
+				<thead>
+			      <tr>
+			        <th>@Messages("mymeeting_tbl_meetingid")</th>
+			        <th>@Messages("mymeeting_tbl_meetingtopic")</th>
+			        <th>@Messages("mymeeting_tbl_targetppt")</th>
+			        <th>操作</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+		    	@for(m <- myFoundedMeetingList) {
+					<tr>
+						<td>@m.id</td>
+						<td>@m.topic</td>
+						<td>@(m.ppt.title)(#@(m.ppt.id))</td>
+						<td>
+							<button class="btn btn-primary enter-control-meeting" meetingId="@m.id">进入会议</button>&nbsp;&nbsp;
+							<button class="btn btn-danger delete-meeting" meetingId="@m.id">删除会议</button>
+						</td>
+					</tr>
+				}
+				</tbody>
+			</table>		
+		</div>
+		<div class="tab-pane" id="join">
+			<h3>
+				@Messages("mymeeting_tbl_caption_myattendingmeetings")
+				<span class="badge badge-info">@Messages("mymeeting_tbl_toggle_count", myAttendingMeetingList.size())</span>
+			</h3>
+			<button class="btn" id="btn-showpage-join-meeting">@Messages("mymeeting_btn_joinmeeting")</button>
+			<br><br>
+			<table class="table">
+				<thead>
+			      <tr>
+			        <th>@Messages("mymeeting_tbl_meetingid")</th>
+			        <th>@Messages("mymeeting_tbl_meetingtopic")</th>
+			        <th>@Messages("mymeeting_tbl_meetingfounder")</th>
+			        <th>操作</th>
+			      </tr>
+			    </thead>
+			    <tbody>
+		    	@for(m <- myAttendingMeetingList) {
+					<tr>
+						<td>@m.id</td>
+						<td>@m.topic</td>
+						<td>@m.founder.displayname</td>
+						<td>
+							<button class="btn btn-primary view-meeting" meetingId="@m.id">进入会议</button>
+							<button class="btn quit-meeting" meetingId="@m.id" userId="@user.id">退出会议</button>
+						</td>
+					</tr>
+				}
+				</tbody>
+			</table>		
+		</div>
+	</div>	
 
 
 

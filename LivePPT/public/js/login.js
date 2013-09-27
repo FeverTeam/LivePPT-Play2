@@ -2,6 +2,16 @@ define(function(require, exports, module) {
 
 	console.log("login.js");
 
+	/**
+	 * 模态提示框
+	 * @param  {string} str 提示信息
+	 * @author 叶江楠
+	 */
+	function showmsg (str) {
+		$('#myModal p').html(str);
+		$('#myModal').modal('show');
+	}
+
 	var alertBox = $("#alertBox");
 	$('.btn-login-submit').on('click', function(e){
 		e.preventDefault();
@@ -19,14 +29,19 @@ define(function(require, exports, module) {
 				console.log(res);
 				if (res.retcode == 0)
 					location.href = '/loginSuccess?uemail='+$('input[name=email]').val()+'&token='+res.data.token+'&callbackUrl='+window.location.href;
-				else if (res.retcode == -202) alert('此用户不存在');
-				else if (res.retcode == -203) alert('账号或密码错误');
-				else alert('登陆失败');
+				else if (res.retcode == -202) {
+					showmsg('此用户不存在');				
+				}
+				else if (res.retcode == -203) {
+					showmsg('账号或密码错误');					
+				}
+				else {
+					showmsg('登录失败！');
+				}
 			},
 			error: function(res, status){
-				alert('网络错误');
+				showmsg('网络错误');
 			}
 		});
 	});
-
 });
