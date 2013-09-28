@@ -44,9 +44,10 @@ public class PptServiceImpl implements PptService {
         }
 
         User user = User.find.where().eq("email", userEmail).findUnique();
+
         for(Ppt userPpt: user.ppts)
         {
-            if(pptId == userPpt.id)
+            if(pptId.equals(userPpt.id) )
             {
                 ifPermission = true;
                 break;
