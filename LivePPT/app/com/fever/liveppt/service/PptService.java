@@ -2,10 +2,7 @@ package com.fever.liveppt.service;
 
 import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
-import com.fever.liveppt.exception.ppt.PptNotConvertedException;
-import com.fever.liveppt.exception.ppt.PptNotExistedException;
-import com.fever.liveppt.exception.ppt.PptNotSelfOwnException;
-import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
+import com.fever.liveppt.exception.ppt.*;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import org.codehaus.jackson.JsonNode;
@@ -32,7 +29,7 @@ public interface PptService {
      * @throws PptPageOutOfRangeException
      * @throws InternalErrorException
      */
-    public byte[] getPptPage(Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException;
+    public byte[] getPptPage(String userEmail,Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException, PptNotPermissionDenyException;
 
     /**
      * 更新PPT转换状态

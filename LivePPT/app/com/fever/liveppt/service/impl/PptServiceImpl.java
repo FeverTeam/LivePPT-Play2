@@ -8,10 +8,7 @@ import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
-import com.fever.liveppt.exception.ppt.PptNotConvertedException;
-import com.fever.liveppt.exception.ppt.PptNotExistedException;
-import com.fever.liveppt.exception.ppt.PptNotSelfOwnException;
-import com.fever.liveppt.exception.ppt.PptPageOutOfRangeException;
+import com.fever.liveppt.exception.ppt.*;
 import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
@@ -39,10 +36,37 @@ public class PptServiceImpl implements PptService {
 
 
     @Override
-    public byte[] getPptPage(Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException {
+    public byte[] getPptPage(String userEmail,Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException, PptNotPermissionDenyException {
+        boolean ifPermission = false;
         Ppt ppt = Ppt.find.byId(pptId);
         if (ppt == null) {
             throw new PptNotExistedException();
+        }
+
+        User user = User.find.where().eq("email", userEmail).findUnique();
+        for(Ppt userPpt: user.ppts)
+        {
+            if(pptId == userPpt.id)
+            {
+                ifPermission = true;
+                break;
+            }
+        }
+        if(!ifPermission)
+        {
+            for (Attender attender : user.attendents) {
+                if(pptId == attender.meeting.ppt.id)
+                {
+                    ifPermission = true;
+                    break;
+                }
+
+            }
+        }
+
+        if(!ifPermission)
+        {
+            throw new PptNotPermissionDenyException();
         }
 
         //检查是否已转换
