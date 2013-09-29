@@ -3,6 +3,11 @@ define(function(require, exports, module) {
 
 	$('li#mymeeting').addClass('active');
 
+	$('#myTab a').click(function (e) {
+	  	e.preventDefault();
+	 	$(this).tab('show');
+	})
+	
 	var
 	modalPptList = $('#modal-ppt-list'),
 	modalPptList_body = $('#modal-ppt-list .modal-body'),
