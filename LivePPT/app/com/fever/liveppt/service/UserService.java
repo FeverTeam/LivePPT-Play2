@@ -2,13 +2,29 @@ package com.fever.liveppt.service;
 
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.user.PasswordNotMatchException;
 import com.fever.liveppt.exception.user.UserException;
 import com.fever.liveppt.exception.user.UserNotExistedException;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.ResultJson;
 
+/**
+ * @author
+ * @version : v1.00
+ * @Description : 用户操作接口 ，提供给controller层调用
+ *
+ */
 public interface UserService {
 
+    /**
+     *
+     * @param userEmail
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     * @throws PasswordNotMatchException
+     */
+    public ResultJson updatePassword(String userEmail,String oldPassword,String newPassword,String seed) throws PasswordNotMatchException;
     /**
      * 验证帐号密码
      *
