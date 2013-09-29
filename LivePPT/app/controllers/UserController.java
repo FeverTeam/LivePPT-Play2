@@ -8,12 +8,15 @@ package controllers;
 
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
+import com.fever.liveppt.exception.common.TokenInvalidException;
+import com.fever.liveppt.exception.user.PasswordNotMatchException;
 import com.fever.liveppt.exception.user.UserException;
 import com.fever.liveppt.exception.user.UserExistedException;
 import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.ControllerUtils;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
+import com.fever.liveppt.utils.TokenAgent;
 import com.google.inject.Inject;
 import play.Logger;
 import play.libs.Crypto;
@@ -26,6 +29,48 @@ public class UserController extends Controller {
     @Inject
     UserService userService;
 
+    public Result updatePassword(){
+        Map<String, String[]> params = request().body().asFormUrlEncoded();
+        ResultJson resultJson;
+        try {
+        //验证Token并提取userEmail
+        String userEmail = TokenAgent.validateTokenFromHeader(request());
+        if (null == params) {
+            throw new InvalidParamsException();
+        }
+
+        //oldPassword
+        if (!ControllerUtils.isFieldNotNull(params, "oldPassword")) {
+            throw new InvalidParamsException();
+        }
+
+        //newPassword
+        if (!ControllerUtils.isFieldNotNull(params, "newPassword")) {
+            throw new InvalidParamsException();
+        }
+
+        //seed
+        if (!ControllerUtils.isFieldNotNull(params, "seed")) {
+            throw new InvalidParamsException();
+        }
+
+            // 获取参数
+        String oldPassword = params.get("oldPassword")[0];
+        String newPassword = params.get("newPassword")[0];
+        String seed = params.get("seed")[0];
+
+        resultJson = userService.updatePassword(userEmail,oldPassword,newPassword,seed);
+        } catch (TokenInvalidException e) {
+            resultJson = new ResultJson(e);
+        } catch (PasswordNotMatchException e) {
+            resultJson = new ResultJson(e);
+        } catch (InvalidParamsException e) {
+            resultJson = new ResultJson(e);
+        }
+
+        //返回JSON
+        return ok(resultJson);
+    }
     /**
      * 检查用户Email是否被占用
      * @return

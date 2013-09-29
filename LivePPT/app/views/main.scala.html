@@ -28,11 +28,11 @@
           <a class="brand" href="#">CloudSlides</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li class="active"><a href="/"> @Messages("nav_tab_index") </a></li>
-              <li><a href="/myppt"> @Messages("nav_tab_myppt") </a></li>
-              <li><a href="/mymeeting"> @Messages("nav_tab_mymeeting") </a></li>
-              <li><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
-              <li><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
+              <li id="index"><a href="/"> @Messages("nav_tab_index") </a></li>
+              <li id="myppt"><a href="/myppt" @if(username.isEmpty){ onclick="alert('请先登陆'); return false;"}> @Messages("nav_tab_myppt") </a></li>
+              <li id="mymeeting"><a href="/mymeeting" @if(username.isEmpty){ onclick="alert('请先登陆'); return false;"}> @Messages("nav_tab_mymeeting") </a></li>
+              <li id="appDownload"><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
+              <li id="aboutUs"><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
             </ul>
             @if(username.isEmpty) {
             <form class="navbar-form pull-right">
@@ -57,9 +57,19 @@
       <footer>
         <p>&copy; Fever Team 2013 梁博文 叶江楠 何俊浩 黎俊良 子靖<a target="_blank" href="http://weibo.com/feverteam"></a></p>
       </footer>
-
     </div> <!-- /container -->
-
+    <div class="modal hide fade" id="myModal">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3>提示</h3>
+      </div>
+      <div class="modal-body">
+        <p>One fine body…</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

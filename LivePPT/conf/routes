@@ -24,7 +24,8 @@ POST    /user/register              @controllers.UserController.register()
 POST    /user/login                 @controllers.UserController.login()
 #验证用户Email是否被占用
 POST    /user/check_email           @controllers.UserController.checkEmail()
-
+#修改用户密码
+POST   /user/update_password        @controllers.UserController.updatePassword()
 ###
 #PPT方向接口
 
