@@ -12,7 +12,13 @@ import play.mvc.Http;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Created with IntelliJ IDEA.
+ * User: Zijing Lee
+ * Date: 13-9-27
+ * Time: 上午12:43
+ * Description: 关于用户登陆后token的操作，包括token的检验，根据token获取用户，生成token等。
+ */
 public class TokenAgent {
 
     public static Pattern emailPattern = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
