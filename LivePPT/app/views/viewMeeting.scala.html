@@ -1,6 +1,6 @@
-@(meeting: com.fever.liveppt.models.Meeting)
+@(meeting: com.fever.liveppt.models.Meeting, username: String)
 
-@main(name="viewMeeting", "观看会议", "") {
+@main(name="viewMeeting", "观看会议", username) {
 } {
 	@defining(meeting.ppt){ppt=>
 		<p>观看会议 —— 在这里可以实时观看会议PPT的变化。</p>

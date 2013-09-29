@@ -22,12 +22,13 @@ define(function(require, exports, module) {
 		var meetingId = $(this).attr('meetingid');
 		$.ajax({
 			type: 'POST',
-			url: '/deleteMeeting',
+			url: '/meeting/delete',
 			data: {
 				meetingId: meetingId
 			},
-			success: function(data, textStatus, jqXHR){
-				if (textStatus=='success'){
+			success: function(res, status){
+				console.log(res.message);
+				if (!res.retcode){
 					window.location = window.location;
 				}
 			}
@@ -62,9 +63,9 @@ define(function(require, exports, module) {
 		e.preventDefault();
 		$.ajax({
 			type: 'POST',
-			url: '/foundNewMeeting',
+			url: '/meeting/create',
 			data: {
-				topic: $('#inputTopic').val(),
+				Topic: $('#inputTopic').val(),
 				pptId: $(this).attr('pptid')
 			},
 			success: function(data, textStatus, jqXHR){
@@ -94,15 +95,16 @@ define(function(require, exports, module) {
 		e.preventDefault();
 		$.ajax({
 			type: "POST",
-			url: "/joinMeeting",
+			url: "/meeting/join",
 			data: {
-				inputMeetingId: $('#inputMeetingId').val()
+				meetingId: $('#inputMeetingId').val()
 			},
-			success: function(dataJson, textStatus, jqXHR){
-				if (dataJson.success){
+			success: function(res, status){
+				console.log(res.message);
+				if (!res.retcode){
 					window.location = window.location;
 				} else {
-					alert(dataJson.message);
+					alert(res.message);
 				}
 			}
 		})
