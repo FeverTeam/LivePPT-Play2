@@ -1,3 +1,4 @@
+
 package controllers;
 
 import com.fever.liveppt.exception.common.CommonException;
@@ -30,7 +31,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
+/**
+ * @author
+ * @version : v1.00
+ * @Description : PPT controller 提供给前端以及手机端PPT操作的接口
+ *
+ */
 public class PptController extends Controller {
 
     //PPT和PPTX文件的ContentType
@@ -46,8 +52,9 @@ public class PptController extends Controller {
 
     /**
      * 获取用户所有PPT的列表
-     *
      * @return
+     * @exception InvalidParamsException
+     * @exception TokenInvalidException
      */
     public Result infoAll() {
         ResultJson resultJson;
@@ -77,8 +84,9 @@ public class PptController extends Controller {
 
     /**
      * 获取指定PPT的信息
-     *
      * @return
+     * @exception PptNotExistedException
+     * @exception InvalidParamsException
      */
     public Result getPptInfo() {
         ResultJson resultJson;
@@ -122,10 +130,14 @@ public class PptController extends Controller {
 
     /**
      * 获取指定PPT和页码的图片
-     *
      * @return
+     * @exception InvalidParamsException
+     * @exception PptNotExistedException
+     * @exception NumberFormatException
      */
     public Result getPptPageImage() {
+
+
         //如果含有IF_MODIFIED_SINCE报头则返回NOT_MODIFIED
         String ifModifiedSince = request().getHeader(Controller.IF_MODIFIED_SINCE);
         if (ifModifiedSince != null && ifModifiedSince.length() > 0) {
@@ -134,6 +146,8 @@ public class PptController extends Controller {
 
         ResultJson resultJson;
         try {
+            //验证Token并提取userEmail
+            String userEmail = TokenAgent.validateTokenFromHeader(request());
             //获取GET参数
             Map<String, String[]> params = request().queryString();
             if (params == null || params.size() == 0) {
@@ -156,7 +170,7 @@ public class PptController extends Controller {
 
 
             //尝试获取指定页码图像数据
-            byte[] imageByte = pptService.getPptPage(pptId, page);
+            byte[] imageByte = pptService.getPptPage(userEmail,pptId, page);
             if (imageByte.length > 0) {
                 //成功获取图像数据
 
@@ -184,6 +198,13 @@ public class PptController extends Controller {
         return ok(resultJson);
     }
 
+    /**
+     * 上传PPT
+     * @return
+     * @exception InvalidParamsException
+     * @exception PptFileInvalidTypeException
+     * @exception UserException
+     */
     public Result pptUpload() {
         ResultJson resultJson;
         try {
@@ -234,6 +255,13 @@ public class PptController extends Controller {
         return ok(resultJson);
     }
 
+    /**
+     * 删除PPT
+     * @return
+     * @exception InvalidParamsException
+     * @exception PptNotExistedException
+     * @exception UserException
+     */
     public Result pptDelete() {
         ResultJson resultJson;
         try {
@@ -276,7 +304,6 @@ public class PptController extends Controller {
 
     /**
      * 更新PPT转换的状态
-     *
      * @return
      */
     public Result convertstatus() {
