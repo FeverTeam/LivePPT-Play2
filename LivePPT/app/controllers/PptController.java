@@ -31,11 +31,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 /**
  * @author
  * @version : v1.00
  * @Description : PPT controller 提供给前端以及手机端PPT操作的接口
- *
  */
 public class PptController extends Controller {
 
@@ -52,9 +52,10 @@ public class PptController extends Controller {
 
     /**
      * 获取用户所有PPT的列表
+     *
      * @return
-     * @exception InvalidParamsException
-     * @exception TokenInvalidException
+     * @throws InvalidParamsException
+     * @throws TokenInvalidException
      */
     public Result infoAll() {
         ResultJson resultJson;
@@ -84,9 +85,10 @@ public class PptController extends Controller {
 
     /**
      * 获取指定PPT的信息
+     *
      * @return
-     * @exception PptNotExistedException
-     * @exception InvalidParamsException
+     * @throws PptNotExistedException
+     * @throws InvalidParamsException
      */
     public Result getPptInfo() {
         ResultJson resultJson;
@@ -130,10 +132,11 @@ public class PptController extends Controller {
 
     /**
      * 获取指定PPT和页码的图片
+     *
      * @return
-     * @exception InvalidParamsException
-     * @exception PptNotExistedException
-     * @exception NumberFormatException
+     * @throws InvalidParamsException
+     * @throws PptNotExistedException
+     * @throws NumberFormatException
      */
     public Result getPptPageImage() {
 
@@ -146,13 +149,21 @@ public class PptController extends Controller {
 
         ResultJson resultJson;
         try {
-            //验证Token并提取userEmail
-            String userEmail = TokenAgent.validateTokenFromHeader(request());
             //获取GET参数
             Map<String, String[]> params = request().queryString();
             if (params == null || params.size() == 0) {
                 throw new InvalidParamsException();
             }
+
+            //验证Token并提取userEmail
+            String userEmail = request().getQueryString("uemail");
+            String token = request().getQueryString("token");
+            if (userEmail == null || token == null) {
+                throw new InvalidParamsException();
+            } else if (!TokenAgent.isTokenValid(token, userEmail)) {
+                throw new TokenInvalidException();
+            }
+
 
             //检查参数
             //pptId
@@ -170,7 +181,7 @@ public class PptController extends Controller {
 
 
             //尝试获取指定页码图像数据
-            byte[] imageByte = pptService.getPptPage(userEmail,pptId, page);
+            byte[] imageByte = pptService.getPptPage(userEmail, pptId, page);
             if (imageByte.length > 0) {
                 //成功获取图像数据
 
@@ -200,10 +211,11 @@ public class PptController extends Controller {
 
     /**
      * 上传PPT
+     *
      * @return
-     * @exception InvalidParamsException
-     * @exception PptFileInvalidTypeException
-     * @exception UserException
+     * @throws InvalidParamsException
+     * @throws PptFileInvalidTypeException
+     * @throws UserException
      */
     public Result pptUpload() {
         ResultJson resultJson;
@@ -257,10 +269,11 @@ public class PptController extends Controller {
 
     /**
      * 删除PPT
+     *
      * @return
-     * @exception InvalidParamsException
-     * @exception PptNotExistedException
-     * @exception UserException
+     * @throws InvalidParamsException
+     * @throws PptNotExistedException
+     * @throws UserException
      */
     public Result pptDelete() {
         ResultJson resultJson;
@@ -304,6 +317,7 @@ public class PptController extends Controller {
 
     /**
      * 更新PPT转换的状态
+     *
      * @return
      */
     public Result convertstatus() {
