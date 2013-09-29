@@ -1,3 +1,4 @@
+
 package com.fever.liveppt.service.impl;
 
 import com.fever.liveppt.exception.meeting.AttendingExistedException;
@@ -20,6 +21,12 @@ import play.cache.Cache;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author
+ * @version : v1.00
+ * @Description : 会议操作接口实现 ，提供给service层调用
+ *
+ */
 public class MeetingServiceImpl implements MeetingService {
 
     @Override
@@ -56,7 +63,7 @@ public class MeetingServiceImpl implements MeetingService {
             throw new MeetingNotAttendedException();
         }
         for (Attender attender : user.attendents) {
-            if (attender.meeting.id == meetingId) {
+            if (attender.meeting.id.equals( meetingId)) {
                 attender.delete();
                 isAttended = true;
                 break;
@@ -79,7 +86,7 @@ public class MeetingServiceImpl implements MeetingService {
         if (ppt == null) {
             throw new PptNotExistedException();
         }
-        if (ppt.owner.id != founder.id) {
+        if (!ppt.owner.id.equals(founder.id)) {
             throw new MeetingPermissionDenyException();
         }
         //新建发起的会议,并存入数据库
@@ -163,7 +170,7 @@ public class MeetingServiceImpl implements MeetingService {
         if (attendents != null) {
             for (Attender attending : attendents) {
                 //已经加入
-                if (attending.meeting.id == meeting.id) {
+                if (attending.meeting.id.equals(meeting.id)) {
                     resultJson = ResultJson.simpleSuccess();
                     isAttended = true;
                     break;
@@ -189,7 +196,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         User user = User.find.where().eq("email", userEmail).findUnique();
 
-        if (meeting.founder.id != user.id) {
+        if (!meeting.founder.id.equals(user.id)) {
             throw new MeetingPermissionDenyException();
         }
 

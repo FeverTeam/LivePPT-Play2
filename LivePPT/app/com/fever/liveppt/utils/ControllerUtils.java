@@ -7,7 +7,7 @@ import java.util.Map;
  * User: simonlbw
  * Date: 13-8-28
  * Time: 下午11:20
- * To change this template use File | Settings | File Templates.
+ * Description: controller层所用到的参数检查等方法
  */
 public class ControllerUtils {
 

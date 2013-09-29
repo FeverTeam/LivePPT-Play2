@@ -6,13 +6,20 @@ import com.fever.liveppt.exception.common.TokenInvalidException;
 import com.fever.liveppt.exception.user.UserNotExistedException;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.UserService;
+import play.Logger;
 import play.libs.Crypto;
 import play.mvc.Http;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * Created with IntelliJ IDEA.
+ * User: Zijing Lee
+ * Date: 13-9-27
+ * Time: 上午12:43
+ * Description: 关于用户登陆后token的操作，包括token的检验，根据token获取用户，生成token等。
+ */
 public class TokenAgent {
 
     public static Pattern emailPattern = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
@@ -23,9 +30,16 @@ public class TokenAgent {
         }
 
         //从Header中获取参数
-        String userEmail = request.getHeader("uemail").toLowerCase();
+        String userEmail = request.getHeader("uemail");
+        if (userEmail == null || userEmail.length() == 0){
+            throw new InvalidParamsException();
+        } else {
+            //将userEmail变为小写
+            userEmail = userEmail.toLowerCase();
+        }
+
         String inputToken = request.getHeader("token");
-        if (userEmail == null || userEmail.length() == 0 || !TokenAgent.isEmailFormatValid(userEmail) || inputToken == null || inputToken.length() == 0) {
+        if (!TokenAgent.isEmailFormatValid(userEmail) || inputToken == null || inputToken.length() == 0) {
             throw new InvalidParamsException();
         }
 

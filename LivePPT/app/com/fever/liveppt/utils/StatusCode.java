@@ -1,5 +1,11 @@
 package com.fever.liveppt.utils;
-
+/**
+ * Created with IntelliJ IDEA.
+ * User: Zijing Lee
+ * Date: 13-9-27
+ * Time: 上午12:43
+ * Description:  异常状态码以及异常返回信息静态变量定义
+ */
 public class StatusCode {
     //一切正常
     public final static int SUCCESS = 0;
@@ -44,6 +50,9 @@ public class StatusCode {
     //指定PPT并非用户自己所拥有
     public final static int PPT_NOT_SELF_OWN = -305;
     public final static String PPT_NOT_SELF_OWN_MESSAGE = "ppt not of user own";
+    //用户没有权限操作该PPT
+    public final static int PPT_NOT_PERMISSION_DENY = -306;
+    public final static String PPT_NOT_PERMISSION_DENY_MESSAGE = "not have permission to operate the ppt" ;
     //*******************MEETING类型错误*****************
     //Meeting不存在
     public final static int MEETING_NOT_EXISTED = -401;
