@@ -24,7 +24,18 @@ import java.util.Map;
  *
  */
 public class UserServiceImpl implements UserService {
-
+    @Override
+    public ResultJson updatePassword(String userEmail,String oldPassword,String newPassword,String seed) throws PasswordNotMatchException {
+        User user = User.find.where().eq("email", userEmail).findUnique();
+        String userHashedPassword = Crypto.sign(user.password, seed.getBytes());
+        if(!oldPassword.equals(userHashedPassword))
+        {
+            throw new PasswordNotMatchException();
+        }
+        user.password =  Crypto.decryptAES(newPassword, seed);
+        user.save();
+        return new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, null);
+    }
     @Override
     public boolean isEmailExisted(String userEmail) throws CommonException, UserException {
         if (!TokenAgent.isEmailFormatValid(userEmail)) {
