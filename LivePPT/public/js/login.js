@@ -2,16 +2,6 @@ define(function(require, exports, module) {
 
 	console.log("login.js");
 
-	/**
-	 * 模态提示框
-	 * @param  {string} str 提示信息
-	 * @author 叶江楠
-	 */
-	function showmsg (str) {
-		$('#myModal p').html(str);
-		$('#myModal').modal('show');
-	}
-
 	var alertBox = $("#alertBox");
 	$('.btn-login-submit').on('click', function(e){
 		e.preventDefault();

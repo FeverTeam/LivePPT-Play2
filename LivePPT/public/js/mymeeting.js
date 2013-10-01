@@ -32,6 +32,13 @@ define(function(require, exports, module) {
 				if (!res.retcode){
 					window.location = window.location;
 				}
+				else {
+					showmsg('删除失败');
+				};				
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		});
 	});
@@ -113,8 +120,12 @@ define(function(require, exports, module) {
 				if (!res.retcode){
 					window.location = window.location;
 				} else {
-					alert(res.message);
+					showmsg(res.message);
 				}
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		})
 	});
@@ -130,15 +141,21 @@ define(function(require, exports, module) {
 		var userId = $(this).attr('userId');
 		$.ajax({
 			type: 'POST',
-			url: '/quitMeeting',
+			url: '/meeting/quit',
 			data: {
 				meetingId: meetingId,
-				userId: userId
 			},
-			success: function(data, textStatus, jqXHR){
-				if (textStatus=='success'){
+			success: function(res, status){
+				console.log(res.message);
+				if (!res.retcode){
 					window.location = window.location;
+				} else {
+					showmsg(res.message);
 				}
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		});	
 	});
