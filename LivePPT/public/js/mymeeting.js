@@ -1,13 +1,14 @@
 define(function(require, exports, module) {
 	console.log("mymeeting");
-
 	$('li#mymeeting').addClass('active');
 
 	$('#myTab a').click(function (e) {
 	  	e.preventDefault();
 	 	$(this).tab('show');
 	})
-	
+
+	require('cookies');
+
 	var
 	modalPptList = $('#modal-ppt-list'),
 	modalPptList_body = $('#modal-ppt-list .modal-body'),
@@ -61,17 +62,25 @@ define(function(require, exports, module) {
 	//按钮事件 - 启动会议
 	modalPptList.on('click', '#launchMeeting', function(e){
 		e.preventDefault();
+
 		$.ajax({
 			type: 'POST',
 			url: '/meeting/create',
 			data: {
-				Topic: $('#inputTopic').val(),
+				topic: $('#inputTopic').val(),
 				pptId: $(this).attr('pptid')
 			},
-			success: function(data, textStatus, jqXHR){
-				if (textStatus=='success'){
+			success: function(res, status){
+				if (!res.status){
 					window.location = window.location;
 				}
+				else {
+					showmsg('创建失败');
+				};
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		});
 	});
