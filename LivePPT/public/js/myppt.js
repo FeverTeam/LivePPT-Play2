@@ -24,14 +24,15 @@ define(function(require, exports, module) {
 
     $(function(){
         $('#file_upload').uploadifive({
-        'uploadScript' : '/pptupload',
+        'uploadScript' : '/ppt/upload',
         'uploadLimit'  : 1,
-        'fileType'     : ['application/vnd.ms-powerpoint','application/vnd.openxmlformats-officedocument.presentationml.presentation'],
+        'fileType'     : ['application/vnd.ms-powerpoint','application/vnd.openxmlformats-officedocument.presentationml.presentation','application/wps-office.ppt'],
         'buttonText'   : '上传PPT/PPTX',
+        'buttonClass'  : 'btn btn-success',
         // Put your options here
         'onUploadComplete': function(file, data) {
             alert("上传成功！");
-            location = location;
+            //location = location;
         },
         'onError': function(errorType) {
           $('#file_upload').uploadifive('clearQueue');
