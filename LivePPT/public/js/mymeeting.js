@@ -1,13 +1,14 @@
 define(function(require, exports, module) {
 	console.log("mymeeting");
-
 	$('li#mymeeting').addClass('active');
 
 	$('#myTab a').click(function (e) {
 	  	e.preventDefault();
 	 	$(this).tab('show');
 	})
-	
+
+	require('cookies');
+
 	var
 	modalPptList = $('#modal-ppt-list'),
 	modalPptList_body = $('#modal-ppt-list .modal-body'),
@@ -22,14 +23,22 @@ define(function(require, exports, module) {
 		var meetingId = $(this).attr('meetingid');
 		$.ajax({
 			type: 'POST',
-			url: '/deleteMeeting',
+			url: '/meeting/delete',
 			data: {
 				meetingId: meetingId
 			},
-			success: function(data, textStatus, jqXHR){
-				if (textStatus=='success'){
+			success: function(res, status){
+				console.log(res.message);
+				if (!res.retcode){
 					window.location = window.location;
 				}
+				else {
+					showmsg('删除失败');
+				};				
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		});
 	});
@@ -60,17 +69,25 @@ define(function(require, exports, module) {
 	//按钮事件 - 启动会议
 	modalPptList.on('click', '#launchMeeting', function(e){
 		e.preventDefault();
+
 		$.ajax({
 			type: 'POST',
-			url: '/foundNewMeeting',
+			url: '/meeting/create',
 			data: {
 				topic: $('#inputTopic').val(),
 				pptId: $(this).attr('pptid')
 			},
-			success: function(data, textStatus, jqXHR){
-				if (textStatus=='success'){
+			success: function(res, status){
+				if (!res.status){
 					window.location = window.location;
 				}
+				else {
+					showmsg('创建失败');
+				};
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		});
 	});
@@ -94,16 +111,21 @@ define(function(require, exports, module) {
 		e.preventDefault();
 		$.ajax({
 			type: "POST",
-			url: "/joinMeeting",
+			url: "/meeting/join",
 			data: {
-				inputMeetingId: $('#inputMeetingId').val()
+				meetingId: $('#inputMeetingId').val()
 			},
-			success: function(dataJson, textStatus, jqXHR){
-				if (dataJson.success){
+			success: function(res, status){
+				console.log(res.message);
+				if (!res.retcode){
 					window.location = window.location;
 				} else {
-					alert(dataJson.message);
+					showmsg(res.message);
 				}
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		})
 	});
@@ -119,15 +141,21 @@ define(function(require, exports, module) {
 		var userId = $(this).attr('userId');
 		$.ajax({
 			type: 'POST',
-			url: '/quitMeeting',
+			url: '/meeting/quit',
 			data: {
 				meetingId: meetingId,
-				userId: userId
 			},
-			success: function(data, textStatus, jqXHR){
-				if (textStatus=='success'){
+			success: function(res, status){
+				console.log(res.message);
+				if (!res.retcode){
 					window.location = window.location;
+				} else {
+					showmsg(res.message);
 				}
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		});	
 	});
