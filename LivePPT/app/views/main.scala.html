@@ -75,6 +75,15 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="/assets/js/sea-2.0.0.js" data-config="/assets/js/main-config"></script>
     <script>
+      /**
+       * 模态提示框
+       * 提示信息
+       * 叶江楠
+       */
+      function showmsg (str) {
+        $('#myModal p').html(str);
+        $('#myModal').modal('show');
+      }    
       seajs.use('@name');
     </script>
 
