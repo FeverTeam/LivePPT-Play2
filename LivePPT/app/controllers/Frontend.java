@@ -62,7 +62,6 @@ public class Frontend extends Controller {
     @With(CheckLoginAction.class)
     public static Result index() {
         User user = CheckLoginAction.getUser(ctx());
-        String token = CheckLoginAction.getToken(ctx());
 
         String username = (user==null)?"":user.displayname;
         return ok(index.render(username));
@@ -116,14 +115,21 @@ public class Frontend extends Controller {
 
     @With(CheckLoginAction.class)
     public static Result pptplainshow(Long pptid) {
+        User user = CheckLoginAction.getUser(ctx());
+
+        String username = (user==null)?"":user.displayname;        
         Ppt ppt = Ppt.find.byId(pptid);
-        return ok(pptplainshow.render(ppt));
+        return ok(pptplainshow.render(ppt, username));
     }
 
     @With(CheckLoginAction.class)
     public static Result controlMeeting(Long meetingId) {
+        User user = CheckLoginAction.getUser(ctx());
+
+        String username = (user==null)?"":user.displayname;
+
         Meeting meeting = Meeting.find.byId(meetingId);
-        return ok(controlMeeting.render(meeting));
+        return ok(controlMeeting.render(meeting, username));
     }
 
     public static Result joinMeeting() {
@@ -132,13 +138,15 @@ public class Frontend extends Controller {
 
     @With(CheckLoginAction.class)
     public static Result viewMeeting(Long meetingId) {
+        User user = CheckLoginAction.getUser(ctx());
+        String username = (user==null)?"":user.displayname;
+
         Meeting meeting = Meeting.find.byId(meetingId);
-        return ok(viewMeeting.render(meeting));
+        return ok(viewMeeting.render(meeting, username));
     }
 
     @With(CheckLoginAction.class)
     public static Result appDownload() {
-        String token = CheckLoginAction.getToken(ctx());
         User user = CheckLoginAction.getUser(ctx());
         String username = (user==null)?"":user.displayname;
 
@@ -147,7 +155,6 @@ public class Frontend extends Controller {
 
     @With(CheckLoginAction.class)
     public static Result aboutUs() {
-        String token = CheckLoginAction.getToken(ctx());
         User user = CheckLoginAction.getUser(ctx());
         String username = (user==null)?"":user.displayname;
         return ok(aboutUs.render(username));
