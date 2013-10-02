@@ -1,10 +1,12 @@
-@(meeting: com.fever.liveppt.models.Meeting)
+@(meeting: com.fever.liveppt.models.Meeting, username: String)
 
-@main(name="controlMeeting", title="控制会议", "") {
+@main(name="controlMeeting", title="控制会议", username) {
 } {
 	@defining(meeting.ppt){ppt=>
+		<div class="page-header">
+	    	<h1>@meeting.topic <small>(会议ID:@meeting.id)</small></h1>
+	  	</div>
 		<p>控制你的会议 —— 切换的PPT图像会实时同步到同一会议的观看者屏幕中。</p>
-		<h2>@meeting.topic (会议ID:@meeting.id)</h2>
 
 		<div class="row-fluid">
 			<div class="btn-group span2">
@@ -23,7 +25,7 @@
 
 
 		@for(i <- 1 to ppt.pagecount){
-			<img src="/getpptpage?pptid=@ppt.id&pageid=@i" class="page hide img-polaroid" id="@i"/>
+			<img src="/ppt/pageImage?pptId=@ppt.id&page=@i" class="page hide img-polaroid" id="@i"/>
 		}
 
 		<div class="pagination">
