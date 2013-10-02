@@ -30,13 +30,12 @@ import java.util.List;
  * @author
  * @version : v1.00
  * @Description : PPT操作接口实现 ，提供给service层调用
- *
  */
 public class PptServiceImpl implements PptService {
 
 
     @Override
-    public byte[] getPptPage(String userEmail,Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException, PptNotPermissionDenyException {
+    public byte[] getPptPage(String userEmail, Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException, PptNotPermissionDenyException {
         boolean ifPermission = false;
         Ppt ppt = Ppt.find.byId(pptId);
         if (ppt == null) {
@@ -45,19 +44,15 @@ public class PptServiceImpl implements PptService {
 
         User user = User.find.where().eq("email", userEmail).findUnique();
 
-        for(Ppt userPpt: user.ppts)
-        {
-            if(pptId.equals(userPpt.id) )
-            {
+        for (Ppt userPpt : user.ppts) {
+            if (pptId.equals(userPpt.id)) {
                 ifPermission = true;
                 break;
             }
         }
-        if(!ifPermission)
-        {
+        if (!ifPermission) {
             for (Attender attender : user.attendents) {
-                if(pptId == attender.meeting.ppt.id)
-                {
+                if (pptId.equals(attender.meeting.ppt.id)) {
                     ifPermission = true;
                     break;
                 }
@@ -65,8 +60,7 @@ public class PptServiceImpl implements PptService {
             }
         }
 
-        if(!ifPermission)
-        {
+        if (!ifPermission) {
             throw new PptNotPermissionDenyException();
         }
 
