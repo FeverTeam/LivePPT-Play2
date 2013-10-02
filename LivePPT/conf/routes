@@ -66,6 +66,10 @@ GET    /meeting/info                @controllers.MeetingController.getMeetingInf
 #会议同步显示页码的WebSocket
 GET 	/viewWebsocket				controllers.MeetingController.viewWebsocket()
 
+###
+#额外接口
+POST    /addition/feedback          @controllers.AdditionController.feedback()
+
 #######################################################
 #下面的接口逐步废弃，请将有用的的接口移动上去（江楠注意一下）
 #######################################################
