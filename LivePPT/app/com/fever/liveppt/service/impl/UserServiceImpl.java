@@ -6,14 +6,20 @@ import com.fever.liveppt.exception.user.PasswordNotMatchException;
 import com.fever.liveppt.exception.user.UserException;
 import com.fever.liveppt.exception.user.UserExistedException;
 import com.fever.liveppt.exception.user.UserNotExistedException;
+import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.UserService;
 import com.fever.liveppt.utils.DataJson;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.TokenAgent;
+import play.Logger;
+import play.api.Play;
 import play.libs.Crypto;
+import play.api.Play;
+import play.Application.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -126,6 +132,18 @@ public class UserServiceImpl implements UserService {
 
             // 将用户存入表中
             user.save();
+
+            //给用户存入CloudSlides PPT
+            String storeKey = play.Play.application().configuration().getString("cloudslides.android.demoppt.storeKey");
+            String title =  play.Play.application().configuration().getString("cloudslides.android.demoppt.title");
+            String strFileSize = play.Play.application().configuration().getString("cloudslides.android.demoppt.fileSize");
+           // Logger.info(storeKey);
+            long filesize = Long.valueOf(strFileSize)  ;
+            Ppt newPpt = new Ppt(user.id, title, new Date(), storeKey, filesize);
+            newPpt.pagecount = 7;
+            newPpt.isConverted = true;
+            newPpt.save();
+
 
             //生成token
             String token = TokenAgent.generateToken(user.email);
