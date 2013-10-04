@@ -115,21 +115,20 @@ public class Frontend extends Controller {
 
     @With(CheckLoginAction.class)
     public static Result pptplainshow(Long pptid) {
-        User user = CheckLoginAction.getUser(ctx());
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
 
-        String username = (user==null)?"":user.displayname;        
         Ppt ppt = Ppt.find.byId(pptid);
-        return ok(pptplainshow.render(ppt, username));
+        return ok(pptplainshow.render(ppt, user, token));
     }
 
     @With(CheckLoginAction.class)
     public static Result controlMeeting(Long meetingId) {
-        User user = CheckLoginAction.getUser(ctx());
-
-        String username = (user==null)?"":user.displayname;
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
 
         Meeting meeting = Meeting.find.byId(meetingId);
-        return ok(controlMeeting.render(meeting, username));
+        return ok(controlMeeting.render(meeting, user, token));
     }
 
     public static Result joinMeeting() {
