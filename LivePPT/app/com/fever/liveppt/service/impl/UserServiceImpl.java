@@ -13,6 +13,7 @@ import com.fever.liveppt.utils.DataJson;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.TokenAgent;
+import play.Logger;
 import play.api.Play;
 import play.libs.Crypto;
 import play.api.Play;
@@ -134,9 +135,9 @@ public class UserServiceImpl implements UserService {
 
             //给用户存入CloudSlides PPT
             String storeKey = play.Play.application().configuration().getString("cloudslides.android.demoppt.storeKey");
-            System.out.println(storeKey);
             String title =  play.Play.application().configuration().getString("cloudslides.android.demoppt.title");
             String strFileSize = play.Play.application().configuration().getString("cloudslides.android.demoppt.fileSize");
+           // Logger.info(storeKey);
             long filesize = Long.valueOf(strFileSize)  ;
             Ppt newPpt = new Ppt(user.id, title, new Date(), storeKey, filesize);
             newPpt.pagecount = 7;
