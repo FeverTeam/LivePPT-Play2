@@ -22,6 +22,7 @@ import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.TokenAgent;
 import com.google.inject.Inject;
+import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -321,9 +322,29 @@ public class PptController extends Controller {
      * @return
      */
     public Result convertstatus() {
-        JsonNode json = Json.parse(request().body().asText());
-        JsonNode messageJson = Json.parse(json.findPath("Message").asText());
-        pptService.updatePptConvertedStatus(messageJson);
+        String bodyText = request().body().asText();
+
+        JsonNode json = Json.parse(bodyText);
+        if (json == null) {
+            Logger.info("convertstatus failed to parse bodyText:" + bodyText);
+        } else {
+            String messageText = json.findPath("Message").asText();
+            if (messageText == null) {
+                Logger.info("messageText fetch failed");
+            } else {
+                Logger.info("before:" + messageText);
+                messageText = messageText.replace("\\", "");
+                Logger.info("after:" + messageText);
+
+                JsonNode messageJson = Json.parse(messageText);
+                if (messageJson == null) {
+                    Logger.info("mj parse failed");
+                } else {
+                    pptService.updatePptConvertedStatus(messageJson);
+                }
+            }
+
+        }
         return ok();
     }
 }
