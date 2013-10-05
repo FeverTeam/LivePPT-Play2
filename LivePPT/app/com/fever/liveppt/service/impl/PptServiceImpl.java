@@ -161,7 +161,7 @@ public class PptServiceImpl implements PptService {
             sqs.sendMessage(new SendMessageRequest(myQueueUrl, storeKey));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error("error",e);
             throw new InternalErrorException();
         }
 
