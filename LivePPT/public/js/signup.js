@@ -42,6 +42,7 @@ define(function(require, exports, module) {
 					url += '&token=' + res.data.token;
 					url += '&callbackUrl=/myppt';
 					window.location.href = url;
+				}
 				else {
 					showmsg('注册失败');
 				}
