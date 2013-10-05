@@ -102,16 +102,24 @@ public class PptServiceImpl implements PptService {
 
     @Override
     public void updatePptConvertedStatus(JsonNode messageJson) {
-        Boolean isSuccess = messageJson.findPath("isSuccess").asBoolean();
-        if (isSuccess != null && isSuccess) {
-            String storeKey = messageJson.findPath("storeKey").asText();
-            int pageCount = messageJson.findPath("pageCount").asInt();
+        Logger.info(messageJson.toString()+"mememe");
+        boolean isSuccess = messageJson.findPath("isSuccess").asBoolean();
+        if ( !isSuccess) {
+            Logger.info("isSuccess : false");
+        }
+         else
+        {
+                String storeKey = messageJson.findPath("storeKey").textValue();
+                int pageCount = messageJson.findPath("pageCount").intValue();
 
-            List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey).findList();
-            Ppt ppt = pptList.get(0);
-            ppt.isConverted = true;
-            ppt.pagecount = pageCount;
-            ppt.save();
+                Logger.info("storeKey"+storeKey+" pageCount"+pageCount);
+
+                List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey).findList();
+                Ppt ppt = pptList.get(0);
+                ppt.isConverted = true;
+                ppt.pagecount = pageCount;
+                ppt.save();
+
         }
     }
 
@@ -159,7 +167,7 @@ public class PptServiceImpl implements PptService {
             sqs.sendMessage(new SendMessageRequest(myQueueUrl, storeKey));
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error("error",e);
             throw new InternalErrorException();
         }
 
