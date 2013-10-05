@@ -36,7 +36,7 @@ define(function(require, exports, module) {
 			},
 			success: function(res, status){
 				console.log(res);
-				if (res.retcode == 0)
+				if (res.retcode == 0){
 					var url = '/loginSuccess?';
 					url += 'uemail=' + uemail;
 					url += '&token=' + res.data.token;
