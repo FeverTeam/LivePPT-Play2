@@ -8,20 +8,22 @@ package com.fever.liveppt.utils;
  * Description: 封装Json格式的数据
  */
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import play.libs.Json;
 
 import java.util.Map;
 
-public class DataJson extends ObjectNode {
+public class DataJson {
+
+    public ObjectNode objectNode;
 
     public DataJson() {
-        super(JsonNodeFactory.instance);
+        this.objectNode = Json.newObject();
     }
 
     public DataJson(Map<String, String> keyValue) {
-        super(JsonNodeFactory.instance);
+        this();
         this.setStringField(keyValue);
     }
 
@@ -31,7 +33,7 @@ public class DataJson extends ObjectNode {
         }
 
         for (String key : keyValue.keySet()) {
-            this.put(key, keyValue.get(key));
+            this.objectNode.put(key, keyValue.get(key));
         }
 
         return this;
@@ -43,7 +45,7 @@ public class DataJson extends ObjectNode {
         }
 
         for (String key : keyValue.keySet()) {
-            this.put(key, keyValue.get(key));
+            this.objectNode.put(key, keyValue.get(key));
         }
 
         return this;

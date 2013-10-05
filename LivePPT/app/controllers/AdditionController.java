@@ -47,12 +47,12 @@ public class AdditionController extends Controller {
             //写入feedback专用的logger
             Logger.of("feedback").info(user.displayname + "(" + user.email + "):\n" + text);
 
-            return ok(ResultJson.simpleSuccess());
+            return ok(ResultJson.simpleSuccess().objectNode);
 
         } catch (CommonException e) {
-            return ok(new ResultJson(e));
+            return ok(new ResultJson(e).objectNode);
         } catch (UserException e) {
-            return ok(new ResultJson(e));
+            return ok(new ResultJson(e).objectNode);
         }
 
     }

@@ -1,9 +1,11 @@
 package controllers;
 
 import com.fever.liveppt.models.User;
+import play.libs.F;
 import play.mvc.Action;
 import play.mvc.Http;
 import play.mvc.Result;
+import play.mvc.SimpleResult;
 
 /**
  * 用于检查用户是否已登录的Action
@@ -77,7 +79,7 @@ public class CheckLoginAction extends Action.Simple {
     }
 
     @Override
-    public Result call(Http.Context ctx) throws Throwable {
+    public F.Promise<SimpleResult> call(Http.Context ctx) throws Throwable {
 
         // 判断是否已经登陆
         User user = getUserFromCookie(ctx);
