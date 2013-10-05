@@ -6,8 +6,11 @@ define(function(require, exports, module) {
 
 	var alertBox = $("#alertBox");
 
+	var uemail = "";
+
 	$('.btn-signup-submit').on('click', function(e){
 		e.preventDefault();
+		uemail = $('#inputEmail').val();
 		var psw = $('#inputPassword').val();
 
 		var seed = "1234567890123456";
@@ -26,7 +29,7 @@ define(function(require, exports, module) {
 			type: 'post',
 			dataType: 'json',
 			data: {
-				uemail: $('#inputEmail').val(),
+				uemail: uemail,
 				password: encryptedText,
 				seed: seed,
 				displayname: $('#inputDisplayName').val()
@@ -34,7 +37,12 @@ define(function(require, exports, module) {
 			success: function(res, status){
 				console.log(res);
 				if (res.retcode == 0)
-					window.location.href = '/myppt';
+					var url = '/loginSuccess?';
+					url += 'uemail=' + uemail;
+					url += '&token=' + token;
+					url += '&callbackUrl=/myppt';
+					alert(url);
+					window.location.href = url;
 				else {
 					showmsg('注册失败');
 				}
