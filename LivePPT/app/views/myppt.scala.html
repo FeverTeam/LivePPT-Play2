@@ -1,4 +1,4 @@
-@(user: com.fever.liveppt.models.User)
+@(user: com.fever.liveppt.models.User, token: java.lang.String)
 @main(name="myppt", "我的PPT", username= user.displayname) {
 
 }{
@@ -8,6 +8,13 @@
     </div>
     <br>
     <input type="file" name="file_upload" id="file_upload" />
+
+
+
+
+
+
+
 
     <br>
     <table class="table table-hover">
@@ -46,4 +53,10 @@
       </tbody>
     </table>
   }
+
+<script>
+    var uemail = "@user.email" ;
+    var token = "@token" ;
+</script>
+
 }
