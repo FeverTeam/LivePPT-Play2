@@ -1,6 +1,6 @@
 #通用gen
 
-gen_subtitle = LivePPT 跨平台PPT云直播应用
+gen_subtitle = CloudSlides云幻灯 跨平台PPT云直播应用
 gen_logout_txt = 登出
 
 
@@ -15,10 +15,10 @@ nav_tab_aboutus = 关于我们
 
 #首页index
 
-index_main_title = 欢迎使用CloudSlides!
+index_main_title = 欢迎使用CloudSlides云幻灯!
 index_sub_title_1 = 跨平台PPT云直播应用，就在你的眼前。
 index_sub_title_2 = 随时随地PPT直播，让你的想法更有力。
-index_btn_signup = 马上注册CloudSlides账号
+index_btn_signup = 马上注册CloudSlides云幻灯账号
 index_txt_login = 已经有账号了? 快来登录吧。
 
 index_tooltip_web = 你就在这里！请尽情享用吧！Alpha测试阶段
@@ -31,28 +31,28 @@ index_block1_sub = 没有投影仪，一样可以开PPT会议。
 index_block2_txt =免费
 index_block2_sub =高质量的服务，而且免费。
 index_block3_txt =跨平台
-index_block3_sub =通过浏览器和LivePPT应用，即可享受服务。
+index_block3_sub =通过浏览器和CloudSlides云幻灯应用，即可享受服务。
 index_block4_txt =易用
-index_block4_sub =几乎无需学习，LivePPT一切皆如你所愿。
+index_block4_sub =几乎无需学习，CloudSlides云幻灯一切皆如你所愿。
 
 
 #登录login
 
-login_title = 登入LivePPT
+login_title = 登入CloudSlides
 login_btn_login = 登录
 login_input_username = 账号
 login_input_password = 密码
-login_jump_to_signup = 还没有LivePPT账号？马上注册吧！
+login_jump_to_signup = 还没有CloudSlides账号？马上注册吧！
 
 
 #注册signup
 
-signup_title = 注册LivePPT账号
+signup_title = 注册CloudSlides云幻灯账号
 signup_placeholder_email = 输入你的Email地址
 signup_placeholder_password = 输入你的密码
 signup_placeholder_displayname = 希望我们如何称呼你？
 signup_btn_signup = 注册
-signup_jump_to_login = 已有LivePPT账号？马上登录吧！
+signup_jump_to_login = 已有CloudSlides云幻灯账号？马上登录吧！
 
 
 #我的PPTmyppt
