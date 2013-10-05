@@ -1,35 +1,34 @@
 define(function(require, exports, module) {
 
 	console.log("signup.js");
-
+	require('aes');
 	var alertBox = $("#alertBox");
 
 	$('.btn-signup-submit').on('click', function(e){
 		e.preventDefault();
-
+		var psw = $('#inputPassword').val();
+		var hash = CryptoJS.AES.encrypt(psw, "0123456789123456");;
 		//通过Ajax发出注册请求
 		$.ajax({
-			url: '/signup',
+			url: '/user/register',
 			type: 'post',
 			dataType: 'json',
 			data: {
-				email: $('#inputEmail').val(),
-				password: $('#inputPassword').val(),
+				uemail: $('#inputEmail').val(),
+				password: hash.toString(),
+				seed: "0123456789123456",
 				displayname: $('#inputDisplayName').val()
 			},
 			success: function(res, status){
-				if (res.isSuccess){
-					//注册成功，跳转页面
+				console.log(res);
+				if (res.retcode == 0)
 					window.location.href = '/myppt';
-				} else {
-					//注册不成功，显示错误信息
-					$("#alertBox span").html(res.message);
-					alertBox.show();
+				else {
+					showmsg('注册失败');
 				}
 			},
-			error: function(res){
-				$("#alertBox span").html("网络错误？");
-				alertBox.show();
+			error: function(res, status){
+				showmsg('网络错误');
 			}
 		});
 	});
