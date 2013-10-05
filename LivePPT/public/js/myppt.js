@@ -4,29 +4,18 @@ define(function(require, exports, module) {
 
   $('li#myppt').addClass('active');
 
-
-	// require('uploadify');
     require('uploadifive');
-
-  // $(function() {
-  //   $('#file_upload').uploadify({
-  //       'successTimeout' : 9999,
-  //       'swf'      : '/assets/swf/uploadify.swf',
-  //       'uploader' : '/pptupload',
-  //       // Put your options here
-  //       'fileTypeDesc' : 'PPT/PPTX文件',
-  //       'fileTypeExts' : '*.ppt; *.pptx',
-  //       'onUploadSuccess' : function(file, data, response) {
-  //           location=location
-  //       }
-  //   });
-  // });
 
     $(function(){
         $('#file_upload').uploadifive({
         'uploadScript' : '/ppt/upload',
         'uploadLimit'  : 1,
         'fileType'     : ['application/vnd.ms-powerpoint','application/vnd.openxmlformats-officedocument.presentationml.presentation','application/wps-office.ppt'],
+        'fileObjName'  : 'pptFile',
+        //自定义Header
+        'customHeaders':[{name:'uemail', value:uemail}, {name:'token', value:token}],
+
+
         'buttonText'   : '上传PPT/PPTX',
         'buttonClass'  : 'btn btn-success',
         // Put your options here
