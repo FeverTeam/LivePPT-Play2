@@ -328,13 +328,11 @@ public class PptController extends Controller {
         if (json == null) {
             Logger.info("convertstatus failed to parse bodyText:" + bodyText);
         } else {
-            String messageText = json.findPath("Message").asText();
+            String messageText = json.findPath("Message").textValue();
             if (messageText == null) {
                 Logger.info("messageText fetch failed");
             } else {
-                Logger.info("before:" + messageText);
-                messageText = messageText.replace("\\", "");
-                Logger.info("after:" + messageText);
+                messageText = messageText.replace("\\\"", "\"");
 
                 JsonNode messageJson = Json.parse(messageText);
                 if (messageJson == null) {
