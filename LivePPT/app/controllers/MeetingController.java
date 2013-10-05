@@ -2,6 +2,8 @@
 package controllers;
 
 import akka.actor.Cancellable;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
@@ -15,8 +17,6 @@ import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.*;
 import com.google.inject.Inject;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
 import play.Logger;
 import play.cache.Cache;
 import play.libs.Akka;
@@ -171,7 +171,7 @@ public class MeetingController extends Controller {
         } catch (MeetingPermissionDenyException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -219,7 +219,7 @@ public class MeetingController extends Controller {
         } catch (MeetingPermissionDenyException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -283,7 +283,7 @@ public class MeetingController extends Controller {
         } catch (PptNotExistedException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -329,7 +329,7 @@ public class MeetingController extends Controller {
         } catch (AttendingExistedException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -374,7 +374,7 @@ public class MeetingController extends Controller {
         } catch (MeetingException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -435,7 +435,7 @@ public class MeetingController extends Controller {
         // resultJson = new ResultJson(e);
         // }
 
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -465,7 +465,7 @@ public class MeetingController extends Controller {
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -496,7 +496,7 @@ public class MeetingController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -537,6 +537,6 @@ public class MeetingController extends Controller {
         } catch (MeetingNotExistedException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 }
