@@ -102,10 +102,11 @@ public class PptServiceImpl implements PptService {
 
     @Override
     public void updatePptConvertedStatus(JsonNode messageJson) {
+        Logger.info(messageJson.toString()+"mememe");
         Boolean isSuccess = messageJson.get("isSuccess").asBoolean();
         if (isSuccess != null && isSuccess) {
-            String storeKey = messageJson.get("storeKey").asText();
-            int pageCount = messageJson.get("pageCount").asInt();
+            String storeKey = messageJson.findPath("storeKey").textValue();
+            int pageCount = messageJson.findPath("pageCount").intValue();
 
             Logger.info("storeKey"+storeKey+" pageCount"+pageCount);
 
