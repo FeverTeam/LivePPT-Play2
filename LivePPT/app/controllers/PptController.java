@@ -323,12 +323,28 @@ public class PptController extends Controller {
      */
     public Result convertstatus() {
         String bodyText = request().body().asText();
-        JsonNode json = request().body().asJson();
-        JsonNode messageJson = json.get("Message");
 
-        Logger.info("bodyText:"+bodyText+"  messageJson: "+messageJson.toString());
+        JsonNode json = Json.parse(bodyText);
+        if (json == null) {
+            Logger.info("convertstatus failed to parse bodyText:" + bodyText);
+        } else {
+            String messageText = json.findPath("Message").asText();
+            if (messageText == null) {
+                Logger.info("messageText fetch failed");
+            } else {
+                Logger.info("before:" + messageText);
+                messageText = messageText.replace("\\", "");
+                Logger.info("after:" + messageText);
 
-        pptService.updatePptConvertedStatus(messageJson);
+                JsonNode messageJson = Json.parse(messageText);
+                if (messageJson == null) {
+                    Logger.info("mj parse failed");
+                } else {
+                    pptService.updatePptConvertedStatus(messageJson);
+                }
+            }
+
+        }
         return ok();
     }
 }
