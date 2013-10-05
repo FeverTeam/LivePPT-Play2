@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.ppt.*;
@@ -16,7 +17,6 @@ import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.PptService;
 import com.fever.liveppt.utils.aws.AwsHelper;
 import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.JsonNode;
 import play.Logger;
 import play.cache.Cache;
 
@@ -102,10 +102,10 @@ public class PptServiceImpl implements PptService {
 
     @Override
     public void updatePptConvertedStatus(JsonNode messageJson) {
-        Boolean isSuccess = messageJson.findPath("isSuccess").getBooleanValue();
+        Boolean isSuccess = messageJson.findPath("isSuccess").asBoolean();
         if (isSuccess != null && isSuccess) {
-            String storeKey = messageJson.findPath("storeKey").getTextValue();
-            int pageCount = messageJson.findPath("pageCount").getIntValue();
+            String storeKey = messageJson.findPath("storeKey").asText();
+            int pageCount = messageJson.findPath("pageCount").asInt();
 
             List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey).findList();
             Ppt ppt = pptList.get(0);

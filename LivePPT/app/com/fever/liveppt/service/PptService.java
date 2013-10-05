@@ -1,11 +1,11 @@
 package com.fever.liveppt.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.ppt.*;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
-import org.codehaus.jackson.JsonNode;
 
 import java.io.File;
 import java.util.List;
