@@ -1,6 +1,6 @@
-@(meeting: com.fever.liveppt.models.Meeting, username: String)
+@(meeting: com.fever.liveppt.models.Meeting, user: com.fever.liveppt.models.User, token: String)
 
-@main(name="controlMeeting", title="控制会议", username) {
+@main(name="controlMeeting", title="控制会议", user.displayname) {
 } {
 	@defining(meeting.ppt){ppt=>
 		<div class="page-header">
@@ -25,21 +25,18 @@
 
 
 		@for(i <- 1 to ppt.pagecount){
-			<img src="/ppt/pageImage?pptId=@ppt.id&page=@i" class="page hide img-polaroid" id="@i"/>
+			<img src="/ppt/pageImage?pptId=@ppt.id&page=@i&uemail=@user.email&token=@token" class="page hide img-polaroid" id="@i"/>
 		}
 
 		<div class="pagination">
 		  <ul>
 		    @for(index <- 1 to ppt.pagecount){
-		    	<li id="page@index"+><a href="#">@index</a></li>
+		    	<li id="page@index" data-id="@index"><a href="#">@index</a></li>
 			}
 		  </ul>
 		</div>
 
-		<div class="hide" id="datadiv" 
-		meetingid="@meeting.id"
-		pptid="@ppt.id"
-		pagecount="@ppt.pagecount"	
-		></div>
+		<div class="hide" id="datadiv" meetingid="@meeting.id" 
+		pptid="@ppt.id" pagecount="@ppt.pagecount"	></div>
 	}
 }

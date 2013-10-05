@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
 	require('jquery-knob');
+	require('cookies');
 
 	console.log("contrlMeeting.js");
 
@@ -68,13 +69,19 @@ define(function(require, exports, module) {
 	function setMeetingPage(currentPageIndex){
 		$.ajax({
 			type: 'POST',
-			url: '/setMeetingPage',
+			url: '/meeting/setPage',
 			data: {
 				meetingId: meetingId,
-				currentPageIndex: currentPageIndex
+				pageIndex: currentPageIndex
 			},
-			success: function(data, textSuccess, jqH){
-				console.log("Set remote page index:"+currentIndex);
+			success: function(res, status){
+				if (!res.retcode) {
+					console.log("Set remote page index:"+currentPageIndex);
+				};
+			},
+			headers: {
+				'uemail': $.cookie('uemail'),
+				'token': $.cookie('token')
 			}
 		})
 	}
@@ -92,5 +99,20 @@ define(function(require, exports, module) {
 		});
 	}
 
+	/**
+	 * 列表分页增加设置PPT页面跳转功能
+	 */
+	$('.pagination li').click(function () {
+		var old = currentImg.data('currentIndex');
+		var news = $(this).data("id");
 
+		$('.page#'+old).addClass('hide');
+		$('.page#'+news).removeClass('hide');
+		pageKnob.val(news).trigger('change');
+
+		currentImg.data('currentIndex', news);
+		setPagination(news);
+		setMeetingPage(news);
+		return false;
+	})
 });

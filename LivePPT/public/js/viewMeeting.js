@@ -1,6 +1,6 @@
 define(function(require, exports, module) {
 	require('jquery-knob');
-
+	require('cookies')
 	console.log("viewMeeting.js");
 
 	// var ws_address = "ws://localhost:9000/viewWebsocket";
@@ -99,7 +99,9 @@ define(function(require, exports, module) {
 		if (pageId>0) {
 			var img = $('div#pageImgPool #page'+pageId);
 			if (img.length<1){
-				$('div#pageImgPool').append('<img src="/getpptpage?pptid='+pptId+'&pageid='+pageId+'" class="page hide img-polaroid" id="page'+pageId+'"/>');
+				$('div#pageImgPool').append('<img src="/ppt/pageImage?pptId='+pptId+'&page='+pageId
+					+'&uemail='+$.cookie('uemail')+'&token='+$.cookie('token')
+					+'" class="page hide img-polaroid" id="page'+pageId+'"/>');
 			}
 		}
 	}
