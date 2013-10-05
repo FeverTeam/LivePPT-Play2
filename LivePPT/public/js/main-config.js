@@ -6,7 +6,7 @@ seajs.config({
 		'bootstrap': '/assets/js/bootstrap.min.js',
 		'fineuploader': '/assets/js/fineuploader/jquery.fineuploader-3.4.1.min.js',
 		'uploadify': '/assets/js/jquery.uploadify.min.js',
-		'uploadifive': '/assets/js/jquery.uploadifive.min.js',
+		'uploadifive': '/assets/js/jquery.uploadifive_customized.js',
 		'jquery-knob': '/assets/js/jquery.knob.js',
 		'login': '/assets/js/login.js',
 		'hmac': 'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js',
