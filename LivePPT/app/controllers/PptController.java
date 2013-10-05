@@ -22,6 +22,7 @@ import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.TokenAgent;
 import com.google.inject.Inject;
+import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -321,8 +322,12 @@ public class PptController extends Controller {
      * @return
      */
     public Result convertstatus() {
-        JsonNode json = Json.parse(request().body().asText());
-        JsonNode messageJson = Json.parse(json.findPath("Message").asText());
+        String bodyText = request().body().asText();
+        JsonNode json = request().body().asJson();
+        JsonNode messageJson = json.get("Message");
+
+        Logger.info("bodyText:"+bodyText+"  messageJson: "+messageJson.toString());
+
         pptService.updatePptConvertedStatus(messageJson);
         return ok();
     }

@@ -102,10 +102,12 @@ public class PptServiceImpl implements PptService {
 
     @Override
     public void updatePptConvertedStatus(JsonNode messageJson) {
-        Boolean isSuccess = messageJson.findPath("isSuccess").asBoolean();
+        Boolean isSuccess = messageJson.get("isSuccess").asBoolean();
         if (isSuccess != null && isSuccess) {
-            String storeKey = messageJson.findPath("storeKey").asText();
-            int pageCount = messageJson.findPath("pageCount").asInt();
+            String storeKey = messageJson.get("storeKey").asText();
+            int pageCount = messageJson.get("pageCount").asInt();
+
+            Logger.info("storeKey"+storeKey+" pageCount"+pageCount);
 
             List<Ppt> pptList = Ppt.find.where().eq("storeKey", storeKey).findList();
             Ppt ppt = pptList.get(0);
