@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="SHORTCUT ICON" href="/assets/images/liveppt-icon-favicon.png">
 
     <!-- Le styles -->
     <link href="/assets/css/bootstrap-combined.min.css" rel="stylesheet">
@@ -25,12 +24,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">CloudSlides</a>
+          <a class="brand" href="/">CloudSlides 云幻灯</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li id="index"><a href="/"> @Messages("nav_tab_index") </a></li>
-              <li id="myppt"><a href="/myppt" @if(username.isEmpty){ onclick="alert('请先登陆'); return false;"}> @Messages("nav_tab_myppt") </a></li>
-              <li id="mymeeting"><a href="/mymeeting" @if(username.isEmpty){ onclick="alert('请先登陆'); return false;"}> @Messages("nav_tab_mymeeting") </a></li>
+              <li id="myppt"><a href="/myppt" @if(username.isEmpty){ onclick="alert('请先登录'); return false;"}> @Messages("nav_tab_myppt") </a></li>
+              <li id="mymeeting"><a href="/mymeeting" @if(username.isEmpty){ onclick="alert('你似乎还没登录哦~~'); return false;"}> @Messages("nav_tab_mymeeting") </a></li>
               <li id="appDownload"><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
               <li id="aboutUs"><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
             </ul>
@@ -42,7 +41,7 @@
             </form>
             } else {
             <div class="pull-right info-box">
-              <span>@username</span>
+              <span>hi，@username !</span>
               <a href="/logout" class="btn">登出</a>
             </div>
             }
@@ -55,7 +54,7 @@
       @content
       <hr>
       <footer>
-        <p>&copy; Fever Team 2013 梁博文 叶江楠 何俊浩 黎俊良 子靖<a target="_blank" href="http://weibo.com/feverteam"></a></p>
+        <p>&copy; Fever Team 2013 梁博文 叶江楠 何俊浩 黎子靖<a target="_blank" href="http://weibo.com/feverteam"></a></p>
       </footer>
     </div> <!-- /container -->
     <div class="modal hide fade" id="myModal">
