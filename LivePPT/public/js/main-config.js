@@ -9,9 +9,10 @@ seajs.config({
 		'uploadifive': '/assets/js/jquery.uploadifive.min.js',
 		'jquery-knob': '/assets/js/jquery.knob.js',
 		'login': '/assets/js/login.js',
-		'crypto': 'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js'
+		'hmac': 'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha1.js',
+		'aes': 'http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/aes.js'
 	},
 
-	preload: ['jquery','bootstrap', 'login', 'crypto']
+	preload: ['jquery','bootstrap', 'login', 'hmac']
 
 });
