@@ -323,10 +323,11 @@ public class PptController extends Controller {
      */
     public Result convertstatus() {
         String bodyText = request().body().asText();
+        Logger.debug("bodyText:"+bodyText);
         JsonNode json = request().body().asJson();
         JsonNode messageJson = json.get("Message");
 
-        Logger.info("bodyText:"+bodyText+"  messageJson: "+messageJson.toString());
+        Logger.debug("  messageJson: "+messageJson.toString());
 
         pptService.updatePptConvertedStatus(messageJson);
         return ok();
