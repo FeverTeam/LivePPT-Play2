@@ -39,9 +39,8 @@ define(function(require, exports, module) {
 				if (res.retcode == 0)
 					var url = '/loginSuccess?';
 					url += 'uemail=' + uemail;
-					url += '&token=' + token;
+					url += '&token=' + res.data.token;
 					url += '&callbackUrl=/myppt';
-					alert(url);
 					window.location.href = url;
 				else {
 					showmsg('注册失败');
