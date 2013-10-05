@@ -5,8 +5,8 @@
 
 create table attender (
   id                        bigint auto_increment not null,
-  meeting_id                bigint not null,
-  user_id                   bigint not null,
+  meeting_id                bigint,
+  user_id                   bigint,
   constraint pk_attender primary key (id))
 ;
 
@@ -14,20 +14,20 @@ create table meeting (
   id                        bigint auto_increment not null,
   ppt_id                    bigint,
   user_id                   bigint,
-  topic                     varchar(255) not null,
-  current_page_index        bigint not null,
+  topic                     varchar(255),
+  current_page_index        bigint,
   constraint pk_meeting primary key (id))
 ;
 
 create table ppt (
   id                        bigint auto_increment not null,
   user_id                   bigint,
-  title                     varchar(255) not null,
-  time                      datetime not null,
-  store_key                 varchar(255) not null,
-  file_size                 bigint not null,
-  is_converted              tinyint(1) default 0 not null,
-  pagecount                 integer not null,
+  title                     varchar(255),
+  time                      datetime,
+  store_key                 varchar(255),
+  file_size                 bigint,
+  is_converted              tinyint(1) default 0,
+  pagecount                 integer,
   constraint pk_ppt primary key (id))
 ;
 

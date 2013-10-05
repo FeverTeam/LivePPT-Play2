@@ -1,6 +1,5 @@
 package com.fever.liveppt.models;
 
-import com.avaje.ebean.validation.NotNull;
 import play.db.ebean.Model;
 
 import javax.persistence.Entity;
@@ -23,11 +22,9 @@ public class Attender extends Model {
     @Id
     public Long id;
 
-    @NotNull
     @ManyToOne
     public Meeting meeting;
 
-    @NotNull
     @ManyToOne
     public User user;
 

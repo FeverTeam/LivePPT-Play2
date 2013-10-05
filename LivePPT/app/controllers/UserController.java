@@ -69,7 +69,7 @@ public class UserController extends Controller {
         }
 
         //返回JSON
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
     /**
      * 检查用户Email是否被占用
@@ -110,7 +110,7 @@ public class UserController extends Controller {
         }
 
         //返回JSON
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -165,7 +165,7 @@ public class UserController extends Controller {
         }
 
         //返回JSON
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -236,7 +236,7 @@ public class UserController extends Controller {
 
 
         //返回JSON
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
 
     }
 

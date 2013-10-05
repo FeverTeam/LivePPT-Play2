@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
                 DataJson dataJson = new DataJson(data);
 
                 // 封装返回信息
-                resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, dataJson);
+                resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, dataJson.objectNode);
             } else {
                 throw new PasswordNotMatchException();
             }
@@ -155,7 +155,7 @@ public class UserServiceImpl implements UserService {
             DataJson dataJson = new DataJson(map);
 
             //返回
-            return new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, dataJson);
+            return new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, dataJson.objectNode);
         }
     }
 
