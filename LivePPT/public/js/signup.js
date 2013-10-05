@@ -2,12 +2,24 @@ define(function(require, exports, module) {
 
 	console.log("signup.js");
 	require('aes');
+	require('ecb');
+
 	var alertBox = $("#alertBox");
 
 	$('.btn-signup-submit').on('click', function(e){
 		e.preventDefault();
 		var psw = $('#inputPassword').val();
-		var hash = CryptoJS.AES.encrypt(psw, "0123456789123456");;
+
+		var seed = "1234567890123456";
+
+		var key = CryptoJS.enc.Latin1.parse(seed);
+		var iv  = CryptoJS.enc.Latin1.parse(seed);
+    	var encrypted = CryptoJS.AES.encrypt(psw, key, { iv:iv, mode: CryptoJS.mode.ECB});
+    	var encryptedText = encrypted.ciphertext+"";
+
+    	console.log(encrypted);
+    	console.log("encryptedText:"+encryptedText);
+
 		//通过Ajax发出注册请求
 		$.ajax({
 			url: '/user/register',
@@ -15,8 +27,8 @@ define(function(require, exports, module) {
 			dataType: 'json',
 			data: {
 				uemail: $('#inputEmail').val(),
-				password: hash.toString(),
-				seed: "0123456789123456",
+				password: encryptedText,
+				seed: seed,
 				displayname: $('#inputDisplayName').val()
 			},
 			success: function(res, status){
