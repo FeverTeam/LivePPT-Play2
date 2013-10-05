@@ -1,6 +1,10 @@
 
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fever.liveppt.exception.common.CommonException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.common.TokenInvalidException;
@@ -18,9 +22,6 @@ import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.TokenAgent;
 import com.google.inject.Inject;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -80,7 +81,7 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -117,17 +118,16 @@ public class PptController extends Controller {
                 throw new PptNotExistedException();
             }
             //组装成功返回信息
-            JsonNode data = ppt.toJsonNode();
+            ObjectNode data = ppt.toJsonNode();
             resultJson = new ResultJson(StatusCode.SUCCESS, StatusCode.SUCCESS_MESSAGE, data);
 
-            return ok(resultJson);
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
         } catch (PptNotExistedException e) {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -206,7 +206,7 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -254,7 +254,7 @@ public class PptController extends Controller {
 
                 pptService.uploadPptToS3(user, pptFile, pptFileName, pptFileSize);
 
-                return ok(ResultJson.simpleSuccess());
+                return ok(ResultJson.simpleSuccess().objectNode);
             }
         } catch (CommonException e) {
             resultJson = new ResultJson(e);
@@ -264,7 +264,7 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -312,7 +312,7 @@ public class PptController extends Controller {
         }
         //若获取不成功返回JSON
         resultJson = (resultJson == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
-        return ok(resultJson);
+        return ok(resultJson.objectNode);
     }
 
     /**
@@ -322,8 +322,7 @@ public class PptController extends Controller {
      */
     public Result convertstatus() {
         JsonNode json = Json.parse(request().body().asText());
-        JsonNode messageJson = Json.parse(json.findPath("Message")
-                .getTextValue());
+        JsonNode messageJson = Json.parse(json.findPath("Message").asText());
         pptService.updatePptConvertedStatus(messageJson);
         return ok();
     }

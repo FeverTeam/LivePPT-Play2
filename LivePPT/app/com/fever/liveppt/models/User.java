@@ -1,6 +1,6 @@
 package com.fever.liveppt.models;
 
-import org.codehaus.jackson.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 import play.libs.Json;
@@ -31,6 +31,7 @@ public class User extends Model {
     public Long id;
 
     @Constraints.Required
+    @Constraints.Email
     public String email;
 
     @Constraints.Required
