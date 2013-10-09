@@ -29,6 +29,9 @@ import java.util.List;
  */
 public class MeetingServiceImpl implements MeetingService {
 
+    //默认会议页码缓存21600秒（即6小时）
+    public final static int DEFAULT_MEETING_PAGE_CACHE_DURATION = 21600;
+
     @Override
     public void deleteMeeting(String userEmail, Long meetingId) throws MeetingPermissionDenyException, MeetingNotExistedException {
         Meeting meeting = Meeting.find.byId(meetingId);
@@ -206,7 +209,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         //更新Cache中的页码
         String meetingCacheKey = CacheAgent.generateMeetingCacheKey(meetingId);
-        Cache.set(meetingCacheKey, pageIndex);
+        Cache.set(meetingCacheKey, pageIndex, DEFAULT_MEETING_PAGE_CACHE_DURATION);
         Logger.debug("setpage meetingid:"+meetingId+" page:"+pageIndex);
 
         meeting.currentPageIndex = pageIndex;
