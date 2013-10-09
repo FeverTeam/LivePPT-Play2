@@ -1,9 +1,20 @@
-<form class="form-horizontal">
-  <div class="control-group">
-    <label class="control-label" for="inputMeetingId">PPT会议ID</label>
-    <div class="controls">
-      <input type="text" id="inputMeetingId" placeholder="Please input ID of PPT Meeting">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">加入会议</h3>
+        </div>
+        <div class="modal-body">
+
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-lg-2 control-label" for="inputMeetingId">会议ID</label>
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" id="inputMeetingId" placeholder="请输入会议ID">
+                    </div>
+                </div>
+                <button class="btn btn-primary" id="btn-join-meeting">加入会议</button>
+            </form>
+
+        </div>
     </div>
-  </div>
-  <button class="btn btn-primary" id="btn-join-meeting">加入会议</button>
-</form>
+</div>

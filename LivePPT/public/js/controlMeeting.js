@@ -4,7 +4,6 @@ define(function(require, exports, module) {
 
 	console.log("contrlMeeting.js");
 
-	var currentImg = $('#img-current-page');
 	var dataDiv = $('#datadiv');
 	var meetingId = dataDiv.attr('meetingid');
 	var pptId = dataDiv.attr('pptid');
@@ -15,25 +14,26 @@ define(function(require, exports, module) {
 
 	var pageKnob = $('#pageKnob');
 
-	currentImg.data('currentIndex', 1);
-	// currentImg.attr('src', '/getpptpage?pptid='+pptId+'&pageid='+currentImg.data('currentIndex'));
-	setCurrentImg(1);
+	var currentPageIndex = 1;
+
+	var pptCarousel = $('.carousel#pptCarousel');
+
+
 
 	initPageKnob();
+	setKnob(currentPageIndex);
 
-
-	//上一页
-	btnPrePage.on('click', function(e){
-		var index = setPreImg();
-		setMeetingPage(index);
+	$('.btn#prePage').on('click', function(e){
+	pptCarousel.carousel('prev');
 
 	});
 
-	//下一页
-	btnNextPage.on('click', function(e){
-		var index = setNextImg();
-		setMeetingPage(index);
-	});
+	$('.btn#nextPage').on('click', function(e){
+    	pptCarousel.carousel('next');
+
+    	});
+
+
 
 	function setCurrentImg(index){
 		// currentImg.attr('src', '/getpptpage?pptid='+pptId+'&pageid='+index);
@@ -45,26 +45,16 @@ define(function(require, exports, module) {
 
 		setPagination(index);
 
-		pageKnob.val(index).trigger('change');
+		setKnob(index);
 	}
 
-	function setPreImg(){
-		var index = currentImg.data('currentIndex')
-		index--;
-		if (index<1) {index=1;}
-		currentImg.data('currentIndex', index);
-		setCurrentImg(index);
-		return index;	
-	}
+	pptCarousel.on('slid', function(e){
+        currentPageIndex = $(".active", e.target).index();
+        setKnob(currentPageIndex+1);
+        setMeetingPage(currentPageIndex+1);
+        setPagination(currentPageIndex+1);
 
-	function setNextImg(){
-		var index = currentImg.data('currentIndex')
-		index++;
-		if (index>pageCount) {index=pageCount;}
-		currentImg.data('currentIndex', index);
-		setCurrentImg(index);
-		return index;
-	}
+    });
 
 	function setMeetingPage(currentPageIndex){
 		$.ajax({
@@ -93,7 +83,7 @@ define(function(require, exports, module) {
 
 	function initPageKnob(){
 		pageKnob.knob({
-			min:0,
+			min: 0,
 			max: pageCount,
 			readOnly: true
 		});
@@ -103,16 +93,16 @@ define(function(require, exports, module) {
 	 * 列表分页增加设置PPT页面跳转功能
 	 */
 	$('.pagination li').click(function () {
-		var old = currentImg.data('currentIndex');
+//		var old = currentImg.data('currentIndex');
 		var news = $(this).data("id");
 
-		$('.page#'+old).addClass('hide');
-		$('.page#'+news).removeClass('hide');
-		pageKnob.val(news).trigger('change');
-
-		currentImg.data('currentIndex', news);
-		setPagination(news);
-		setMeetingPage(news);
+		pptCarousel.carousel(news-1);
 		return false;
 	})
+
+	function setKnob(index){
+	    pageKnob.val(index).trigger('change');
+
+
+	}
 });

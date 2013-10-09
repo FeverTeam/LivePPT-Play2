@@ -3,13 +3,13 @@
   @** Extra CSS **@
 }{
 <!-- Main hero unit for a primary marketing message or call to action -->
-<div class="hero-unit">
+<div class="jumbotron">
   <h1>@Messages("index_main_title")!</h1>
   <p class="info">@Messages("index_sub_title_1")<br>@Messages("index_sub_title_2")</p>
   <p class="sign-up">
     <a href="/signup" class="btn btn-success btn-large">@Messages("index_btn_signup")</a>
   </p>
-  <ul class="inline">
+  <ul class="list-inline">
     <li>
       <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_web")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/web-small-logo.png">Web</a>
     </li>
@@ -25,20 +25,20 @@
   </ul>
 </div>
 <!-- Example row of columns -->
-<div class="row-fluid">
-  <div class="span3">
+<div class="row">
+  <div class="col-md-3">
     <h3>@Messages("index_block1_txt")</h3>
     <p>@Messages("index_block1_sub")</p>
   </div>
-  <div class="span3">
+  <div class="col-md-3">
     <h3>@Messages("index_block4_txt")</h3>
     <p>@Messages("index_block4_sub")</p>
   </div>
-  <div class="span3">
+  <div class="col-md-3">
     <h3>@Messages("index_block3_txt")</h3>
     <p>@Messages("index_block3_sub")</p>
   </div>
-  <div class="span3">
+  <div class="col-md-3">
     <h3>@Messages("index_block2_txt")</h3>
     <p>@Messages("index_block2_sub")</p>
   </div>
