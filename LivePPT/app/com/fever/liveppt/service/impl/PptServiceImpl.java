@@ -33,6 +33,8 @@ import java.util.List;
  */
 public class PptServiceImpl implements PptService {
 
+    //默认PPT页面缓存3600秒（即1小时）
+    public final static int DEFAULT_PPT_PAGE_IMAGE_CACHE_DURATION = 3600;
 
     @Override
     public byte[] getPptPage(String userEmail, Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException, PptNotPermissionDenyException {
@@ -89,8 +91,8 @@ public class PptServiceImpl implements PptService {
                 S3Object obj = s3.getObject(getObjectRequest);
 
                 // 转换为bytes
-                imgBytes = IOUtils.toByteArray((InputStream) obj.getObjectContent());
-                Cache.set(pageKey, imgBytes);
+                imgBytes = IOUtils.toByteArray(obj.getObjectContent());
+                Cache.set(pageKey, imgBytes, DEFAULT_PPT_PAGE_IMAGE_CACHE_DURATION);
 
                 return imgBytes;
             }
