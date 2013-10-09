@@ -11,7 +11,7 @@ define(function(require, exports, module) {
 
 	var
 	modalPptList = $('#modal-ppt-list'),
-	modalPptList_body = $('#modal-ppt-list .modal-body'),
+	modalPptList_body = $('#modal-ppt-list .modal-dialog .modal-content .modal-body'),
 	btnFoundNewMeeting = $('#btn-found-new-meeting'),
 	divChoosePpt = $('#div-choose-ppt'),
 	divSetupMeeting = $('#div-setup-meeting');
@@ -51,19 +51,23 @@ define(function(require, exports, module) {
 
 	//按钮事件 - 发起会议
 	btnFoundNewMeeting.on('click', function(e){
+	    modalPptList_body.html("正在加载 Loading...");
 		modalPptList
-		.removeData('modal')
-		.modal({
-			remote: '/pptListForMeeting'
-		});
+		.load( '/pptListForMeeting',function(responseText, textStatus, XMLHttpRequest){})
+		.modal('show');
 	});
 
 
 	//按钮事件 - 选择指定PPT进入填写会议详情页面
 	modalPptList.on('click', '.btn-choose-ppt-new-meeting', function(e){
+	    modalPptList_body.html("正在加载 Loading...");
+
 		var pptid = $(this).attr('pptid');
-		modalPptList_body
-		.load('/foundNewMeeting/'+pptid, function(responseText, textStatus, XMLHttpRequest){});
+		//modalPptList.modal('hide').removeData('modal');
+
+		modalPptList
+		.load('/foundNewMeeting/'+pptid, function(responseText, textStatus, XMLHttpRequest){})
+		.modal('show');
 	});
 
 	//按钮事件 - 启动会议
@@ -100,11 +104,10 @@ define(function(require, exports, module) {
 
 	//按钮事件 - 加入会议
 	$('#btn-showpage-join-meeting').on('click', function(e){
+        modalPptList_body.html("正在加载 Loading...");
 		modalJoinMeeting
-		.removeData('modal')
-		.modal({
-			remote: '/joinMeeting'
-		});
+		.load('/joinMeeting')
+		.modal('show');
 	});
 
 	modalJoinMeeting.on('click', '#btn-join-meeting', function(e){
