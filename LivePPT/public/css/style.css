@@ -1,5 +1,10 @@
 /* Move down content because we have a fixed navbar that is 50px tall */
-body {
+html body {
   padding-top: 80px;
   padding-bottom: 20px;
+}
+
+//所有默认字体为微软雅黑
+* {
+  font-family: "Microsoft YaHei" ! important;
 }
