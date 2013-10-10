@@ -5,6 +5,6 @@ html body {
 }
 
 //所有默认字体为微软雅黑
-* {
-  font-family: "Microsoft YaHei" ! important;
+.jumbotron * {
+     font-size-base: "Microsoft YaHei","微软雅黑" ! important;
 }

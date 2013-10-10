@@ -101,7 +101,7 @@ define(function(require, exports, module) {
 			if (img.length<1){
 				$('div#pageImgPool').append('<img src="/ppt/pageImage?pptId='+pptId+'&page='+pageId
 					+'&uemail='+$.cookie('uemail')+'&token='+$.cookie('token')
-					+'" class="page hide img-polaroid" id="page'+pageId+'"/>');
+					+'" class="page hide img-responsive" id="page'+pageId+'"  style="MARGIN-RIGHT: auto;MARGIN-LEFT: auto; "/>');
 			}
 		}
 	}
