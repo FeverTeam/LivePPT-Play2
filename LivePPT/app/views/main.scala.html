@@ -31,10 +31,9 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li id="index"><a href="/"> @Messages("nav_tab_index") </a></li>
-                <li id="myppt"><a href="/myppt" @if(username.isEmpty){ onclick="alert('请先登陆'); return false;"}>
+                <li id="myppt"><a href="/myppt" @if(username.isEmpty){ onclick="alert('快来登录吧'); return false;"}>
                     @Messages("nav_tab_myppt") </a></li>
-                <li id="mymeeting"><a href="/mymeeting" @if(username.isEmpty){ onclick="alert('请先登陆'); return
-                    false;"}> @Messages("nav_tab_mymeeting") </a></li>
+                <li id="mymeeting"><a href="/mymeeting" @if(username.isEmpty){ onclick="alert('你似乎还没登录喔'); return false;"}> @Messages("nav_tab_mymeeting") </a></li>
                 <li id="appDownload"><a href="/appDownload"> @Messages("nav_tab_appdownload") </a></li>
                 <li id="aboutUs"><a href="/aboutUs"> @Messages("nav_tab_aboutus") </a></li>
             </ul>
@@ -49,10 +48,10 @@
                 <button type="submit" class="btn btn-login-submit"> @Messages("login_btn_login")</button>
             </form>
             } else {
-            <div class="pull-right info-box">
-                <span>@username</span>
-                <a href="/logout" class="btn">登出</a>
-            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><div>hi, @username !</div></li>
+                <li><a href="/logout" class="btn">登出</a></li>
+            </ul>
             }
         </div>
         <!--/.nav-collapse -->
@@ -100,6 +99,11 @@
     $('#myModal').modal('show');
     }
     seajs.use('@name');
+</script>
+
+<!--GoogleAnalysis相关代码-->
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-40933778-2', 'cloudslides.net');ga('send', 'pageview');
 </script>
 
 </body>

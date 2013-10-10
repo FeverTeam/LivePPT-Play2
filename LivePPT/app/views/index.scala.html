@@ -4,25 +4,31 @@
 }{
 <!-- Main hero unit for a primary marketing message or call to action -->
 <div class="jumbotron">
-  <h1>@Messages("index_main_title")!</h1>
-  <p class="info">@Messages("index_sub_title_1")<br>@Messages("index_sub_title_2")</p>
-  <p class="sign-up">
-    <a href="/signup" class="btn btn-success btn-large">@Messages("index_btn_signup")</a>
-  </p>
-  <ul class="list-inline">
-    <li>
-      <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_web")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/web-small-logo.png">Web</a>
-    </li>
-    <li>
-      <a target="_blank" href="https://chrome.google.com/webstore/detail/liveppt/pnpaagoieoljcnaehfomfabajfocmalo" data-toggle="tooltip" title="" onmouseover="$(this).tooltip('show');" data-original-title="@Messages("index_tooltip_chrome")"><img src="/assets/images/chrome-small-logo.png">Chrome</a>
-    </li>
-    <li>
-      <a target="_blank" href="http://cloudslides.net/android_upgrade/cloudslides_android_latest.apk" data-toggle="tooltip" title="@Messages("index_tooltip_android")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/android-small-logo.png">Android</a>
-    </li>
-    <li>
-      <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_ios")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/iphone-small-logo.png">Iphone</a>
-    </li>
-  </ul>
+  <div class="container">
+      <h1>@Messages("index_main_title")</h1>
+      <h3 class="info">@Messages("index_sub_title_1")<br>@Messages("index_sub_title_2")</h3>
+      <br>
+      <p>
+        <a href="/signup" class="btn btn-success btn-lg">@Messages("index_btn_signup")</a>
+      </p>
+      <br>
+      <div>
+          <ul class="list-inline">
+            <li>
+              <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_web")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/web-small-logo.png">Web</a>
+            </li>
+            <li>
+              <a target="_blank" href="https://chrome.google.com/webstore/detail/liveppt/pnpaagoieoljcnaehfomfabajfocmalo" data-toggle="tooltip" title="" onmouseover="$(this).tooltip('show');" data-original-title="@Messages("index_tooltip_chrome")"><img src="/assets/images/chrome-small-logo.png">Chrome</a>
+            </li>
+            <li>
+              <a target="_blank" href="http://cloudslides.net/android_upgrade/cloudslides_android_latest.apk" data-toggle="tooltip" title="@Messages("index_tooltip_android")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/android-small-logo.png">Android</a>
+            </li>
+            <li>
+              <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_ios")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/iphone-small-logo.png">iPhone</a>
+            </li>
+          </ul>
+      </div>
+  </div>
 </div>
 <!-- Example row of columns -->
 <div class="row">
