@@ -40,12 +40,12 @@
     <div class="carousel-inner">
         <div class="item active">
             <img src="/ppt/pageImage?pptId=@ppt.id&page=1&uemail=@user.email&token=@token"
-                 style="MARGIN-RIGHT: auto;MARGIN-LEFT: auto; "/>
+                 class="img-responsive" style="MARGIN-RIGHT: auto;MARGIN-LEFT: auto; "/>
         </div>
         @for(i <- 2 to ppt.pagecount){
         <div class="item">
             <img src="/ppt/pageImage?pptId=@ppt.id&page=@i&uemail=@user.email&token=@token"
-                 style="MARGIN-RIGHT: auto;MARGIN-LEFT: auto; "/>
+                 class="img-responsive" style="MARGIN-RIGHT: auto;MARGIN-LEFT: auto; "/>
         </div>
         }
     </div>
