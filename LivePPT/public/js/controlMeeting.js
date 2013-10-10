@@ -19,19 +19,16 @@ define(function(require, exports, module) {
 	var pptCarousel = $('.carousel#pptCarousel');
 
 
-
 	initPageKnob();
 	setKnob(currentPageIndex);
 
 	$('.btn#prePage').on('click', function(e){
-	pptCarousel.carousel('prev');
-
-	});
+	    pptCarousel.carousel('prev');
+    });
 
 	$('.btn#nextPage').on('click', function(e){
-    	pptCarousel.carousel('next');
-
-    	});
+	    pptCarousel.carousel('next');
+    });
 
 
 
