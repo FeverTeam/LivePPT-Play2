@@ -2,6 +2,7 @@
 
 @main(name="signup", "注册账号", "") {
   @** Extra CSS **@
+  /*
   body {
     padding-bottom: 40px;
   }
@@ -30,48 +31,53 @@
     margin-bottom: 15px;
     padding: 7px 9px;
   }
+  */
 
   #alertBox {
     display: none;
   }
 
-}{ 
-
-  <form class="form-signup">
-    <h2 class="form-signup-heading">@Messages.get("signup_title")</h2>
-    <div class="control-group">
-      <label class="control-label" for="inputEmail">Email</label>
-      <div class="controls">
-        <input type="text" id="inputEmail" placeholder="@Messages.get("signup_placeholder_email")">
-      </div>
-
-      <label class="control-label" for="inputDisplayName">Display Name</label>
-      <div class="controls">
-        <input type="text" id="inputDisplayName" placeholder="@Messages.get("signup_placeholder_displayname")">
-      </div>
-
-      <label class="control-label" for="inputPassword">Password</label>
-      <div class="controls">
-        <input type="password" id="inputPassword" placeholder="@Messages.get("signup_placeholder_password")">
-      </div>
-
-      <!-- <label class="control-label" for="inputPasswordAgain">Confirm Password</label>
-      <div class="controls">
-        <input type="password" id="inputPasswordAgain" placeholder="再次输入相同的密码">
-      </div>
- -->
+}{
+<h2 class="page-header">@Messages.get("signup_title")</h2>
+        <br>
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label for="inputEmail" class="col-lg-1 control-label">Email</label>
+        <div class="col-lg-4">
+            <input type="email" class="form-control" id="inputEmail" placeholder="@Messages.get("signup_placeholder_email")">
+        </div>
     </div>
 
-    <a class="btn btn-primary btn-large btn-signup-submit">@Messages.get("signup_btn_signup")</a>
-
-    <br><br>
-
-    <div class="alert alert-error fade in" id="alertBox">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <span></span>
+    <div class="form-group">
+        <label for="inputDisplayName" class="col-lg-1 control-label">显示名</label>
+        <div class="col-lg-4">
+            <input type="text" class="form-control" id="inputDisplayName" placeholder="@Messages.get("signup_placeholder_displayname")">
+        </div>
     </div>
+
+    <div class="form-group">
+        <label for="inputPassword" class="col-lg-1 control-label">密码</label>
+        <div class="col-lg-4">
+            <input type="password" class="form-control" id="inputPassword" placeholder="@Messages.get("signup_placeholder_password")">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-lg-10">
+            <button class="btn btn-primary btn-large btn-signup-submit">@Messages.get("signup_btn_signup")</button>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="alert alert-error fade in" id="alertBox">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <span></span>
+        </div>
+    </div>
+
+</form>
 
     <br>
     <a href="/login">@Messages.get("signup_jump_to_login")</a>
-  </form>
+
 }
