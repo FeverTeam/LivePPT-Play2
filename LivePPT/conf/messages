@@ -1,6 +1,6 @@
 #通用gen
 
-gen_subtitle = CloudSlides云幻灯 跨平台PPT云直播应用
+gen_subtitle = CloudSlides云幻灯
 gen_logout_txt = 登出
 
 
@@ -15,15 +15,15 @@ nav_tab_aboutus = 关于我们
 
 #首页index
 
-index_main_title = 欢迎使用CloudSlides云幻灯!
+index_main_title = CloudSlides云幻灯
 index_sub_title_1 = 跨平台PPT云直播应用，就在你的眼前。
-index_sub_title_2 = 随时随地PPT直播，让你的想法更有力。
-index_btn_signup = 马上注册CloudSlides云幻灯账号
-index_txt_login = 已经有账号了? 快来登录吧。
+index_sub_title_2 = 随时随地云幻灯直播，让你的想法更有力。
+index_btn_signup = 马上注册CloudSlides云幻灯
+index_txt_login = 已经有CloudSlides云幻灯账号了? 快来登录吧。
 
-index_tooltip_web = 你就在这里！请尽情享用吧！Alpha测试阶段
-index_tooltip_chrome = 马上安装到Chrome吧！
-index_tooltip_android = 安装到Android手机上吧！
+index_tooltip_web = WEB版CloudSlides云幻灯就在这里！请尽情享用吧！beta测试阶段
+index_tooltip_chrome = 马上安装CloudSlides云幻灯到Chrome吧！
+index_tooltip_android = 安装CloudSlides云幻灯到Android手机上吧！
 index_tooltip_ios = Oops...iOS应用正在闯关AppStore审批的路上。快到了！
 
 index_block1_txt  =在线PPT会议
@@ -38,11 +38,11 @@ index_block4_sub =几乎无需学习，CloudSlides云幻灯一切皆如你所愿
 
 #登录login
 
-login_title = 登入CloudSlides
+login_title = 登入CloudSlides云幻灯
 login_btn_login = 登录
 login_input_username = 账号
 login_input_password = 密码
-login_jump_to_signup = 还没有CloudSlides账号？马上注册吧！
+login_jump_to_signup = 还没有CloudSlides云幻灯账号？马上注册吧！
 
 
 #注册signup

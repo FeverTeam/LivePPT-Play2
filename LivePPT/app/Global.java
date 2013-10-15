@@ -1,6 +1,6 @@
+import com.fever.liveppt.config.CloudSlidesInjectionConfigModule;
 import play.GlobalSettings;
 
-import com.fever.liveppt.config.LivePPTInjectionConfigModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -15,7 +15,7 @@ public class Global extends GlobalSettings {
 	}
 
 	private static Injector createInjector() {
-		return Guice.createInjector(new LivePPTInjectionConfigModule());
+		return Guice.createInjector(new CloudSlidesInjectionConfigModule());
 	}
 
 }
