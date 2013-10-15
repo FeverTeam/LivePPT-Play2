@@ -12,6 +12,7 @@ object ApplicationBuild extends Build {
     javaCore,
     javaJdbc, 
     cache,
+    filters, //for enabling Gzip, play.filters.gzip.GzipFilter
     javaEbean,
 
     //MySql Connector for Java

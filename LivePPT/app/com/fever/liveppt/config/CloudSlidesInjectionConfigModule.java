@@ -8,7 +8,7 @@ import com.fever.liveppt.service.impl.PptServiceImpl;
 import com.fever.liveppt.service.impl.UserServiceImpl;
 import com.google.inject.AbstractModule;
 
-public class LivePPTInjectionConfigModule extends AbstractModule {
+public class CloudSlidesInjectionConfigModule extends AbstractModule {
 
     @Override
     protected void configure() {
