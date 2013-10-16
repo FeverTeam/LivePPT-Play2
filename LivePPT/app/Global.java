@@ -4,10 +4,19 @@ import com.google.inject.Injector;
 import play.GlobalSettings;
 import play.api.mvc.EssentialFilter;
 import play.filters.gzip.GzipFilter;
+import play.libs.F;
+import play.mvc.Http;
+import play.mvc.SimpleResult;
+
+import static play.mvc.Results.movedPermanently;
 
 public class Global extends GlobalSettings {
 
     private static final Injector INJECTOR = createInjector();
+
+    private static Injector createInjector() {
+        return Guice.createInjector(new CloudSlidesInjectionConfigModule());
+    }
 
     @Override
     public <T extends EssentialFilter> Class<T>[] filters() {
@@ -16,13 +25,15 @@ public class Global extends GlobalSettings {
     }
 
     @Override
+    public F.Promise<SimpleResult> onHandlerNotFound(Http.RequestHeader request) {
+        //将not found的请求重定向301到首页
+        return F.Promise.<SimpleResult>pure(movedPermanently("/"));
+    }
+
+    @Override
     public <A> A getControllerInstance(Class<A> controllerClass) throws Exception {
         //为controller提供Guice依赖注入
         return INJECTOR.getInstance(controllerClass);
-    }
-
-    private static Injector createInjector() {
-        return Guice.createInjector(new CloudSlidesInjectionConfigModule());
     }
 
 }
