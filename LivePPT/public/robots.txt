@@ -1,0 +1,7 @@
+User-Agent: *
+Disallow: /mymeeting
+Disallow: /myppt
+Disallow: /meeting
+Disallow: /ppt
+Disallow: /user
+Disallow: /convertstatus
