@@ -1,5 +1,5 @@
 @(username: String)
-@main(name="index", title="欢迎使用", username){
+@main(name="index", title="", username){
   @** Extra CSS **@
 }{
 <!-- Main hero unit for a primary marketing message or call to action -->
@@ -15,16 +15,28 @@
       <div>
           <ul class="list-inline">
             <li>
-              <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_web")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/web-small-logo.png">Web</a>
+              <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_web")" onmouseover="$(this).tooltip('show');">
+                <img src="/assets/images/web-small-logo.png" alt="CloudSlides云幻灯 WEB版"/>
+                Web
+              </a>
             </li>
             <li>
-              <a target="_blank" href="https://chrome.google.com/webstore/detail/liveppt/pnpaagoieoljcnaehfomfabajfocmalo" data-toggle="tooltip" title="" onmouseover="$(this).tooltip('show');" data-original-title="@Messages("index_tooltip_chrome")"><img src="/assets/images/chrome-small-logo.png">Chrome</a>
+              <a target="_blank" href="https://chrome.google.com/webstore/detail/aolaicookhoifjgchifjbffnfgjgcjbc" data-toggle="tooltip" title="" onmouseover="$(this).tooltip('show');" data-original-title="@Messages("index_tooltip_chrome")">
+                <img src="/assets/images/chrome-small-logo.png" alt="CloudSlides云幻灯 ChromeStore应用"/>
+                Chrome
+              </a>
             </li>
             <li>
-              <a target="_blank" href="http://cloudslides.net/android_upgrade/cloudslides_android_latest.apk" data-toggle="tooltip" title="@Messages("index_tooltip_android")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/android-small-logo.png">Android</a>
+              <a target="_blank" href="http://cloudslides.net/android_upgrade/cloudslides_android_latest.apk" data-toggle="tooltip" title="@Messages("index_tooltip_android")" onmouseover="$(this).tooltip('show');">
+                <img src="/assets/images/android-small-logo.png" alt="CloudSlides云幻灯 Android应用"/>
+                Android
+              </a>
             </li>
             <li>
-              <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_ios")" onmouseover="$(this).tooltip('show');"><img src="/assets/images/iphone-small-logo.png">iPhone</a>
+              <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_ios")" onmouseover="$(this).tooltip('show');">
+                <img src="/assets/images/iphone-small-logo.png" alt="CloudSlides云幻灯 iOS应用"/>
+                iPhone
+              </a>
             </li>
           </ul>
       </div>
