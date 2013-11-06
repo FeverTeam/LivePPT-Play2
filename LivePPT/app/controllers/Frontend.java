@@ -164,4 +164,8 @@ public class Frontend extends Controller {
     public static Result msg() {
         return ok(msg.render());
     }
+
+    public static Result wampRpcTest(){
+        return ok(wampTest.render());
+    }
 }
