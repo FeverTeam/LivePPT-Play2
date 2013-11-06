@@ -42,6 +42,12 @@ POST    /ppt/delete                 @controllers.PptController.pptDelete()
 #（convertstatus为保留接口，用于接受SNS关于转换成功的通知）
 POST	/convertstatus				@controllers.PptController.convertstatus()
 
+## WAMP
+# Send websocket connections to the WAMPlay server
+GET     /wamp                     ws.wamplay.controllers.WAMPlayServer.connect()
+#WAMP临时测试页
+GET     /wamp_rpc_test                  controllers.Frontend.wampRpcTest()
+
 ###
 #会议方向接口
 
