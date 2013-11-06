@@ -9,7 +9,7 @@ libraryDependencies ++= Seq(
 	filters, //for enabling Gzip, play.filters.gzip.GzipFilter
 	javaEbean,
 	"mysql" % "mysql-connector-java" % "5.1.27",
-	"com.google.inject" % "guice" % "3.0"
+	"com.google.inject" % "guice" % "4.0-beta"
 )     
 
 play.Project.playJavaSettings
