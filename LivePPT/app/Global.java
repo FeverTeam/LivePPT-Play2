@@ -1,12 +1,15 @@
 import com.fever.liveppt.config.CloudSlidesInjectionConfigModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import controllers.SampleController;
+import play.Application;
 import play.GlobalSettings;
 import play.api.mvc.EssentialFilter;
 import play.filters.gzip.GzipFilter;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.SimpleResult;
+import ws.wamplay.controllers.WAMPlayServer;
 
 import static play.mvc.Results.movedPermanently;
 
@@ -34,6 +37,11 @@ public class Global extends GlobalSettings {
     public <A> A getControllerInstance(Class<A> controllerClass) throws Exception {
         //为controller提供Guice依赖注入
         return INJECTOR.getInstance(controllerClass);
+    }
+
+    @Override
+    public void onStart(Application app) {
+        WAMPlayServer.addController(new SampleController());
     }
 
 }
