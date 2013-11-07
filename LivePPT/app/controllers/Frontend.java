@@ -4,8 +4,6 @@ import com.fever.liveppt.models.Attender;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
-import play.Logger;
-import play.cache.Cached;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
@@ -37,8 +35,8 @@ public class Frontend extends Controller {
 
         Map<String, String[]> params = request().queryString();
 
-        String callbackUrl = (params.containsKey("callbackUrl")) ?  params.get("callbackUrl")[0] : "/";
-        String uemail = (params.containsKey("uemail")) ?  params.get("uemail")[0].toLowerCase() : null;
+        String callbackUrl = (params.containsKey("callbackUrl")) ? params.get("callbackUrl")[0] : "/";
+        String uemail = (params.containsKey("uemail")) ? params.get("uemail")[0].toLowerCase() : null;
         String token = (params.containsKey("token")) ? params.get("token")[0] : null;
 
         if (uemail != null && !uemail.equals("") && token != null && !uemail.equals("")) {
@@ -52,9 +50,10 @@ public class Frontend extends Controller {
 
     /**
      * 用于登出，清除Cookie内的用户信息和token
+     *
      * @return
      */
-    public static Result logout(){
+    public static Result logout() {
         response().setCookie("uemail", "");
         response().setCookie("token", "");
         return redirect("/");
@@ -64,7 +63,7 @@ public class Frontend extends Controller {
     public static Result index() {
         User user = CheckLoginAction.getUser(ctx());
 
-        String username = (user==null)?"":user.displayname;
+        String username = (user == null) ? "" : user.displayname;
         return ok(index.render(username));
     }
 
@@ -140,7 +139,7 @@ public class Frontend extends Controller {
     @With(CheckLoginAction.class)
     public static Result viewMeeting(Long meetingId) {
         User user = CheckLoginAction.getUser(ctx());
-        String username = (user==null)?"":user.displayname;
+        String username = (user == null) ? "" : user.displayname;
 
         Meeting meeting = Meeting.find.byId(meetingId);
         return ok(viewMeeting.render(meeting, username));
@@ -149,7 +148,7 @@ public class Frontend extends Controller {
     @With(CheckLoginAction.class)
     public static Result appDownload() {
         User user = CheckLoginAction.getUser(ctx());
-        String username = (user==null)?"":user.displayname;
+        String username = (user == null) ? "" : user.displayname;
 
         return ok(appDownload.render(username));
     }
@@ -157,7 +156,7 @@ public class Frontend extends Controller {
     @With(CheckLoginAction.class)
     public static Result aboutUs() {
         User user = CheckLoginAction.getUser(ctx());
-        String username = (user==null)?"":user.displayname;
+        String username = (user == null) ? "" : user.displayname;
         return ok(aboutUs.render(username));
     }
 
@@ -165,7 +164,7 @@ public class Frontend extends Controller {
         return ok(msg.render());
     }
 
-    public static Result wampRpcTest(){
-        return ok(wampTest.render());
+    public static Result wampPubSubTest() {
+        return ok(wampPubSubTest.render());
     }
 }

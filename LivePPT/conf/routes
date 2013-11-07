@@ -46,7 +46,7 @@ POST	/convertstatus				@controllers.PptController.convertstatus()
 # Send websocket connections to the WAMPlay server
 GET     /wamp                     ws.wamplay.controllers.WAMPlayServer.connect()
 #WAMP临时测试页
-GET     /wamp_rpc_test                  controllers.Frontend.wampRpcTest()
+GET     /wampPubSubtest             controllers.Frontend.wampPubSubTest()
 
 ###
 #会议方向接口

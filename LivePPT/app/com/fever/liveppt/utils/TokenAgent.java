@@ -6,7 +6,6 @@ import com.fever.liveppt.exception.common.TokenInvalidException;
 import com.fever.liveppt.exception.user.UserNotExistedException;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.UserService;
-import play.Logger;
 import play.libs.Crypto;
 import play.mvc.Http;
 
@@ -31,7 +30,7 @@ public class TokenAgent {
 
         //从Header中获取参数
         String userEmail = request.getHeader("uemail");
-        if (userEmail == null || userEmail.length() == 0){
+        if (userEmail == null || userEmail.length() == 0) {
             throw new InvalidParamsException();
         } else {
             //将userEmail变为小写

@@ -9,7 +9,7 @@ import ws.wamplay.annotations.onSubscribe;
 import ws.wamplay.controllers.WAMPlayContoller;
 
 @URIPrefix("http://example.com")
-public class SampleController extends WAMPlayContoller {
+public class WAMPSampleController extends WAMPlayContoller {
 
     @onRPC("#meaningOfLife")
     public static String getMeaningOfLife(String sessionID) {

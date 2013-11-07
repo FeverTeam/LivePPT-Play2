@@ -18,8 +18,6 @@ import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
 import com.fever.liveppt.utils.TokenAgent;
 import com.google.inject.Inject;
-import play.Logger;
-import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.Result;
 
@@ -29,37 +27,37 @@ public class UserController extends Controller {
     @Inject
     UserService userService;
 
-    public Result updatePassword(){
+    public Result updatePassword() {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
         ResultJson resultJson;
         try {
-        //验证Token并提取userEmail
-        String userEmail = TokenAgent.validateTokenFromHeader(request());
-        if (null == params) {
-            throw new InvalidParamsException();
-        }
+            //验证Token并提取userEmail
+            String userEmail = TokenAgent.validateTokenFromHeader(request());
+            if (null == params) {
+                throw new InvalidParamsException();
+            }
 
-        //oldPassword
-        if (!ControllerUtils.isFieldNotNull(params, "oldPassword")) {
-            throw new InvalidParamsException();
-        }
+            //oldPassword
+            if (!ControllerUtils.isFieldNotNull(params, "oldPassword")) {
+                throw new InvalidParamsException();
+            }
 
-        //newPassword
-        if (!ControllerUtils.isFieldNotNull(params, "newPassword")) {
-            throw new InvalidParamsException();
-        }
+            //newPassword
+            if (!ControllerUtils.isFieldNotNull(params, "newPassword")) {
+                throw new InvalidParamsException();
+            }
 
-        //seed
-        if (!ControllerUtils.isFieldNotNull(params, "seed")) {
-            throw new InvalidParamsException();
-        }
+            //seed
+            if (!ControllerUtils.isFieldNotNull(params, "seed")) {
+                throw new InvalidParamsException();
+            }
 
             // 获取参数
-        String oldPassword = params.get("oldPassword")[0];
-        String newPassword = params.get("newPassword")[0];
-        String seed = params.get("seed")[0];
+            String oldPassword = params.get("oldPassword")[0];
+            String newPassword = params.get("newPassword")[0];
+            String seed = params.get("seed")[0];
 
-        resultJson = userService.updatePassword(userEmail,oldPassword,newPassword,seed);
+            resultJson = userService.updatePassword(userEmail, oldPassword, newPassword, seed);
         } catch (TokenInvalidException e) {
             resultJson = new ResultJson(e);
         } catch (PasswordNotMatchException e) {
@@ -71,11 +69,13 @@ public class UserController extends Controller {
         //返回JSON
         return ok(resultJson.objectNode);
     }
+
     /**
      * 检查用户Email是否被占用
+     *
      * @return
-     * @exception InvalidParamsException
-     * @exception UserException
+     * @throws InvalidParamsException
+     * @throws UserException
      */
     public Result checkEmail() {
         Map<String, String[]> params = request().body().asFormUrlEncoded();
@@ -115,9 +115,10 @@ public class UserController extends Controller {
 
     /**
      * 用户登录接口
+     *
      * @return
-     * @exception InvalidParamsException
-     * @exception UserException
+     * @throws InvalidParamsException
+     * @throws UserException
      */
     public Result login() {
         //获取POST参数
@@ -170,9 +171,10 @@ public class UserController extends Controller {
 
     /**
      * 用户注册接口
+     *
      * @return
-     * @exception InvalidParamsException
-     * @exception UserException
+     * @throws InvalidParamsException
+     * @throws UserException
      */
     public Result register() {
         //获取POST参数

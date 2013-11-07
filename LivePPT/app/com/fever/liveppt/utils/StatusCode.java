@@ -1,4 +1,5 @@
 package com.fever.liveppt.utils;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Zijing Lee
@@ -52,7 +53,7 @@ public class StatusCode {
     public final static String PPT_NOT_SELF_OWN_MESSAGE = "ppt not of user own";
     //用户没有权限操作该PPT
     public final static int PPT_NOT_PERMISSION_DENY = -306;
-    public final static String PPT_NOT_PERMISSION_DENY_MESSAGE = "not have permission to operate the ppt" ;
+    public final static String PPT_NOT_PERMISSION_DENY_MESSAGE = "not have permission to operate the ppt";
     //*******************MEETING类型错误*****************
     //Meeting不存在
     public final static int MEETING_NOT_EXISTED = -401;
