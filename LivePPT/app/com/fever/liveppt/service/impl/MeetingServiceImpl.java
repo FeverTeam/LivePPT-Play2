@@ -12,20 +12,24 @@ import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
-import com.fever.liveppt.utils.CacheAgent;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
 import play.Logger;
 import play.cache.Cache;
 
+import play.libs.Json;
+import ws.wamplay.controllers.WAMPlayServer;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fever.liveppt.utils.MeetingAgent.genMeetingPageCacheKey;
+import static com.fever.liveppt.utils.MeetingAgent.getOrCreatePageTopic;
 
 /**
  * @author
  * @version : v1.00
  * @Description : 会议操作接口实现 ，提供给service层调用
- *
  */
 public class MeetingServiceImpl implements MeetingService {
 
@@ -66,7 +70,7 @@ public class MeetingServiceImpl implements MeetingService {
             throw new MeetingNotAttendedException();
         }
         for (Attender attender : user.attendents) {
-            if (attender.meeting.id.equals( meetingId)) {
+            if (attender.meeting.id.equals(meetingId)) {
                 attender.delete();
                 isAttended = true;
                 break;
@@ -207,13 +211,19 @@ public class MeetingServiceImpl implements MeetingService {
             throw new PptPageOutOfRangeException();
         }
 
-        //更新Cache中的页码
-        String meetingCacheKey = CacheAgent.generateMeetingCacheKey(meetingId);
-        Cache.set(meetingCacheKey, pageIndex, DEFAULT_MEETING_PAGE_CACHE_DURATION);
-        Logger.debug("setpage meetingid:"+meetingId+" page:"+pageIndex);
+        //向wamp对应topic发布页码更新
+        WAMPlayServer.publish(getOrCreatePageTopic(meetingId), Json.toJson(pageIndex));
 
+        //更新Cache中的页码
+        String meetingCacheKey = genMeetingPageCacheKey(meetingId);
+        Cache.set(meetingCacheKey, pageIndex, DEFAULT_MEETING_PAGE_CACHE_DURATION);
+        //Logger.debug("setpage meetingid:" + meetingId + " page:" + pageIndex);
+
+        /*
+        //更新数据库中的当前页码
         meeting.currentPageIndex = pageIndex;
         meeting.save();
+        */
 
         return ResultJson.simpleSuccess();
     }
