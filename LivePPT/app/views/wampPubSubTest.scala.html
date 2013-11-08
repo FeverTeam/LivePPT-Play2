@@ -17,7 +17,7 @@
     // Get WAMP endpoint URL
     var wsuri = "@ws.wamplay.controllers.routes.WAMPlayServer.connect().webSocketURL(request)";
 
-    var rpc_topic = "pageQuery#currentPageIndex"
+    var rpc_topic = "path#getTopic"
 
     function write (output, error) {
         var d = $('<div>').html(output);
@@ -52,15 +52,11 @@
                     // RPC success callback
                     function (res) {
                         write("got result: " + res);
-                        var json = JSON.parse(res);
-
-                        if (json.topicUri!="" || json.topicUri!=undefined)
-                            session.subscribe(json.topicUri, onEvent);
                     },
 
                     // RPC error callback
                     function (error, desc) {
-                        write("error: " + desc);
+                        write("error: " + error+" - "+desc);
                     }
                 );
 
