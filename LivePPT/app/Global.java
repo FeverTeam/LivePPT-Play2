@@ -2,6 +2,7 @@ import com.fever.liveppt.config.CloudSlidesInjectionConfigModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import controllers.PageQueryController;
+import controllers.PathController;
 import controllers.WAMPSampleController;
 import play.Application;
 import play.GlobalSettings;
@@ -45,8 +46,7 @@ public class Global extends GlobalSettings {
 
         WAMPlayServer.addController(new WAMPSampleController());
         WAMPlayServer.addController(new PageQueryController());
+        WAMPlayServer.addController(new PathController());
     }
-
-
 
 }

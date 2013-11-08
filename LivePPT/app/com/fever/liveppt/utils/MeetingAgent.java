@@ -9,9 +9,17 @@ import java.util.concurrent.Callable;
 public class MeetingAgent {
 
     public static final String PAGE_TOPIC_URI_PREFIX = "pageTopic";
+    public static final String PATH_TOPIC_URI_PREFIX = "pathTopic";
 
+    //生成会议页码cache key
     public static String genMeetingPageCacheKey(long meeetingId) {
         return "meeting" + meeetingId;
+    }
+
+    //生成会议笔迹cache key
+    public static String genMeetingPathCacheKey(long meeetingId, long pageIndex) {
+        StringBuilder sb = new StringBuilder("path.meeting");
+        return sb.append(meeetingId).append(".page").append(pageIndex).toString();
     }
 
     public static String getOrCreatePageTopic(long meetingId) {
@@ -21,12 +29,27 @@ public class MeetingAgent {
         }
 
         //建立会议页码topic并返回对应uri
-        String topicUri = genPageTopic(meetingId);
-        if (!WAMPlayServer.isTopic(topicUri)) {
+        String pageTopicUri = genPageTopicName(meetingId);
+        if (!WAMPlayServer.isTopic(pageTopicUri)) {
             //topic不存在，新增topic
-            WAMPlayServer.addTopic(topicUri);
+            WAMPlayServer.addTopic(pageTopicUri);
         }
-        return topicUri;
+        return pageTopicUri;
+    }
+
+    public static String getOrCreatePathTopic(long meetingId) {
+        //是否存在该会议
+        if (Meeting.find.byId(meetingId) == null) {
+            return "";
+        }
+
+        //建立笔迹topic并返回对应uri
+        String pathTopicUri = genPathTopicName(meetingId);
+        if (!WAMPlayServer.isTopic(pathTopicUri)) {
+            //topic不存在，新增topic
+            WAMPlayServer.addTopic(pathTopicUri);
+        }
+        return pathTopicUri;
     }
 
     public static long getCurrentPageIndex(long meetingId) {
@@ -37,8 +60,12 @@ public class MeetingAgent {
         }
     }
 
-    public static String genPageTopic(long meetingId) {
+    public static String genPageTopicName(long meetingId) {
         return PAGE_TOPIC_URI_PREFIX + "#meeting" + meetingId;
+    }
+
+    public static String genPathTopicName(long meetingId) {
+        return PATH_TOPIC_URI_PREFIX + "#meeting" + meetingId;
     }
 
     private static final Callable<Long> pageOne() {

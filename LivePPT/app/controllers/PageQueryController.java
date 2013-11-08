@@ -36,5 +36,4 @@ public class PageQueryController extends WAMPlayContoller {
         return "{\"pageIndex\":" + pageIndex + ",\"topicUri\":\"" + topicUri + "\"}";
     }
 
-
 }
