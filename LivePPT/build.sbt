@@ -15,3 +15,11 @@ libraryDependencies ++= Seq(
 )     
 
 play.Project.playJavaSettings
+
+//for redis client
+
+resolvers += "Typesafe Releases" at "http://typesafe.artifactoryonline.com/typesafe"
+
+resolvers += "pk11 repo" at "http://pk11-scratch.googlecode.com/svn/trunk"
+
+libraryDependencies += "com.typesafe" % "play-plugins-redis_2.10" % "2.1.1"
