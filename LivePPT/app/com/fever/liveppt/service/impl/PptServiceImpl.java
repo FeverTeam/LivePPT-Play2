@@ -77,7 +77,7 @@ public class PptServiceImpl implements PptService {
         }
 
         try {
-            byte[] imgBytes = null;
+            byte[] imgBytes;
             String storeKey = ppt.storeKey;
             String pageKey = storeKey + "p" + pageId;
             // 若文件存在于Cache中，则直接返回

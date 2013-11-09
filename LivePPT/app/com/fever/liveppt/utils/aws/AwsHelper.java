@@ -39,6 +39,7 @@ public class AwsHelper {
      *
      * @return
      */
+    @Deprecated
     public static AmazonSNS genTokyoSNS() {
         AmazonSNSClient S3Client = new AmazonSNSClient(new ClasspathPropertiesFileCredentialsProvider());
         Region tokyoRegion = Region.getRegion(Regions.AP_NORTHEAST_1);

@@ -14,9 +14,7 @@ import com.fever.liveppt.models.User;
 import com.fever.liveppt.service.MeetingService;
 import com.fever.liveppt.utils.ResultJson;
 import com.fever.liveppt.utils.StatusCode;
-import play.Logger;
 import play.cache.Cache;
-
 import play.libs.Json;
 import ws.wamplay.controllers.WAMPlayServer;
 
@@ -126,7 +124,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<Meeting> getMyAttendingMeetings(String userEmail) {
-        List<Meeting> meetings = new ArrayList<Meeting>();
+        List<Meeting> meetings = new ArrayList<>();
         User user = User.find.where().eq("email", userEmail).findUnique();
         for (Attender attender : user.attendents) {
             meetings.add(attender.meeting);
@@ -136,7 +134,7 @@ public class MeetingServiceImpl implements MeetingService {
 
     @Override
     public List<Meeting> getMyFoundedMeetings(String userEmail) {
-        List<Meeting> meetings = new ArrayList<Meeting>();
+        List<Meeting> meetings = new ArrayList<>();
         User user = User.find.where().eq("email", userEmail).findUnique();
         for (Meeting meeting : user.myFoundedMeeting) {
             meetings.add(meeting);
