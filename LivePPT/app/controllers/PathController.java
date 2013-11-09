@@ -22,6 +22,8 @@ import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 @URIPrefix("path")
 public class PathController extends WAMPlayContoller {
 
+    private static final int DEFAULT_PATH_CACHE_EXPIRATION = 3600;
+
     private static final String errResponseStr = "error";
     private static final String successResponseStr = "ok";
     private static final String blankJsonString = "{\"topicUri\":\"\"}";
@@ -124,6 +126,7 @@ public class PathController extends WAMPlayContoller {
         try {
             Pipeline p = j.pipelined();
             p.rpush(pathCacheKey, jsonStr);
+            p.expire(pathCacheKey, DEFAULT_PATH_CACHE_EXPIRATION);
             Response<Long> pathIndexFuture = p.llen(pathCacheKey);
             p.sync();  //执行
 
