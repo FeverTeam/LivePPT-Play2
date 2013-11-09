@@ -68,7 +68,7 @@ public class MeetingAgent {
         return PATH_TOPIC_URI_PREFIX + "#meeting" + meetingId;
     }
 
-    private static final Callable<Long> pageOne() {
+    private static Callable<Long> pageOne() {
         return new Callable<Long>() {
             @Override
             public Long call() {

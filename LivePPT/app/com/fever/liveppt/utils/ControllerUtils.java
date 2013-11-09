@@ -19,13 +19,6 @@ public class ControllerUtils {
      * @return
      */
     public static boolean isFieldNotNull(Map<String, String[]> params, String fieldName) {
-        if (params == null || fieldName == null || fieldName.length() == 0) {
-            return false;
-        }
-        if (!params.containsKey(fieldName) || params.get(fieldName)[0].length() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(params == null || fieldName == null || fieldName.length() == 0) && !(!params.containsKey(fieldName) || params.get(fieldName)[0].length() == 0);
     }
 }
