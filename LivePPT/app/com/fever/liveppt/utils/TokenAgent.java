@@ -75,7 +75,6 @@ public class TokenAgent {
     }
 
     public static boolean isEmailFormatValid(String email) {
-        Matcher m = emailPattern.matcher(email);
-        return m.matches();
+        return emailPattern.matcher(email).matches();
     }
 }
