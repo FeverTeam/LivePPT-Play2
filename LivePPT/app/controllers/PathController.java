@@ -21,9 +21,12 @@ import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 @URIPrefix("path")
 public class PathController extends WAMPlayContoller {
 
-    public static final String errResponseStr = "error";
-    public static final String successResponseStr = "ok";
+    private static final String errResponseStr = "error";
+    private static final String successResponseStr = "ok";
     private static final String blankJsonString = "{\"topicUri\":\"\"}";
+
+    private static final String PUBLISH_TYPE_NEW_PATH = "newPath";
+    private static final String PUBLISH_TYPE_RESET_PATH = "resetPath";
 
     /**
      * 获取pubsub所需的topic
@@ -83,6 +86,12 @@ public class PathController extends WAMPlayContoller {
             play.Play.application().plugin(RedisPlugin.class).jedisPool().returnResource(j);
         }
 
+        //推送reset消息
+        WAMPlayServer.publish(
+                genPathTopicName(meetingId),
+                resultJsonForPublish(PUBLISH_TYPE_RESET_PATH, pageIndex, null)
+        );
+
         return successResponseStr;
     }
 
@@ -102,10 +111,10 @@ public class PathController extends WAMPlayContoller {
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
-        JsonNode dataJson = args[2];
-        if (meetingId == 0 || pageIndex == 0 || dataJson == null) {
+        if (meetingId == 0 || pageIndex == 0 || args[2] == null) {
             return errResponseStr;
         }
+        String jsonStr = args[2].toString();
 
         //生成cache key
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
@@ -114,7 +123,7 @@ public class PathController extends WAMPlayContoller {
         long pathIndex = 0;
         try {
             Pipeline p = j.pipelined();
-            p.rpush(pathCacheKey, dataJson.toString());
+            p.rpush(pathCacheKey, jsonStr);
             Response<Long> pathIndexFuture = p.llen(pathCacheKey);
             p.sync();  //执行
 
@@ -128,9 +137,11 @@ public class PathController extends WAMPlayContoller {
         if (pathIndex == 0) {
             return errResponseStr;
         } else {
-            //pubsub推送新笔迹
-            String pathTopicUri = genPathTopicName(meetingId);
-            WAMPlayServer.publish(pathTopicUri, Json.newObject().put("pageIndex", pageIndex).put("data", dataJson));
+            //推送新笔迹
+            WAMPlayServer.publish(
+                    genPathTopicName(meetingId),
+                    resultJsonForPublish(PUBLISH_TYPE_NEW_PATH, pageIndex, jsonStr)
+            );
 
             return String.valueOf(pathIndex);
         }
@@ -210,6 +221,12 @@ public class PathController extends WAMPlayContoller {
 
 
         return convertResponseArrayToString(strResponseArr);
+    }
+
+    //组装结果字符串
+    private final static JsonNode resultJsonForPublish(String type, long pageIndex, String dataStr) {
+        dataStr = (dataStr == null) ? "" : dataStr;
+        return Json.newObject().put("type", type).put("pageIndex", pageIndex).put("data", dataStr);
     }
 
     private final static String convertListToString(List<String> StringList) {
