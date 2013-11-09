@@ -114,7 +114,7 @@ public class PathController extends WAMPlayContoller {
         if (meetingId == 0 || pageIndex == 0 || args[2] == null) {
             return errResponseStr;
         }
-        String jsonStr = args[2].toString();
+        String jsonStr = args[2].asText();
 
         //生成cache key
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
