@@ -32,7 +32,7 @@ public class Global extends GlobalSettings {
     @Override
     public F.Promise<SimpleResult> onHandlerNotFound(Http.RequestHeader request) {
         //将not found的请求重定向301到首页
-        return F.Promise.<SimpleResult>pure(movedPermanently("/"));
+        return F.Promise.pure(movedPermanently("/"));
     }
 
     @Override
@@ -43,10 +43,10 @@ public class Global extends GlobalSettings {
 
     @Override
     public void onStart(Application app) {
-
+        //加入WAMP静态controller
         WAMPlayServer.addController(new WAMPSampleController());
-        WAMPlayServer.addController(new PageQueryController());
-        WAMPlayServer.addController(new PathController());
+        WAMPlayServer.addController(new PageQueryController());  //页码查询
+        WAMPlayServer.addController(new PathController());  //笔迹处理
     }
 
 }
