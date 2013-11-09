@@ -13,6 +13,7 @@ import ws.wamplay.annotations.onRPC;
 import ws.wamplay.controllers.WAMPlayContoller;
 import ws.wamplay.controllers.WAMPlayServer;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.fever.liveppt.utils.MeetingAgent.genMeetingPathCacheKey;
@@ -24,7 +25,6 @@ public class PathController extends WAMPlayContoller {
     private static final String errResponseStr = "error";
     private static final String successResponseStr = "ok";
     private static final String blankJsonString = "{\"topicUri\":\"\"}";
-
     private static final String PUBLISH_TYPE_NEW_PATH = "newPath";
     private static final String PUBLISH_TYPE_RESET_PATH = "resetPath";
 
@@ -203,35 +203,36 @@ public class PathController extends WAMPlayContoller {
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
 
         Jedis j = play.Play.application().plugin(RedisPlugin.class).jedisPool().getResource();
-        Response<String> strResponseArr[] = new Response[arrJson.size()];
+        List<Response<String>> strResponseList = new LinkedList<>();
 
         try {
-        } finally {
             Pipeline p = j.pipelined();
             int targetIndex;
             for (int i = 0; i < arrJson.size(); i++) {
                 targetIndex = arrJson.get(i).asInt();
-                strResponseArr[i] = p.lindex(pathCacheKey, targetIndex - 1);
+                strResponseList.add(p.lindex(pathCacheKey, targetIndex - 1));
             }
             p.sync(); //执行
-
-
+        } finally {
             play.Play.application().plugin(RedisPlugin.class).jedisPool().returnResource(j);
         }
 
-
-        return convertResponseArrayToString(strResponseArr);
+        return convertResponseArrayToList(strResponseList);
     }
 
     //组装结果字符串
-    private final static JsonNode resultJsonForPublish(String type, long pageIndex, String dataStr) {
+    private static JsonNode resultJsonForPublish(String type, long pageIndex, String dataStr) {
         dataStr = (dataStr == null) ? "" : dataStr;
         return Json.newObject().put("type", type).put("pageIndex", pageIndex).put("data", dataStr);
     }
 
-    private final static String convertListToString(List<String> StringList) {
+    private static String convertListToString(List<String> pathList) {
+        if (pathList == null) {
+            return "[]";
+        }
+
         StringBuilder sb = new StringBuilder("[");
-        for (String path : StringList) {
+        for (String path : pathList) {
             sb.append(path).append(",");
         }
         if (sb.length() > 1) {
@@ -242,11 +243,15 @@ public class PathController extends WAMPlayContoller {
         return sb.toString();
     }
 
-    private final static String convertResponseArrayToString(Response<String>[] strResponseArr) {
+    private static String convertResponseArrayToList(List<Response<String>> strResponseList) {
+        if (strResponseList == null) {
+            return "[]";
+        }
+
         StringBuilder sb = new StringBuilder("[");
         String tmpStr;
-        for (int i = 0; i < strResponseArr.length; i++) {
-            tmpStr = strResponseArr[i].get();
+        for (Response<String> response : strResponseList) {
+            tmpStr = response.get();
             if (tmpStr == null) {
                 sb.append("[],");
             } else {
