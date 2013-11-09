@@ -13,9 +13,9 @@ import play.libs.Json;
  * Description:  封装数据方向接口的自定义JSON格式，即接口返回数据的JSON格式
  */
 public class ResultJson {
-    public final static String KEY_DATA = "data";
-    public final static String KEY_MESSAGE = "message";
-    public final static String KEY_STATUS_CODE = "retcode";
+    public static final String KEY_DATA = "data";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_STATUS_CODE = "retcode";
 
     public ObjectNode objectNode;
 

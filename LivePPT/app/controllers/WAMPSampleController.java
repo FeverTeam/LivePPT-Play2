@@ -18,8 +18,7 @@ public class WAMPSampleController extends WAMPlayContoller {
 
     @onRPC("#capital")
     public static String add(String sessionID, JsonNode[] args) {
-        String ans = args[0].asText().toUpperCase();
-        return ans;
+        return args[0].asText().toUpperCase();
     }
 
     @onSubscribe("/chat")

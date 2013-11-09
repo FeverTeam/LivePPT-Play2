@@ -49,13 +49,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidParamsException();
         }
         int userCount = User.find.where().eq("email", userEmail).findRowCount();
-        if (userCount > 0) {
-            // 相同用户Email已存在
-            return true;
-        } else {
-            //未存在
-            return false;
-        }
+        return userCount > 0;
     }
 
     @Override
@@ -87,7 +81,7 @@ public class UserServiceImpl implements UserService {
                 //生成token
                 String token = TokenAgent.generateToken(email);
 
-                Map<String, String> data = new HashMap<String, String>();
+                Map<String, String> data = new HashMap<>();
                 data.put("token", token);
                 data.put("displayName", user.displayname);
                 DataJson dataJson = new DataJson(data);
@@ -109,7 +103,7 @@ public class UserServiceImpl implements UserService {
         }
 
         //如果displayName为空，设置其为email
-        displayName = (displayName == null || displayName.length() == 0) ? email : displayName;
+        displayName = (displayName.length() == 0) ? email : displayName;
 
         String password;
         try {
@@ -148,7 +142,7 @@ public class UserServiceImpl implements UserService {
             //生成token
             String token = TokenAgent.generateToken(user.email);
 
-            HashMap<String, String> map = new HashMap<String, String>();
+            HashMap<String, String> map = new HashMap<>();
             map.put("token", token);
 
             //封装json格式的data数据

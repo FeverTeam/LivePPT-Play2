@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fever.liveppt.utils.MeetingAgent;
 import com.typesafe.plugin.RedisPlugin;
+import play.Play;
 import play.libs.Json;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Response;
 import ws.wamplay.annotations.URIPrefix;
@@ -21,6 +23,8 @@ import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 
 @URIPrefix("path")
 public class PathController extends WAMPlayContoller {
+
+    private static final int DEFAULT_PATH_CACHE_EXPIRATION = 3600;
 
     private static final String errResponseStr = "error";
     private static final String successResponseStr = "ok";
@@ -78,12 +82,13 @@ public class PathController extends WAMPlayContoller {
             return errResponseStr;
         }
 
-        Jedis j = play.Play.application().plugin(RedisPlugin.class).jedisPool().getResource();
+        JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
+        Jedis j = jedisPool.getResource();
         try {
             //删除所有对应页面的路径
             j.del(genMeetingPathCacheKey(meetingId, pageIndex));
         } finally {
-            play.Play.application().plugin(RedisPlugin.class).jedisPool().returnResource(j);
+            jedisPool.returnResource(j);
         }
 
         //推送reset消息
@@ -119,18 +124,20 @@ public class PathController extends WAMPlayContoller {
         //生成cache key
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
 
-        Jedis j = play.Play.application().plugin(RedisPlugin.class).jedisPool().getResource();
+        JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
+        Jedis j = jedisPool.getResource();
         long pathIndex = 0;
         try {
             Pipeline p = j.pipelined();
             p.rpush(pathCacheKey, jsonStr);
+            p.expire(pathCacheKey, DEFAULT_PATH_CACHE_EXPIRATION);
             Response<Long> pathIndexFuture = p.llen(pathCacheKey);
             p.sync();  //执行
 
             pathIndex = pathIndexFuture.get();
 
         } finally {
-            play.Play.application().plugin(RedisPlugin.class).jedisPool().returnResource(j);
+            jedisPool.returnResource(j);
         }
 
 
@@ -169,12 +176,13 @@ public class PathController extends WAMPlayContoller {
         }
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
 
-        Jedis j = play.Play.application().plugin(RedisPlugin.class).jedisPool().getResource();
+        JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
+        Jedis j = jedisPool.getResource();
         List<String> pathList;
         try {
             pathList = j.lrange(pathCacheKey, 0, -1);
         } finally {
-            play.Play.application().plugin(RedisPlugin.class).jedisPool().returnResource(j);
+            jedisPool.returnResource(j);
         }
 
         return convertListToString(pathList);
@@ -202,7 +210,8 @@ public class PathController extends WAMPlayContoller {
         ArrayNode arrJson = (ArrayNode) args[2];
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
 
-        Jedis j = play.Play.application().plugin(RedisPlugin.class).jedisPool().getResource();
+        JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
+        Jedis j = jedisPool.getResource();
         List<Response<String>> strResponseList = new LinkedList<>();
 
         try {
@@ -214,7 +223,7 @@ public class PathController extends WAMPlayContoller {
             }
             p.sync(); //执行
         } finally {
-            play.Play.application().plugin(RedisPlugin.class).jedisPool().returnResource(j);
+            jedisPool.returnResource(j);
         }
 
         return convertResponseArrayToList(strResponseList);

@@ -71,19 +71,11 @@ public class TokenAgent {
             return false;
         }
         String correctToken = generateToken(userEmail);
-        if (correctToken != null && token.equals(correctToken)) {
-            return true;
-        } else {
-            return false;
-        }
+        return correctToken != null && token.equals(correctToken);
     }
 
     public static boolean isEmailFormatValid(String email) {
         Matcher m = emailPattern.matcher(email);
-        if (m.matches()) {
-            return true;
-        } else {
-            return false;
-        }
+        return m.matches();
     }
 }
