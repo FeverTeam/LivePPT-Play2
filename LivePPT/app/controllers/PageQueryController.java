@@ -21,7 +21,7 @@ public class PageQueryController extends WAMPlayContoller {
 
     private static final String blankJsonString = "{\"pageIndex\":0,\"topicUri\":\"\"}";
     private static final String ERROR_STR = "error";
-    private static final String SUCCESS_STR = "error";
+    private static final String SUCCESS_STR = "ok";
 
     @onRPC("#set")
     public static String setPage(String sessionID, JsonNode[] args) {
