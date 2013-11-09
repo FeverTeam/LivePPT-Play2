@@ -1,17 +1,64 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fever.liveppt.models.Meeting;
+import com.fever.liveppt.models.User;
+import com.fever.liveppt.service.impl.MeetingServiceImpl;
 import com.fever.liveppt.utils.MeetingAgent;
+import com.fever.liveppt.utils.TokenAgent;
+import play.cache.Cache;
+import play.libs.Json;
 import ws.wamplay.annotations.URIPrefix;
 import ws.wamplay.annotations.onRPC;
 import ws.wamplay.controllers.WAMPlayContoller;
+import ws.wamplay.controllers.WAMPlayServer;
 
-@URIPrefix("pageQuery")
+import static com.fever.liveppt.utils.MeetingAgent.genMeetingPageCacheKey;
+import static com.fever.liveppt.utils.MeetingAgent.getOrCreatePageTopic;
+
+@URIPrefix("page")
 public class PageQueryController extends WAMPlayContoller {
 
     private static final String blankJsonString = "{\"pageIndex\":0,\"topicUri\":\"\"}";
+    private static final String ERROR_STR = "error";
+    private static final String SUCCESS_STR = "error";
 
-    @onRPC("#currentPageIndex")
+    @onRPC("#set")
+    public static String setPage(String sessionID, JsonNode[] args) {
+        if (args.length != 4) {
+            return ERROR_STR;
+        }
+        String userEmail = args[0].asText();
+        String token = args[1].asText();
+        long meetingId = args[2].asLong();
+        long pageIndex = args[3].asLong();
+        if (userEmail == null || token == null || meetingId == 0 || pageIndex == 0) {
+            return ERROR_STR;
+        }
+
+        //验证token
+        if (TokenAgent.isTokenValid(token, userEmail)) {
+            return ERROR_STR;
+        }
+
+        //检查会议是否控制者所发起
+        Meeting meeting = Meeting.find.byId(meetingId);
+        User user = User.find.where().eq("email", userEmail).findUnique();
+        if (meeting == null || user == null || !meeting.founder.id.equals(user.id)) {
+            return ERROR_STR;
+        }
+
+        //更新Cache中的页码
+        String meetingCacheKey = genMeetingPageCacheKey(meetingId);
+        Cache.set(meetingCacheKey, pageIndex, MeetingServiceImpl.DEFAULT_MEETING_PAGE_CACHE_DURATION);
+
+        //向wamp对应topic发布页码更新
+        WAMPlayServer.publish(getOrCreatePageTopic(meetingId), Json.toJson(pageIndex));
+
+        return SUCCESS_STR;
+    }
+
+    @onRPC("#currentIndex")
     public static String query(String sessionID, JsonNode[] args) throws Exception {
         if (args.length != 1) {
             return blankJsonString;
