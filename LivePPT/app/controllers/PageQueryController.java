@@ -37,7 +37,7 @@ public class PageQueryController extends WAMPlayContoller {
         }
 
         //验证token
-        if (TokenAgent.isTokenValid(token, userEmail)) {
+        if (!TokenAgent.isTokenValid(token, userEmail)) {
             return ERROR_STR;
         }
 
