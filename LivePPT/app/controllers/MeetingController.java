@@ -398,7 +398,7 @@ public class MeetingController extends Controller {
         try {
             //验证Token并提取userEmail
             String userEmail = TokenAgent.validateTokenFromHeader(request());
-            // String userEmail = "bowen@gmail.com";
+
             //获取POST参数
             Map<String, String[]> params = request().body().asFormUrlEncoded();
 
