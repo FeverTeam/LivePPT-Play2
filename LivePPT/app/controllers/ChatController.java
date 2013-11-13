@@ -106,7 +106,7 @@ public class ChatController extends WAMPlayContoller {
 
         try {
             //组装json
-            ArrayNode chatArr = JsonNodeFactory.instance.arrayNode();
+            ArrayNode chatArr = new ArrayNode(JsonNodeFactory.instance);
             if (chatList != null) {
                 for (String chat : chatList) {
                     chatArr.add(chat);
