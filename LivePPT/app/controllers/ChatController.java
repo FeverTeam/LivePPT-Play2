@@ -77,7 +77,7 @@ public class ChatController extends WAMPlayContoller {
 
     @onRPC("#queryAll")
     public static String queryAllChats(String sessionID, JsonNode[] args) {
-        if (args.length != 2) {
+        if (args.length != 1) {
             return ERROR_RESPONSE_STR;
         }
 
