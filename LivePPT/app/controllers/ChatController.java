@@ -1,6 +1,7 @@
 package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fever.liveppt.models.User;
@@ -107,7 +108,7 @@ public class ChatController extends WAMPlayContoller {
 
         try {
             //组装json
-            ArrayNode chatArr = new ArrayNode(JsonNodeFactory.instance);
+            ArrayNode chatArr = new ObjectMapper().createArrayNode();
             if (chatList != null) {
                 for (String chat : chatList) {
                     chatArr.add(chat);
