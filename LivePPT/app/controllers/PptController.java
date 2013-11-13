@@ -82,7 +82,7 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -128,7 +128,7 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -207,7 +207,7 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -255,7 +255,7 @@ public class PptController extends Controller {
 
                 pptService.uploadPptToS3(user, pptFile, pptFileName, pptFileSize);
 
-                return ok(ResultJson.simpleSuccess().objectNode);
+                return ok(ResultJson.simpleSuccess().o);
             }
         } catch (CommonException e) {
             resultJson = new ResultJson(e);
@@ -265,7 +265,7 @@ public class PptController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -313,7 +313,7 @@ public class PptController extends Controller {
         }
         //若获取不成功返回JSON
         resultJson = (resultJson == null) ? (new ResultJson(new UnknownErrorException())) : resultJson;
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**

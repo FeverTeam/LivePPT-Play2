@@ -173,7 +173,7 @@ public class MeetingController extends Controller {
         } catch (MeetingPermissionDenyException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -222,7 +222,7 @@ public class MeetingController extends Controller {
         } catch (MeetingPermissionDenyException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -287,7 +287,7 @@ public class MeetingController extends Controller {
         } catch (PptNotExistedException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -334,7 +334,7 @@ public class MeetingController extends Controller {
         } catch (AttendingExistedException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -380,7 +380,7 @@ public class MeetingController extends Controller {
         } catch (MeetingException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -444,7 +444,7 @@ public class MeetingController extends Controller {
         // resultJson = new ResultJson(e);
         // }
 
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -475,7 +475,7 @@ public class MeetingController extends Controller {
         } catch (InvalidParamsException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -507,7 +507,7 @@ public class MeetingController extends Controller {
             resultJson = new ResultJson(e);
         }
 
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -549,6 +549,6 @@ public class MeetingController extends Controller {
         } catch (MeetingNotExistedException e) {
             resultJson = new ResultJson(e);
         }
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 }
