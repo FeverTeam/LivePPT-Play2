@@ -132,7 +132,7 @@ public class ChatController extends WAMPlayContoller {
         JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
         Jedis j = jedisPool.getResource();
         try {
-            //删除所有对应页面的路径
+            //删除对应会议的chat cache
             j.del(MeetingAgent.genMeetingChatCacheKey(meetingId));
         } finally {
             jedisPool.returnResource(j);
