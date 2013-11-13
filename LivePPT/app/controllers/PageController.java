@@ -17,11 +17,11 @@ import static com.fever.liveppt.utils.MeetingAgent.genMeetingPageCacheKey;
 import static com.fever.liveppt.utils.MeetingAgent.getOrCreatePageTopic;
 
 @URIPrefix("page")
-public class PageQueryController extends WAMPlayContoller {
+public class PageController extends WAMPlayContoller {
 
     private static final String blankJsonString = "{\"pageIndex\":0,\"topicUri\":\"\"}";
     private static final String ERROR_STR = "error";
-    private static final String SUCCESS_STR = "error";
+    private static final String SUCCESS_STR = "ok";
 
     @onRPC("#set")
     public static String setPage(String sessionID, JsonNode[] args) {
@@ -37,7 +37,7 @@ public class PageQueryController extends WAMPlayContoller {
         }
 
         //验证token
-        if (TokenAgent.isTokenValid(token, userEmail)) {
+        if (!TokenAgent.isTokenValid(token, userEmail)) {
             return ERROR_STR;
         }
 
@@ -71,8 +71,9 @@ public class PageQueryController extends WAMPlayContoller {
         }
 
         //检查meetingId的合法性并创建对应的页码topic
-        String topicUri = MeetingAgent.getOrCreatePageTopic(meetingId);
-        if (topicUri == null || topicUri.equals("")) {
+        String pageTopicUri = MeetingAgent.getOrCreatePageTopic(meetingId);
+        String chatTopicUri = MeetingAgent.getOrCreateChatTopic(meetingId);
+        if (pageTopicUri == null || chatTopicUri == null) {
             return blankJsonString;
         }
 
@@ -80,7 +81,11 @@ public class PageQueryController extends WAMPlayContoller {
         long pageIndex = MeetingAgent.getCurrentPageIndex(meetingId);
 
         //返回json字符串
-        return "{\"pageIndex\":" + pageIndex + ",\"topicUri\":\"" + topicUri + "\"}";
+        return Json.newObject()
+                .put("pageIndex", pageIndex)
+                .put("pageTopicUri", pageTopicUri)
+                .put("chatTopicUri", chatTopicUri)
+                .toString();
     }
 
 }
