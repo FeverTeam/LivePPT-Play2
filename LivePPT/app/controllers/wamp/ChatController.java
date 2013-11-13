@@ -63,10 +63,10 @@ public class ChatController extends WAMPlayContoller {
 
         //组装json
         ObjectNode chatJson = Json.newObject()
-                .put("publisherEmail", userEmail)
-                .put("publisherDisplayName", user.displayname)
-                .put("chatText", chatText)
-                .put("time", time);
+                .put("pe", userEmail)  //publisherEmail
+                .put("pdn", user.displayname)  //publisherDisplayName
+                .put("text", chatText)  //chatText
+                .put("time", time);  //time
 
         //推送chat消息
         WAMPlayServer.publish(chatTopicUri, resultJsonForPublish(PUBLISH_TYPE_NEW_CHAT, chatJson.toString()));
