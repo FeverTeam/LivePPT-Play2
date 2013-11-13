@@ -7,6 +7,7 @@ import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.MeetingAgent;
 import com.fever.liveppt.utils.TokenAgent;
 import com.typesafe.plugin.RedisPlugin;
+import play.Logger;
 import play.Play;
 import play.libs.Json;
 import redis.clients.jedis.Jedis;
@@ -18,14 +19,11 @@ import ws.wamplay.controllers.WAMPlayServer;
 
 import java.util.List;
 
-import com.fever.liveppt.utils.MeetingAgent;
-
 @URIPrefix("chat")
 public class ChatController extends WAMPlayContoller {
 
     private static final String ERROR_RESPONSE_STR = "error";
     private static final String SUCCESS_RESPONSE_STR = "ok";
-
     private static final String PUBLISH_TYPE_NEW_CHAT = "newChat";
     private static final String PUBLISH_TYPE_RESET_CHAT = "resetChat";
 
@@ -96,24 +94,35 @@ public class ChatController extends WAMPlayContoller {
 
         JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
         Jedis j = jedisPool.getResource();
-        List<String> chatList;
+        List<String> chatList = null;
         try {
             chatList = j.lrange(chatCacheKey, 0, -1);
+        } catch (Exception e) {
+            Logger.info(e.toString());
         } finally {
             jedisPool.returnResource(j);
         }
 
 
-        //组装json
-        ArrayNode chatArr = JsonNodeFactory.instance.arrayNode();
-        for (String chat : chatList) {
-            chatArr.add(chat);
-        }
-        JsonNode json = Json.newObject()
-                .put("chatTopicUri", chatTopicUri)
-                .put("chats", chatArr);
+        try {
+            //组装json
+            ArrayNode chatArr = JsonNodeFactory.instance.arrayNode();
+            if (chatList != null) {
+                for (String chat : chatList) {
+                    chatArr.add(chat);
+                }
+            }
+            JsonNode json = Json.newObject()
+                    .put("chatTopicUri", chatTopicUri)
+                    .put("chats", chatArr);
 
-        return json.toString();
+            return json.toString();
+        } catch (Exception e) {
+            Logger.info(e.toString());
+            return ERROR_RESPONSE_STR;
+        }
+
+
     }
 
     @onRPC("#reset")
