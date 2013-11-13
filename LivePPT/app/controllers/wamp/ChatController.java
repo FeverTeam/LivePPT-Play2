@@ -21,8 +21,8 @@ import ws.wamplay.controllers.WAMPlayServer;
 
 import java.util.List;
 
-import static com.fever.liveppt.constant.WampConstant.ERROR_RESPONSE_STR;
-import static com.fever.liveppt.constant.WampConstant.SUCCESS_RESPONSE_STR;
+import static com.fever.liveppt.constant.WampConstant.ERROR_STR;
+import static com.fever.liveppt.constant.WampConstant.OK_STR;
 
 @URIPrefix("chat")
 public class ChatController extends WAMPlayContoller {
@@ -32,6 +32,7 @@ public class ChatController extends WAMPlayContoller {
 
     /**
      * 新增chat
+     *
      * @param sessionID
      * @param args
      * @return
@@ -39,7 +40,7 @@ public class ChatController extends WAMPlayContoller {
     @onRPC("#say")
     public static String sayNewChat(String sessionID, JsonNode[] args) {
         if (args.length != 5) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         //提取参数
         String userEmail = args[0].asText();
@@ -48,12 +49,12 @@ public class ChatController extends WAMPlayContoller {
         String chatText = args[3].asText();
         long time = args[4].asLong();
         if (userEmail == null || token == null || meetingId == 0 || chatText == null || time == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //验证
         if (!TokenAgent.isTokenValid(token, userEmail)) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         User user = User.find.where().eq("email", userEmail).findUnique();
 
@@ -61,7 +62,7 @@ public class ChatController extends WAMPlayContoller {
         String chatTopicUri = MeetingAgent.getOrCreateChatTopic(meetingId);
 
         //组装json
-        JsonNode chatJson = Json.newObject()
+        ObjectNode chatJson = Json.newObject()
                 .put("publisherEmail", userEmail)
                 .put("publisherDisplayName", user.displayname)
                 .put("chatText", chatText)
@@ -81,11 +82,12 @@ public class ChatController extends WAMPlayContoller {
         }
 
 
-        return SUCCESS_RESPONSE_STR;
+        return OK_STR;
     }
 
     /**
      * 获取指定会议的所有chat
+     *
      * @param sessionID
      * @param args
      * @return
@@ -93,20 +95,20 @@ public class ChatController extends WAMPlayContoller {
     @onRPC("#queryAll")
     public static String queryAllChats(String sessionID, JsonNode[] args) {
         if (args.length != 1) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         if (meetingId == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         String chatCacheKey = MeetingAgent.genMeetingChatCacheKey(meetingId);
 
         //检查meetingId的合法性并创建对应的chat topic
         String chatTopicUri = MeetingAgent.getOrCreateChatTopic(meetingId);
         if (chatTopicUri == null) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
@@ -125,9 +127,11 @@ public class ChatController extends WAMPlayContoller {
             //组装json
             ArrayNode chatsArr = JsonNodeFactory.instance.arrayNode();
             JsonNode objNode;
-            for (String chat : chatList) {
-                objNode = Json.parse(chat);
-                chatsArr.add(objNode);
+            if (chatList != null) {
+                for (String chat : chatList) {
+                    objNode = Json.parse(chat);
+                    chatsArr.add(objNode);
+                }
             }
             ObjectNode json = Json.newObject();
             json.put("chatTopicUri", chatTopicUri)
@@ -139,7 +143,7 @@ public class ChatController extends WAMPlayContoller {
         } catch (Exception e) {
             Logger.info(e.toString());
 
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
 
@@ -147,6 +151,7 @@ public class ChatController extends WAMPlayContoller {
 
     /**
      * 清空指定会议的所有chat
+     *
      * @param sessionID
      * @param args
      * @return
@@ -154,13 +159,13 @@ public class ChatController extends WAMPlayContoller {
     @onRPC("#reset")
     public static String resetChat(String sessionID, JsonNode[] args) {
         if (args.length != 1) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         if (meetingId == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //清空会议对应的chat cache
@@ -179,7 +184,7 @@ public class ChatController extends WAMPlayContoller {
                 resultJsonForPublish(PUBLISH_TYPE_RESET_CHAT, null)
         );
 
-        return SUCCESS_RESPONSE_STR;
+        return OK_STR;
     }
 
     //组装结果字符串

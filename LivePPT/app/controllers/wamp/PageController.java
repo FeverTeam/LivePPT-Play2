@@ -13,8 +13,8 @@ import ws.wamplay.annotations.onRPC;
 import ws.wamplay.controllers.WAMPlayContoller;
 import ws.wamplay.controllers.WAMPlayServer;
 
-import static com.fever.liveppt.constant.WampConstant.ERROR_RESPONSE_STR;
-import static com.fever.liveppt.constant.WampConstant.SUCCESS_RESPONSE_STR;
+import static com.fever.liveppt.constant.WampConstant.ERROR_STR;
+import static com.fever.liveppt.constant.WampConstant.OK_STR;
 import static com.fever.liveppt.utils.MeetingAgent.genMeetingPageCacheKey;
 import static com.fever.liveppt.utils.MeetingAgent.getOrCreatePageTopic;
 
@@ -26,26 +26,26 @@ public class PageController extends WAMPlayContoller {
     @onRPC("#set")
     public static String setPage(String sessionID, JsonNode[] args) {
         if (args.length != 4) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         String userEmail = args[0].asText();
         String token = args[1].asText();
         long meetingId = args[2].asLong();
         long pageIndex = args[3].asLong();
         if (userEmail == null || token == null || meetingId == 0 || pageIndex == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //验证token
         if (!TokenAgent.isTokenValid(token, userEmail)) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //检查会议是否控制者所发起
         Meeting meeting = Meeting.find.byId(meetingId);
         User user = User.find.where().eq("email", userEmail).findUnique();
         if (meeting == null || user == null || !meeting.founder.id.equals(user.id)) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //更新Cache中的页码
@@ -55,7 +55,7 @@ public class PageController extends WAMPlayContoller {
         //向wamp对应topic发布页码更新
         WAMPlayServer.publish(getOrCreatePageTopic(meetingId), Json.toJson(pageIndex));
 
-        return SUCCESS_RESPONSE_STR;
+        return OK_STR;
     }
 
     @onRPC("#currentIndex")

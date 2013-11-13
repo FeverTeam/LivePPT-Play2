@@ -19,8 +19,8 @@ import ws.wamplay.controllers.WAMPlayServer;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.fever.liveppt.constant.WampConstant.ERROR_RESPONSE_STR;
-import static com.fever.liveppt.constant.WampConstant.SUCCESS_RESPONSE_STR;
+import static com.fever.liveppt.constant.WampConstant.ERROR_STR;
+import static com.fever.liveppt.constant.WampConstant.OK_STR;
 import static com.fever.liveppt.utils.MeetingAgent.genMeetingPathCacheKey;
 import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 
@@ -72,14 +72,14 @@ public class PathController extends WAMPlayContoller {
     @onRPC("#reset")
     public static String resetPath(String sessionID, JsonNode[] args) {
         if (args.length != 2) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
         if (meetingId == 0 || pageIndex == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
@@ -97,7 +97,7 @@ public class PathController extends WAMPlayContoller {
                 resultJsonForPublish(PUBLISH_TYPE_RESET_PATH, pageIndex, null)
         );
 
-        return SUCCESS_RESPONSE_STR;
+        return OK_STR;
     }
 
     /**
@@ -110,14 +110,14 @@ public class PathController extends WAMPlayContoller {
     @onRPC("#add")
     public static String addPath(String sessionID, JsonNode[] args) {
         if (args.length != 3) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
         if (meetingId == 0 || pageIndex == 0 || args[2] == null) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         String jsonStr = args[2].asText();
 
@@ -142,7 +142,7 @@ public class PathController extends WAMPlayContoller {
 
 
         if (pathIndex == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         } else {
             //推送新笔迹
             WAMPlayServer.publish(
@@ -165,14 +165,14 @@ public class PathController extends WAMPlayContoller {
     @onRPC("#queryAll")
     public static String queryAllPath(String sessionID, JsonNode[] args) {
         if (args.length != 2) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
         if (meetingId == 0 || pageIndex == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
 
@@ -198,14 +198,14 @@ public class PathController extends WAMPlayContoller {
     @onRPC("#query")
     public static String queryPath(String sessionID, JsonNode[] args) {
         if (args.length != 3) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
         if (meetingId == 0 || pageIndex == 0 || !args[2].isArray()) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         ArrayNode arrJson = (ArrayNode) args[2];
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
