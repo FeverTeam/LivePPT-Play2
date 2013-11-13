@@ -67,7 +67,7 @@ public class UserController extends Controller {
         }
 
         //返回JSON
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -110,7 +110,7 @@ public class UserController extends Controller {
         }
 
         //返回JSON
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -166,7 +166,7 @@ public class UserController extends Controller {
         }
 
         //返回JSON
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
     }
 
     /**
@@ -238,7 +238,7 @@ public class UserController extends Controller {
 
 
         //返回JSON
-        return ok(resultJson.objectNode);
+        return ok(resultJson.o);
 
     }
 
