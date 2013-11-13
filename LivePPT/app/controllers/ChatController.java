@@ -98,6 +98,7 @@ public class ChatController extends WAMPlayContoller {
         try {
             chatList = j.lrange(chatCacheKey, 0, -1);
         } catch (Exception e) {
+            Logger.info("a");
             Logger.info(e.toString());
         } finally {
             jedisPool.returnResource(j);
@@ -118,6 +119,7 @@ public class ChatController extends WAMPlayContoller {
 
             return json.toString();
         } catch (Exception e) {
+            Logger.info("b");
             Logger.info(e.toString());
             return ERROR_RESPONSE_STR;
         }
