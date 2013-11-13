@@ -27,7 +27,9 @@ import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 public class PathController extends WAMPlayContoller {
 
     private static final int DEFAULT_PATH_CACHE_EXPIRATION = 3600;
+
     private static final String blankJsonString = "{\"topicUri\":\"\"}";
+
     private static final String PUBLISH_TYPE_NEW_PATH = "newPath";
     private static final String PUBLISH_TYPE_RESET_PATH = "resetPath";
 
