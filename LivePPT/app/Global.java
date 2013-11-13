@@ -1,6 +1,7 @@
 import com.fever.liveppt.config.CloudSlidesInjectionConfigModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import controllers.ChatController;
 import controllers.PageController;
 import controllers.PathController;
 import controllers.WAMPSampleController;
@@ -47,6 +48,7 @@ public class Global extends GlobalSettings {
         WAMPlayServer.addController(new WAMPSampleController());
         WAMPlayServer.addController(new PageController());  //页码查询
         WAMPlayServer.addController(new PathController());  //笔迹处理
+        WAMPlayServer.addController(new ChatController());  //留言处理
     }
 
 }
