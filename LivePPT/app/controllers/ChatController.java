@@ -2,6 +2,8 @@ package controllers;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.MeetingAgent;
 import com.fever.liveppt.utils.TokenAgent;
@@ -107,6 +109,7 @@ public class ChatController extends WAMPlayContoller {
 
         try {
             //组装json
+            /*
             StringBuilder chatArrStr = new StringBuilder("[");
 
             if (chatList != null) {
@@ -118,10 +121,20 @@ public class ChatController extends WAMPlayContoller {
                 }
             }
             chatArrStr.append("]");
+            */
+            ArrayNode chatsArr = JsonNodeFactory.instance.arrayNode();
+            JsonNode objNode;
+            for (String chat : chatList) {
+                objNode = Json.parse(chat);
+                chatsArr.add(objNode);
+            }
 
             JsonNode json = Json.newObject()
                     .put("chatTopicUri", chatTopicUri)
-                    .put("chats", chatArrStr.toString());
+//                    .put("chats", chatArrStr.toString());
+                    .put("chats", chatsArr);
+
+            Logger.info(json.toString());
 
             return json.toString();
         } catch (Exception e) {
