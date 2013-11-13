@@ -1,9 +1,7 @@
 package controllers;
 
+
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fever.liveppt.models.User;
 import com.fever.liveppt.utils.MeetingAgent;
 import com.fever.liveppt.utils.TokenAgent;
@@ -30,7 +28,7 @@ public class ChatController extends WAMPlayContoller {
 
     @onRPC("#say")
     public static String sayNewChat(String sessionID, JsonNode[] args) {
-        if (args.length != 4) {
+        if (args.length != 5) {
             return ERROR_RESPONSE_STR;
         }
         //提取参数
@@ -38,7 +36,8 @@ public class ChatController extends WAMPlayContoller {
         String token = args[1].asText();
         long meetingId = args[2].asLong();
         String chatText = args[3].asText();
-        if (userEmail == null || token == null || meetingId == 0 || chatText == null) {
+        long time = args[4].asLong();
+        if (userEmail == null || token == null || meetingId == 0 || chatText == null || time == 0) {
             return ERROR_RESPONSE_STR;
         }
 
@@ -55,7 +54,8 @@ public class ChatController extends WAMPlayContoller {
         JsonNode chatJson = Json.newObject()
                 .put("publisherEmail", userEmail)
                 .put("publisherDisplayName", user.displayname)
-                .put("chatText", chatText);
+                .put("chatText", chatText)
+                .put("time", time);
 
         //推送chat消息
         WAMPlayServer.publish(chatTopicUri, resultJsonForPublish(PUBLISH_TYPE_NEW_CHAT, chatJson.toString()));
@@ -99,7 +99,6 @@ public class ChatController extends WAMPlayContoller {
         try {
             chatList = j.lrange(chatCacheKey, 0, -1);
         } catch (Exception e) {
-            Logger.info("a");
             Logger.info(e.toString());
         } finally {
             jedisPool.returnResource(j);
@@ -108,38 +107,25 @@ public class ChatController extends WAMPlayContoller {
 
         try {
             //组装json
-            ArrayNode chatArr = new ObjectMapper().createArrayNode();
-            if (chatArr==null){
-                Logger.info("chatArr null");
-            }
-            if (chatList==null){
-                Logger.info("chatList null");
-            }
+            StringBuilder chatArrStr = new StringBuilder("[");
 
             if (chatList != null) {
                 for (String chat : chatList) {
-                    chatArr.add(chat);
+                    chatArrStr.append(chat).append(",");
+                }
+                if (chatArrStr.length() > 1) {
+                    chatArrStr.deleteCharAt(chatArrStr.length() - 1);
                 }
             }
+            chatArrStr.append("]");
+
             JsonNode json = Json.newObject()
                     .put("chatTopicUri", chatTopicUri)
-                    .put("chats", chatArr.toString());
+                    .put("chats", chatArrStr.toString());
 
             return json.toString();
         } catch (Exception e) {
-            Logger.info("b");
             Logger.info(e.toString());
-
-            StringBuffer sb = new StringBuffer();
-            StackTraceElement[] stacks = e.getStackTrace();
-            for (int i = 0; i < stacks.length; i++) {
-                    sb.append("class: ").append(stacks[i].getClassName())
-                            .append("; method: ").append(stacks[i].getMethodName())
-                            .append("; line: ").append(stacks[i].getLineNumber())
-                            .append(";  Exception: ");
-
-            }
-            Logger.info(sb.toString());
 
             return ERROR_RESPONSE_STR;
         }
