@@ -132,7 +132,7 @@ public class ChatController extends WAMPlayContoller {
             JsonNode json = Json.newObject()
                     .put("chatTopicUri", chatTopicUri)
 //                    .put("chats", chatArrStr.toString());
-                    .put("chats", chatsArr);
+                    .put("chats", chatsArr.toString());
 
             Logger.info(json.toString());
 
