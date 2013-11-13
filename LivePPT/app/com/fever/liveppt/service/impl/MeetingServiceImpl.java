@@ -1,6 +1,7 @@
 
 package com.fever.liveppt.service.impl;
 
+import com.fever.liveppt.constant.Expiration;
 import com.fever.liveppt.exception.meeting.AttendingExistedException;
 import com.fever.liveppt.exception.meeting.MeetingNotAttendedException;
 import com.fever.liveppt.exception.meeting.MeetingNotExistedException;
@@ -30,9 +31,6 @@ import static com.fever.liveppt.utils.MeetingAgent.getOrCreatePageTopic;
  * @Description : 会议操作接口实现 ，提供给service层调用
  */
 public class MeetingServiceImpl implements MeetingService {
-
-    //默认会议页码缓存21600秒（即6小时）
-    public final static int DEFAULT_MEETING_PAGE_CACHE_DURATION = 21600;
 
     @Override
     public void deleteMeeting(String userEmail, Long meetingId) throws MeetingPermissionDenyException, MeetingNotExistedException {
@@ -214,7 +212,7 @@ public class MeetingServiceImpl implements MeetingService {
 
         //更新Cache中的页码
         String meetingCacheKey = genMeetingPageCacheKey(meetingId);
-        Cache.set(meetingCacheKey, pageIndex, DEFAULT_MEETING_PAGE_CACHE_DURATION);
+        Cache.set(meetingCacheKey, pageIndex, Expiration.DEFAULT_MEETING_PAGE_CACHE_EXPIRATION);
         //Logger.debug("setpage meetingid:" + meetingId + " page:" + pageIndex);
 
         /*

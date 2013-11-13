@@ -2,6 +2,7 @@ package controllers.wamp;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fever.liveppt.constant.Expiration;
 import com.fever.liveppt.utils.MeetingAgent;
 import com.typesafe.plugin.RedisPlugin;
 import play.Play;
@@ -25,8 +26,6 @@ import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 
 @URIPrefix("path")
 public class PathController extends WAMPlayContoller {
-
-    private static final int DEFAULT_PATH_CACHE_EXPIRATION = 3600;
 
     private static final String blankJsonString = "{\"topicUri\":\"\"}";
 
@@ -131,7 +130,7 @@ public class PathController extends WAMPlayContoller {
         try {
             Pipeline p = j.pipelined();
             p.rpush(pathCacheKey, jsonStr);
-            p.expire(pathCacheKey, DEFAULT_PATH_CACHE_EXPIRATION);
+            p.expire(pathCacheKey, Expiration.DEFAULT_PATH_CACHE_EXPIRATION);
             Response<Long> pathIndexFuture = p.llen(pathCacheKey);
             p.sync();  //执行
 

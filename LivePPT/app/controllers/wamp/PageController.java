@@ -1,9 +1,9 @@
 package controllers.wamp;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fever.liveppt.constant.Expiration;
 import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.User;
-import com.fever.liveppt.service.impl.MeetingServiceImpl;
 import com.fever.liveppt.utils.MeetingAgent;
 import com.fever.liveppt.utils.TokenAgent;
 import play.cache.Cache;
@@ -50,7 +50,7 @@ public class PageController extends WAMPlayContoller {
 
         //更新Cache中的页码
         String meetingCacheKey = genMeetingPageCacheKey(meetingId);
-        Cache.set(meetingCacheKey, pageIndex, MeetingServiceImpl.DEFAULT_MEETING_PAGE_CACHE_DURATION);
+        Cache.set(meetingCacheKey, pageIndex, Expiration.DEFAULT_MEETING_PAGE_CACHE_EXPIRATION);
 
         //向wamp对应topic发布页码更新
         WAMPlayServer.publish(getOrCreatePageTopic(meetingId), Json.toJson(pageIndex));
