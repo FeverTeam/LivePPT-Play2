@@ -109,6 +109,13 @@ public class ChatController extends WAMPlayContoller {
         try {
             //组装json
             ArrayNode chatArr = new ObjectMapper().createArrayNode();
+            if (chatArr==null){
+                Logger.info("chatArr null");
+            }
+            if (chatList==null){
+                Logger.info("chatList null");
+            }
+
             if (chatList != null) {
                 for (String chat : chatList) {
                     chatArr.add(chat);
