@@ -12,15 +12,21 @@ public class MeetingAgent {
     public static final String PATH_TOPIC_URI_PREFIX = "pathTopic";
     public static final String CHAT_TOPIC_URI_PREFIX = "chatTopic";
 
-    //生成会议页码cache key
+    //生成page cache key
     public static String genMeetingPageCacheKey(long meeetingId) {
         return "meeting" + meeetingId;
     }
 
-    //生成会议笔迹cache key
+    //生成path cache key
     public static String genMeetingPathCacheKey(long meeetingId, long pageIndex) {
         StringBuilder sb = new StringBuilder("path.meeting");
         return sb.append(meeetingId).append(".page").append(pageIndex).toString();
+    }
+
+    //生成chat cache key
+    public static String genMeetingChatCacheKey(long meeetingId) {
+        StringBuilder sb = new StringBuilder("chat.meeting");
+        return sb.append(meeetingId).toString();
     }
 
     public static String getOrCreatePageTopic(long meetingId) {
