@@ -1,10 +1,10 @@
 import com.fever.liveppt.config.CloudSlidesInjectionConfigModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import controllers.ChatController;
-import controllers.PageController;
-import controllers.PathController;
 import controllers.WAMPSampleController;
+import controllers.wamp.ChatController;
+import controllers.wamp.PageController;
+import controllers.wamp.PathController;
 import play.Application;
 import play.GlobalSettings;
 import play.api.mvc.EssentialFilter;

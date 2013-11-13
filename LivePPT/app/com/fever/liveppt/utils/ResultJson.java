@@ -17,10 +17,10 @@ public class ResultJson {
     public static final String KEY_MESSAGE = "message";
     public static final String KEY_STATUS_CODE = "retcode";
 
-    public ObjectNode objectNode;
+    public ObjectNode o;
 
     public ResultJson(Integer retCode, String message, JsonNode dataNode) {
-        this.objectNode = Json.newObject();
+        this.o = Json.newObject();
         this.setStatusCode(retCode);
         this.setMessage(message);
         this.setData(dataNode);
@@ -37,26 +37,26 @@ public class ResultJson {
 
     //getter and setter
     public String getMessage() {
-        return this.objectNode.get(KEY_MESSAGE).asText();
+        return this.o.get(KEY_MESSAGE).asText();
     }
 
     public void setMessage(String message) {
-        this.objectNode.put(KEY_MESSAGE, message);
+        this.o.put(KEY_MESSAGE, message);
     }
 
     public ObjectNode getData() {
-        return (ObjectNode) this.objectNode.get(KEY_DATA);
+        return (ObjectNode) this.o.get(KEY_DATA);
     }
 
     public void setData(JsonNode data) {
-        this.objectNode.put(KEY_DATA, data);
+        this.o.put(KEY_DATA, data);
     }
 
     public Integer getStatusCode() {
-        return this.objectNode.get(KEY_STATUS_CODE).asInt();
+        return this.o.get(KEY_STATUS_CODE).asInt();
     }
 
     public void setStatusCode(Integer statusCode) {
-        this.objectNode.put(KEY_STATUS_CODE, statusCode);
+        this.o.put(KEY_STATUS_CODE, statusCode);
     }
 }

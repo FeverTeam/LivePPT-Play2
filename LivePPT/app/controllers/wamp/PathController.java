@@ -1,7 +1,8 @@
-package controllers;
+package controllers.wamp;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fever.liveppt.constant.Expiration;
 import com.fever.liveppt.utils.MeetingAgent;
 import com.typesafe.plugin.RedisPlugin;
 import play.Play;
@@ -18,16 +19,14 @@ import ws.wamplay.controllers.WAMPlayServer;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.fever.liveppt.constant.WampConstant.ERROR_STR;
+import static com.fever.liveppt.constant.WampConstant.OK_STR;
 import static com.fever.liveppt.utils.MeetingAgent.genMeetingPathCacheKey;
 import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 
 @URIPrefix("path")
 public class PathController extends WAMPlayContoller {
 
-    private static final int DEFAULT_PATH_CACHE_EXPIRATION = 3600;
-
-    private static final String ERROR_RESPONSE_STR = "error";
-    private static final String SUCCESS_RESPONSE_STR = "ok";
     private static final String blankJsonString = "{\"topicUri\":\"\"}";
 
     private static final String PUBLISH_TYPE_NEW_PATH = "newPath";
@@ -73,14 +72,14 @@ public class PathController extends WAMPlayContoller {
     @onRPC("#reset")
     public static String resetPath(String sessionID, JsonNode[] args) {
         if (args.length != 2) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
         if (meetingId == 0 || pageIndex == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         JedisPool jedisPool = Play.application().plugin(RedisPlugin.class).jedisPool();
@@ -98,7 +97,7 @@ public class PathController extends WAMPlayContoller {
                 resultJsonForPublish(PUBLISH_TYPE_RESET_PATH, pageIndex, null)
         );
 
-        return SUCCESS_RESPONSE_STR;
+        return OK_STR;
     }
 
     /**
@@ -111,14 +110,14 @@ public class PathController extends WAMPlayContoller {
     @onRPC("#add")
     public static String addPath(String sessionID, JsonNode[] args) {
         if (args.length != 3) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
         if (meetingId == 0 || pageIndex == 0 || args[2] == null) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         String jsonStr = args[2].asText();
 
@@ -131,7 +130,7 @@ public class PathController extends WAMPlayContoller {
         try {
             Pipeline p = j.pipelined();
             p.rpush(pathCacheKey, jsonStr);
-            p.expire(pathCacheKey, DEFAULT_PATH_CACHE_EXPIRATION);
+            p.expire(pathCacheKey, Expiration.DEFAULT_PATH_CACHE_EXPIRATION);
             Response<Long> pathIndexFuture = p.llen(pathCacheKey);
             p.sync();  //执行
 
@@ -143,7 +142,7 @@ public class PathController extends WAMPlayContoller {
 
 
         if (pathIndex == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         } else {
             //推送新笔迹
             WAMPlayServer.publish(
@@ -166,14 +165,14 @@ public class PathController extends WAMPlayContoller {
     @onRPC("#queryAll")
     public static String queryAllPath(String sessionID, JsonNode[] args) {
         if (args.length != 2) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
         if (meetingId == 0 || pageIndex == 0) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
 
@@ -199,14 +198,14 @@ public class PathController extends WAMPlayContoller {
     @onRPC("#query")
     public static String queryPath(String sessionID, JsonNode[] args) {
         if (args.length != 3) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
 
         //提取参数
         long meetingId = args[0].asLong();
         long pageIndex = args[1].asLong();
         if (meetingId == 0 || pageIndex == 0 || !args[2].isArray()) {
-            return ERROR_RESPONSE_STR;
+            return ERROR_STR;
         }
         ArrayNode arrJson = (ArrayNode) args[2];
         String pathCacheKey = genMeetingPathCacheKey(meetingId, pageIndex);
