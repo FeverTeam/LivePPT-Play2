@@ -1,4 +1,4 @@
-package controllers;
+package controllers.wamp;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fever.liveppt.models.Meeting;
@@ -13,6 +13,8 @@ import ws.wamplay.annotations.onRPC;
 import ws.wamplay.controllers.WAMPlayContoller;
 import ws.wamplay.controllers.WAMPlayServer;
 
+import static com.fever.liveppt.constant.WampConstant.ERROR_RESPONSE_STR;
+import static com.fever.liveppt.constant.WampConstant.SUCCESS_RESPONSE_STR;
 import static com.fever.liveppt.utils.MeetingAgent.genMeetingPageCacheKey;
 import static com.fever.liveppt.utils.MeetingAgent.getOrCreatePageTopic;
 
@@ -20,8 +22,6 @@ import static com.fever.liveppt.utils.MeetingAgent.getOrCreatePageTopic;
 public class PageController extends WAMPlayContoller {
 
     private static final String blankJsonString = "{\"pageIndex\":0,\"topicUri\":\"\"}";
-    private static final String ERROR_RESPONSE_STR = "error";
-    private static final String SUCCESS_RESPONSE_STR = "ok";
 
     @onRPC("#set")
     public static String setPage(String sessionID, JsonNode[] args) {

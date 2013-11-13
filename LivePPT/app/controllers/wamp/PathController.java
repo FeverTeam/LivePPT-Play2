@@ -1,4 +1,4 @@
-package controllers;
+package controllers.wamp;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -18,6 +18,8 @@ import ws.wamplay.controllers.WAMPlayServer;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.fever.liveppt.constant.WampConstant.ERROR_RESPONSE_STR;
+import static com.fever.liveppt.constant.WampConstant.SUCCESS_RESPONSE_STR;
 import static com.fever.liveppt.utils.MeetingAgent.genMeetingPathCacheKey;
 import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 
@@ -25,11 +27,7 @@ import static com.fever.liveppt.utils.MeetingAgent.genPathTopicName;
 public class PathController extends WAMPlayContoller {
 
     private static final int DEFAULT_PATH_CACHE_EXPIRATION = 3600;
-
-    private static final String ERROR_RESPONSE_STR = "error";
-    private static final String SUCCESS_RESPONSE_STR = "ok";
     private static final String blankJsonString = "{\"topicUri\":\"\"}";
-
     private static final String PUBLISH_TYPE_NEW_PATH = "newPath";
     private static final String PUBLISH_TYPE_RESET_PATH = "resetPath";
 

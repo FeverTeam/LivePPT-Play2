@@ -1,4 +1,4 @@
-package controllers;
+package controllers.wamp;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,14 +21,21 @@ import ws.wamplay.controllers.WAMPlayServer;
 
 import java.util.List;
 
+import static com.fever.liveppt.constant.WampConstant.ERROR_RESPONSE_STR;
+import static com.fever.liveppt.constant.WampConstant.SUCCESS_RESPONSE_STR;
+
 @URIPrefix("chat")
 public class ChatController extends WAMPlayContoller {
 
-    private static final String ERROR_RESPONSE_STR = "error";
-    private static final String SUCCESS_RESPONSE_STR = "ok";
     private static final String PUBLISH_TYPE_NEW_CHAT = "newChat";
     private static final String PUBLISH_TYPE_RESET_CHAT = "resetChat";
 
+    /**
+     * 新增chat
+     * @param sessionID
+     * @param args
+     * @return
+     */
     @onRPC("#say")
     public static String sayNewChat(String sessionID, JsonNode[] args) {
         if (args.length != 5) {
@@ -77,6 +84,12 @@ public class ChatController extends WAMPlayContoller {
         return SUCCESS_RESPONSE_STR;
     }
 
+    /**
+     * 获取指定会议的所有chat
+     * @param sessionID
+     * @param args
+     * @return
+     */
     @onRPC("#queryAll")
     public static String queryAllChats(String sessionID, JsonNode[] args) {
         if (args.length != 1) {
@@ -132,6 +145,12 @@ public class ChatController extends WAMPlayContoller {
 
     }
 
+    /**
+     * 清空指定会议的所有chat
+     * @param sessionID
+     * @param args
+     * @return
+     */
     @onRPC("#reset")
     public static String resetChat(String sessionID, JsonNode[] args) {
         if (args.length != 1) {
