@@ -72,8 +72,7 @@ public class PageController extends WAMPlayContoller {
 
         //检查meetingId的合法性并创建对应的page topic
         String pageTopicUri = MeetingAgent.getOrCreatePageTopic(meetingId);
-        String chatTopicUri = MeetingAgent.getOrCreateChatTopic(meetingId);
-        if (pageTopicUri == null || chatTopicUri == null) {
+        if (pageTopicUri == null) {
             return blankJsonString;
         }
 
@@ -84,7 +83,6 @@ public class PageController extends WAMPlayContoller {
         return Json.newObject()
                 .put("pageIndex", pageIndex)
                 .put("pageTopicUri", pageTopicUri)
-                .put("chatTopicUri", chatTopicUri)
                 .toString();
     }
 
