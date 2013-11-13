@@ -129,6 +129,18 @@ public class ChatController extends WAMPlayContoller {
         } catch (Exception e) {
             Logger.info("b");
             Logger.info(e.toString());
+
+            StringBuffer sb = new StringBuffer();
+            StackTraceElement[] stacks = e.getStackTrace();
+            for (int i = 0; i < stacks.length; i++) {
+                    sb.append("class: ").append(stacks[i].getClassName())
+                            .append("; method: ").append(stacks[i].getMethodName())
+                            .append("; line: ").append(stacks[i].getLineNumber())
+                            .append(";  Exception: ");
+
+            }
+            Logger.info(sb.toString());
+
             return ERROR_RESPONSE_STR;
         }
 
