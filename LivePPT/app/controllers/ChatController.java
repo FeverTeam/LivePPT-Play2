@@ -110,33 +110,14 @@ public class ChatController extends WAMPlayContoller {
 
         try {
             //组装json
-            /*
-            StringBuilder chatArrStr = new StringBuilder("[");
-
-            if (chatList != null) {
-                for (String chat : chatList) {
-                    chatArrStr.append(chat).append(",");
-                }
-                if (chatArrStr.length() > 1) {
-                    chatArrStr.deleteCharAt(chatArrStr.length() - 1);
-                }
-            }
-            chatArrStr.append("]");
-            */
             ArrayNode chatsArr = JsonNodeFactory.instance.arrayNode();
             JsonNode objNode;
             for (String chat : chatList) {
                 objNode = Json.parse(chat);
                 chatsArr.add(objNode);
             }
-            if (chatsArr==null){
-                Logger.info("chatsArr null");
-            }
-            else {Logger.info("chatsArr size"+chatsArr.size());}
-
             ObjectNode json = Json.newObject();
             json.put("chatTopicUri", chatTopicUri)
-//                    .put("chats", chatArrStr.toString());
                     .put("chats", chatsArr);
 
             Logger.info(json.toString());
