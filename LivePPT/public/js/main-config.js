@@ -1,9 +1,9 @@
 seajs.config({
 	
 	alias: {
-		'jquery': {src:'/assets/js/jquery-1.9.1.min.js', exports:'$'},
+		'jquery': {src:'/assets/js/jquery-1.10.2.min.js', exports:'$'},
 		'cookies': '/assets/js/jquery.cookie.js',
-		'bootstrap': 'http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js',
+		'bootstrap': '/assets/js/bootstrap-3.0.2.min.js',
 		'fineuploader': '/assets/js/fineuploader/jquery.fineuploader-3.4.1.min.js',
 		'uploadify': '/assets/js/jquery.uploadify.min.js',
 		'uploadifive': '/assets/js/jquery.uploadifive_customized.js',

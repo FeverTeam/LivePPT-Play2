@@ -6,8 +6,8 @@ define(function(require, exports, module) {
 	console.log("viewMeeting.js");
 
 	//wamp
-	var wamp_uri = "ws://localhost:9000/wamp";
-	// var wamp_uri = "ws://cloudslides.net:9000/wamp";
+	// var wamp_uri = "ws://localhost:9000/wamp";
+	var wamp_uri = "ws://cloudslides.net:9000/wamp";
 
 	var global_session;
 
