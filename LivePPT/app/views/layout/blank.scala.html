@@ -1,9 +1,9 @@
 @(
-    bodyHtml: Html,    //body正文
-    addJsRef: String="",    //以script标签包装的额外JS引用
-    addJsCode: String="",    //普通书写的JS代码
-    addCssRef: String="",   //以link标签包装的额外CSS文件引用
-    addCssCode: String=""   //普通书写的CSS代码
+    bodyHtml: Html = null,    //body正文
+    addJsRef: Html =null,    //以script标签包装的额外JS引用
+    addJsCode: Html = null,    //普通书写的JS代码
+    addCssRef: Html = null,   //以link标签包装的额外CSS文件引用
+    addCssCode: Html = null   //普通书写的CSS代码
 )
 
 <!DOCTYPE html>
@@ -12,8 +12,8 @@
     <title>CloudSlides云幻灯 - 跨平台幻灯直播应用</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/css/flat-ui.css" rel="stylesheet">
+    <link href="/assets/css/lib/bootstrap/bootstrap-3.0.3.css" rel="stylesheet">
+    <link href="/assets/css/lib/flatui/flat-ui.css" rel="stylesheet">
 
 
     <!--[if lt IE 9]>
@@ -41,18 +41,29 @@
     <!--放置body内容的地方-->
     @bodyHtml
 
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+
+</body>
+
+<script src="/assets/js/lib/jquery/jquery-1.10.2.js"></script>
+<script src="/assets/js/lib/bootstrap/bootstrap-3.0.3.js"></script>
+<script src="/assets/js/lib/seajs/sea-2.1.1.js"></script>
+
 
 @* 加入额外的JS文件 *@
 @if(addJsCode!="") {
-    @addJsRef
+@addJsRef
 }
 
 @* 加入额外的JS代码 *@
 <script>
+    seajs.config({
+        base: "/assets/js/",
+        alias: {
+            'hmac': '/assets/js/cypto-js/3.1.2/hmac-sha1.js',
+            "jquery": "lib/jquery/jquery-1.10.2.js"
+        }
+    });
     @addJsCode
 </script>
-
-</body>
 </html>

@@ -11,7 +11,7 @@
             <h2>CloudSlides云幻灯</h2>
 
             <p>
-                跨平台PPT云直播应用，就在你的眼前。
+                多平台PPT云直播应用，就在你的眼前。
                 <br>
                 随时随地云幻灯直播，让你的想法更有力
             </p>
@@ -19,21 +19,57 @@
             <br>
 
             <p>
-                <a class="btn btn-lg btn-primary" href="#" role="button">马上注册吧！</a>
+                <a class="btn btn-lg btn-primary" id="hi" href="#" role="button">马上注册吧！</a>
             </p>
         </div>
 
 
         <!--优酷视频-->
         <div class="col-md-4">
-            <embed src="http://player.youku.com/player.php/sid/XNjM2MzgzNTQw/v.swf" allowFullScreen="true" quality="high"
-                   width="480" height="400" align="middle" allowScriptAccess="always"
-                   type="application/x-shockwave-flash"></embed>
+            <embed src="http://player.youku.com/player.php/sid/XNjM2MzgzNTQw/v.swf" allowFullScreen="true"
+                   quality="high"
+                   width="500" height="320" align="middle" allowScriptAccess="always"
+                   type="application/x-shockwave-flash">
+            </embed>
+            <!--<video controls="controls" src="http://218.77.72.173/youku/6964FF8F4D4E819036CFC2368/03000801005289CFB16041041FBA750C05E84D-A507-8A62-07ED-6456AC5845AA.mp4"> </video>-->
         </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-lg-4">
+        <h3>多平台幻灯</h3>
+
+        <p class="text-primary">
+            随时随地同步显示幻灯，可在Android、iOS、移动浏览器、Desktop上即时显示幻灯页面。如今不需要再用幻灯机了。
+        </p>
+        <!--<p><a class="btn btn-primary" href="#" role="button">View details »</a></p>-->
+    </div>
+    <div class="col-lg-4">
+        <h3>同步白板/讨论</h3>
+
+        <p class="text-primary">
+            同步白板和会议讨论功能能让你的幻灯会议更有效率，在同一个会议中可以随时观看同步白板，也可以随时跟与会者进行文字沟通。
+        </p>
+        <!--<p><a class="btn btn-primary" href="#" role="button">View details »</a></p>-->
+    </div>
+    <div class="col-lg-4">
+        <h3>免费易用</h3>
+
+        <p class="text-primary">
+            你可以安装应用也可以直接使用，无需任何专用设备和培训。目前CloudSlides努力保持免费，并不断为你带来方便易用的功能。
+        </p>
+        <!--<p><a class="btn btn-primary" href="#" role="button">View details »</a></p>-->
     </div>
 </div>
 
 
 }
 
-@mainLayout(bodyHtml, user)
+@addJs = {
+    seajs.use("/assets/js/index.js");
+}
+
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)
