@@ -87,12 +87,12 @@ POST    /addition/feedback          @controllers.AdditionController.feedback()
 
 
 # Page
-GET     /                           controllers.Frontend.index()
+GET     /                           controllers.NF.index()
 GET		/login						controllers.Frontend.login()
 GET		/signup						controllers.Frontend.signup()
 GET		/myppt						controllers.Frontend.myppt()
 GET		/mymeeting					controllers.Frontend.mymeeting()
-GET 	/appDownload 				controllers.Frontend.appDownload()
+GET 	/apps 				controllers.NF.apps()
 GET 	/aboutUs 					controllers.Frontend.aboutUs()
 
 GET 	/pptListForMeeting			controllers.Frontend.pptListForMeeting()
@@ -106,4 +106,6 @@ GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+GET     /testLayout                 controllers.Frontend.testLayout
 

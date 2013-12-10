@@ -58,7 +58,7 @@ public class Frontend extends Controller {
         response().setCookie("token", "");
         return redirect("/");
     }
-
+                   /*
     @With(CheckLoginAction.class)
     public static Result index() {
         User user = CheckLoginAction.getUser(ctx());
@@ -66,6 +66,7 @@ public class Frontend extends Controller {
         String username = (user == null) ? "" : user.displayname;
         return ok(index.render(username));
     }
+    */
 
     @With(CheckLoginAction.class)
     public static Result login() {
@@ -145,13 +146,13 @@ public class Frontend extends Controller {
         return ok(viewMeeting.render(meeting, username));
     }
 
-    @With(CheckLoginAction.class)
-    public static Result appDownload() {
-        User user = CheckLoginAction.getUser(ctx());
-        String username = (user == null) ? "" : user.displayname;
-
-        return ok(appDownload.render(username));
-    }
+//    @With(CheckLoginAction.class)
+//    public static Result appDownload() {
+//        User user = CheckLoginAction.getUser(ctx());
+//        String username = (user == null) ? "" : user.displayname;
+//
+//        return ok(appDownload.render(username));
+//    }
 
     @With(CheckLoginAction.class)
     public static Result aboutUs() {
@@ -166,5 +167,9 @@ public class Frontend extends Controller {
 
     public static Result wampPubSubTest() {
         return ok(wampPubSubTest.render());
+    }
+
+    public static Result testLayout() {
+        return ok(testLayout.render("test"));
     }
 }

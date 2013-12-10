@@ -1,0 +1,57 @@
+@(
+    user: com.fever.liveppt.models.User = null  //用户登录信息
+)
+
+<!-- 导航栏 -->
+<div class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">CloudSlides 云幻灯</a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="/">首页</a></li>
+
+            @if(user!=null) {
+                <li><a href="#">我的幻灯</a></li>
+                <li><a href="#">主持会议</a></li>
+                <li><a href="#">观看会议</a></li>
+            }
+
+            <li><a href="/apps">应用下载</a></li>
+            <li><a href="#">关于我们</a></li>
+            <!--<li class="dropdown">-->
+            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>-->
+            <!--<ul class="dropdown-menu">-->
+            <!--<li><a href="#">Action</a></li>-->
+            <!--<li><a href="#">Another action</a></li>-->
+            <!--<li><a href="#">Something else here</a></li>-->
+            <!--<li class="divider"></li>-->
+            <!--<li class="dropdown-header">Nav header</li>-->
+            <!--<li><a href="#">Separated link</a></li>-->
+            <!--<li><a href="#">One more separated link</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+        </ul>
+
+        @if(user!=null) {
+        <!--如果已登录-->
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="#">Hi, Bowen!</a></li>
+            <li><a href="#">设置</a></li>
+        </ul>
+        } else {
+        <!--如果未登录-->
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">登录</a></li>
+            <li><a href="#">注册</a></li>
+        </ul>
+        }
+
+    </div><!--/.nav-collapse -->
+</div><!-- /导航栏-->
