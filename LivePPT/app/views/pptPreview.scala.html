@@ -1,0 +1,50 @@
+@(
+ppt:com.fever.liveppt.models.Ppt = null,
+user: com.fever.liveppt.models.User,
+token: java.lang.String
+)
+
+@import layout._
+
+
+@bodyHtml = {
+
+
+<h3>幻灯预览</h3>
+<p># @ppt.id - @ppt.title</p>
+<div width="80%">
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            @for(i <- 1 to ppt.pagecount){
+            @if(i==1){
+            <li data-target="#carousel-example-generic" data-slide-to=@(i-1) class="active"></li>
+            } else {
+            <li data-target="#carousel-example-generic" data-slide-to=@(i-1) class=""></li>
+            }
+            }
+        </ol>
+        <div class="carousel-inner">
+            @for(i <- 1 to ppt.pagecount){
+            @if(i==1){
+            <div class="item active">
+                } else {
+                <div class="item">
+                    }
+                    <img alt=@i src="/ppt/pageImage?pptId=@ppt.id&page=@i&uemail=@user.email&token=@token"/>
+                </div>
+                }
+            </div>
+            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+}
+
+@mainLayout(bodyContent = bodyHtml, user = user)

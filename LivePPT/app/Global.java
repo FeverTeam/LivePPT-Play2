@@ -7,6 +7,7 @@ import controllers.wamp.PageController;
 import controllers.wamp.PathController;
 import play.Application;
 import play.GlobalSettings;
+import play.Logger;
 import play.api.mvc.EssentialFilter;
 import play.filters.gzip.GzipFilter;
 import play.libs.F;
@@ -30,11 +31,12 @@ public class Global extends GlobalSettings {
         return new Class[]{GzipFilter.class};
     }
 
-    @Override
-    public F.Promise<SimpleResult> onHandlerNotFound(Http.RequestHeader request) {
-        //将not found的请求重定向301到首页
-        return F.Promise.pure(movedPermanently("/"));
-    }
+//    @Override
+//    public F.Promise<SimpleResult> onHandlerNotFound(Http.RequestHeader request) {
+//        Logger.info("notfound");
+//        //将not found的请求重定向301到首页
+//        return F.Promise.pure(movedPermanently("/"));
+//    }
 
     @Override
     public <A> A getControllerInstance(Class<A> controllerClass) throws Exception {

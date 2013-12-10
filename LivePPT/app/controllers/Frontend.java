@@ -78,12 +78,12 @@ public class Frontend extends Controller {
         return ok(signup.render());
     }
 
-    @With(CheckLoginAction.class)
-    public static Result myppt() {
-        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
-        return ok(myppt.render(user, token));
-    }
+//    @With(CheckLoginAction.class)
+//    public static Result p() {
+//        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+//        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
+//        return ok(myppt.render(user, token));
+//    }
 
     @With(CheckLoginAction.class)
     public static Result mymeeting() {

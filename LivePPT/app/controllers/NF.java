@@ -1,6 +1,8 @@
 package controllers;
 
+import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
@@ -46,4 +48,29 @@ public class NF extends Controller {
         return ok(about.render(user));
     }
 
+    /**
+     * 我的幻灯
+     * @return
+     */
+    @With(CheckLoginAction.class)
+    public static Result ppts() {
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
+        Logger.info("ppts");
+        return ok(ppts.render(user, token));
+    }
+
+
+    /**
+     * 我的幻灯
+     * @return
+     */
+    @With(CheckLoginAction.class)
+    public static Result pptPreview(Long pptid) {
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
+
+        Ppt ppt = Ppt.find.byId(pptid);
+        return ok(pptPreview.render(ppt, user, token));
+    }
 }
