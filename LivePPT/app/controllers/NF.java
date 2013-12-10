@@ -16,17 +16,34 @@ import views.html.*;
  */
 public class NF extends Controller {
 
+    /**
+     * 首页
+     * @return
+     */
     @With(CheckLoginAction.class)
     public static Result index() {
         User user = CheckLoginAction.getUser(ctx());
         return ok(index.render(user));
     }
 
-
+    /**
+     * 应用下载页面
+      * @return
+     */
     @With(CheckLoginAction.class)
     public static Result apps() {
         User user = CheckLoginAction.getUser(ctx());
         return ok(apps.render(user));
+    }
+
+    /**
+     * 关于页面
+     * @return
+     */
+    @With(CheckLoginAction.class)
+    public static Result about() {
+        User user = CheckLoginAction.getUser(ctx());
+        return ok(about.render(user));
     }
 
 }

@@ -4,15 +4,36 @@
 
 @bodyHtml = {
 
-    <!-- Main component for a primary marketing message or call to action -->
-    <div class="jumbotron">
-        <h1>CloudSlides云幻灯</h1>
-        <p>跨平台PPT云直播应用，就在你的眼前。
-            随时随地云幻灯直播，让你的想法更有力。</p>
-        <p>
-            <a class="btn btn-lg btn-primary" href="#" role="button">注册</a>
-        </p>
+<!-- Main component for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>CloudSlides云幻灯</h2>
+
+            <p>
+                跨平台PPT云直播应用，就在你的眼前。
+                <br>
+                随时随地云幻灯直播，让你的想法更有力
+            </p>
+
+            <br>
+
+            <p>
+                <a class="btn btn-lg btn-primary" href="#" role="button">马上注册吧！</a>
+            </p>
+        </div>
+
+
+        <!--优酷视频-->
+        <div class="col-md-4">
+            <embed src="http://player.youku.com/player.php/sid/XNjM2MzgzNTQw/v.swf" allowFullScreen="true" quality="high"
+                   width="480" height="400" align="middle" allowScriptAccess="always"
+                   type="application/x-shockwave-flash"></embed>
+        </div>
     </div>
+</div>
+
+
 }
 
 @mainLayout(bodyHtml, user)

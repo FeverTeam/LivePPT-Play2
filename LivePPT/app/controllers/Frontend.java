@@ -154,12 +154,12 @@ public class Frontend extends Controller {
 //        return ok(appDownload.render(username));
 //    }
 
-    @With(CheckLoginAction.class)
-    public static Result aboutUs() {
-        User user = CheckLoginAction.getUser(ctx());
-        String username = (user == null) ? "" : user.displayname;
-        return ok(aboutUs.render(username));
-    }
+//    @With(CheckLoginAction.class)
+//    public static Result aboutUs() {
+//        User user = CheckLoginAction.getUser(ctx());
+//        String username = (user == null) ? "" : user.displayname;
+//        return ok(aboutUs.render(username));
+//    }
 
     public static Result msg() {
         return ok(msg.render());
