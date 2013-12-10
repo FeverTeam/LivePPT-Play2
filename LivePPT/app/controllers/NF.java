@@ -56,7 +56,6 @@ public class NF extends Controller {
     public static Result ppts() {
         User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
         String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
-        Logger.info("ppts");
         return ok(ppts.render(user, token));
     }
 
