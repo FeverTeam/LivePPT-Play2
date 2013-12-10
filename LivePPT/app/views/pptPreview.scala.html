@@ -9,10 +9,13 @@ token: java.lang.String
 
 @bodyHtml = {
 
+<div class="page-header">
+    <h3>幻灯预览</h3>
 
-<h3>幻灯预览</h3>
-<p># @ppt.id - @ppt.title</p>
-<div width="80%">
+    <p># @ppt.id - @ppt.title</p>
+</div>
+
+<div class="col-lg-9">
     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
             @for(i <- 1 to ppt.pagecount){
@@ -44,6 +47,7 @@ token: java.lang.String
     </div>
 
 </div>
+<br>
 
 }
 
