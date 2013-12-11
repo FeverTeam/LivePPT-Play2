@@ -72,4 +72,23 @@ public class NF extends Controller {
         Ppt ppt = Ppt.find.byId(pptid);
         return ok(pptPreview.render(ppt, user, token));
     }
+
+    @With(CheckLoginAction.class)
+    public static Result hostMeetings() {
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
+
+        return ok(hostMeetings.render(user, token));
+    }
+
+    @With(CheckLoginAction.class)
+    public static Result watchMeetings(){
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
+
+        return ok(watchMeetings.render(user, token));
+
+    }
+
+
 }

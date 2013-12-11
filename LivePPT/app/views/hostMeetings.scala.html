@@ -1,0 +1,56 @@
+@(
+user: com.fever.liveppt.models.User,
+token: String
+)
+
+@import layout._
+
+
+@bodyHtml = {
+@defining(user.myFoundedMeeting){myFoundedMeetingList=>
+<div class="page-header">
+    <h3>我主持的幻灯会议<span class="badge badge-success">共@myFoundedMeetingList.size()个</span></h3>
+</div>
+
+<div>
+    <button class="btn">发起会议</button>
+</div>
+
+<div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>会议编号</th>
+            <th>会议主题</th>
+            <th>对应PPT</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        @for(m <- myFoundedMeetingList) {
+        <tr>
+            <td>@m.id</td>
+            <td>@m.topic</td>
+            <td>@(m.ppt.title)(#@(m.ppt.id))</td>
+            <td>
+                <button class="btn btn-primary enter-control-meeting" meetingId="@m.id">进入会议</button>
+                &nbsp;&nbsp;
+                <button class="btn btn-danger delete-meeting" meetingId="@m.id">删除会议</button>
+            </td>
+        </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+}
+}
+
+@addJs = {
+var uemail = "@user.email";
+var token = "@token";
+//seajs.use("/assets/js/ppts.js");
+}
+
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)

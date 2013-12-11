@@ -85,17 +85,17 @@ public class Frontend extends Controller {
 //        return ok(myppt.render(user, token));
 //    }
 
-    @With(CheckLoginAction.class)
-    public static Result mymeeting() {
-        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-        List<Meeting> myFoundedMeetingList = user.myFoundedMeeting;
-        List<Meeting> myAttendingMeetingList = new LinkedList<Meeting>();
-        List<Attender> attendents = user.attendents;
-        for (Attender attendding : attendents) {
-            myAttendingMeetingList.add(attendding.meeting);
-        }
-        return ok(mymeeting.render(user, myFoundedMeetingList, myAttendingMeetingList));
-    }
+//    @With(CheckLoginAction.class)
+//    public static Result mymeeting() {
+//        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+//        List<Meeting> myFoundedMeetingList = user.myFoundedMeeting;
+//        List<Meeting> myAttendingMeetingList = new LinkedList<Meeting>();
+//        List<Attender> attendents = user.attendents;
+//        for (Attender attendding : attendents) {
+//            myAttendingMeetingList.add(attendding.meeting);
+//        }
+//        return ok(mymeeting.render(user, myFoundedMeetingList, myAttendingMeetingList));
+//    }
 
     @With(CheckLoginAction.class)
     public static Result pptListForMeeting() {
@@ -115,14 +115,14 @@ public class Frontend extends Controller {
         return ok(foundNewMeeting.render(ppt));
     }
 
-    @With(CheckLoginAction.class)
-    public static Result pptplainshow(Long pptid) {
-        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
-        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
-
-        Ppt ppt = Ppt.find.byId(pptid);
-        return ok(pptplainshow.render(ppt, user, token));
-    }
+//    @With(CheckLoginAction.class)
+//    public static Result pptplainshow(Long pptid) {
+//        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+//        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
+//
+//        Ppt ppt = Ppt.find.byId(pptid);
+//        return ok(pptplainshow.render(ppt, user, token));
+//    }
 
     @With(CheckLoginAction.class)
     public static Result controlMeeting(Long meetingId) {
