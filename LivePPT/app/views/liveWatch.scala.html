@@ -1,0 +1,35 @@
+@(
+meeting: com.fever.liveppt.models.Meeting = null,
+user: com.fever.liveppt.models.User,
+token: String
+)
+
+@import layout._
+
+
+@bodyHtml = {
+@if(meeting==null){
+找不到该会议
+} else {
+         @meeting.id
+<div class="center-block">...</div>
+}
+
+liveWatch
+}
+
+@addJs = {
+
+var uemail = "@user.email";
+var token = "@token";
+
+@if(meeting==null){
+var meetingId = undefined;
+} else {
+var meetingId = @meeting.id;
+}
+//seajs.use("/assets/js/ppts.js");
+}
+
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)

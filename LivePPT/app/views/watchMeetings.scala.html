@@ -9,44 +9,45 @@ token: String
 @bodyHtml = {
 @defining(user.attendents){attendentsList=>
 <div class="page-header">
-    <h3>我观看的幻灯会议<span class="badge badge-success">共@attendentsList.size()个</span></h3>
+    <h3>我观看的幻灯会议</h3>
 </div>
 
-<div>
-    <button class="btn">观看会议</button>
-</div>
 
 <div>
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>会议编号</th>
-            <th>会议主题</th>
-            <th>发起人</th>
-            <th>对应PPT</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        @for(a <- attendentsList) {
+    <div class="panel panel-default">
+        <div class="panel-heading">共@attendentsList.size()个会议</div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>会议编号</th>
+                <th>会议主题</th>
+                <th>发起人</th>
+                <th>对应PPT</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(a <- attendentsList) {
 
-        @defining(a.meeting){m=>
+            @defining(a.meeting){m=>
 
-        <tr>
-            <td>@m.id</td>
-            <td>@m.topic</td>
-            <td>@m.founder.displayname (@m.founder.email)</td>
-            <td>@(m.ppt.title)(#@(m.ppt.id))</td>
-            <td>
-                <button class="btn btn-primary enter-control-meeting" meetingId="@m.id">进入会议</button>
-                &nbsp;&nbsp;
-                <button class="btn btn-danger delete-meeting" meetingId="@m.id">删除会议</button>
-            </td>
-        </tr>
-        }
-        }
-        </tbody>
-    </table>
+            <tr>
+                <td>@m.id</td>
+                <td>@m.topic</td>
+                <td>@m.founder.displayname (@m.founder.email)</td>
+                <td>@(m.ppt.title)(#@(m.ppt.id))</td>
+                <td>
+                    <!--<button class="btn btn-primary enter-control-meeting" meetingId="@m.id">观看会议</button>-->
+                    <a href="/liveWatch/@m.id" target="_blank" class="btn btn-primary" role="button">观看会议</a>
+                    &nbsp;&nbsp;
+                    <button class="btn btn-danger delete-meeting" meetingId="@m.id">退出会议</button>
+                </td>
+            </tr>
+            }
+            }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 }

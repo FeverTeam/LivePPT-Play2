@@ -97,6 +97,8 @@ GET     /watchMeetings              controllers.NF.watchMeetings()
 GET 	/apps 				        controllers.NF.apps()
 GET 	/about 					    controllers.NF.about()
 
+GET     /liveWatch/:meetingId       controllers.NF.liveWatch(meetingId:Long)
+
 GET 	/pptListForMeeting			controllers.Frontend.pptListForMeeting()
 GET 	/foundNewMeeting/:pptid		controllers.Frontend.foundNewMeeting(pptid:Long)
 GET 	/controlMeeting/:meetingId	controllers.Frontend.controlMeeting(meetingId:Long)

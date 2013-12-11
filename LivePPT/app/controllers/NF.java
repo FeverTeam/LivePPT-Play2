@@ -1,5 +1,6 @@
 package controllers;
 
+import com.fever.liveppt.models.Meeting;
 import com.fever.liveppt.models.Ppt;
 import com.fever.liveppt.models.User;
 import play.Logger;
@@ -73,6 +74,10 @@ public class NF extends Controller {
         return ok(pptPreview.render(ppt, user, token));
     }
 
+    /**
+     * 主持会议列表
+     * @return
+     */
     @With(CheckLoginAction.class)
     public static Result hostMeetings() {
         User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
@@ -81,14 +86,33 @@ public class NF extends Controller {
         return ok(hostMeetings.render(user, token));
     }
 
+    /**
+     * 观看会议列表
+     * @return
+     */
     @With(CheckLoginAction.class)
-    public static Result watchMeetings(){
+     public static Result watchMeetings(){
         User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
         String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
 
         return ok(watchMeetings.render(user, token));
-
     }
+
+    /**
+     * 在线观看会议
+     * @param meetingId
+     * @return
+     */
+    @With(CheckLoginAction.class)
+    public static Result liveWatch(Long meetingId){
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
+
+        Meeting meeting = Meeting.find.byId(meetingId);
+        return ok(liveWatch.render(meeting, user, token));
+    }
+
+
 
 
 }
