@@ -63,6 +63,8 @@ define(function (require, exports, module) {
     }
 
     function on_pubsub_pageTopic(topic, event) {
+        console.log("topic:"+topic);
+        console.log("event:"+event);
         var pageId = event;
         showIndexImg(pageId);
     }

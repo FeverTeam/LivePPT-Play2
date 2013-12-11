@@ -112,7 +112,18 @@ public class NF extends Controller {
         return ok(liveWatch.render(meeting, user, token));
     }
 
+    /**
+     * 在线控制会议
+     * @param meetingId
+     * @return
+     */
+    @With(CheckLoginAction.class)
+    public static Result liveControl(Long meetingId){
+        User user = (User) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_USER);
+        String token = (String) ctx().args.get(CheckLoginAction.KEY_CTX_ARG_TOKEN);
 
-
+        Meeting meeting = Meeting.find.byId(meetingId);
+        return ok(liveControl.render(meeting, user, token));
+    }
 
 }
