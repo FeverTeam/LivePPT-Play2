@@ -11,11 +11,34 @@ token: String
 @if(meeting==null){
 找不到该会议
 } else {
-         @meeting.id
-<div class="center-block">...</div>
+
+    <div class="row">
+        <div class="ws-labels col-md-2">
+            <span id="ws-initial-label" class="label label-info">正在初始化同步</span>
+            <span id="ws-success-label" class="label label-success hidden">实时同步中</span>
+            <span id="ws-fail-label" class="label label-important hidden">同步已断开</span>
+            <span id="ws-recover-label" class="label label-warning hidden">同步已断开，正尝试恢复...</span>
+        </div>
+        <div class="col-md-2 col-md-offset-8">
+            <input type="text" data-width="50" data-height="50" id="pageKnob">
+        </div>
+    </div>
+
+    @defining(meeting.ppt) { ppt =>
+        <div id="pageImgPool">
+        @for(i <- 1 to ppt.pagecount){
+            <img id="page@i" class="img-responsive hidden" src="/ppt/pageImage?pptId=@ppt.id&page=@i&uemail=@user.email&token=@token">
+        }
+        </div>
+    }
+
 }
 
-liveWatch
+
+}
+
+@addJsRef = {
+    <script src="/assets/js/lib/autobahn/autobahn.min.js"></script>
 }
 
 @addJs = {
@@ -24,12 +47,17 @@ var uemail = "@user.email";
 var token = "@token";
 
 @if(meeting==null){
-var meetingId = undefined;
+    var meetingId = undefined;
+    var pptId = undefined;
+    var pageCount = undefined;
 } else {
-var meetingId = @meeting.id;
+    var meetingId = @meeting.id;
+    var pptId = @meeting.ppt.id;
+    var pageCount = @meeting.ppt.pagecount;
 }
-//seajs.use("/assets/js/ppts.js");
+
+seajs.use("/assets/js/liveWatch.js");
 }
 
 
-@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)
+@mainLayout(bodyContent = bodyHtml, user = user, addJsFileRef = addJsRef, addJs = addJs)
