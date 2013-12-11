@@ -27,7 +27,7 @@ token: String
     @defining(meeting.ppt) { ppt =>
         <div id="pageImgPool">
         @for(i <- 1 to ppt.pagecount){
-            <img id="page@i" class="img-responsive hidden" src="/ppt/pageImage?pptId=@ppt.id&page=@i&uemail=@user.email&token=@token">
+            <img id="page@i" class="hidden img-responsive img-thumbnail" src="/ppt/pageImage?pptId=@ppt.id&page=@i&uemail=@user.email&token=@token">
         }
         </div>
     }

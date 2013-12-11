@@ -18,11 +18,21 @@ define(function (require, exports, module) {
     //页码指示器knob
     var pageKnob = $('#pageKnob');
 
+    init();
 
-    //初始化pageKnob
-    initPageKnob();
-    //连接wamp服务器
-    ab.connect(wamp_uri, on_wamp_success, on_wamp_error);
+    function init(){
+        if (!meetingId){
+            return;
+        }
+
+        //初始化pageKnob
+        initPageKnob();
+        //连接wamp服务器
+        ab.connect(wamp_uri, on_wamp_success, on_wamp_error);
+    }
+
+
+
 
 
     function on_wamp_success(session) {
