@@ -1,19 +1,22 @@
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <br>
 
+                <!--新会议输入文本框-->
                 <div class="input-group">
                     <input id="input_new_meeting_topic" type="text" class="form-control" placeholder="输入新会议名称">
                 </div>
+
                 <br>
                 <br>
+                <!--新建会议按钮-->
                 <button id="btn_launch_new_meeting" class="btn btn-warning">新建会议</button>
             </div>
+
             <div class="col-md-8">
-
-
+                <!--PPT列表-->
                 <div class="row">
                     {{#ppts}}
                     <div class="col-md-4">
@@ -25,11 +28,10 @@
                         </a>
                     </div>
                     {{/ppts}}
-                    </row>
-
 
                 </div>
             </div>
+
         </div>
     </div>
 </div>
