@@ -1,0 +1,84 @@
+@(
+    bodyHtml: Html = null,    //body正文
+    addJsRef: Html =null,    //以script标签包装的额外JS引用
+    addJsCode: Html = null,    //普通书写的JS代码
+    addCssRef: Html = null,   //以link标签包装的额外CSS文件引用
+    addCssCode: Html = null   //普通书写的CSS代码
+)
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CloudSlides云幻灯 - 跨平台幻灯直播应用</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!--指定favicon-->
+    <link rel="icon" type="image/png" href="/assets/images/cloudslides-favicon.png">
+
+    <link href="/assets/css/lib/bootstrap/bootstrap-3.0.3.css" rel="stylesheet">
+    <link href="/assets/css/lib/flatui/flat-ui.css" rel="stylesheet">
+
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+
+    @* 加入额外CSS文件 *@
+    @addCssRef
+
+    <style>
+
+        body {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .navbar {
+            margin-bottom: 20px;
+        }
+
+        @addCssCode
+
+    </style>
+</head>
+<body>
+
+    <!--放置body内容的地方-->
+    @bodyHtml
+
+
+
+</body>
+
+@* 加入额外的JS文件 *@
+@addJsRef
+
+<script src="/assets/js/lib/jquery/jquery-1.10.2.js"></script>
+<script src="/assets/js/lib/bootstrap/bootstrap-3.0.3.js"></script>
+
+
+
+<script src="/assets/js/lib/seajs/sea-2.1.1.js"></script>
+
+
+
+
+@* 加入额外的JS代码 *@
+<script>
+    seajs.config({
+        base: "/assets/js/",
+        alias: {
+            'aes': 'lib/cypto-js/3.1.2/aes.js',
+            'ecb': 'lib/cypto-js/3.1.2/mode-ecb-min.js',
+            'hmac': 'lib/cypto-js/3.1.2/hmac-sha1.js',
+            'jquery': "lib/jquery/jquery-1.10.2.js",
+            'jquery-knob': 'lib/jquery.knob.js',
+            'jquery.mustache': "lib/jquery.mustache.js",
+            'uploadifive': 'lib/jquery.uploadifive/jquery.uploadifive_customized.js',
+            'mustache': "lib/mustache.js"
+        }
+    });
+    @addJsCode
+</script>
+</html>

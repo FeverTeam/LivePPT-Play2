@@ -1,64 +1,113 @@
-@(username: String)
-@main(name="index", title="", username){
-  @** Extra CSS **@
-}{
-<!-- Main hero unit for a primary marketing message or call to action -->
+@(user: com.fever.liveppt.models.User)
+
+@import layout._
+
+@bodyHtml = {
+
+<!-- Main component for a primary marketing message or call to action -->
 <div class="jumbotron">
-  <div class="container">
-      <h1>@Messages("index_main_title")</h1>
-      <h3 class="info">@Messages("index_sub_title_1")<br>@Messages("index_sub_title_2")</h3>
-      <br>
-      <p>
-        <a href="/signup" class="btn btn-success btn-lg">@Messages("index_btn_signup")</a>
-      </p>
-      <br>
-      <div>
-          <ul class="list-inline">
-            <li>
-              <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_web")" onmouseover="$(this).tooltip('show');">
-                <img src="/assets/images/web-small-logo.png" alt="CloudSlides云幻灯 WEB版"/>
-                Web
-              </a>
-            </li>
-            <li>
-              <a target="_blank" href="https://chrome.google.com/webstore/detail/aolaicookhoifjgchifjbffnfgjgcjbc" data-toggle="tooltip" title="" onmouseover="$(this).tooltip('show');" data-original-title="@Messages("index_tooltip_chrome")">
-                <img src="/assets/images/chrome-small-logo.png" alt="CloudSlides云幻灯 ChromeStore应用"/>
-                Chrome
-              </a>
-            </li>
-            <li>
-              <a target="_blank" href="http://cloudslides.net/android_upgrade/cloudslides_android_latest.apk" data-toggle="tooltip" title="@Messages("index_tooltip_android")" onmouseover="$(this).tooltip('show');">
-                <img src="/assets/images/android-small-logo.png" alt="CloudSlides云幻灯 Android应用"/>
-                Android
-              </a>
-            </li>
-            <li>
-              <a href="#" data-toggle="tooltip" title="@Messages("index_tooltip_ios")" onmouseover="$(this).tooltip('show');">
-                <img src="/assets/images/iphone-small-logo.png" alt="CloudSlides云幻灯 iOS应用"/>
-                iPhone
-              </a>
-            </li>
-          </ul>
-      </div>
-  </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>CloudSlides云幻灯</h2>
+
+            <p>
+                多平台PPT云直播应用，就在你的眼前。
+            </p>
+
+            <p>
+                随时随地云幻灯直播，让你的想法更有力
+            </p>
+
+            <ul class="list-inline">
+                <li>
+                    <a href="#" data-toggle="tooltip" title="" onmouseover="$(this).tooltip('show');"
+                       data-original-title="WEB版CloudSlides云幻灯就在这里！请尽情享用吧！beta测试阶段">
+                        <img src="/assets/images/web-small-logo.png" alt="CloudSlides云幻灯 WEB版">
+                        Web
+                    </a>
+                </li>
+                <li>
+                    <a target="_blank" href="https://chrome.google.com/webstore/detail/aolaicookhoifjgchifjbffnfgjgcjbc"
+                       data-toggle="tooltip" title="" onmouseover="$(this).tooltip('show');"
+                       data-original-title="马上安装CloudSlides云幻灯到Chrome吧！">
+                        <img src="/assets/images/chrome-small-logo.png" alt="CloudSlides云幻灯 ChromeStore应用">
+                        Chrome
+                    </a>
+                </li>
+                <li>
+                    <a target="_blank" href="http://cloudslides.net/android_upgrade/cloudslides_android_latest.apk"
+                       data-toggle="tooltip" title="安装CloudSlides云幻灯到Android上吧！"
+                       onmouseover="$(this).tooltip('show');">
+                        <img src="/assets/images/android-small-logo.png" alt="CloudSlides云幻灯 Android应用">
+                        Android
+                    </a>
+                </li>
+                <li>
+                    <a href="#" data-toggle="tooltip" title="Oops...iOS应用正在闯关AppStore审批的路上。快到了！"
+                       onmouseover="$(this).tooltip('show');">
+                        <img src="/assets/images/iphone-small-logo.png" alt="CloudSlides云幻灯 iOS应用">
+                        iPhone
+                    </a>
+                </li>
+            </ul>
+
+            <p>
+                <a class="btn btn-lg btn-primary" id="main_btn_signup" href="#" role="button">马上注册吧！</a>
+            </p>
+        </div>
+
+
+        <!--优酷视频-->
+        <div class="col-md-4">
+            <embed src="http://player.youku.com/player.php/sid/XNjM2MzgzNTQw/v.swf" allowFullScreen="true"
+                   quality="high"
+                   width="500" height="320" align="middle" allowScriptAccess="always"
+                   type="application/x-shockwave-flash">
+            </embed>
+            <!--<video controls="controls" src="http://218.77.72.173/youku/6964FF8F4D4E819036CFC2368/03000801005289CFB16041041FBA750C05E84D-A507-8A62-07ED-6456AC5845AA.mp4"> </video>-->
+        </div>
+    </div>
+
 </div>
-<!-- Example row of columns -->
+
 <div class="row">
-  <div class="col-md-3">
-    <h3>@Messages("index_block1_txt")</h3>
-    <p>@Messages("index_block1_sub")</p>
-  </div>
-  <div class="col-md-3">
-    <h3>@Messages("index_block4_txt")</h3>
-    <p>@Messages("index_block4_sub")</p>
-  </div>
-  <div class="col-md-3">
-    <h3>@Messages("index_block3_txt")</h3>
-    <p>@Messages("index_block3_sub")</p>
-  </div>
-  <div class="col-md-3">
-    <h3>@Messages("index_block2_txt")</h3>
-    <p>@Messages("index_block2_sub")</p>
-  </div>
+    <div class="col-lg-4">
+        <h3>多平台幻灯</h3>
+
+        <p class="text-primary">
+            随时随地同步显示幻灯，可在Android、iOS、移动浏览器、Desktop上即时显示幻灯页面。如今不需要再用幻灯机了。
+        </p>
+        <!--<p><a class="btn btn-primary" href="#" role="button">View details »</a></p>-->
+    </div>
+    <div class="col-lg-4">
+        <h3>同步白板/讨论</h3>
+
+        <p class="text-primary">
+            同步白板和会议讨论功能能让你的幻灯会议更有效率，在同一个会议中可以随时观看同步白板，也可以随时跟与会者进行文字沟通。
+        </p>
+        <!--<p><a class="btn btn-primary" href="#" role="button">View details »</a></p>-->
+    </div>
+    <div class="col-lg-4">
+        <h3>免费易用</h3>
+
+        <p class="text-primary">
+            你可以安装应用也可以直接使用，无需任何专用设备和培训。目前CloudSlides努力保持免费，并不断为你带来方便易用的功能。
+        </p>
+        <!--<p><a class="btn btn-primary" href="#" role="button">View details »</a></p>-->
+    </div>
 </div>
+
+
 }
+
+@addJs = {
+
+//高亮导航栏
+$('#nav_li_index').addClass('active');
+
+//页面主脚本
+seajs.use('index');
+}
+
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)

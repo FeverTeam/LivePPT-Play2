@@ -3,15 +3,20 @@
 # ~~~~
 #当前版本的接口
 
+#robots.txt
+GET     /robots.txt                 controllers.Assets.at(path="/public", file="robots.txt")
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
 #关于页面接口（请把有关页面的接口写到这里）
 
 # Page
-GET     /msg                        controllers.Frontend.msg()
 
 #用于将用户信息写入Cookie
-GET    /loginSuccess               controllers.Frontend.loginSuccess()
+GET    /loginSuccess               controllers.NF.loginSuccess()
 #登出，清除Cookie内信息
-GET    /logout                     controllers.Frontend.logout()
+GET    /logout                     controllers.NF.logout()
 
 
 #关于数据操作的接口
@@ -45,8 +50,6 @@ POST	/convertstatus				@controllers.PptController.convertstatus()
 ## WAMP
 # Send websocket connections to the WAMPlay server
 GET     /wamp                     ws.wamplay.controllers.WAMPlayServer.connect()
-#WAMP临时测试页
-GET     /wampPubSubtest             controllers.Frontend.wampPubSubTest()
 
 ###
 #会议方向接口
@@ -75,8 +78,7 @@ GET 	/viewWebsocket				controllers.MeetingController.viewWebsocket()
 ###
 #额外接口
 
-#robots.txt
-GET     /robots.txt                 controllers.Assets.at(path="/public", file="robots.txt")
+
 #意见反馈
 POST    /addition/feedback          @controllers.AdditionController.feedback()
 
@@ -87,23 +89,14 @@ POST    /addition/feedback          @controllers.AdditionController.feedback()
 
 
 # Page
-GET     /                           controllers.Frontend.index()
-GET		/login						controllers.Frontend.login()
-GET		/signup						controllers.Frontend.signup()
-GET		/myppt						controllers.Frontend.myppt()
-GET		/mymeeting					controllers.Frontend.mymeeting()
-GET 	/appDownload 				controllers.Frontend.appDownload()
-GET 	/aboutUs 					controllers.Frontend.aboutUs()
+GET     /                           controllers.NF.index()
+GET		/ppts						controllers.NF.ppts()
+GET 	/pptPreview/:pptid		    controllers.NF.pptPreview(pptid:Long)
+GET     /hostMeetings               controllers.NF.hostMeetings()
+GET     /watchMeetings              controllers.NF.watchMeetings()
+GET 	/apps 				        controllers.NF.apps()
+GET 	/about 					    controllers.NF.about()
 
-GET 	/pptListForMeeting			controllers.Frontend.pptListForMeeting()
-GET 	/foundNewMeeting/:pptid		controllers.Frontend.foundNewMeeting(pptid:Long)
-GET 	/controlMeeting/:meetingId	controllers.Frontend.controlMeeting(meetingId:Long)
-GET 	/joinMeeting				controllers.Frontend.joinMeeting()
-GET 	/viewMeeting/:meetingId		controllers.Frontend.viewMeeting(meetingId:Long)
-
-
-GET 	/pptplainshow/:pptid		controllers.Frontend.pptplainshow(pptid:Long)
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /liveWatch/:meetingId       controllers.NF.liveWatch(meetingId:Long)
+GET     /liveControl/:meetingId     controllers.NF.liveControl(meetingId:Long)
 

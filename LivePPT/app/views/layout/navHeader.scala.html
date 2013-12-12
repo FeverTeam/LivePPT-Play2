@@ -1,0 +1,81 @@
+@(
+user: com.fever.liveppt.models.User = null  //用户登录信息
+)
+
+<!-- 导航栏 -->
+<div class="navbar navbar-default" role="navigation">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">
+            <img src="/assets/images/main-icon.png" width="28" height="28">
+             CloudSlides 云幻灯
+        </a>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <li id="nav_li_index"><a href="/">首页</a></li>
+
+            @if(user!=null) {
+            <li id="nav_li_ppts"><a href="/ppts">我的幻灯</a></li>
+            <li id="nav_li_hostMeetings"><a href="/hostMeetings">主持会议</a></li>
+            <li id="nav_li_watchMeetings"><a href="/watchMeetings">观看会议</a></li>
+            }
+
+            <li id="nav_li_apps"><a href="/apps">应用下载</a></li>
+            <li id="nav_li_about"><a href="/about">关于我们</a></li>
+            <!--<li class="dropdown">-->
+            <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>-->
+            <!--<ul class="dropdown-menu">-->
+            <!--<li><a href="#">Action</a></li>-->
+            <!--<li><a href="#">Another action</a></li>-->
+            <!--<li><a href="#">Something else here</a></li>-->
+            <!--<li class="divider"></li>-->
+            <!--<li class="dropdown-header">Nav header</li>-->
+            <!--<li><a href="#">Separated link</a></li>-->
+            <!--<li><a href="#">One more separated link</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+        </ul>
+
+        @if(user!=null) {
+        <!--如果已登录-->
+        <ul class="nav navbar-nav navbar-right">
+            <li class="active"><a href="#">Hi, @user.displayname!</a></li>
+            <li><a href="/logout">登出</a></li>
+        </ul>
+        } else {
+        <!--如果未登录-->
+        <ul class="nav navbar-nav navbar-right">
+            <li id="nav_login"><a href="#">登录</a></li>
+            <li id="nav_signup"><a href="#">注册</a></li>
+        </ul>
+        }
+
+    </div>
+    <!--/.nav-collapse -->
+</div><!-- /导航栏-->
+
+
+<!--用于登录和注册的空间-->
+<div>
+    <!--关闭按钮-->
+    <div id="btn-close-login-signup" class="pull-right hidden">
+        <button type="button" class="close" aria-hidden="true">&times;</button>
+    </div>
+
+    <!--登录页面-->
+    <div id="div_login" class="hidden">
+        @login()
+    </div>
+
+    <!--注册页面-->
+    <div id="div_signup" class="hidden">
+        @signup()
+    </div>
+
+</div>

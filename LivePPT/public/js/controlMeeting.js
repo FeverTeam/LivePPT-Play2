@@ -4,8 +4,13 @@ define(function(require, exports, module) {
 
 	console.log("contrlMeeting.js");
 
+	//wamp
+	// var wamp_uri = "ws://localhost:9000/wamp";
+	var wamp_uri = "ws://cloudslides.net:9000/wamp";
+	var global_session;
+
 	var dataDiv = $('#datadiv');
-	var meetingId = dataDiv.attr('meetingid');
+	var meetingId = parseInt(dataDiv.attr('meetingid'));
 	var pptId = dataDiv.attr('pptid');
 	var pageCount = dataDiv.attr('pageCount');
 
@@ -18,9 +23,28 @@ define(function(require, exports, module) {
 
 	var pptCarousel = $('.carousel#pptCarousel');
 
+	//from cookie
+	var uemail = $.cookie('uemail');
+	var token = $.cookie('token');
 
-	initPageKnob();
-	setKnob(currentPageIndex);
+	//初始化
+	$(function(){
+		initPageKnob();
+		setKnob(currentPageIndex);
+
+		//连接wamp服务器
+		ab.connect(wamp_uri, on_wamp_success, on_wamp_error);
+	});
+
+	function on_wamp_success(session){
+		global_session = session;
+		console.log("ok");
+	}
+
+	function on_wamp_error(code, desc){
+		console.log("code:"+code+" desc:"+desc);
+	}
+		
 
 	$('.btn#prePage').on('click', function(e){
 	    pptCarousel.carousel('prev');
@@ -54,23 +78,11 @@ define(function(require, exports, module) {
     });
 
 	function setMeetingPage(currentPageIndex){
-		$.ajax({
-			type: 'POST',
-			url: '/meeting/setPage',
-			data: {
-				meetingId: meetingId,
-				pageIndex: currentPageIndex
-			},
-			success: function(res, status){
-				if (!res.retcode) {
-					console.log("Set remote page index:"+currentPageIndex);
-				};
-			},
-			headers: {
-				'uemail': $.cookie('uemail'),
-				'token': $.cookie('token')
-			}
-		})
+		if (global_session==null){
+			ab.connect(wamp_uri, on_wamp_success, on_wamp_error);  //重新连接wamp服务器
+		}
+		global_session.call("page#set", uemail, token, meetingId, currentPageIndex);
+
 	}
 
 	function setPagination(currentPageIndex){
@@ -99,7 +111,5 @@ define(function(require, exports, module) {
 
 	function setKnob(index){
 	    pageKnob.val(index).trigger('change');
-
-
 	}
 });

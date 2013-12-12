@@ -7,6 +7,7 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.CreateQueueRequest;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fever.liveppt.constant.Expiration;
 import com.fever.liveppt.exception.common.InternalErrorException;
 import com.fever.liveppt.exception.common.InvalidParamsException;
 import com.fever.liveppt.exception.ppt.*;
@@ -21,7 +22,6 @@ import play.Logger;
 import play.cache.Cache;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,9 +32,6 @@ import java.util.List;
  * @Description : PPT操作接口实现 ，提供给service层调用
  */
 public class PptServiceImpl implements PptService {
-
-    //默认PPT页面缓存3600秒（即1小时）
-    public final static int DEFAULT_PPT_PAGE_IMAGE_CACHE_DURATION = 3600;
 
     @Override
     public byte[] getPptPage(String userEmail, Long pptId, Long pageId) throws PptNotExistedException, PptNotConvertedException, PptPageOutOfRangeException, InternalErrorException, PptNotPermissionDenyException {
@@ -92,7 +89,7 @@ public class PptServiceImpl implements PptService {
 
                 // 转换为bytes
                 imgBytes = IOUtils.toByteArray(obj.getObjectContent());
-                Cache.set(pageKey, imgBytes, DEFAULT_PPT_PAGE_IMAGE_CACHE_DURATION);
+                Cache.set(pageKey, imgBytes, Expiration.DEFAULT_PPT_PAGE_IMAGE_CACHE_EXPIRATION);
 
                 return imgBytes;
             }

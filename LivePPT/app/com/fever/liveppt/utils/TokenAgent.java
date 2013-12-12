@@ -9,7 +9,6 @@ import com.fever.liveppt.service.UserService;
 import play.libs.Crypto;
 import play.mvc.Http;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -21,7 +20,8 @@ import java.util.regex.Pattern;
  */
 public class TokenAgent {
 
-    public static Pattern emailPattern = Pattern.compile("^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\\.([a-zA-Z0-9_-])+)+$");
+    //用于email格式检查的正则样式
+    public static Pattern emailPattern = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
 
     public static String validateTokenFromHeader(Http.Request request) throws InvalidParamsException, TokenInvalidException {
         if (request == null) {
