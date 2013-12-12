@@ -12,6 +12,40 @@ token: String
     <h3>我观看的幻灯会议</h3>
 </div>
 
+<div>
+    <button id="btn_joinMeeting" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span>加入观看指定会议
+    </button>
+</div>
+
+<div id="div_joinMeeting" class="hidden">
+    <div id="btn_close_joinMeeting" class="pull-right">
+        <button type="button" class="btn btn-default" aria-hidden="true">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+            Close
+        </button>
+    </div>
+    <div id="div_joinMeeting_content">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p>需要加入的会议ID</p>
+                    </div>
+                    <!--新会议输入文本框-->
+                    <div class="col-md-4">
+                        <input id="input_join_meeting" type="text" class="form-control" placeholder="请输入数字编号">
+                        <span class="help-block">(只允许填入数字)</span>
+                    </div>
+                    <button id="btn_join_meeting" class="btn btn-success">加入会议</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
 
 <div>
     <div class="panel panel-default">
@@ -56,7 +90,7 @@ token: String
 @addJs = {
 var uemail = "@user.email";
 var token = "@token";
-//seajs.use("/assets/js/ppts.js");
+seajs.use("watchMeetings");
 }
 
 

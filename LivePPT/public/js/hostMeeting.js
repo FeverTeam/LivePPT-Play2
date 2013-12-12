@@ -19,7 +19,7 @@ define(function (require, exports, module) {
 
     var selected_ppt_id = undefined;
 
-
+    //Mustache从页面加载模板
     $.Mustache.addFromDom('contentTemplate');
 
     //展开发起会议按钮事件
