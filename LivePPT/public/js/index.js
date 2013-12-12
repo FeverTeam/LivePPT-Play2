@@ -19,6 +19,10 @@ define(function (require, exports, module) {
     var input_login_email = $('#input_login_email');
     var input_login_password = $('#input_login_password');
 
+    var input_signup_email = $('#input_signup_email');
+    var input_signup_password = $('#input_signup_password');
+    var input_signup_displayName = $('#input_signup_displayName');
+
 
     //导航栏登录按钮事件
     nav_login.click(function (e) {
@@ -63,6 +67,10 @@ define(function (require, exports, module) {
     //注册按钮事件
     button_signup.click(function (e) {
         e.preventDefault();
+        var email = input_signup_email.val();
+        var password = input_signup_password.val();
+        var displayName = input_signup_displayName.val();
+        signupMod.signup(email, password, displayName);
     });
 
 });

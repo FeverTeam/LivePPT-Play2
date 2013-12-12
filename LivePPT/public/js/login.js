@@ -50,11 +50,4 @@ define(function(require, exports, module) {
     //exports
     exports.login = login;
 
-//	var alertBox = $("#alertBox");
-//	$('.btn-login-submit').on('click', function(e){
-//		e.preventDefault();
-//		var psw = $('input[name=password]').val();
-//		var hash = CryptoJS.HmacSHA1(psw, "Message");
-
-//	});
 });

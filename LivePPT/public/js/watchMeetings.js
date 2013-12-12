@@ -36,6 +36,9 @@ define(function (require, exports, module) {
     btn_join_meeting.click(function(e){
         e.preventDefault();
         var meetingId = input_join_meeting_id.val();
+        if (meetingId.length==0){
+            return;
+        }
         if (isNaN(meetingId)){
             //不是数字
             alert("只可以输入数字哦!");
