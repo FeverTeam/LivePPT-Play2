@@ -101,7 +101,12 @@
 }
 
 @addJs = {
-seajs.use("/assets/js/index.js");
+
+//高亮导航栏
+$('#nav_li_index').addClass('active');
+
+//调用该页面主脚本
+seajs.use('index');
 }
 
 

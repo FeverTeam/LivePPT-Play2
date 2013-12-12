@@ -71,7 +71,12 @@ token: String
 @addJs = {
 var uemail = "@user.email";
 var token = "@token";
-seajs.use("hostMeeting");
+
+//高亮导航栏
+$('#nav_li_hostMeetings').addClass('active');
+
+//调用该页面主脚本
+seajs.use("hostMeetings");
 }
 
 

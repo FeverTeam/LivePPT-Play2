@@ -15,16 +15,16 @@ user: com.fever.liveppt.models.User = null  //用户登录信息
     </div>
     <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-            <li><a href="/">首页</a></li>
+            <li id="nav_li_index"><a href="/">首页</a></li>
 
             @if(user!=null) {
-            <li><a href="/ppts">我的幻灯</a></li>
-            <li><a href="/hostMeetings">主持会议</a></li>
-            <li><a href="/watchMeetings">观看会议</a></li>
+            <li id="nav_li_ppts"><a href="/ppts">我的幻灯</a></li>
+            <li id="nav_li_hostMeetings"><a href="/hostMeetings">主持会议</a></li>
+            <li id="nav_li_watchMeetings"><a href="/watchMeetings">观看会议</a></li>
             }
 
-            <li><a href="/apps">应用下载</a></li>
-            <li><a href="/about">关于我们</a></li>
+            <li id="nav_li_apps"><a href="/apps">应用下载</a></li>
+            <li id="nav_li_about"><a href="/about">关于我们</a></li>
             <!--<li class="dropdown">-->
             <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>-->
             <!--<ul class="dropdown-menu">-->

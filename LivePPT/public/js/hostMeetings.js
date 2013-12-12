@@ -1,6 +1,6 @@
 define(function (require, exports, module) {
 
-    console.log("hostMeeting.js");
+    console.log("hostMeetings.js");
 
     require('mustache');
     require('jquery.mustache');

@@ -54,9 +54,14 @@
 
 
 @addJs = {
-    var uemail = "@user.email";
-    var token = "@token";
-    seajs.use("/assets/js/ppts.js");
+var uemail = "@user.email";
+var token = "@token";
+
+//高亮导航栏
+$('#nav_li_ppts').addClass('active');
+
+//调用该页面主脚本
+seajs.use("ppts");
 }
 
 

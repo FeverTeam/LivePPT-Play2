@@ -90,6 +90,11 @@ token: String
 @addJs = {
 var uemail = "@user.email";
 var token = "@token";
+
+//高亮导航栏
+$('#nav_li_watchMeetings').addClass('active');
+
+//调用该页面主脚本
 seajs.use("watchMeetings");
 }
 

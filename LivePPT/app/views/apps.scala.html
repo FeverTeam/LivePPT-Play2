@@ -38,4 +38,10 @@
 
 }
 
-@mainLayout(bodyContent = bodyHtml, user = user)
+@addJs = {
+
+//高亮导航栏
+$('#nav_li_apps').addClass('active');
+}
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)
