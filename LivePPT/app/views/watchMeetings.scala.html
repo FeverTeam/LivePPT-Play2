@@ -1,0 +1,102 @@
+@(
+user: com.fever.liveppt.models.User,
+token: String
+)
+
+@import layout._
+
+
+@bodyHtml = {
+@defining(user.attendents){attendentsList=>
+<div class="page-header">
+    <h3>我观看的幻灯会议</h3>
+</div>
+
+<div>
+    <button id="btn_joinMeeting" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span>加入观看指定会议
+    </button>
+</div>
+
+<div id="div_joinMeeting" class="hidden">
+    <div id="btn_close_joinMeeting" class="pull-right">
+        <button type="button" class="btn btn-default" aria-hidden="true">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+            Close
+        </button>
+    </div>
+    <div id="div_joinMeeting_content">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <p>需要加入的会议ID</p>
+                    </div>
+                    <!--新会议输入文本框-->
+                    <div class="col-md-4">
+                        <input id="input_join_meeting" type="text" class="form-control" placeholder="请输入数字编号">
+                        <span class="help-block">(只允许填入数字)</span>
+                    </div>
+                    <button id="btn_join_meeting" class="btn btn-success">加入会议</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading">共@attendentsList.size()个会议</div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>会议编号</th>
+                <th>会议主题</th>
+                <th>发起人</th>
+                <th>对应PPT</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(a <- attendentsList) {
+
+            @defining(a.meeting){m=>
+
+            <tr>
+                <td>@m.id</td>
+                <td>@m.topic</td>
+                <td>@m.founder.displayname (@m.founder.email)</td>
+                <td>@(m.ppt.title)(#@(m.ppt.id))</td>
+                <td>
+                    <!--<button class="btn btn-primary enter-control-meeting" meetingId="@m.id">观看会议</button>-->
+                    <a href="/liveWatch/@m.id" target="_blank" class="btn btn-primary" role="button">观看会议</a>
+                    &nbsp;&nbsp;
+                    <button class="btn btn-danger delete-meeting" meetingId="@m.id">退出会议</button>
+                </td>
+            </tr>
+            }
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+}
+}
+
+@addJs = {
+var uemail = "@user.email";
+var token = "@token";
+
+//高亮导航栏
+$('#nav_li_watchMeetings').addClass('active');
+
+//调用该页面主脚本
+seajs.use("watchMeetings");
+}
+
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)

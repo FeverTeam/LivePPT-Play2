@@ -1,56 +1,31 @@
-@import play.i18n._
 
-@main(name="login", "登入", "") {
-  @** Extra CSS **@
+<div class="row">
+    <div class="col-md-8">
+        <form class="form-horizontal" role="form">
+            <!--email-->
+            <div class="form-group">
+                <label for="input_login_email" class="col-sm-2 control-label">Email</label>
 
-  body {
-    padding-bottom: 40px;
-  }
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="input_login_email" placeholder="帐号电邮地址">
+                </div>
+            </div>
 
-  .form-signin {
-    max-width: 300px;
-    padding: 19px 29px 29px;
-    margin: 0 auto 20px;
-    background-color: #fff;
-    border: 1px solid #e5e5e5;
-    -webkit-border-radius: 5px;
-       -moz-border-radius: 5px;
-            border-radius: 5px;
-    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-       -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
-            box-shadow: 0 1px 2px rgba(0,0,0,.05);
-  }
-  .form-signin .form-signin-heading,
-  .form-signin .checkbox {
-    margin-bottom: 10px;
-  }
-  .form-signin input[type="text"],
-  .form-signin input[type="password"] {
-    font-size: 16px;
-    height: auto;
-    margin-bottom: 15px;
-    padding: 7px 9px;
-  }
+            <!--password-->
+            <div class="form-group">
+                <label for="input_login_password" class="col-sm-2 control-label">Password</label>
 
-  #alertBox {
-    display: none;
-  }
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="input_login_password" placeholder="密码">
+                </div>
+            </div>
 
-}{
-  <form class="form-signin">
-    <h2 class="form-signin-heading">@Messages.get("login_title")</h2>
-    <input type="text" class="input-block-level" placeholder="Email address" id="inputEmail">
-    <input type="password" class="input-block-level" placeholder="Password" id="inputPassword">
-    <!--<label class="checkbox">
-      <input type="checkbox" value="remember-me" disabled> Remember me
-    </label>-->
-    <button class="btn btn-large btn-success btn-login-submit" type="submit">@Messages.get("login_btn_login")</button>
-    <br><br>
-    <div class="alert alert-error fade in" id="alertBox">
-      <button type="button" class="close" data-dismiss="alert">&times;</button>
-      <span></span>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button id="button_login" type="submit" class="btn btn-primary">登录</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <br>
-    <a href='/signup'>@Messages.get("login_jump_to_signup")</a>
-  </form>
-}
+</div>

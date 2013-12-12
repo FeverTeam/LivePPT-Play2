@@ -1,0 +1,76 @@
+@(
+meeting: com.fever.liveppt.models.Meeting = null,
+user: com.fever.liveppt.models.User,
+token: String
+)
+
+@import layout._
+
+
+@bodyHtml = {
+@if(meeting==null){
+找不到该会议
+} else {
+
+<div class="row">
+    <div class="ws-labels col-md-4">
+        <!--<span id="ws-initial-label" class="label label-info">正在初始化同步</span>-->
+        <!--<span id="ws-success-label" class="label label-success hidden">实时同步中</span>-->
+        <!--<span id="ws-fail-label" class="label label-important hidden">同步已断开</span>-->
+        <!--<span id="ws-recover-label" class="label label-warning hidden">同步已断开，正尝试恢复...</span>-->
+
+        <div class="btn-group">
+            <button id="btn_prePage" type="button" class="btn btn-success">
+                <span class="glyphicon glyphicon-arrow-left"></span>
+                Pre 前一页
+            </button>
+            <button id="btn_nextPage" type="button" class="btn btn-info">
+                Next 下一页
+                <span class="glyphicon glyphicon-arrow-right"></span>
+            </button>
+        </div>
+
+    </div>
+    <div class="col-md-2 col-md-offset-6">
+        <input type="text" data-width="50" data-height="50" id="pageKnob">
+    </div>
+</div>
+
+@defining(meeting.ppt) { ppt =>
+<div id="pageImgPool">
+    @for(i <- 1 to ppt.pagecount){
+    <img id="page@i" class="hidden img-responsive img-thumbnail"
+         src="/ppt/pageImage?pptId=@ppt.id&page=@i&uemail=@user.email&token=@token">
+    }
+</div>
+}
+
+}
+
+
+}
+
+@addJsRef = {
+<script src="/assets/js/lib/autobahn/autobahn.min.js"></script>
+}
+
+@addJs = {
+
+var uemail = "@user.email";
+var token = "@token";
+
+@if(meeting==null){
+var meetingId = undefined;
+var pptId = undefined;
+var pageCount = undefined;
+} else {
+var meetingId = @meeting.id;
+var pptId = @meeting.ppt.id;
+var pageCount = @meeting.ppt.pagecount;
+}
+
+seajs.use("/assets/js/liveControl.js");
+}
+
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJsFileRef = addJsRef, addJs = addJs)

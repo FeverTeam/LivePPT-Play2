@@ -111,7 +111,5 @@ define(function(require, exports, module) {
 
 	function setKnob(index){
 	    pageKnob.val(index).trigger('change');
-
-
 	}
 });

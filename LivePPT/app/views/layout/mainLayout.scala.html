@@ -1,0 +1,29 @@
+@(
+bodyContent: Html = null,    //body正文
+user: com.fever.liveppt.models.User = null,     //用户登录信息
+addJsFileRef: Html = null,    //以script标签包装的额外JS引用
+addJs: Html = null    //普通书写的JS代码
+)
+
+
+@bodyHtml = {
+
+
+<div class="container">
+
+    <!--导航栏-->
+    @navHeader(user)
+
+    <!--正文-->
+    @bodyContent
+
+    <!--footer-->
+    @footer()
+
+
+</div> <!-- /container -->
+
+}
+
+@blank(bodyHtml = bodyHtml, addJsRef = addJsFileRef, addJsCode = addJs)
+

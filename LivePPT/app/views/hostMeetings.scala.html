@@ -1,0 +1,83 @@
+@(
+user: com.fever.liveppt.models.User,
+token: String
+)
+
+@import layout._
+
+
+@bodyHtml = {
+@defining(user.myFoundedMeeting){myFoundedMeetingList=>
+<div class="page-header">
+    <h3>我主持的幻灯会议</h3>
+</div>
+
+
+<div>
+    <button id="btn_launchMeeting" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span>发起会议</button>
+</div>
+
+<div id="div_launchMeeting" class="hidden">
+    <div id="btn_close_launchMeeting" class="pull-right">
+        <button type="button" class="btn btn-default" aria-hidden="true">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+            Close
+        </button>
+    </div>
+    <div id="div_launchMeeting_content">
+    </div>
+</div>
+
+<br>
+
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading">共@myFoundedMeetingList.size()个会议</div>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>会议编号</th>
+                <th>会议主题</th>
+                <th>对应PPT(#编号)</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(m <- myFoundedMeetingList) {
+            <tr>
+                <td>@m.id</td>
+                <td>@m.topic</td>
+                <td>@(m.ppt.title) (#@(m.ppt.id))</td>
+                <td>
+                    <a href="/liveControl/@m.id" target="_blank" class="btn btn-primary" role="button">进入会议</a>
+                    &nbsp;&nbsp;
+                    <button class="btn btn-danger delete-meeting" meetingId="@m.id">删除会议</button>
+                </td>
+            </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script id="contentTemplate" type="text/html">
+    @launchMeeting()
+</script>
+
+
+}
+}
+
+@addJs = {
+var uemail = "@user.email";
+var token = "@token";
+
+//高亮导航栏
+$('#nav_li_hostMeetings').addClass('active');
+
+//调用该页面主脚本
+seajs.use("hostMeetings");
+}
+
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)

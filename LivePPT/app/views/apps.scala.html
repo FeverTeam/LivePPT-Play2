@@ -1,0 +1,47 @@
+@(user: com.fever.liveppt.models.User)
+
+@import layout._
+
+@bodyHtml = {
+
+<div>
+    <h3>Android</h3>
+
+    <p>CloudSlides云幻灯 for Android已发布到Play市场、小米应用商店、360应用市场！</p>
+    <a href="http://cloudslides.net/android_upgrade/cloudslides_android_latest.apk" target="_blank">
+
+        <button type="button" class="btn btn-primary">
+            点击马上下载
+        </button>
+    </a>
+</div>
+
+<div>
+    <h3>Chrome Store</h3>
+
+    <p>在Chrome上安装CloudSlides云幻灯吧！</p>
+    <a href="https://chrome.google.com/webstore/detail/cloudslides-云幻灯/aolaicookhoifjgchifjbffnfgjgcjbc"
+       target="_blank">
+        <button type="button" class="btn btn-success">
+            点击进入
+        </button>
+    </a>
+
+</div>
+
+<div>
+    <h3>iOS</h3>
+
+    <p>ops...iOS应用正在闯关AppStore审批的路上。快到了！</p>
+</div>
+
+
+}
+
+@addJs = {
+
+//高亮导航栏
+$('#nav_li_apps').addClass('active');
+}
+
+@mainLayout(bodyContent = bodyHtml, user = user, addJs = addJs)
