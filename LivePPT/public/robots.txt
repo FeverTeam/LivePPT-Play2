@@ -1,6 +1,7 @@
 User-Agent: *
-Disallow: /mymeeting
-Disallow: /myppt
+Disallow: /watchMeetings
+Disallow: /hostMeetings
+Disallow: /ppts
 Disallow: /meeting
 Disallow: /ppt
 Disallow: /user

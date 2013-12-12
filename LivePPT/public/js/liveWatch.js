@@ -5,8 +5,8 @@ define(function (require, exports, module) {
     require('jquery-knob');
 
     //wamp
-    var wamp_uri = "ws://localhost:9000/wamp";
-//    var wamp_uri = "ws://cloudslides.net:9000/wamp";
+//    var wamp_uri = "ws://localhost:9000/wamp";
+    var wamp_uri = "ws://cloudslides.net:9000/wamp";
 
     var global_session;
 

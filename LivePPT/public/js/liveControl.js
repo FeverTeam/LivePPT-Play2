@@ -5,8 +5,8 @@ define(function (require, exports, module) {
 
 
     //wamp
-    var wamp_uri = "ws://localhost:9000/wamp";
-//    var wamp_uri = "ws://cloudslides.net:9000/wamp";
+//    var wamp_uri = "ws://localhost:9000/wamp";
+    var wamp_uri = "ws://cloudslides.net:9000/wamp";
 
     //全局的wamp连接
     var global_session;
