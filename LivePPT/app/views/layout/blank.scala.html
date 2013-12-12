@@ -25,7 +25,7 @@
     @addCssRef
 
     <style>
-        <!--@addCssCode-->
+
         body {
             padding-top: 20px;
             padding-bottom: 20px;
@@ -34,6 +34,9 @@
         .navbar {
             margin-bottom: 20px;
         }
+
+        @addCssCode
+
     </style>
 </head>
 <body>
@@ -64,9 +67,11 @@
         base: "/assets/js/",
         alias: {
             'hmac': '/assets/js/cypto-js/3.1.2/hmac-sha1.js',
+            'jquery': "lib/jquery/jquery-1.10.2.js",
             'jquery-knob': '/assets/js/jquery.knob.js',
+            'jquery.mustache': "lib/jquery.mustache.js",
             'uploadifive': '/assets/js/jquery.uploadifive_customized.js',
-            "jquery": "lib/jquery/jquery-1.10.2.js"
+            'mustache': "lib/mustache.js"
         }
     });
     @addJsCode

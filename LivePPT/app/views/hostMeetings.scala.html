@@ -12,8 +12,20 @@ token: String
     <h3>我主持的幻灯会议</h3>
 </div>
 
+
 <div>
-    <button class="btn">发起会议</button>
+    <button id="btn_launchMeeting" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-plus"></span>发起会议</button>
+</div>
+
+<div id="div_launchMeeting" class="hidden">
+    <div id="btn_close_launchMeeting" class="pull-right">
+        <button type="button" class="btn btn-default" aria-hidden="true">
+            <span class="glyphicon glyphicon-chevron-up"></span>
+            Close
+        </button>
+    </div>
+    <div id="div_launchMeeting_content">
+    </div>
 </div>
 
 <br>
@@ -26,7 +38,7 @@ token: String
             <tr>
                 <th>会议编号</th>
                 <th>会议主题</th>
-                <th>对应PPT</th>
+                <th>对应PPT(#编号)</th>
                 <th>操作</th>
             </tr>
             </thead>
@@ -35,7 +47,7 @@ token: String
             <tr>
                 <td>@m.id</td>
                 <td>@m.topic</td>
-                <td>@(m.ppt.title)(#@(m.ppt.id))</td>
+                <td>@(m.ppt.title) (#@(m.ppt.id))</td>
                 <td>
                     <a href="/liveControl/@m.id" target="_blank" class="btn btn-primary" role="button">进入会议</a>
                     &nbsp;&nbsp;
@@ -48,13 +60,18 @@ token: String
     </div>
 </div>
 
+<script id="contentTemplate" type="text/html">
+    @launchMeeting()
+</script>
+
+
 }
 }
 
 @addJs = {
 var uemail = "@user.email";
 var token = "@token";
-//seajs.use("/assets/js/hostMeeting.js");
+seajs.use("hostMeeting");
 }
 
 
