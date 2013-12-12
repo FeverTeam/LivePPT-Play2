@@ -23,6 +23,8 @@ define(function (require, exports, module) {
     var input_signup_password = $('#input_signup_password');
     var input_signup_displayName = $('#input_signup_displayName');
 
+    var main_btn_signup = $('#main_btn_signup');
+
 
     //导航栏登录按钮事件
     nav_login.click(function (e) {
@@ -71,6 +73,11 @@ define(function (require, exports, module) {
         var password = input_signup_password.val();
         var displayName = input_signup_displayName.val();
         signupMod.signup(email, password, displayName);
+    });
+
+    //主注册按钮事件
+    main_btn_signup.click(function(e){
+        nav_signup.click();
     });
 
 });

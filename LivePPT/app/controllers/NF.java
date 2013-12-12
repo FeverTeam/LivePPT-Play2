@@ -10,6 +10,8 @@ import play.mvc.With;
 
 import views.html.*;
 
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * User: simonlbw
@@ -18,6 +20,44 @@ import views.html.*;
  * To change this template use File | Settings | File Templates.
  */
 public class NF extends Controller {
+
+    /**
+     * 登录之后访问这个Action，用于将用于信息写入cookie
+     * 必须提供以下参数
+     * callbackUrl 需要重定向的位置
+     * uemail 用户的email地址，作为用户ID
+     * token 用户的token，用于调用其他接口
+     *
+     * @return
+     */
+    public static Result loginSuccess() {
+
+        Map<String, String[]> params = request().queryString();
+
+        String callbackUrl = (params.containsKey("callbackUrl")) ? params.get("callbackUrl")[0] : "/";
+        String uemail = (params.containsKey("uemail")) ? params.get("uemail")[0].toLowerCase() : null;
+        String token = (params.containsKey("token")) ? params.get("token")[0] : null;
+
+        if (uemail != null && !uemail.equals("") && token != null && !uemail.equals("")) {
+            response().setCookie("uemail", uemail);
+            response().setCookie("token", token);
+        }
+
+        //重定向到目的地址
+        return redirect(callbackUrl);
+    }
+
+    /**
+     * 用于登出，清除Cookie内的用户信息和token
+     *
+     * @return
+     */
+    public static Result logout() {
+        response().setCookie("uemail", "");
+        response().setCookie("token", "");
+        return redirect("/");
+    }
+
 
     /**
      * 首页
