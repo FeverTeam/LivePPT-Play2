@@ -60,8 +60,10 @@ define(function (require, exports, module) {
         e.preventDefault();
         var tempPageIndex = globalPageIndex - 1;
         if (pageIdInRange(tempPageIndex)) {
-            localPageIndexUpdate(tempPageIndex);
+            globalPageIndex = tempPageIndex;
             remotePageUpdate();
+            localPageIndexUpdate();
+
         } else {
             //out of range
         }
@@ -74,8 +76,9 @@ define(function (require, exports, module) {
         e.preventDefault();
         var tempPageIndex = globalPageIndex + 1;
         if (pageIdInRange(tempPageIndex)) {
-            localPageIndexUpdate(tempPageIndex);
+            globalPageIndex = tempPageIndex;
             remotePageUpdate();
+            localPageIndexUpdate();
         } else {
             //out of range
         }
@@ -94,11 +97,10 @@ define(function (require, exports, module) {
      * 设置页码的一系列操作
      * @param index
      */
-    function localPageIndexUpdate(pageId) {
-        globalPageIndex = pageId;
+    function localPageIndexUpdate() {
 
         $('#pageImgPool img').addClass('hidden');
-        $('#pageImgPool #page' + pageId).removeClass('hidden');
+        $('#pageImgPool #page' + globalPageIndex).removeClass('hidden');
 
         knobUpdate();
     }

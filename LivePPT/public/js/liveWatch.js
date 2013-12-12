@@ -18,10 +18,13 @@ define(function (require, exports, module) {
     //页码指示器knob
     var pageKnob = $('#pageKnob');
 
-    init();
+    //初始化
+    $(function () {
+        init();
+    });
 
-    function init(){
-        if (!meetingId){
+    function init() {
+        if (!meetingId) {
             return;
         }
 
@@ -30,9 +33,6 @@ define(function (require, exports, module) {
         //连接wamp服务器
         ab.connect(wamp_uri, on_wamp_success, on_wamp_error);
     }
-
-
-
 
 
     function on_wamp_success(session) {
@@ -63,8 +63,8 @@ define(function (require, exports, module) {
     }
 
     function on_pubsub_pageTopic(topic, event) {
-        console.log("topic:"+topic);
-        console.log("event:"+event);
+//        console.log("topic:" + topic);
+//        console.log("event:" + event);
         var pageId = event;
         showIndexImg(pageId);
     }
@@ -76,14 +76,7 @@ define(function (require, exports, module) {
         //更新page knob
         pageKnob.val(pageId).trigger('change');
 
-//        fetchIndexImg(pptId, pageId);
-
-        // preFetch
-//        for (var count = 1; count < 3; count++){
-//            fetchIndexImg(pageid-1);
-//            fetchIndexImg(pageid+1);
-//        }
-
+        //只显示对应的幻灯图片
         $('div#pageImgPool img').addClass('hidden');
         $('div#pageImgPool #page' + pageId).removeClass('hidden');
     }
