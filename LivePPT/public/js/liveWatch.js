@@ -4,9 +4,10 @@ define(function (require, exports, module) {
 //  require('aab');
     require('jquery-knob');
 
+    var constant = require('constant');
+
     //wamp
-//    var wamp_uri = "ws://localhost:9000/wamp";
-    var wamp_uri = "ws://cloudslides.net:9000/wamp";
+    var wamp_uri = constant.wamp_uri;
 
     var global_session;
 
