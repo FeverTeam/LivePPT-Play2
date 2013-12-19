@@ -1,9 +1,9 @@
 @(
-    bodyHtml: Html = null,    //body正文
-    addJsRef: Html =null,    //以script标签包装的额外JS引用
-    addJsCode: Html = null,    //普通书写的JS代码
-    addCssRef: Html = null,   //以link标签包装的额外CSS文件引用
-    addCssCode: Html = null   //普通书写的CSS代码
+bodyHtml: Html = null,    //body正文
+addJsRef: Html =null,    //以script标签包装的额外JS引用
+addJsCode: Html = null,    //普通书写的JS代码
+addCssRef: Html = null,   //以link标签包装的额外CSS文件引用
+addCssCode: Html = null   //普通书写的CSS代码
 )
 
 <!DOCTYPE html>
@@ -18,11 +18,6 @@
     <link href="/assets/css/lib/bootstrap/bootstrap-3.0.3.css" rel="stylesheet">
     <link href="/assets/css/lib/flatui/flat-ui.css" rel="stylesheet">
 
-
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <![endif]-->
 
     @* 加入额外CSS文件 *@
     @addCssRef
@@ -44,12 +39,16 @@
 </head>
 <body>
 
-    <!--放置body内容的地方-->
-    @bodyHtml
-
+<!--放置body内容的地方-->
+@bodyHtml
 
 
 </body>
+
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
 
 @* 加入额外的JS文件 *@
 @addJsRef
