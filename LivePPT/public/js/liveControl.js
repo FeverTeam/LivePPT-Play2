@@ -4,6 +4,7 @@ define(function (require, exports, module) {
     //Dependencies
     require('jquery-knob');
     var constant = require('constant');
+    var imageUtils = require('tools/imageUtils');
 
     //UI
 

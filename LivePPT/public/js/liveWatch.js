@@ -4,6 +4,7 @@ define(function (require, exports, module) {
     //Dependencies
     require('jquery-knob');
     var constant = require('constant');
+    var imageUtils = require('tools/imageUtils');
 
     //UI binding
     var ws_success_label = $('#ws-success-label'),
@@ -107,7 +108,7 @@ define(function (require, exports, module) {
                 drawImageToCanvas(ppt_image_cache_array[pageId]); //绘制image到canvas
             }
             console.log('pageId:' + pageId);
-            var image_uri = "/ppt/pageImage?pptId=" + pptId + "&page=" + pageId + "&uemail=" + uemail + "&token=" + token;
+            var image_uri = imageUtils.pptImageSrc(pptId, pageId, uemail, token);
             ppt_image_cache_array[pageId].src = image_uri;
         } else {
             //命中缓存
@@ -145,8 +146,7 @@ define(function (require, exports, module) {
             }
 
             ppt_image_cache_array[i] = new Image();
-            var image_uri = "/ppt/pageImage?pptId=" + pptId + "&page=" + i + "&uemail=" + uemail + "&token=" + token;
-            ppt_image_cache_array[i].src = image_uri;
+            ppt_image_cache_array[i].src = imageUtils.pptImageSrc(pptId, i, uemail, token);
         }
     }
 
