@@ -1,10 +1,20 @@
 define(function (require, exports, module) {
     console.log("liveControl.js");
 
+    //Dependencies
     require('jquery-knob');
-
     var constant = require('constant');
 
+    //UI
+
+    // 页码指示器knob
+    var pageKnob = $('#pageKnob');
+
+    //上一页下一页按钮
+    var btn_prePage = $('#btn_prePage');
+    var btn_nextPage = $('#btn_nextPage');
+
+    //Data
 
     //wamp
     var wamp_uri = constant.wamp_uri;
@@ -12,18 +22,12 @@ define(function (require, exports, module) {
     //全局的wamp连接
     var global_session;
 
-    //页码指示器knob
-    var pageKnob = $('#pageKnob');
-
-    //上一页下一页按钮
-    var btn_prePage = $('#btn_prePage');
-    var btn_nextPage = $('#btn_nextPage');
-
     //全局页码
     var globalPageIndex = 1;
 
 
     $(function () {
+        console.log('wamp_uri: ' + wamp_uri);
         init();
     });
 
@@ -136,6 +140,5 @@ define(function (require, exports, module) {
     function knobUpdate() {
         pageKnob.val(globalPageIndex).trigger('change');
     }
-
 
 });

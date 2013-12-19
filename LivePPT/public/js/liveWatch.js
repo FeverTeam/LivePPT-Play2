@@ -1,28 +1,21 @@
 define(function (require, exports, module) {
     console.log("liveWatch.js");
 
-//  require('aab');
+    //Dependencies
     require('jquery-knob');
-
     var constant = require('constant');
 
-    //wamp
-    var wamp_uri = constant.wamp_uri;
-
-    var global_session;
-
-    //连接状态标签
+    //UI binding
     var ws_success_label = $('#ws-success-label'),
         ws_fail_label = $('ws-fail-label'),
-        ws_recover_label = $('#ws-recover-label');
+        ws_recover_label = $('#ws-recover-label');  //连接状态标签
+    var pageKnob = $('#pageKnob');  //页码指示器knob
+    var stage_canvas = document.getElementById('stage_canvas'); //canvas
 
-    //页码指示器knob
-    var pageKnob = $('#pageKnob');
-
-    //canvas
-    var stage_canvas = document.getElementById('stage_canvas');
-
-    var image_array = new Array();
+    //Data
+    var wamp_uri = constant.wamp_uri;   //WAMP URI
+    var global_session; //全局wamp连接
+    var ppt_image_cache_array = [];     //PPT图片缓存数组
 
     //初始化
     $(function () {
@@ -102,24 +95,24 @@ define(function (require, exports, module) {
      * 显示指定页码的PPT图片
      * @param pageId
      */
-    function showIndexImg(pageId) {
-        pageId = parseInt(pageId);
+    function showIndexImg(raw_pageId) {
+        var pageId = parseInt(raw_pageId);
 
-        var image = image_array[pageId];
-        if (image==null) {
+        var image = ppt_image_cache_array[pageId];
+        if (image == undefined) {
             //未命中缓存
             console.log('page ' + pageId + ' not cached');
-            image_array[pageId] = new Image();
-            image_array[pageId].onload = function () {
-                drawImageToCanvas(image_array[pageId]); //绘制image到canvas
-//                image_array[pageId] = image;
+            ppt_image_cache_array[pageId] = new Image();
+            ppt_image_cache_array[pageId].onload = function () {
+                drawImageToCanvas(ppt_image_cache_array[pageId]); //绘制image到canvas
             }
+            console.log('pageId:' + pageId);
             var image_uri = "/ppt/pageImage?pptId=" + pptId + "&page=" + pageId + "&uemail=" + uemail + "&token=" + token;
-            image_array[pageId].src = image_uri;
+            ppt_image_cache_array[pageId].src = image_uri;
         } else {
             //命中缓存
             console.log('page' + pageId + ' cache hit.');
-            drawImageToCanvas(image_array[pageId]); //绘制image到canvas
+            drawImageToCanvas(image); //绘制image到canvas
         }
 
         preloadImgs(pageId);
@@ -137,7 +130,7 @@ define(function (require, exports, module) {
         var preload_img_count = constant.preload_img_count;
         var i;
         for (i = pageId - preload_img_count; i <= pageId + preload_img_count; i++) {
-            if (i==pageId){
+            if (i == pageId) {
                 continue;
             }
             var isInRange = (i >= 1 && i <= pageCount) ? true : false;
@@ -146,14 +139,14 @@ define(function (require, exports, module) {
                 //超出页码范围
                 continue;
             }
-            if (image_array[i]) {
+            if (ppt_image_cache_array[i]) {
                 //页码的图片已缓存
                 continue;
             }
 
-            image_array[i] = new Image();
-            var image_uri = "/ppt/pageImage?pptId=" + pptId + "&page=" + pageId + "&uemail=" + uemail + "&token=" + token;
-            image_array[i].src = image_uri;
+            ppt_image_cache_array[i] = new Image();
+            var image_uri = "/ppt/pageImage?pptId=" + pptId + "&page=" + i + "&uemail=" + uemail + "&token=" + token;
+            ppt_image_cache_array[i].src = image_uri;
         }
     }
 
@@ -162,6 +155,7 @@ define(function (require, exports, module) {
      * @param image
      */
     function drawImageToCanvas(image) {
+
         //设置canvas的长宽
         stage_canvas.width = image.width;
         stage_canvas.height = image.height;

@@ -1,5 +1,6 @@
 define(function (require, exports, module) {
-    var local_debug = true;
+//    var local_debug = true;
+    var local_debug = false;
 
     //wamp_uri
     var _wamp_port = "9000";
